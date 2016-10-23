@@ -1,0 +1,359 @@
+@font-face {
+    font-family: aardvark cafe;
+    src: url(../fonts/aardvark_cafe.TTF);
+}
+
+@font-face {
+    font-family: Adobe Garamond Bold;
+    src: url(../fonts/Adobe_Garamond_Bold.otf);
+}
+
+@font-face {
+    font-family: Air Stream;
+    src: url(../fonts/Air_Stream.TTF)format('embedded-opentype');
+}
+
+@font-face {
+    font-family: AkzidenzGroteskBQ Cnd;
+    src: url(../fonts/AkzidenzGroteskBQ-Cnd.otf);
+}
+
+@font-face {
+    font-family: Aldo PC;
+    src: url(../fonts/Aldo_PC.ttf);
+}
+
+@font-face {
+    font-family: ANDY BOLD;
+    src: url(../fonts/ANDY-BOLD.TTF);
+}
+
+@font-face {
+    font-family: ARIAL BLACK;
+    src: url(../fonts/ARIAL-BLACK.ttf);
+}
+
+
+@font-face {
+    font-family: arial narrow;
+    src: url(../fonts/arial-narrow.TTF);
+}
+
+@font-face {
+    font-family: ARIAL BOLD;
+    src: url(../fonts/ARIAL-BOLD.ttf);
+}
+
+@font-face {
+    font-family: ARLRDBD;
+    src: url(../fonts/ARLRDBD.TTF);
+}
+
+@font-face {
+    font-family: ArnoPro Regular;
+    src: url(../fonts/ArnoPro-Regular.otf);
+}
+
+@font-face {
+    font-family: Artbrush;
+    src: url(../fonts/Artbrush.ttf);
+}
+
+
+@font-face {
+    font-family: Bauhaus;
+    src: url(../fonts/Bauhaus.ttf);
+}
+
+
+@font-face {
+    font-family: BEACHTYP;
+    src: url(../fonts/BEACHTYP.TTF);
+}
+
+@font-face {
+    font-family: beansfont;
+    src: url(../fonts/beansfont.ttf);
+}
+
+@font-face {
+    font-family: beatsvil;
+    src: url(../fonts/beatsvil.ttf);
+}
+
+@font-face {
+    font-family: BELLBOTT;
+    src: url(../fonts/Bellbott.TTF);
+}
+
+@font-face {
+    font-family: BRLNSR;
+    src: url(../fonts/BRLNSR.TTF);
+}
+
+@font-face {
+    font-family: BlackWolf;
+    src: url(../fonts/BlackWolf.ttf);
+}
+
+@font-face {
+    font-family: BLADRMF;
+    src: url(../fonts/BLADRMF_.TTF);
+}
+
+@font-face {
+    font-family: Boisterb;
+    src: url(../fonts/Boisterb.ttf);
+}
+
+@font-face {
+    font-family: BOOKOS;
+    src: url(../fonts/BOOKOS.TTF);
+}
+
+@font-face {
+    font-family: Candara;
+    src: url(../fonts/Candara.ttf);
+}
+
+@font-face {
+    font-family: CHERI;
+    src: url(../fonts/CHERI___.TTF);
+}
+
+@font-face {
+    font-family: CHOWFUN;
+    src: url(../fonts/CHOWFUN.TTF);
+}
+
+@font-face {
+    font-family: Chunkfive;
+    src: url(../fonts/Chunkfive.otf);
+}
+
+@font-face {
+    font-family: college;
+    src: url(../fonts/college.ttf);
+}
+
+@font-face {
+    font-family: Colony Wars;
+    src: url(../fonts/Colony-Wars.ttf);
+}
+
+@font-face {
+    font-family: comic 0;
+    src: url(../fonts/comic_0.ttf);
+}
+
+@font-face {
+    font-family: CooperBlackStd;
+    src: url(../fonts/CooperBlackStd.otf);
+}
+
+@font-face {
+    font-family: Creepers;
+    src: url(../fonts/Creepers.ttf);
+}
+
+@font-face {
+    font-family: Decker;
+    src: url(../fonts/Decker.ttf);
+}
+
+
+@font-face {
+    font-family: denmark;
+    src: url(../fonts/denmark.ttf);
+}
+
+
+@font-face {
+    font-family: dirty bakers dozen;
+    src: url(../fonts/dirty-bakers-dozen.ttf);
+}
+
+
+@font-face {
+    font-family: EASTMARK;
+    src: url(../fonts/EASTMARK.TTF);
+}
+
+@font-face {
+    font-family: ELEPHNT;
+    src: url(../fonts/ELEPHNT.TTF);
+}
+
+@font-face {
+    font-family: FINALOLD;
+    src: url(../fonts/FINALOLD.TTF);
+}
+
+@font-face {
+    font-family: framd;
+    src: url(../fonts/framd.ttf);
+}
+
+@font-face {
+    font-family: freedomfighter;
+    src: url(../fonts/freedomfighter.ttf);
+}
+
+@font-face {
+    font-family: FREESCPT;
+    src: url(../fonts/FREESCPT.TTF);
+}
+
+@font-face {
+    font-family: Garamond Regular;
+    src: url(../fonts/Garamond-Regular.ttf);
+}
+
+@font-face {
+    font-family: Harrington;
+    src: url(../fonts/HARNGTON.TTF);
+}
+
+@font-face {
+    font-family: hotpizza;
+    src: url(../fonts/hotpizza.ttf);
+}
+
+@font-face {
+    font-family: impact 0;
+    src: url(../fonts/impact_0.ttf);
+}
+
+
+@font-face {
+    font-family: kingrichard;
+    src: url(../fonts/kingrichard.ttf);
+}
+
+@font-face {
+    font-family: KOMIKABG;
+    src: url(../fonts/KOMIKABG.ttf);
+}
+
+@font-face {
+    font-family: lucon 0;
+    src: url(../fonts/lucon_0.ttf);
+}
+
+@font-face {
+    font-family: metalstorm;
+    src: url(../fonts/metalstorm.ttf);
+}
+
+@font-face {
+    font-family: METROLOX;
+    src: url(../fonts/METROLOX.ttf);
+}
+
+@font-face {
+    font-family: MTCORSVA;
+    src: url(../fonts/MTCORSVA.TTF);
+}
+
+
+@font-face {
+    font-family: MyriadPro Regular;
+    src: url(../fonts/MyriadPro-Regular.otf);
+}
+
+@font-face {
+    font-family: NickelodeonNF;
+    src: url(../fonts/NickelodeonNF.ttf);
+}
+
+@font-face {
+    font-family: Pacifico;
+    src: url(../fonts/Pacifico.ttf);
+}
+
+@font-face {
+    font-family: pala 0;
+    src: url(../fonts/pala_0.ttf);
+}
+
+@font-face {
+    font-family: PermanentMarker;
+    src: url(../fonts/PermanentMarker.ttf);
+}
+
+@font-face {
+    font-family: SCRIPTBL;
+    src: url(../fonts/SCRIPTBL.TTF);
+}
+
+
+@font-face {
+    font-family: SHOWG;
+    src: url(../fonts/SHOWG.TTF);
+}
+
+@font-face {
+    font-family: SpookyMagic;
+    src: url(../fonts/SpookyMagic.ttf);
+}
+
+@font-face {
+    font-family: Swagger;
+    src: url(../fonts/Swagger.ttf);
+}
+
+@font-face {
+    font-family: tahoma 0;
+    src: url(../fonts/tahoma_0.ttf);
+}
+
+@font-face {
+    font-family: times 0;
+    src: url(../fonts/times_0.ttf);
+}
+
+@font-face {
+    font-family: transfrm;
+    src: url(../fonts/transfrm.ttf);
+}
+
+@font-face {
+    font-family: trebuc 0;
+    src: url(../fonts/trebuc_0.ttf);
+}
+
+
+@font-face {
+    font-family: trekker;
+    src: url(../fonts/trekker-two-regular-1361513282.ttf);
+}
+
+
+@font-face {
+    font-family: tristan;
+    src: url(../fonts/tristan.ttf);
+}
+
+@font-face {
+    font-family: Tweedledee Bold;
+    src: url(../fonts/Tweedledee-Bold.ttf);
+}
+
+@font-face {
+    font-family: Victorian LET;
+    src: url(../fonts/Victorian-LET.ttf);
+}
+
+
+@font-face {
+    font-family: WantedM54;
+    src: url(../fonts/WantedM54.ttf);
+}
+
+@font-face {
+    font-family: WickedScaryMovie;
+    src: url(../fonts/WickedScaryMovie.ttf);
+}
+
+
+
