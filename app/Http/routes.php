@@ -16,3 +16,5 @@ Route::get('/', function () {
 });
 
 Route::get('/order', 'OrderController@index');
+
+Route::get('/wristband/colors', 'OrderController@getWristbandColors');

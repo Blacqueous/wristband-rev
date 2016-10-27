@@ -6,27 +6,127 @@ use Storage;
 
 class Colors {
 
+	public function reset()
+	{
+		// regular style wristbands.
+		Storage::put('json/wristband/colors/regular.json', json_encode($this->regular()));
+		Storage::put('json/wristband/colors/regularLarge.json', json_encode($this->regularLarge()));
+		Storage::put('json/wristband/colors/regularThin.json', json_encode($this->regularThin()));
+		// dual style wristbands.
+		Storage::put('json/wristband/colors/dual.json', json_encode($this->dual()));
+		Storage::put('json/wristband/colors/dualLarge.json', json_encode($this->dualLarge()));
+		// figured style wristbands.
+		Storage::put('json/wristband/colors/figured.json', json_encode($this->figured()));
+		Storage::put('json/wristband/colors/figuredLarge.json', json_encode($this->figuredLarge()));
+	}
+
+    public function getColorByStyleSize($style='printed', $size='0-50inch')
+    {
+		switch ($style) {
+            case 'dual-layer':
+				if($size == '0-50inch') {
+					return $this->getDual();
+				} else {
+
+					return $this->getDualLarge();
+				}
+                break;
+
+            case 'figured':
+				if($size == '0-50inch') {
+					return $this->getFigured();
+				} else {
+					return $this->getFiguredLarge();
+				}
+                break;
+
+            default:
+				if($size == '0-25inch') {
+					return $this->getRegularThin();
+				} else if($size == '0-50inch') {
+					return $this->getRegular();
+				} else {
+					return $this->getRegularLarge();
+				}
+                break;
+        }
+	}
+
 	public function getRegular()
 	{
-		if(!Storage::has('json/wristband/colors/regular.json'))
+		// check if .json file exists.
+		if(!Storage::has('json/wristband/colors/regular.json')) {
+			// generate and save .json file.
 			Storage::put('json/wristband/colors/regular.json', json_encode($this->regular()));
-
+		}
+		// return data from .json file.
 		return json_decode(Storage::get('json/wristband/colors/regular.json'), true);
+	}
+
+	public function getRegularLarge()
+	{
+		// check if .json file exists.
+		if(!Storage::has('json/wristband/colors/regularLarge.json')) {
+			// generate and save .json file.
+			Storage::put('json/wristband/colors/regularLarge.json', json_encode($this->regularLarge()));
+		}
+		// return data from .json file.
+		return json_decode(Storage::get('json/wristband/colors/regularLarge.json'), true);
+	}
+
+	public function getRegularThin()
+	{
+		// check if .json file exists.
+		if(!Storage::has('json/wristband/colors/regularThin.json')) {
+			// generate and save .json file.
+			Storage::put('json/wristband/colors/regularThin.json', json_encode($this->regularThin()));
+		}
+		// return data from .json file.
+		return json_decode(Storage::get('json/wristband/colors/regularThin.json'), true);
 	}
 
 	public function getDual()
 	{
-		if(!Storage::has('json/wristband/colors/dual.json'))
+		// check if .json file exists.
+		if(!Storage::has('json/wristband/colors/dual.json')) {
+			// generate and save .json file.
 			Storage::put('json/wristband/colors/dual.json', json_encode($this->dual()));
-
+		}
+		// return data from .json file.
 		return json_decode(Storage::get('json/wristband/colors/dual.json'), true);
 	}
 
-	public function reset()
+	public function getDualLarge()
 	{
-		Storage::put('json/wristband/colors/regular.json', json_encode($this->regular()));
-		Storage::put('json/wristband/colors/dual.json', json_encode($this->dual()));
+		// check if .json file exists.
+		if(!Storage::has('json/wristband/colors/dualLarge.json')) {
+			// generate and save .json file.
+			Storage::put('json/wristband/colors/dualLarge.json', json_encode($this->dualLarge()));
+		}
+		// return data from .json file.
+		return json_decode(Storage::get('json/wristband/colors/dualLarge.json'), true);
+	}
 
+	public function getFigured()
+	{
+		// check if .json file exists.
+		if(!Storage::has('json/wristband/colors/figured.json')) {
+			// generate and save .json file.
+			Storage::put('json/wristband/colors/figured.json', json_encode($this->figured()));
+		}
+		// return data from .json file.
+		return json_decode(Storage::get('json/wristband/colors/figured.json'), true);
+	}
+
+	public function getFiguredLarge()
+	{
+		// check if .json file exists.
+		if(!Storage::has('json/wristband/colors/figuredLarge.json')) {
+			// generate and save .json file.
+			Storage::put('json/wristband/colors/figuredLarge.json', json_encode($this->figuredLarge()));
+		}
+		// return data from .json file.
+		return json_decode(Storage::get('json/wristband/colors/figuredLarge.json'), true);
 	}
 
 	private static function regular()

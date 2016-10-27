@@ -39,7 +39,6 @@ $(document).ready(function() {
        $(this).prop("checked", !$(this).prop("checked"));
    });
 
-
    $('input[type="radio"]').on( 'touchstart', function(){
        $(this).prop("checked", !$(this).prop("checked"));
    });
@@ -287,7 +286,6 @@ $(document).ready(function() {
 		}
 	});
 
-
 	$("body").on("blur", ".freewb", function(e) {
 		e.preventDefault();
 		e.stopPropagation();
@@ -349,7 +347,6 @@ $(document).ready(function() {
 	$("#remove-3").click(function() {
 		$(".file-3").val("");
 	});
-
 
 	// Removes file
 	$("#remove-4").click(function() {
@@ -462,267 +459,267 @@ $(document).ready(function() {
 		});
 		return false;
 	});
-
-	// Select wristband style event
-	$('body').on('click', '.js-style', function() {
-
-		// Check if not yet checked
-		if(!$(this).hasClass("active")) {
-
-			// Uncheck others
-			$(".js-style").find("input[type='radio']").prop("checked", false);
-			$(".js-style").removeClass("active");
-
-			// Check & set as active
-			$(this).find("input[type='radio']").prop("checked", true);
-			$(this).addClass("active");
-
-			//check style hide size divs
-			var style = $(".js-style .wrist_style:checked").val();
-
-			// Show or hide custom font selector depending on selected style
-			if(style === "printed" || style === "ink-injected" || style === "embossed-printed" || style === "figured"){
-				$('.fntin').show().addClass('active');
-				$('.fonttext-color').show();
-			}else{
-				$('.fntin').hide().removeClass('active');
-				$('.fonttext-color').hide();
-			}
-
-			// Set what kind of preview to display
-			if(style === "figured") {
-				$("#front-view, #back-view, #inside-view, #continue-view").addClass("set-height-fig");
-				$("#front-view, #back-view, #inside-view, #continue-view").removeClass("set-height-reg");
-				$(".preview-text").css("line-height", "104px");
-			} else {
-				$("#front-view, #back-view, #inside-view, #continue-view").addClass("set-height-reg");
-				$("#front-view, #back-view, #inside-view, #continue-view").removeClass("set-height-fig");
-				$(".preview-text").css("line-height", "54px");
-			}
-
-			//Check and remove step 4 if blank style
-			if(style === "blank"){
-				$('.wrist-messsage').hide();
-				$('.step-5').hide();
-				$('.step-4').show();
-			}else{
-				$('.wrist-messsage').show();
-				$('.step-5').show();
-				$('.step-4').hide();
-			}
-
-			// Hide all sizes first
-			$(".js-size").removeClass('active');
-			$(".wsize-default .js-size").hide();
-			$(".wristband-view-color").hide();
-
-			// Set which sizes to display
-			if(style == "figured") {
-				// Show sizes
-				$("#half").show();
-				$("#three").show();
-				$("#one").show();
-				$(".start-fc").addClass("fig_move");
-				$(".end-fc").addClass("fig_move");
-				$(".back-mc").addClass("fig_move");
-				$(".backend-mc").addClass("fig_move");
-				$(".start-cc").addClass("fig_move");
-				$(".end-cc").addClass("fig_move");
-				$(".fig-fc").addClass("fig_move");
-				$(".figarea").show();
-
-				// Get current checked radio button
-				var selected = $(".js-size:visible input[type='radio']:checked");
-				if(selected.length <= 0) {
-					selected = $(".js-size:visible:first input[type='radio']");
-				}
-				selected.closest('.js-size').addClass('active');
-				selected.prop("checked", true);
-
-				// Get checked style
-				var item = $(".js-size:visible .wrist_size:checked").val();
-
-				// Show items
-				if($.inArray(item, ["1/4", "1/2", "3/4"]) > 0) {
-					$(".regular-figured-size").show(); // Show regular sizes
-				} else {
-					$(".large-figured-size").show(); // Show large sizes
-				}
-			} else if(style=="dual-layer") {
-				// Show sizes
-				$("#half").show();
-				$("#three").show();
-				$(".start-fc").removeClass("fig_move");
-				$(".end-fc").removeClass("fig_move");
-				$(".back-mc").removeClass("fig_move");
-				$(".backend-mc").removeClass("fig_move");
-				$(".start-cc").removeClass("fig_move");
-				$(".end-cc").removeClass("fig_move");
-				$(".figarea").hide();
-
-				// Get current checked radio button
-				var selected = $(".js-size:visible input[type='radio']:checked");
-				if(selected.length <= 0) {
-					selected = $(".js-size:visible:first input[type='radio']");
-				}
-				selected.closest('.js-size').addClass('active');
-				selected.prop("checked", true);
-
-				// Get checked style
-				var item = $(".js-size:visible .wrist_size:checked").val();
-
-				// Show items
-				if($.inArray(item, ["1/4", "1/2"]) > 0) {
-					$(".regular-dual-size").show(); // Show regular sizes
-				} else {
-					$(".large-dual-size").show(); // Show large sizes
-				}
-			} else {
-				// Show sizes
-				$("#quarter").show();
-				$("#half").show();
-				$("#three").show();
-				$("#one").show();
-				$("#onehalf").show();
-				$("#two").show();
-				$(".start-fc").removeClass("fig_move");
-				$(".end-fc").removeClass("fig_move");
-				$(".back-mc").removeClass("fig_move");
-				$(".backend-mc").removeClass("fig_move");
-				$(".start-cc").removeClass("fig_move");
-				$(".end-cc").removeClass("fig_move");
-				$(".figarea").hide();
-
-				// Get current checked radio button
-				var selected = $(".js-size:visible input[type='radio']:checked");
-				if(selected.length <= 0) {
-					selected = $(".js-size:visible:first input[type='radio']");
-				}
-				selected.closest('.js-size').addClass('active');
-				selected.prop("checked", true);
-
-				// Get checked style
-				var item = $(".js-size:visible .wrist_size:checked").val();
-
-				// Show items
-				if($.inArray(item, ["1/2", "3/4", "1"]) > 0) {
-					$(".regular-color-size").show(); // Show regular sizes
-				}else if($.inArray(item, ["1/4"]) > 0) {
-					console.log(item);
-					$(".thin-color-size").show(); // Show thin sizes
-				}
-				else {
-					$(".large-color-size").show(); // Show large sizes
-				}
-			}
-
-			// Empty all quantities
-			$(".wrist_color_container:visible").find(".js-color").find("input[name$='-qty']").val("");
-
-			// Hide free
-			$('#dv-10-free-keychains').hide();
-			$('#dv-100-free-wristbands').hide();
-
-			// Empty all add-ons
-			$("#convert-keychain").hide();
-			$("div.add-ons").removeClass("active");
-			$("div.add-ons").find("input[type='checkbox']").prop("checked", false);
-
-			// Clear previews
-			$(".click-pre").hide();
-			$(".preview-panel").attr("style", "");
-			$(".preview-panel").find("img").remove();
-			$("#preview-pane-selection").html("");
-			$("#front-view, #back-view, #inside-view, #continue-view").attr("style", "");
-			$(".main-content-preview").removeClass("has-preview");
-
-			// Hide total
-			$('.js-total').hide();
-			$('.js-no-total').fadeIn(300);
-
-
-			// Get new price table
-			get_style_size('price_table');
-		}
-	});
-
-	// Select wristband size event
-	$('body').on('click', '.js-size', function() {
-
-		// Check if not yet checked
-		if(!$(this).hasClass("active")) {
-
-			// Uncheck others
-			$(".js-size").find("input[type='radio']").prop("checked", false);
-			$(".js-size").removeClass("active");
-
-			// Check & set as active
-			$(this).find("input[type='radio']").prop("checked", true);
-			$(this).addClass("active");
-
-			// Hide visible wristband selector
-			$(".wristband-view-color").hide();
-
-			// Get wristband size & style
-			var item = $('.js-size:visible .wrist_size:checked').val();
-			var style = $('.js-style .wrist_style:checked').val();
-
-			// Decide which wristband selector to display
-			if(style == "figured") {
-				// Show items
-				if($.inArray(item, ["1/4", "1/2",]) > 0) {
-					$(".regular-figured-size").show(); // Show regular sizes
-				} else {
-					$(".large-figured-size").show(); // Show large sizes
-				}
-			} else if(style=="dual-layer") {
-				// Show items
-				if($.inArray(item, ["1/4", "1/2"]) > 0) {
-					$(".regular-dual-size").show(); // Show regular sizes
-				} else {
-					$(".large-dual-size").show(); // Show large sizes
-				}
-			} else {
-
-				// Show items
-				if($.inArray(item, [, "1/2", ,]) > 0) {
-					$(".regular-color-size").show(); // Show regular sizes
-				}else if(item == "1/4") {
-					$(".thin-color-size").show(); // Show thin sizes
-				}
-				else {
-					$(".large-color-size").show(); // Show large sizes
-				}
-			}
-
-			// Empty all quantities
-			$(".wrist_color_container:visible").find(".js-color").find("input[name$='-qty']").val("");
-
-			// Empty all add-ons
-			$("#convert-keychain").hide();
-			$("div.add-ons").removeClass("active");
-			$("div.add-ons").find("input[type='checkbox']").prop("checked", false);
-
-			// Clear previews
-			$(".click-pre").hide();
-			$(".preview-panel").attr("style", "");
-			$(".preview-panel").find("img").remove();
-			$("#preview-pane-selection").html("");
-			$("#front-view, #back-view, #inside-view, #continue-view").attr("style", "");
-			$(".main-content-preview").removeClass("has-preview");
-
-			// Hide free
-			$('#dv-10-free-keychains').hide();
-			$('#dv-100-free-wristbands').hide();
-
-			// Hide total
-			$('.js-total').hide();
-			$('.js-no-total').fadeIn(300);
-
-			// Get new price table
-			get_style_size('price_table');
-		}
-	});
+	// 
+	// // Select wristband style event
+	// $('body').on('click', '.js-style', function() {
+	//
+	// 	// Check if not yet checked
+	// 	if(!$(this).hasClass("active")) {
+	//
+	// 		// Uncheck others
+	// 		$(".js-style").find("input[type='radio']").prop("checked", false);
+	// 		$(".js-style").removeClass("active");
+	//
+	// 		// Check & set as active
+	// 		$(this).find("input[type='radio']").prop("checked", true);
+	// 		$(this).addClass("active");
+	//
+	// 		//check style hide size divs
+	// 		var style = $(".js-style .wrist_style:checked").val();
+	//
+	// 		// Show or hide custom font selector depending on selected style
+	// 		if(style === "printed" || style === "ink-injected" || style === "embossed-printed" || style === "figured"){
+	// 			$('.fntin').show().addClass('active');
+	// 			$('.fonttext-color').show();
+	// 		}else{
+	// 			$('.fntin').hide().removeClass('active');
+	// 			$('.fonttext-color').hide();
+	// 		}
+	//
+	// 		// Set what kind of preview to display
+	// 		if(style === "figured") {
+	// 			$("#front-view, #back-view, #inside-view, #continue-view").addClass("set-height-fig");
+	// 			$("#front-view, #back-view, #inside-view, #continue-view").removeClass("set-height-reg");
+	// 			$(".preview-text").css("line-height", "104px");
+	// 		} else {
+	// 			$("#front-view, #back-view, #inside-view, #continue-view").addClass("set-height-reg");
+	// 			$("#front-view, #back-view, #inside-view, #continue-view").removeClass("set-height-fig");
+	// 			$(".preview-text").css("line-height", "54px");
+	// 		}
+	//
+	// 		//Check and remove step 4 if blank style
+	// 		if(style === "blank"){
+	// 			$('.wrist-messsage').hide();
+	// 			$('.step-5').hide();
+	// 			$('.step-4').show();
+	// 		}else{
+	// 			$('.wrist-messsage').show();
+	// 			$('.step-5').show();
+	// 			$('.step-4').hide();
+	// 		}
+	//
+	// 		// Hide all sizes first
+	// 		$(".js-size").removeClass('active');
+	// 		$(".wsize-default .js-size").hide();
+	// 		$(".wristband-view-color").hide();
+	//
+	// 		// Set which sizes to display
+	// 		if(style == "figured") {
+	// 			// Show sizes
+	// 			$("#half").show();
+	// 			$("#three").show();
+	// 			$("#one").show();
+	// 			$(".start-fc").addClass("fig_move");
+	// 			$(".end-fc").addClass("fig_move");
+	// 			$(".back-mc").addClass("fig_move");
+	// 			$(".backend-mc").addClass("fig_move");
+	// 			$(".start-cc").addClass("fig_move");
+	// 			$(".end-cc").addClass("fig_move");
+	// 			$(".fig-fc").addClass("fig_move");
+	// 			$(".figarea").show();
+	//
+	// 			// Get current checked radio button
+	// 			var selected = $(".js-size:visible input[type='radio']:checked");
+	// 			if(selected.length <= 0) {
+	// 				selected = $(".js-size:visible:first input[type='radio']");
+	// 			}
+	// 			selected.closest('.js-size').addClass('active');
+	// 			selected.prop("checked", true);
+	//
+	// 			// Get checked style
+	// 			var item = $(".js-size:visible .wrist_size:checked").val();
+	//
+	// 			// Show items
+	// 			if($.inArray(item, ["1/4", "1/2", "3/4"]) > 0) {
+	// 				$(".regular-figured-size").show(); // Show regular sizes
+	// 			} else {
+	// 				$(".large-figured-size").show(); // Show large sizes
+	// 			}
+	// 		} else if(style=="dual-layer") {
+	// 			// Show sizes
+	// 			$("#half").show();
+	// 			$("#three").show();
+	// 			$(".start-fc").removeClass("fig_move");
+	// 			$(".end-fc").removeClass("fig_move");
+	// 			$(".back-mc").removeClass("fig_move");
+	// 			$(".backend-mc").removeClass("fig_move");
+	// 			$(".start-cc").removeClass("fig_move");
+	// 			$(".end-cc").removeClass("fig_move");
+	// 			$(".figarea").hide();
+	//
+	// 			// Get current checked radio button
+	// 			var selected = $(".js-size:visible input[type='radio']:checked");
+	// 			if(selected.length <= 0) {
+	// 				selected = $(".js-size:visible:first input[type='radio']");
+	// 			}
+	// 			selected.closest('.js-size').addClass('active');
+	// 			selected.prop("checked", true);
+	//
+	// 			// Get checked style
+	// 			var item = $(".js-size:visible .wrist_size:checked").val();
+	//
+	// 			// Show items
+	// 			if($.inArray(item, ["1/4", "1/2"]) > 0) {
+	// 				$(".regular-dual-size").show(); // Show regular sizes
+	// 			} else {
+	// 				$(".large-dual-size").show(); // Show large sizes
+	// 			}
+	// 		} else {
+	// 			// Show sizes
+	// 			$("#quarter").show();
+	// 			$("#half").show();
+	// 			$("#three").show();
+	// 			$("#one").show();
+	// 			$("#onehalf").show();
+	// 			$("#two").show();
+	// 			$(".start-fc").removeClass("fig_move");
+	// 			$(".end-fc").removeClass("fig_move");
+	// 			$(".back-mc").removeClass("fig_move");
+	// 			$(".backend-mc").removeClass("fig_move");
+	// 			$(".start-cc").removeClass("fig_move");
+	// 			$(".end-cc").removeClass("fig_move");
+	// 			$(".figarea").hide();
+	//
+	// 			// Get current checked radio button
+	// 			var selected = $(".js-size:visible input[type='radio']:checked");
+	// 			if(selected.length <= 0) {
+	// 				selected = $(".js-size:visible:first input[type='radio']");
+	// 			}
+	// 			selected.closest('.js-size').addClass('active');
+	// 			selected.prop("checked", true);
+	//
+	// 			// Get checked style
+	// 			var item = $(".js-size:visible .wrist_size:checked").val();
+	//
+	// 			// Show items
+	// 			if($.inArray(item, ["1/2", "3/4", "1"]) > 0) {
+	// 				$(".regular-color-size").show(); // Show regular sizes
+	// 			}else if($.inArray(item, ["1/4"]) > 0) {
+	// 				console.log(item);
+	// 				$(".thin-color-size").show(); // Show thin sizes
+	// 			}
+	// 			else {
+	// 				$(".large-color-size").show(); // Show large sizes
+	// 			}
+	// 		}
+	//
+	// 		// Empty all quantities
+	// 		$(".wrist_color_container:visible").find(".js-color").find("input[name$='-qty']").val("");
+	//
+	// 		// Hide free
+	// 		$('#dv-10-free-keychains').hide();
+	// 		$('#dv-100-free-wristbands').hide();
+	//
+	// 		// Empty all add-ons
+	// 		$("#convert-keychain").hide();
+	// 		$("div.add-ons").removeClass("active");
+	// 		$("div.add-ons").find("input[type='checkbox']").prop("checked", false);
+	//
+	// 		// Clear previews
+	// 		$(".click-pre").hide();
+	// 		$(".preview-panel").attr("style", "");
+	// 		$(".preview-panel").find("img").remove();
+	// 		$("#preview-pane-selection").html("");
+	// 		$("#front-view, #back-view, #inside-view, #continue-view").attr("style", "");
+	// 		$(".main-content-preview").removeClass("has-preview");
+	//
+	// 		// Hide total
+	// 		$('.js-total').hide();
+	// 		$('.js-no-total').fadeIn(300);
+	//
+	//
+	// 		// Get new price table
+	// 		get_style_size('price_table');
+	// 	}
+	// });
+	//
+	// // Select wristband size event
+	// $('body').on('click', '.js-size', function() {
+	//
+	// 	// Check if not yet checked
+	// 	if(!$(this).hasClass("active")) {
+	//
+	// 		// Uncheck others
+	// 		$(".js-size").find("input[type='radio']").prop("checked", false);
+	// 		$(".js-size").removeClass("active");
+	//
+	// 		// Check & set as active
+	// 		$(this).find("input[type='radio']").prop("checked", true);
+	// 		$(this).addClass("active");
+	//
+	// 		// Hide visible wristband selector
+	// 		$(".wristband-view-color").hide();
+	//
+	// 		// Get wristband size & style
+	// 		var item = $('.js-size:visible .wrist_size:checked').val();
+	// 		var style = $('.js-style .wrist_style:checked').val();
+	//
+	// 		// Decide which wristband selector to display
+	// 		if(style == "figured") {
+	// 			// Show items
+	// 			if($.inArray(item, ["1/4", "1/2",]) > 0) {
+	// 				$(".regular-figured-size").show(); // Show regular sizes
+	// 			} else {
+	// 				$(".large-figured-size").show(); // Show large sizes
+	// 			}
+	// 		} else if(style=="dual-layer") {
+	// 			// Show items
+	// 			if($.inArray(item, ["1/4", "1/2"]) > 0) {
+	// 				$(".regular-dual-size").show(); // Show regular sizes
+	// 			} else {
+	// 				$(".large-dual-size").show(); // Show large sizes
+	// 			}
+	// 		} else {
+	//
+	// 			// Show items
+	// 			if($.inArray(item, [, "1/2", ,]) > 0) {
+	// 				$(".regular-color-size").show(); // Show regular sizes
+	// 			}else if(item == "1/4") {
+	// 				$(".thin-color-size").show(); // Show thin sizes
+	// 			}
+	// 			else {
+	// 				$(".large-color-size").show(); // Show large sizes
+	// 			}
+	// 		}
+	//
+	// 		// Empty all quantities
+	// 		$(".wrist_color_container:visible").find(".js-color").find("input[name$='-qty']").val("");
+	//
+	// 		// Empty all add-ons
+	// 		$("#convert-keychain").hide();
+	// 		$("div.add-ons").removeClass("active");
+	// 		$("div.add-ons").find("input[type='checkbox']").prop("checked", false);
+	//
+	// 		// Clear previews
+	// 		$(".click-pre").hide();
+	// 		$(".preview-panel").attr("style", "");
+	// 		$(".preview-panel").find("img").remove();
+	// 		$("#preview-pane-selection").html("");
+	// 		$("#front-view, #back-view, #inside-view, #continue-view").attr("style", "");
+	// 		$(".main-content-preview").removeClass("has-preview");
+	//
+	// 		// Hide free
+	// 		$('#dv-10-free-keychains').hide();
+	// 		$('#dv-100-free-wristbands').hide();
+	//
+	// 		// Hide total
+	// 		$('.js-total').hide();
+	// 		$('.js-no-total').fadeIn(300);
+	//
+	// 		// Get new price table
+	// 		get_style_size('price_table');
+	// 	}
+	// });
 
 	// Adding quantity to wristband colors. Check input values on textfield
 	$('body').on('keydown, keyup', '.box-color input[name$="-qty"]', function (e) {
@@ -992,7 +989,7 @@ $(document).ready(function() {
 		$(".clip-color-list li").addClass('sfm-art');
 	});
 
-	//solid done button click
+	// solid done button click
 	// $('.done-b').click(function(){
 	$('body').on('click', '.done-b', function() {
 

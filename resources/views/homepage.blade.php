@@ -350,9 +350,9 @@
                     </ul>
                 </div>
                 <div class="clearfix"></div>
-            </div><!----End Container----->
+            </div><!-- End Container -->
         </div>
     </div>
-<!----end container---->
+<!-- End container -->
 
 @include('template/footer')

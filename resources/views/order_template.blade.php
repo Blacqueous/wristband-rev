@@ -666,7 +666,9 @@
 
 @include('modal.confirmMail')
 
-<?php // include_once "popup_message.php"; ?>
+@include('modal.confirmMail')
+
+<?php i// include_once "popup_message.php"; ?>
 
 <?php // include_once "popup_confirm_email.php"; ?>
 
