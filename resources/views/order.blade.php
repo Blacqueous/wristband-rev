@@ -1,28 +1,49 @@
 
-<!-- use layout. -->
+<!-- Use layout. -->
 @extends('template.layout')
 
-<!-- title section. -->
+<!-- Title section. -->
 @section('title', ' - Order Now')
-<!-- End of title section. -->
+<!-- End: title section. -->
 
-<!-- content section. -->
+<!-- .css section. -->
+@section('css')
+	<!-- Order page custom stylesheet -->
+	<link href="css/order.css" rel="stylesheet">
+
+	<!-- Additional .css plugins -->
+	<link href="global/iCheck/skins/square/green.css" rel="stylesheet">
+@endsection
+<!-- End: .css section. -->
+
+<!-- .js section. -->
+@section('js')
+	<!-- Order page custom javascript -->
+    <script src="js/order.js"></script>
+
+	<!-- Additional .js plugins -->
+	<script src="global/iCheck/icheck.min.js"></script>
+	<script src="global/unveil.js/jquery.unveil.js"></script>
+@endsection
+<!-- End: .js section. -->
+
+<!-- Content section. -->
 @section('content')
-<?php $qstyle = "printed"; ?>
+
 	<div id="main-page-content">
 		<div class="container">
 
 			<!-- PRICE TABLES -->
-			<div id="banner-pricing">
+			<div id="banner_pricing">
 				<table class="table-area-printed-half uk-table uk-table-bordered js-pricing-table" data-pricing-tbl="" style="display:none;">
 					<caption class="uk-margin-bottom js-wb-caption">Pricing for <span class="style">Printed</span> wristbands (&quot;<span class="size">1/2</span>&quot;) as of July, 2016</caption>
 					<thead>
-						<tr id="priceHeader">
+						<tr id="price_header">
 						<th data-uk-tooltip="{pos:'top'}" title="Quantity" class="uk-text-primary">Qty</th>
 						</tr>
 					</thead>
 					<tbody>
-						<tr id="priceTable">
+						<tr id="price_table">
 							<td class="uk-text-primary">Price</td>
 						</tr>
 					</tbody>
@@ -31,7 +52,7 @@
 			<!-- END PRICE TABLES -->
 
 			<!-- WRIST STYLES -->
-			<div id="wrist_style" class="wrist-style">
+			<div id="wb_style" class="wrist-style">
 				<div class="row offer-bar margin-bootom-20 __web-inspector-hide-shortcut__">
 					<div class="col-xs-3 col-sm-2 offerpv float-left">Step <span class="sRename">1</span></div>
 					<div class="col-xs-9 col-sm-10 offer-details float-left">Select Wristband Style </div>
@@ -40,12 +61,12 @@
 				<div class="wrist_style_container">
 					<div class="popup-order-gallery">
 						@foreach($styles as $key => $value)
-							<div class="col-md-4 prod prod-style js-style @if($value['code'] == $style) active @endif">
+							<div id="wb_style_{{ $value['code'] }}" class="col-md-4 prod prod-style js-style {{ ($value['code']==$style) ? 'active' : '' }}">
 								<div class="zoom">
 									<a href="{{ $value['image'] }}" title="Printed Wristband"><img src="assets/images/src/zoom.png" class="galleryimg"></a>
 								</div>
 								<div class="box-thumb"><img src="{{ $value['image'] }}"></div>
-								<input class="wrist-style wb-style" data-style="{{ $value['code'] }}" name="wb-style" type="radio" value="{{ $value['code'] }}" @if($value['code'] == $style) checked="checked" @endif>
+								<input class="wrist-style wb-style" data-style="{{ $value['code'] }}" name="wb-style" type="radio" value="{{ $value['code'] }}" {{ ($value['code']==$style) ? 'checked="checked"' : '' }} />
 								<h2>{{ $value['name'] }}</h2>
 							</div>
 						@endforeach
@@ -58,7 +79,7 @@
 			<div class="clearfix"></div>
 
 			<!-- WRISTBAND SIZES -->
-			<div id="wrist_size" class="wrist-size">
+			<div id="wb_size" class="wrist-size">
 				<div class="row offer-bar margin-bootom-20 __web-inspector-hide-shortcut__">
 					<div class="col-xs-3 col-sm-2 offerpv float-left">Step <span class="sRename">2</span></div>
 					<div class="col-xs-9 col-sm-10 offer-details float-left">Select Wristband Size </div>
@@ -66,9 +87,9 @@
 				</div>
 				<div class="wsize-default">
 					@foreach($sizes as $key => $value)
-					<div class="col-md-4 prod-size js-size order-size @if($value['code'] == '0-50inch') active @endif">
+					<div id="wb_size_{{ $value['code'] }}" class="col-md-4 prod-size js-size order-size {{ ($value['code']=='0-50inch') ? 'active' : '' }}">
 						<div class="box-thumb"><img src="{{ $value['image'] }}"></div>
-						<input class="wrist-size wb-size" data-size="{{ $value['code'] }}" name="wb-size" type="radio" value="{{ $value['code'] }}" @if($value['code'] == '0-50inch') checked="checked" @endif>
+						<input class="wrist-size wb-size" data-size="{{ $value['code'] }}" name="wb-size" type="radio" value="{{ $value['code'] }}" {{ ($value['code']=='0-50inch') ? 'checked="checked"' : '' }} >
 						<h2>{{ $value['name'] }}</h2>
 					</div>
 					@endforeach
@@ -78,7 +99,7 @@
 			<!-- END WRISTBAND SIZES -->
 
 			<!-- WRIST COLORS -->
-			<div id="wrist_color_qty"  class="wrist-color-quantity" style="margin-bottom:10px;">
+			<div id="wb_color_qty" class="wrist-color-quantity" style="margin-bottom:10px;">
 				<div class="wristband-view-color regular-color-size">
 					<div class="row offer-bar margin-bootom-20 __web-inspector-hide-shortcut__">
 						<div class="col-xs-3 col-sm-2 offerpv float-left">Step <span class="sRename">3</span></div>
@@ -86,14 +107,34 @@
 						<div class="clearfix"></div>
 					</div>
 					<div class="content">
-lol
+						<div id="wb_color_type_regular" class="wb-color-type hidden">
+							@include('wristbandColor.regular')
+						</div>
+						<div id="wb_color_type_regular_lg" class="wb-color-type hidden">
+							@include('wristbandColor.regularLarge')
+						</div>
+						<div id="wb_color_type_regular_tn" class="wb-color-type hidden">
+							@include('wristbandColor.regularThin')
+						</div>
+						<div id="wb_color_type_figured" class="wb-color-type hidden">
+							@include('wristbandColor.figured')
+						</div>
+						<div id="wb_color_type_figured_lg" class="wb-color-type hidden">
+							@include('wristbandColor.figuredLarge')
+						</div>
+						<div id="wb_color_type_dual" class="wb-color-type hidden">
+							@include('wristbandColor.dual')
+						</div>
+						<div id="wb_color_type_dual_lg" class="wb-color-type hidden">
+							@include('wristbandColor.dualLarge')
+						</div>
 					</div>
 				</div>
 			</div>
 			<!-- END WRIST COLORS-->
 
 			<!-- WRISTBAND MESSAGE -->
-			<div class="wrist-messsage" style="display:<?php echo($qstyle != 'blank')?'block':'none'; ?>">
+			<div id="wb_messaeg" class="wrist-messsage">
 				<div class="row offer-bar margin-bootom-20 __web-inspector-hide-shortcut__">
 					<div class="col-xs-3 col-sm-2 offerpv float-left">Step <span class="sRename">4</span></div>
 					<div class="col-xs-9 col-sm-10 offer-details float-left">Enter Message for preview</div>
@@ -105,10 +146,10 @@ lol
 					</div>
 					<div class="message-selection">
 						<div class="col-sm-3">
-							<input class="band-text-design front-back-select" type="radio" value="front-back-select" name="font-back-select" checked="checked"/>Font/Back Message
+							<input class="band-text-design front-back-select" name="wb-message" type="radio" value="front-back-select" name="font-back-select" checked="checked"/> Font/Back Message
 						</div>
 						<div class="col-sm-3">
-							<input class="band-text-design cont-select" type="radio" value="cont-select" name="cont-select"/>Continuous Message
+							<input class="band-text-design cont-select" name="wb-message" type="radio" value="cont-select" name="cont-select"/> Continuous Message
 						</div>
 						<div class="clearfix"></div>
 					</div>
@@ -244,7 +285,7 @@ lol
 					<h3>PREVIEW</h3>
 					<div id="preview-pane" class="preview-panel">
 						<div class="fb-select">
-							<div id="front-view" class="band <?php echo(($qstyle==='figured')?'set-height-fig':'set-height-reg'); ?>">
+							<div id="front-view" class="band">
 							<span class="start-fc"></span>
 							<span class="end-fc"></span>
 							<span class="fig-fc"></span>
@@ -252,7 +293,7 @@ lol
 									Front Message
 								</div>
 							</div>
-							<div id="back-view" class="band <?php echo(($qstyle==='figured')?'set-height-fig':'set-height-reg'); ?>">
+							<div id="back-view" class="band">
 								<span class="back-mc"></span>
 								<span class="backend-mc"></span>
 								<div class="preview-text faded" id="back-text">
@@ -262,7 +303,7 @@ lol
 							<div class="clearfix"></div>
 						</div>
 						<div class="c-select" style="display:none;">
-							<div id="continue-view" class="band <?php echo(($qstyle==='figured')?'set-height-fig':'set-height-reg'); ?>">
+							<div id="continue-view" class="band">
 								<span class="start-cc"></span>
 								<span class="end-cc"></span>
 								<div class="preview-text faded" id="continue-text">
@@ -273,7 +314,7 @@ lol
 					</div>
 					<div id="preview-pane" class="preview-panel">
 						<div class="i-select" style="display:block;">
-							<div id="inside-view" class="band <?php echo(($qstyle==='figured')?'set-height-fig':'set-height-reg'); ?>">
+							<div id="inside-view" class="band">
 								<span class="startIn-cc"></span>
 								<span class="endIn-cc"></span>
 								<div class="preview-text faded" id="inside-text">
@@ -347,8 +388,8 @@ lol
 			<!-- ADD ONS -->
 			<div class="product-add-ons">
 				<div class="row offer-bar margin-bootom-20 __web-inspector-hide-shortcut__">
-					<div class="col-xs-3 col-sm-2 offerpv float-left step-5" style="display:<?php echo($qstyle != 'blank')?'block':'none'; ?>">Step <span class="sRename">5</span></div>
-					<div class="col-xs-3 col-sm-2 offerpv float-left step-4" style="display:<?php echo($qstyle == 'blank')?'block':'none'; ?>">Step <span class="sRename">4</span></div>
+					<div class="col-xs-3 col-sm-2 offerpv float-left step-5">Step <span class="sRename">5</span></div>
+					<!-- <div class="col-xs-3 col-sm-2 offerpv float-left step-4">Step <span class="sRename">4</span></div> -->
 					<div class="col-xs-9 col-sm-10 offer-details float-left">ADD ONS (Optional)</div>
 					<div class="clearfix"></div>
 				</div>
@@ -538,12 +579,4 @@ lol
 	</div>
 
 @endsection
-<!-- End of content section. -->
-
-<!-- js section. -->
-@section('js')
-
-    <script src="js/order.js"></script>
-
-@endsection
-<!-- End of js section. -->
+<!-- End: content section. -->

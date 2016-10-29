@@ -20,6 +20,19 @@ class Colors {
 		Storage::put('json/wristband/colors/figuredLarge.json', json_encode($this->figuredLarge()));
 	}
 
+	public function getColors()
+	{
+		return [
+			'dual'		=> $this->getDual(),
+			'dual_lg'	=> $this->getDualLarge(),
+			'fig'		=> $this->getFigured(),
+			'fig_lg'	=> $this->getFiguredLarge(),
+			'reg'		=> $this->getRegular(),
+			'reg_lg'	=> $this->getRegularLarge(),
+			'reg_tn'	=> $this->getRegularThin(),
+		];
+	}
+
     public function getColorByStyleSize($style='printed', $size='0-50inch')
     {
 		switch ($style) {
@@ -2506,103 +2519,103 @@ class Colors {
 				[
 					'code' => 'Black',
 					'hex' => ['000000'],
-					'image' => 'assets/images/figured/large/solid/Black.png',
+					'image' => 'assets/images/figured/solid/Black.png',
 					'name' => 'Black'
 				],
 				[
 					'code' => 'Brown',
 					'hex' => ['6A491A'],
-					'image' => 'assets/images/figured/large/solid/Brown.png',
+					'image' => 'assets/images/figured/solid/Brown.png',
 					'name' => 'Brown'
 				],
 				[
 					'code' => 'Green',
 					'hex' => ['0E9543'],
-					'image' => 'assets/images/figured/large/solid/Green.png',
+					'image' => 'assets/images/figured/solid/Green.png',
 					'name' => 'Green'
 				],
 				[
 					'code' => 'Grey',
 					'hex' => ['A0A29F'],
-					'image' => 'assets/images/figured/large/solid/Grey.png',
+					'image' => 'assets/images/figured/solid/Grey.png',
 					'name' => 'Grey'
 				],
 				[
 					'code' => 'Hot Pink',
 					'hex' => ['FD029A'],
-					'image' => 'assets/images/figured/large/solid/HotPink.png',
+					'image' => 'assets/images/figured/solid/HotPink.png',
 					'name' => 'Hot Pink'
 				],
 				[
 					'code' => 'Light Blue',
 					'hex' => ['9ABFE5'],
-					'image' => 'assets/images/figured/large/solid/LightBlue.png',
+					'image' => 'assets/images/figured/solid/LightBlue.png',
 					'name' => 'Light Blue'
 				],
 				[
 					'code' => 'Light Pink',
 					'hex' => ['F997B7'],
-					'image' => 'assets/images/figured/large/solid/LightPink.png',
+					'image' => 'assets/images/figured/solid/LightPink.png',
 					'name' => 'Light Pink'
 				],
 				[
 					'code' => 'Lime Green',
 					'hex' => ['8CD50B'],
-					'image' => 'assets/images/figured/large/solid/LimeGreen.png',
+					'image' => 'assets/images/figured/solid/LimeGreen.png',
 					'name' => 'Lime Green'
 				],
 				[
 					'code' => 'Pantone202',
 					'hex' => ['891C2E'],
-					'image' => 'assets/images/figured/large/solid/Pantone202.png',
+					'image' => 'assets/images/figured/solid/Pantone202.png',
 					'name' => 'Maroon'
 				],
 				[
 					'code' => 'Pantone125',
 					'hex' => ['836F3D'],
-					'image' => 'assets/images/figured/large/solid/Pantone125.png',
+					'image' => 'assets/images/figured/solid/Pantone125.png',
 					'name' => 'Metallic Gold'
 				],
 				[
 					'code' => 'Royal Blue',
 					'hex' => ['01214E'],
-					'image' => 'assets/images/figured/large/solid/RoyalBlue.png',
+					'image' => 'assets/images/figured/solid/RoyalBlue.png',
 					'name' => 'Royal Blue'
 				],
 				[
 					'code' => 'Orange',
 					'hex' => ['EF6B01'],
-					'image' => 'assets/images/figured/large/solid/Orange.png',
+					'image' => 'assets/images/figured/solid/Orange.png',
 					'name' => 'Orange'
 				],
 				[
 					'code' => 'Pantone729',
 					'hex' => ['B99474'],
-					'image' => 'assets/images/figured/large/solid/Pantone729.png',
+					'image' => 'assets/images/figured/solid/Pantone729.png',
 					'name' => 'Khaki'
 				],
 				[
 					'code' => 'Red',
 					'hex' => ['EA0D2C'],
-					'image' => 'assets/images/figured/large/solid/Red.png',
+					'image' => 'assets/images/figured/solid/Red.png',
 					'name' => 'Red'
 				],
 				[
 					'code' => 'Teal',
 					'hex' => ['079CA5'],
-					'image' => 'assets/images/figured/large/solid/Teal.png',
+					'image' => 'assets/images/figured/solid/Teal.png',
 					'name' => 'Teal'
 				],
 				[
 					'code' => 'White',
 					'hex' => ['FFFFFF'],
-					'image' => 'assets/images/figured/large/solid/White.png',
+					'image' => 'assets/images/figured/solid/White.png',
 					'name' => 'White'
 				],
 				[
 					'code' => 'Yellow',
 					'hex' => ['F2E80F'],
-					'image' => 'assets/images/figured/large/solid/Yellow.png',
+					'image' => 'assets/images/figured/solid/Yellow.png',
 					'name' => 'Yellow'
 				]
 			],
@@ -2894,91 +2907,91 @@ class Colors {
 				[
 					'code' => 'Black Green',
 					'hex' => ['021509', '0C9040'],
-					'image' => 'assets/images/figured/large/swirl/BlackGreen.png',
+					'image' => 'assets/images/figured/swirl/BlackGreen.png',
 					'name' => 'Black Green'
 				],
 				[
 					'code' => 'Black Grey',
 					'hex' => ['070707', '9DA09C'],
-					'image' => 'assets/images/figured/large/swirl/BlackGrey.png',
+					'image' => 'assets/images/figured/swirl/BlackGrey.png',
 					'name' => 'Black Grey'
 				],
 				[
 					'code' => 'Black Hot Pink',
 					'hex' => ['070707', 'E5028B'],
-					'image' => 'assets/images/figured/large/swirl/BlackHotPink.png',
+					'image' => 'assets/images/figured/swirl/BlackHotPink.png',
 					'name' => 'Black Hot Pink'
 				],
 				[
 					'code' => 'Black Pantone267',
 					'hex' => ['070707', '560F88'],
-					'image' => 'assets/images/figured/large/swirl/BlackPANTONE267.png',
+					'image' => 'assets/images/figured/swirl/BlackPANTONE267.png',
 					'name' => 'Black Violet'
 				],
 				[
 					'code' => 'Black Red',
 					'hex' => ['070707', 'E30C2A'],
-					'image' => 'assets/images/figured/large/swirl/BlackRed.png',
+					'image' => 'assets/images/figured/swirl/BlackRed.png',
 					'name' => 'Black Red'
 				],
 				[
 					'code' => 'Black White',
 					'hex' => ['070707', 'F3F3F3'],
-					'image' => 'assets/images/figured/large/swirl/BlackWhite.png',
+					'image' => 'assets/images/figured/swirl/BlackWhite.png',
 					'name' => 'Black White'
 				],
 				[
 					'code' => 'Black Yellow',
 					'hex' => ['070707', 'E4DA0E'],
-					'image' => 'assets/images/figured/large/swirl/BlackYellow.png',
+					'image' => 'assets/images/figured/swirl/BlackYellow.png',
 					'name' => 'Black Yellow'
 				],
 				[
 					'code' => 'Blue Lime Green',
 					'hex' => ['1753A6', '8AD40C'],
-					'image' => 'assets/images/figured/large/swirl/BlueLimeGreen.png',
+					'image' => 'assets/images/figured/swirl/BlueLimeGreen.png',
 					'name' => 'Blue Lime Green'
 				],
 				[
 					'code' => 'Blue White',
 					'hex' => ['F3F6FC', '0D46BA'],
-					'image' => 'assets/images/figured/large/swirl/BlueWhite.png',
+					'image' => 'assets/images/figured/swirl/BlueWhite.png',
 					'name' => 'Blue White'
 				],
 				[
 					'code' => 'Dark Green White',
 					'hex' => ['F3F6FC', '174830'],
-					'image' => 'assets/images/figured/large/swirl/DarkGreenWhite.png',
+					'image' => 'assets/images/figured/swirl/DarkGreenWhite.png',
 					'name' => 'Dark Green White'
 				],
 				[
 					'code' => 'Dessert Camo',
 					'hex' => ['4E4726', 'DECE76', '6B5619'],
-					'image' => 'assets/images/figured/large/swirl/DesertCamo.png',
+					'image' => 'assets/images/figured/swirl/DesertCamo.png',
 					'name' => 'Dessert Camo'
 				],
 				[
 					'code' => 'Green Camo',
 					'hex' => ['000000', 'BE8B5E', '64631C'],
-					'image' => 'assets/images/figured/large/swirl/GreenCamo.png',
+					'image' => 'assets/images/figured/swirl/GreenCamo.png',
 					'name' => 'Green Camo'
 				],
 				[
 					'code' => 'Green White',
 					'hex' => ['FBFCFC', '009B4F'],
-					'image' => 'assets/images/figured/large/swirl/GreenWhite.png',
+					'image' => 'assets/images/figured/swirl/GreenWhite.png',
 					'name' => 'Green White'
 				],
 				[
 					'code' => 'Hot Pink Light Blue',
 					'hex' => ['E22FAB', '9BBAE3'],
-					'image' => 'assets/images/figured/large/swirl/HotPinkLightBlue.png',
+					'image' => 'assets/images/figured/swirl/HotPinkLightBlue.png',
 					'name' => 'Hot Pink Light Blue'
 				],
 				[
 					'code' => 'Hot Pink Light Blue Lime Green',
 					'hex' => ['98C0D7', '8FCF49', 'F90599'],
-					'image' => 'assets/images/figured/large/swirl/HotPinkLightBlueLimeGreen.png',
+					'image' => 'assets/images/figured/swirl/HotPinkLightBlueLimeGreen.png',
 					'name' => 'Hot Pink Light Blue Lime Green'
 				],
 				[
@@ -2990,97 +3003,97 @@ class Colors {
 				[
 					'code' => 'Lime Green Yellow Light Blue',
 					'hex' => ['8FD040', '97C1CC', 'F0E711'],
-					'image' => 'assets/images/figured/large/swirl/LimeGreenYellowLightBlue.png',
+					'image' => 'assets/images/figured/swirl/LimeGreenYellowLightBlue.png',
 					'name' => 'Lime Green Yellow Light Blue'
 				],
 				[
 					'code' => 'Maroon Grey',
 					'hex' => ['8A2232', 'A0A19D'],
-					'image' => 'assets/images/figured/large/swirl/MaroonGrey.png',
+					'image' => 'assets/images/figured/swirl/MaroonGrey.png',
 					'name' => 'Maroon Grey'
 				],
 				[
 					'code' => 'Orange White',
 					'hex' => ['F17A19', 'FFFCF9'],
-					'image' => 'assets/images/figured/large/swirl/OrangeWhite.png',
+					'image' => 'assets/images/figured/swirl/OrangeWhite.png',
 					'name' => 'Orange White'
 				],
 				[
 					'code' => 'Pantone267 White',
 					'hex' => ['773BA1', 'FBF9FC'],
-					'image' => 'assets/images/figured/large/swirl/PANTONE267White.png',
+					'image' => 'assets/images/figured/swirl/PANTONE267White.png',
 					'name' => 'Violet White'
 				],
 				[
 					'code' => 'Pink Pantone267',
 					'hex' => ['681990', 'F574B1'],
-					'image' => 'assets/images/figured/large/swirl/PinkPANTONE267.png',
+					'image' => 'assets/images/figured/swirl/PinkPANTONE267.png',
 					'name' => 'Pink Violet'
 				],
 				[
 					'code' => 'Rainbow',
 					'hex' => ['F4303D', 'FEDE1E', '2230A9'],
-					'image' => 'assets/images/figured/large/swirl/RainbowSwirl.png',
+					'image' => 'assets/images/figured/swirl/RainbowSwirl.png',
 					'name' => 'Rainbow'
 				],
 				[
 					'code' => 'Red Black Blue',
 					'hex' => ['E10D30', '08389E', '000000'],
-					'image' => 'assets/images/figured/large/swirl/RedBlackBlue.png',
+					'image' => 'assets/images/figured/swirl/RedBlackBlue.png',
 					'name' => 'Red Black Blue'
 				],
 				[
 					'code' => 'Red Green',
 					'hex' => ['D9152C', '178B41'],
-					'image' => 'assets/images/figured/large/swirl/RedGreen.png',
+					'image' => 'assets/images/figured/swirl/RedGreen.png',
 					'name' => 'Red Green'
 				],
 				[
 					'code' => 'Red Grey',
 					'hex' => ['D9152C', 'A1A19C'],
-					'image' => 'assets/images/figured/large/swirl/RedGrey.png',
+					'image' => 'assets/images/figured/swirl/RedGrey.png',
 					'name' => 'Red Grey'
 				],
 				[
 					'code' => 'Red White',
 					'hex' => ['D9152C', 'FFFFFF'],
-					'image' => 'assets/images/figured/large/swirl/RedWhite.png',
+					'image' => 'assets/images/figured/swirl/RedWhite.png',
 					'name' => 'Red White'
 				],
 				[
 					'code' => 'Red White Blue',
 					'hex' => ['D9152C', 'FFFFFF', '0F42B6'],
-					'image' => 'assets/images/figured/large/swirl/RedWhiteBlue.png',
+					'image' => 'assets/images/figured/swirl/RedWhiteBlue.png',
 					'name' => 'Red White Blue'
 				],
 				[
 					'code' => 'Red Yellow',
 					'hex' => ['EB2328', 'F2E50F'],
-					'image' => 'assets/images/figured/large/swirl/RedYellow.png',
+					'image' => 'assets/images/figured/swirl/RedYellow.png',
 					'name' => 'Red Yellow'
 				],
 				[
 					'code' => 'Reflex Blue Black',
 					'hex' => ['000001', '120F6D'],
-					'image' => 'assets/images/figured/large/swirl/ReflexBlueBlack.png',
+					'image' => 'assets/images/figured/swirl/ReflexBlueBlack.png',
 					'name' => 'Reflex Blue Black'
 				],
 				[
 					'code' => 'Reflex Blue Grey',
 					'hex' => ['242097', '999C9E'],
-					'image' => 'assets/images/figured/large/swirl/ReflexBlueGrey.png',
+					'image' => 'assets/images/figured/swirl/ReflexBlueGrey.png',
 					'name' => 'Reflex Blue Grey'
 				],
 				[
 					'code' => 'Teal White',
 					'hex' => ['FEFEFE', '1CA4AD'],
-					'image' => 'assets/images/figured/large/swirl/TealWhite.png',
+					'image' => 'assets/images/figured/swirl/TealWhite.png',
 					'name' => 'Teal White'
 				],
 				[
 					'code' => 'White Black Green',
 					'hex' => ['FEFEFE', '000000', '05461F'],
-					'image' => 'assets/images/figured/large/swirl/WhiteBlackGreen.png',
+					'image' => 'assets/images/figured/swirl/WhiteBlackGreen.png',
 					'name' => 'White Black Green'
 				]
 			],
@@ -3088,13 +3101,13 @@ class Colors {
 				[
 					'code' => 'Glow Dark Blue',
 					'hex' => ['3886C4'],
-					'image' => 'assets/images/figured/glow/glow/GlowDarkBLUE.png',
+					'image' => 'assets/images/figured/glow/GlowDarkFIGUREDBLUE.png',
 					'name' => 'Blue'
 				],
 				[
 					'code' => 'Glow Dark Green',
 					'hex' => ['5DCE66'],
-					'image' => 'assets/images/figured/glow/glow/GlowDarkGREEN.png',
+					'image' => 'assets/images/figured/glow/GlowDarkFIGUREDGREEN.png',
 					'name' => 'Green'
 				],
 				[
@@ -3106,7 +3119,7 @@ class Colors {
 				[
 					'code' => 'Glow Dark Purple',
 					'hex' => ['A078AD'],
-					'image' => 'assets/images/figured/glow/GlowDarkPURPLE.png',
+					'image' => 'assets/images/figured/glow/GlowDarkFIGUREDPURPLE.png',
 					'name' => 'Purple'
 				],
 				[
@@ -3696,25 +3709,25 @@ class Colors {
 				[
 					'code' => 'Glow Dark Blue',
 					'hex' => ['3886C4'],
-					'image' => 'assets/images/figured/glow/GlowDarkBLUE.png',
+					'image' => 'assets/images/figured/glow/GlowDarkFIGUREDBLUE.png',
 					'name' => 'Blue'
 				],
 				[
 					'code' => 'Glow Dark Green',
 					'hex' => ['5DCE66'],
-					'image' => 'assets/images/figured/glow/GlowDarkGREEN.png',
+					'image' => 'assets/images/figured/glow/GlowDarkFIGUREDGREEN.png',
 					'name' => 'Green'
 				],
 				[
 					'code' => 'Glow Dark Pink',
 					'hex' => ['D57DA3'],
-					'image' => 'assets/images/figured/glow/GlowDarkPINK.png',
+					'image' => 'assets/images/figured/glow/GlowDarkFIGUREDPINK.png',
 					'name' => 'Pink'
 				],
 				[
 					'code' => 'Glow Dark Purple',
 					'hex' => ['A078AD'],
-					'image' => 'assets/images/figured/glow/GlowDarkPURPLE.png',
+					'image' => 'assets/images/figured/glow/GlowDarkFIGUREDPURPLE.png',
 					'name' => 'Purple'
 				],
 				[

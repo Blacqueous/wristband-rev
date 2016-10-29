@@ -23,11 +23,11 @@
 		<link href="assets/css/font_style.css" rel="stylesheet">
 		<link href="assets/css/magnific-popup.css" rel="stylesheet">
 
+		<!-- Page custom added css styles. -->
         @section('css')
-        <!-- Page custom added css styles. -->
         @show
 
-		<script src="assets/js/jquery-2.2.4.min.js"></script>
+		<script src="js/jquery-3.1.1.min.js"></script>
 
 		<link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet" type="text/css">
 
@@ -75,7 +75,8 @@
         <script type='text/javascript' src="assets/docs/toc.js"></script>
         <script type="text/javascript" src="assets/js/jquery.countdown.js"></script>
         <script type="text/javascript" src="assets/js/jquery.magnific-popup.min.js"></script>
-        <script src="assets/js/bootstrap.min.js"></script>
+
+        <script src="global/bootstrap/js/bootstrap.min.js"></script>
 
         <!-- Javascript for wristband previews -->
         <script type="text/javascript" src="assets/js/canvg.js"></script>
@@ -88,8 +89,8 @@
         <script src="assets/js/main-2.js"></script>
         <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
 
+		<!-- Page custom added javascripts. -->
         @section('js')
-        <!-- Page custom added javascripts. -->
         @show
 
         <script>
@@ -111,8 +112,9 @@
                     .end()
                     .appendTo('#slideshow');
             },  7000);
-            </script>
-            <script language="javascript">
+        </script>
+
+        <script language="javascript">
             $(document).ready(function() {
                 $('.popup-order-gallery').magnificPopup({
                     delegate: 'a',

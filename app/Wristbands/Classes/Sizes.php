@@ -19,7 +19,7 @@ class Sizes {
 			// generate and save .json file.
 			Storage::put('json/wristband/sizes.json', json_encode($this->sizes()));
 		}
-		// return data array from .json file.
+		// return data array from .json file.a
 		return json_decode(Storage::get('json/wristband/sizes.json'), true);
 	}
 

@@ -227,7 +227,7 @@ ORDER CSS
     font-size: 16px;
     color: #079ca5!important;
 	margin-top:6px;
-	
+
 }
 
 .wrist-style .box-thumb {
@@ -402,7 +402,7 @@ ORDER CSS
 }
 
 div#main-color-content {
-    height: 350px;
+    height: 450px;
     overflow-y: auto;
     overflow-x: hidden;
 }
@@ -445,7 +445,7 @@ div#main-color-content {
 
 #wrap { margin: auto; width: 800px; }
 
-#preview-pane {     
+#preview-pane {
     border: 1px solid #c1c1c1;
     padding: 10px 10px;
     text-align: center;
@@ -473,14 +473,14 @@ div#preview-textfont{
     width: 150px;
 }
 
-#preview-pane #front-view, #preview-pane #back-view { 
-    width: 50%; 
-    margin: auto; 
-    float: left; 
-    margin-bottom: 10px; 
-    text-align: center; 
+#preview-pane #front-view, #preview-pane #back-view {
+    width: 50%;
+    margin: auto;
+    float: left;
+    margin-bottom: 10px;
+    text-align: center;
 }
-    
+
 #preview-pane #inside-view { width: 100% }
 /*#preview-pane .band { background:#fff; }*/
 #preview-pane .band .faded { opacity: 0.5; }
@@ -1041,7 +1041,7 @@ span.end-cc {
     right: 24px;
     cursor:pointer;
 }
-    
+
 .icon-img:hover .icon-text {
     display: block;
 	position: absolute;

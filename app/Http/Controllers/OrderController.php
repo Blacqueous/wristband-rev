@@ -23,8 +23,11 @@ class OrderController extends Controller
 		$style = isset($request->style) && isset($data['styles'][$request->style]) ? $request->style : 'printed';
 		$data['style'] = $style;
 
-		$sizes = $this->getDataSizesByStyle($style);
-		$data['sizes'] = $sizes;
+		$sizes = new Sizes();
+		$data['sizes'] = $sizes->getSizes();
+
+		$colors = new Colors();
+		$data['colors'] = $colors->getColors();
 
         return view('order', $data);
 	}
@@ -46,14 +49,15 @@ class OrderController extends Controller
 		return $data;
 	}
 
-	public function getWristbandColors(Request $request)
+	public function getWristbandColors()
+	{
+
+	}
+
+	public function getWristbandColorsByStyleSize(Request $request)
 	{
 		$colors = new Colors();
 		$colors = $colors->getColorByStyleSize($request->style, $request->size);
-
-print_r($colors);
-echo "pop";
-die;
 
 		return $colors;
 	}

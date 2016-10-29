@@ -5,23 +5,23 @@ var qtyLimit = 0;
 
 $(document).ready(function() {
 
-	// For regular wristband size
-	$('.qtyin-adult-qty').closest('div').addClass('qty-box text-center').append('<span class="fonttext-color">Text Color</span><div class="fntin fnt-qtyin-adult-qty" data-toggle="tooltip" data-placement="bottom" title="Select font color" ref-font-color="'+default_font_color+'" style="background-color:#'+default_font_color+';"></div>');
-	$('.qtyin-medium-qty').closest('div').addClass('qty-box text-center').append('<span class="fonttext-color">Text Color</span><div class="fntin fnt-qtyin-medium-qty" data-toggle="tooltip" data-placement="bottom" title="Select font color" ref-font-color="'+default_font_color+'" style="background-color:#'+default_font_color+';"></div>');
-	$('.qtyin-youth-qty').closest('div').addClass('qty-box text-center').append('<span class="fonttext-color">Text Color</span><div class="fntin fnt-qtyin-youth-qty" data-toggle="tooltip" data-placement="bottom" title="Select font color" ref-font-color="'+default_font_color+'" style="background-color:#'+default_font_color+';"></div>');
-
-	// For regular wristband xt size
-	$('.xt-small-qty').closest('div').addClass('qty-box text-center').append('<span class="fonttext-color">Text Color</span><div class="fntin fnt-xt-small-qty" data-toggle="tooltip" data-placement="bottom" title="Select font color" ref-font-color="'+default_font_color+'" style="background-color:#'+default_font_color+';"></div>');
-	$('.xt-large-qty').closest('div').addClass('qty-box text-center').append('<span class="fonttext-color">Text Color</span><div class="fntin fnt-xt-large-qty" data-toggle="tooltip" data-placement="bottom" title="Select font color" ref-font-color="'+default_font_color+'" style="background-color:#'+default_font_color+';"></div>');
-
-	// For large wristband size
-	$('.qtyin-adult-large-qty').closest('div').addClass('qty-box text-center').append('<span class="fonttext-color">Text Color</span><div class="fntin fnt-qtyin-adult-large-qty" data-toggle="tooltip" data-placement="bottom" title="Select font color" ref-font-color="'+default_font_color+'" style="background-color:#'+default_font_color+';"></div>');
-	$('.qtyin-medium-large-qty').closest('div').addClass('qty-box text-center').append('<span class="fonttext-color">Text Color</span><div class="fntin fnt-qtyin-medium-large-qty" data-toggle="tooltip" data-placement="bottom" title="Select font color" ref-font-color="'+default_font_color+'" style="background-color:#'+default_font_color+';"></div>');
-	$('.qtyin-youth-large-qty').closest('div').addClass('qty-box text-center').append('<span class="fonttext-color">Text Color</span><div class="fntin fnt-qtyin-youth-large-qty" data-toggle="tooltip" data-placement="bottom" title="Select font color" ref-font-color="'+default_font_color+'" style="background-color:#'+default_font_color+';"></div>');
-
-	// For large wristband xt size
-	$('.xt-small-large-qty').closest('div').addClass('qty-box text-center').append('<div class="fntin fnt-xt-small-large-qty" data-toggle="tooltip" data-placement="bottom" title="Select font color" ref-font-color="'+default_font_color+'" style="background-color:#'+default_font_color+';"></div>');
-	$('.xt-large-large-qty').closest('div').addClass('qty-box text-center').append('<div class="fntin fnt-xt-large-large-qty" data-toggle="tooltip" data-placement="bottom" title="Select font color" ref-font-color="'+default_font_color+'" style="background-color:#'+default_font_color+';"></div>');
+	// // For regular wristband size
+	// $('.qtyin-adult-qty').closest('div').addClass('qty-box text-center').append('<span class="fonttext-color">Text Color</span><div class="fntin fnt-qtyin-adult-qty" data-toggle="tooltip" data-placement="bottom" title="Select font color" ref-font-color="'+default_font_color+'" style="background-color:#'+default_font_color+';"></div>');
+	// $('.qtyin-medium-qty').closest('div').addClass('qty-box text-center').append('<span class="fonttext-color">Text Color</span><div class="fntin fnt-qtyin-medium-qty" data-toggle="tooltip" data-placement="bottom" title="Select font color" ref-font-color="'+default_font_color+'" style="background-color:#'+default_font_color+';"></div>');
+	// $('.qtyin-youth-qty').closest('div').addClass('qty-box text-center').append('<span class="fonttext-color">Text Color</span><div class="fntin fnt-qtyin-youth-qty" data-toggle="tooltip" data-placement="bottom" title="Select font color" ref-font-color="'+default_font_color+'" style="background-color:#'+default_font_color+';"></div>');
+	//
+	// // For regular wristband xt size
+	// $('.xt-small-qty').closest('div').addClass('qty-box text-center').append('<span class="fonttext-color">Text Color</span><div class="fntin fnt-xt-small-qty" data-toggle="tooltip" data-placement="bottom" title="Select font color" ref-font-color="'+default_font_color+'" style="background-color:#'+default_font_color+';"></div>');
+	// $('.xt-large-qty').closest('div').addClass('qty-box text-center').append('<span class="fonttext-color">Text Color</span><div class="fntin fnt-xt-large-qty" data-toggle="tooltip" data-placement="bottom" title="Select font color" ref-font-color="'+default_font_color+'" style="background-color:#'+default_font_color+';"></div>');
+	//
+	// // For large wristband size
+	// $('.qtyin-adult-large-qty').closest('div').addClass('qty-box text-center').append('<span class="fonttext-color">Text Color</span><div class="fntin fnt-qtyin-adult-large-qty" data-toggle="tooltip" data-placement="bottom" title="Select font color" ref-font-color="'+default_font_color+'" style="background-color:#'+default_font_color+';"></div>');
+	// $('.qtyin-medium-large-qty').closest('div').addClass('qty-box text-center').append('<span class="fonttext-color">Text Color</span><div class="fntin fnt-qtyin-medium-large-qty" data-toggle="tooltip" data-placement="bottom" title="Select font color" ref-font-color="'+default_font_color+'" style="background-color:#'+default_font_color+';"></div>');
+	// $('.qtyin-youth-large-qty').closest('div').addClass('qty-box text-center').append('<span class="fonttext-color">Text Color</span><div class="fntin fnt-qtyin-youth-large-qty" data-toggle="tooltip" data-placement="bottom" title="Select font color" ref-font-color="'+default_font_color+'" style="background-color:#'+default_font_color+';"></div>');
+	//
+	// // For large wristband xt size
+	// $('.xt-small-large-qty').closest('div').addClass('qty-box text-center').append('<div class="fntin fnt-xt-small-large-qty" data-toggle="tooltip" data-placement="bottom" title="Select font color" ref-font-color="'+default_font_color+'" style="background-color:#'+default_font_color+';"></div>');
+	// $('.xt-large-large-qty').closest('div').addClass('qty-box text-center').append('<div class="fntin fnt-xt-large-large-qty" data-toggle="tooltip" data-placement="bottom" title="Select font color" ref-font-color="'+default_font_color+'" style="background-color:#'+default_font_color+';"></div>');
 
 	// Initialize wristband price table
 	get_style_size("price_table");
@@ -459,7 +459,7 @@ $(document).ready(function() {
 		});
 		return false;
 	});
-	// 
+	//
 	// // Select wristband style event
 	// $('body').on('click', '.js-style', function() {
 	//
