@@ -11,12 +11,12 @@
 |
 */
 
-Route::get('/', function () {
-    return view('homepage');
-});
+Route::get('/', function () { return view('homepage'); });
+
+Route::get('/sample', function () { return view('sample'); });
 
 Route::get('/order', 'OrderController@index');
 
 Route::get('/wb/colors_s', 'OrderController@getWristbandColor');
 
-Route::get('/wb/colors_ss', 'OrderController@getWristbandColorsByStyleSize');
+Route::match(['get', 'post'], '/wb/colors_ss', 'OrderController@getWristbandColorsByStyleSize');

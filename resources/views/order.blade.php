@@ -8,22 +8,23 @@
 
 <!-- .css section. -->
 @section('css')
-	<!-- Order page custom stylesheet -->
-	<link href="css/order.css" rel="stylesheet">
+<!-- Order page custom stylesheet -->
+		<link href="css/order.css" rel="stylesheet">
 
-	<!-- Additional .css plugins -->
-	<link href="global/iCheck/skins/square/green.css" rel="stylesheet">
+		<!-- Additional .css plugins -->
+		<link href="global/iCheck/skins/square/green.css" rel="stylesheet">
 @endsection
 <!-- End: .css section. -->
 
 <!-- .js section. -->
 @section('js')
-	<!-- Order page custom javascript -->
-    <script src="js/order.js"></script>
+<!-- Order page custom javascript -->
+		<script src="js/order.js"></script>
+		<!-- <script src="js/angular.order.js"></script> -->
 
-	<!-- Additional .js plugins -->
-	<script src="global/iCheck/icheck.min.js"></script>
-	<script src="global/unveil.js/jquery.unveil.js"></script>
+		<!-- Additional .js plugins -->
+		<script src="global/iCheck/icheck.min.js"></script>
+		<script src="global/unveil.js/jquery.unveil.js"></script>
 @endsection
 <!-- End: .js section. -->
 
@@ -35,16 +36,18 @@
 
 			<!-- PRICE TABLES -->
 			<div id="banner_pricing">
-				<table class="table-area-printed-half uk-table uk-table-bordered js-pricing-table" data-pricing-tbl="" style="display:none;">
-					<caption class="uk-margin-bottom js-wb-caption">Pricing for <span class="style">Printed</span> wristbands (&quot;<span class="size">1/2</span>&quot;) as of July, 2016</caption>
+				<table class="table">
+					<caption class="wb-caption">
+						Pricing for <span class="style text-italic">Printed</span> wristbands (<span class="size text-italic">1/2</span>) as of July, 2016
+					</caption>
 					<thead>
 						<tr id="price_header">
-						<th data-uk-tooltip="{pos:'top'}" title="Quantity" class="uk-text-primary">Qty</th>
+						<th title="Quantity">Qty</th>
 						</tr>
 					</thead>
 					<tbody>
 						<tr id="price_table">
-							<td class="uk-text-primary">Price</td>
+							<td>Price</td>
 						</tr>
 					</tbody>
 				</table>
@@ -53,21 +56,24 @@
 
 			<!-- WRIST STYLES -->
 			<div id="wb_style" class="wrist-style">
-				<div class="row offer-bar margin-bootom-20 __web-inspector-hide-shortcut__">
+				<div class="row offer-bar row-header-step">
 					<div class="col-xs-3 col-sm-2 offerpv float-left">Step <span class="sRename">1</span></div>
 					<div class="col-xs-9 col-sm-10 offer-details float-left">Select Wristband Style </div>
 					<div class="clearfix"></div>
 				</div>
 				<div class="wrist_style_container">
-					<div class="popup-order-gallery">
+					<div class="popup-order-gallery col-xs-12">
 						@foreach($styles as $key => $value)
-							<div id="wb_style_{{ $value['code'] }}" class="col-md-4 prod prod-style js-style {{ ($value['code']==$style) ? 'active' : '' }}">
+							<div id="wb_style_{{ $value['code'] }}" class="col-md-3 prod prod-style js-style {{ ($value['code']==$style) ? 'active' : '' }}" style="margin-bottom:10px;">
 								<div class="zoom">
 									<a href="{{ $value['image'] }}" title="Printed Wristband"><img src="assets/images/src/zoom.png" class="galleryimg"></a>
 								</div>
 								<div class="box-thumb"><img src="{{ $value['image'] }}"></div>
 								<input class="wrist-style wb-style" data-style="{{ $value['code'] }}" name="wb-style" type="radio" value="{{ $value['code'] }}" {{ ($value['code']==$style) ? 'checked="checked"' : '' }} />
-								<h2>{{ $value['name'] }}</h2>
+								<br/>
+								<label for="wb-style">
+									<h2>{{ $value['name'] }}</h2>
+								</label>
 							</div>
 						@endforeach
 						<div class="clearfix"></div>
@@ -80,17 +86,20 @@
 
 			<!-- WRISTBAND SIZES -->
 			<div id="wb_size" class="wrist-size">
-				<div class="row offer-bar margin-bootom-20 __web-inspector-hide-shortcut__">
+				<div class="row offer-bar row-header-step">
 					<div class="col-xs-3 col-sm-2 offerpv float-left">Step <span class="sRename">2</span></div>
 					<div class="col-xs-9 col-sm-10 offer-details float-left">Select Wristband Size </div>
 					<div class="clearfix"></div>
 				</div>
 				<div class="wsize-default">
 					@foreach($sizes as $key => $value)
-					<div id="wb_size_{{ $value['code'] }}" class="col-md-4 prod-size js-size order-size {{ ($value['code']=='0-50inch') ? 'active' : '' }}">
+					<div id="wb_size_{{ $value['code'] }}" class="col-md-2 prod prod-size js-size {{ ($value['code']=='0-50inch') ? 'active' : '' }}">
 						<div class="box-thumb"><img src="{{ $value['image'] }}"></div>
 						<input class="wrist-size wb-size" data-size="{{ $value['code'] }}" name="wb-size" type="radio" value="{{ $value['code'] }}" {{ ($value['code']=='0-50inch') ? 'checked="checked"' : '' }} >
-						<h2>{{ $value['name'] }}</h2>
+						<br/>
+						<label for="wb-style">
+							<h2>{{ $value['name'] }}</h2>
+						</label>
 					</div>
 					@endforeach
 					<div class="clearfix"></div>
@@ -98,15 +107,20 @@
 			</div>
 			<!-- END WRISTBAND SIZES -->
 
+			<div class="clearfix"></div>
+
 			<!-- WRIST COLORS -->
-			<div id="wb_color_qty" class="wrist-color-quantity" style="margin-bottom:10px;">
+			<div id="wb_color_qty" class="wrist-color-quantity">
 				<div class="wristband-view-color regular-color-size">
-					<div class="row offer-bar margin-bootom-20 __web-inspector-hide-shortcut__">
+					<div class="row offer-bar row-header-step">
 						<div class="col-xs-3 col-sm-2 offerpv float-left">Step <span class="sRename">3</span></div>
 						<div class="col-xs-9 col-sm-10 offer-details float-left">Select Wristband Color and  Quantity <i>(*Minimum of 20)</i> </div>
 						<div class="clearfix"></div>
 					</div>
 					<div class="content">
+						<div id="wb_color_type_loading" class="wb-color-type text-center" style="padding:20px;">
+							<img src="/assets/css/img/ajax-loader-f.gif" alt="Loading..." />
+						</div>
 						<div id="wb_color_type_regular" class="wb-color-type hidden">
 							@include('wristbandColor.regular')
 						</div>
@@ -133,130 +147,155 @@
 			</div>
 			<!-- END WRIST COLORS-->
 
-			<!-- WRISTBAND MESSAGE -->
-			<div id="wb_messaeg" class="wrist-messsage">
-				<div class="row offer-bar margin-bootom-20 __web-inspector-hide-shortcut__">
+			<!-- WRIST MESSAGE -->
+			<div id="wb_message" class="wrist-messsage">
+				<div class="row offer-bar row-header-step">
 					<div class="col-xs-3 col-sm-2 offerpv float-left">Step <span class="sRename">4</span></div>
 					<div class="col-xs-9 col-sm-10 offer-details float-left">Enter Message for preview</div>
 					<div class="clearfix"></div>
 				</div>
 				<div class="main-content-preview">
+
 					<div id="text-design">
 						<h3>INPUT TEXT DESIGN MESSAGE</h3>
 					</div>
+
 					<div class="message-selection">
-						<div class="col-sm-3">
-							<input class="band-text-design front-back-select" name="wb-message" type="radio" value="front-back-select" name="font-back-select" checked="checked"/> Font/Back Message
+						<div class="col-sm-4">
+							<input class="band-text-design wb-text-type" name="wb-message" type="radio" value="select-fb" name="text-select" checked="checked"/>
+							<label for="wb-message"> Front/Back Message</label>
 						</div>
-						<div class="col-sm-3">
-							<input class="band-text-design cont-select" name="wb-message" type="radio" value="cont-select" name="cont-select"/> Continuous Message
+						<div class="col-sm-4">
+							<input class="band-text-design wb-text-type" name="wb-message" type="radio" value="select-c" name="text-select"/>
+							<label for="wb-message"> Continuous Message</label>
 						</div>
 						<div class="clearfix"></div>
 					</div>
 					<div id="band-text" class="margin-div">
-						<div class="f-input">
-							<div class="col-sm-5"   style="border-right:2px solid #154360;margin-left:50px;">
-								<span>Front Message:</span><br />
-								<span class="note-m">* Maximum of 22 characters for both front and back</span>
-								<input id="input-front-text" type="text" name="front-text" class="band-text" value=""  placeholder="Enter Front Message" maxlength="22">
-								<div class="clip-sec col-xs-6">
-									<button class="fclip-1" data-toggle="modal" data-target="#ClipArtModal" style="margin-left:-14px;">Front Start Clipart</button><br />
+						<div id="wb_text_outside_fb" class="wb-text-outside f-input">
+							<div class="col-sm-6" style="border-right:2px solid #154360;">
+								<h4>
+									<span>
+										Front Message:
+									</span>
+								</h4>
+								<span class="note-m">* Maximum of 22 characters.</span>
+								<input class="band-text wb-band-text col-xs-12" data-preview="#wb_text_front_preview" id="wb_text_front" maxlength="22" name="front-text" placeholder="Front Message" type="text" value="">
+								<!-- Clipart front start -->
+								<div class="clip-sec col-xs-6 text-center">
+									<button class="btn-order" data-toggle="modal" data-target="#modalClipArt">Front Start Clipart</button>
+									<br/>
 									<a href="javascript:void(0)" data-toggle="collapse" data-target="#upload-1">or Upload your own art</a>
 									<div id="upload-1" class="collapse">
-										<label for="file">Choose Photo:</label>
-										<input type="file" name="file_array[]" class="file-1" required><br>
-										<a href="javascript:void(0)" id="remove-1">Remove File</a>
+										<!-- <label for="file">Choose Photo:</label><br/> -->
+										<input class="clip-upload" id="clip_front_start" name="file_array[]" type="file" required><br/>
+										<a href="javascript:void(0)" id="rm_clip_front_start">Remove File</a>
 									</div>
 								</div>
-								<div class="clip-sec col-xs-6">
-									<button class="fclip-2" data-toggle="modal" data-target="#ClipArtModal">Front End Clipart</button><br />
+								<!-- Clipart front end -->
+								<div class="clip-sec col-xs-6 text-center">
+									<button class="btn-order" data-toggle="modal" data-target="#modalClipArt">Front End Clipart</button><br />
 									<a href="javascript:void(0)" data-toggle="collapse" data-target="#upload-2">or Upload your own art</a>
 									<div id="upload-2" class="collapse">
-										<label for="file">Choose Photo:</label>
-										<input type="file" name="file_array[]" class="file-2" required><br>
-										<a href="javascript:void(0)" id="remove-2">Remove File</a>
+										<!-- <label for="file">Choose Photo:</label><br/> -->
+										<input class="clip-upload" id="clip_front_end" name="file_array[]" type="file" required><br/>
+										<a href="javascript:void(0)" id="rm_clip_front_end">Remove File</a>
 									</div>
 								</div>
 								<div class="clearfix"></div>
-								<div class="clip-sec col-xs-6 figarea" style="display:none;">
-									<button class="fclip-3" data-toggle="modal" data-target="#ClipArtModal">Figured Center Clipart</button><br />
+								<!-- Clipart figured center -->
+								<div class="clip-sec col-xs-6 clip-fig text-center hidden">
+									<button class="btn-order" data-toggle="modal" data-target="#modalClipArt">Figured Center Clipart</button><br />
 									<a href="javascript:void(0)" data-toggle="collapse" data-target="#upload-7">or Upload your own art</a>
 									<div id="upload-7" class="collapse">
-										<label for="file">Choose Photo:</label>
-										<input type="file" name="file_array[]" class="file-7" required><br>
-										<a href="javascript:void(0)" id="remove-2">Remove File</a>
+										<input class="clip-upload" id="clip_front_center" name="file_array[]" type="file" required><br/>
+										<!-- <label for="file">Choose Photo:</label><br/> -->
+										<a href="javascript:void(0)" id="rm_clip_front_center">Remove File</a>
 									</div>
 								</div>
-								<div class="clearfix"></div>
 							</div>
-							<div class="col-sm-5" style="margin-left:60px;">
-								<span>Back Message:</span><br />
-								<span class="note-m">* Maximum of 22 characters for both front and back</span>
-								<input id="input-back-text" type="text" name="back-text" class="band-text" value="" placeholder="Enter Back Message" maxlength="22">
-								<div class="clip-sec col-xs-6">
-									<button class="bclip-1" data-toggle="modal" data-target="#ClipArtModal" style="margin-left:-14px;">Back Start Clipart</button><br />
+							<div class="col-sm-6">
+								<h4>
+									<span>
+										Back Message:
+									</span>
+								</h4>
+								<span class="note-m">* Maximum of 22 characters.</span>
+								<input class="band-text wb-band-text col-xs-12" data-preview="#wb_text_back_preview" id="wb_text_back" maxlength="22" name="back-text" placeholder="Back Message" type="text" value="">
+								<!-- Clipart back start -->
+								<div class="clip-sec col-xs-6 text-center">
+									<button class="btn-order" data-toggle="modal" data-target="#modalClipArt" style="margin-left:-14px;">Back Start Clipart</button><br />
 									<a href="javascript:void(0)" data-toggle="collapse" data-target="#upload-3">or Upload your own art</a>
 									<div id="upload-3" class="collapse">
-										<label for="file">Choose Photo:</label>
-										<input type="file" name="file_array[]" class="file-3" required><br>
-										<a href="javascript:void(0)" id="remove-3">Remove File</a>
+										<!-- <label for="file">Choose Photo:</label><br/> -->
+										<input class="clip-upload" id="clip-back-start" name="file_array[]" type="file" required><br/>
+										<a href="javascript:void(0)" id="rm-clip-back-start">Remove File</a>
 									</div>
 								</div>
-								<div class="clip-sec col-xs-6">
-									<button class="bclip-2" data-toggle="modal" data-target="#ClipArtModal">Back End Clipart</button><br />
+								<!-- Clipart back end -->
+								<div class="clip-sec col-xs-6 text-center">
+									<button class="btn-order" data-toggle="modal" data-target="#modalClipArt">Back End Clipart</button><br />
 									<a href="javascript:void(0)" data-toggle="collapse" data-target="#upload-4">or Upload your own art</a>
 									<div id="upload-4" class="collapse">
-										<label for="file">Choose Photo:</label>
-										<input type="file" name="file_array[]" class="file-4" required><br>
-										<a href="javascript:void(0)" id="remove-4">Remove File</a>
+										<!-- <label for="file">Choose Photo:</label><br/> -->
+										<input class="clip-upload" id="clip_back_end" name="file_array[]" type="file" required><br/>
+										<a href="javascript:void(0)" id="rm_clip_back_end">Remove File</a>
 									</div>
-									<div></div>
 								</div>
 								<div class="clearfix"></div>
 							</div>
 						</div>
-						<div class="c-input" style="display:none;margin-left:52px;">
+						<div id="wb_text_outside_c" class="wb-text-outside c-input hidden">
 							<div class="col-sm-12">
-							<span class="inside-m">Continuous Text:</span><br /> &nbsp;
-							* Maximum of 50 characters for message<br />
-							<input id="input-continue-text" type="text" name="continue-text" class="band-text" value=""  placeholder="Enter Continuous Message" maxlength="50" style="width:100%;">
+								<h4>
+									<span>
+										Continuous Message:
+									</span>
+								</h4>
+								<span class="note-m">* Maximum of 50 characters.</span>
+								<input class="band-text wb-band-text col-xs-12" data-preview="#wb_text_continue_preview" id="wb_text_continue" maxlength="50" name="continue-text" placeholder="Continuous Message" type="text" value="">
 							</div>
 							<div class="clearfix"></div>
-							<div class="clip-sec" style="float:left;width:20%;margin-left:16px;">
-								<button class="cclip-1" data-toggle="modal" data-target="#ClipArtModal">Start Clipart</button><br />
+							<!-- Clipart continue start -->
+							<div class="clip-sec col-xs-6 text-center">
+								<button class="btn-order" data-toggle="modal" data-target="#modalClipArt">Start Clipart</button><br />
 								<a href="javascript:void(0)" data-toggle="collapse" data-target="#upload-5">or Upload your own art</a>
 								<div id="upload-5" class="collapse">
-									<label for="file">Choose Photo:</label>
-									<input type="file" name="file_array[]" class="file-5" required><br>
-									<a href="javascript:void(0)" id="remove-5">Remove File</a>
+									<!-- <label for="file">Choose Photo:</label><br/> -->
+									<input class="clip-upload" id="clip_continue_start" name="file_array[]" type="file" required><br/>
+									<a href="javascript:void(0)" id="rm_clip_continue_start">Remove File</a>
 								</div>
 							</div>
-							<div class="clip-sec" style="float:left;width:20%;">
-								<button class="cclip-2" data-toggle="modal" data-target="#ClipArtModal">End Clipart</button><br />
+							<!-- Clipart continue end -->
+							<div class="clip-sec col-xs-6 text-center">
+								<button class="btn-order" data-toggle="modal" data-target="#modalClipArt">End Clipart</button><br />
 								<a href="javascript:void(0)" data-toggle="collapse" data-target="#upload-6">or Upload your own art</a>
 								<div id="upload-6" class="collapse">
-									<label for="file">Choose Photo:</label>
-									<input type="file" name="file_array[]" class="file-6" required><br>
-									<a href="javascript:void(0)"id="remove-6">Remove File</a>
+									<!-- <label for="file">Choose Photo:</label><br/> -->
+									<input class="clip-upload" id="clip_continue_end" name="file_array[]" type="file" required><br/>
+									<a href="javascript:void(0)" id="rm_clip_continue_end">Remove File</a>
 								</div>
 							</div>
-							<div class="clearfix"></div>
 						</div>
-						<div class="i-input" style=";margin-left:52px;">
+						<br/>
+						<div id="wb_text_inside" class="wb-text-inside i-input">
 							<div class="col-sm-12">
-								<br />
-								<span class="inside-m">Inside Text:</span><br /> &nbsp;
-								* Maximum of 50 characters for message <br />&nbsp;
-								* Inside Message will be embossed with the same color of the inside of the band
-								<br />
-								<input id="input-inside-text" type="text" name="inside-text" class="band-text" value=""  placeholder="Enter Inside Message" maxlength="50" style="width:100%;">
-								<br /><br />
+								<h4>
+									<span>
+										Inside Message:
+									</span>
+								</h4>
+								<span class="note-m">
+									* Maximum of 50 characters.<br/>
+									* Inside Message will be embossed with the same color of the inside of the band
+								</span>
+								<input class="band-text wb-band-text col-xs-12" data-preview="#wb_text_inside_preview" id="wb_text_inside" maxlength="50" name="inside-text" placeholder="Inside Message" type="text" value="">
+								<br/>
 							</div>
-							<div class="clearfix"></div>
 						</div>
 						<div class="clearfix"></div>
 						<!-- Start modal here -->
-						<div class="modal fade" id="ClipArtModal" role="dialog">
+						<div class="modal fade" id="modalClipArt" role="dialog">
 							<div class="modal-dialog">
 								<!-- Modal content-->
 								<div class="modal-content">
@@ -279,55 +318,52 @@
 						<!-- End Modal Div -->
 					</div>
 
-					<?php // include_once 'preview_template.php'; ?>
-					<?php // include_once 'preview_band_template.php'; ?>
-
 					<h3>PREVIEW</h3>
+
 					<div id="preview-pane" class="preview-panel">
-						<div class="fb-select">
-							<div id="front-view" class="band">
-							<span class="start-fc"></span>
-							<span class="end-fc"></span>
-							<span class="fig-fc"></span>
-								<div class="preview-text faded" id="front-text">
+						<div class="wb-text-preview fb-select">
+							<div id="front-view" class="band band-reg wb-band">
+							<span id="clip-front-start_preview" class="start-fc"></span>
+							<span id="clip-front-start_preview" class="end-fc"></span>
+							<span id="clip-front-start_preview" class="fig-fc"></span>
+								<div class="preview-text faded" id="wb_text_front_preview">
 									Front Message
 								</div>
 							</div>
-							<div id="back-view" class="band">
+							<div id="back-view" class="band band-reg wb-band">
 								<span class="back-mc"></span>
 								<span class="backend-mc"></span>
-								<div class="preview-text faded" id="back-text">
+								<div class="preview-text faded" id="wb_text_back_preview">
 									Back Message
 								</div>
 							</div>
 							<div class="clearfix"></div>
 						</div>
-						<div class="c-select" style="display:none;">
-							<div id="continue-view" class="band">
+						<div class="wb-text-preview c-select hidden">
+							<div id="continue-view" class="band band-reg wb-band">
 								<span class="start-cc"></span>
 								<span class="end-cc"></span>
-								<div class="preview-text faded" id="continue-text">
+								<div class="preview-text faded" id="wb_text_continue_preview">
 									Continuous Message
 								</div>
 							</div>
 						</div>
 					</div>
 					<div id="preview-pane" class="preview-panel">
-						<div class="i-select" style="display:block;">
-							<div id="inside-view" class="band">
+						<div class="wb-text-preview i-select">
+							<div id="inside-view" class="band band-reg wb-band">
 								<span class="startIn-cc"></span>
 								<span class="endIn-cc"></span>
-								<div class="preview-text faded" id="inside-text">
+								<div class="preview-text faded" id="wb_text_inside_preview">
 									Inside Message
 								</div>
 							</div>
 						</div>
 					</div>
-						<div class="text-center">
-							<div class="click-pre" style="display:none">Click below to preview wristband colors</div>
-							<ul id="preview-pane-selection" class="nav nav-pills preview-pane-colors" style="width:100%;">
-							</ul>
-						</div>
+					<div class="text-center">
+						<div class="col-xs-12 text-danger">Click below to preview wristband colors</div>
+						<ul id="preview-pane-selection" class="nav nav-pills preview-pane-colors"></ul>
+					</div>
 				</div>
 				<!-- End preview pane -->
 				<div id="font-color" style="display:none;">
@@ -383,11 +419,11 @@
 					<div class="clearfix"></div>
 				</div>
 			</div>
-			<!-- END WRISTBAND MESSAGE -->
+			<!-- END WRIST MESSAGE -->
 
 			<!-- ADD ONS -->
 			<div class="product-add-ons">
-				<div class="row offer-bar margin-bootom-20 __web-inspector-hide-shortcut__">
+				<div class="row offer-bar row-header-step">
 					<div class="col-xs-3 col-sm-2 offerpv float-left step-5">Step <span class="sRename">5</span></div>
 					<!-- <div class="col-xs-3 col-sm-2 offerpv float-left step-4">Step <span class="sRename">4</span></div> -->
 					<div class="col-xs-9 col-sm-10 offer-details float-left">ADD ONS (Optional)</div>

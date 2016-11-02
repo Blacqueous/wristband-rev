@@ -209,10 +209,10 @@ ORDER CSS
 }
 
 .wrist-style .col-md-4 {
-    width: 25%;
+    /*width: 25%;*/
     padding: 6px 9px;
     margin-top: 10px;
-    min-height: 302px;
+    /*min-height: 302px;*/
     display: block;
 }
 
@@ -239,16 +239,16 @@ ORDER CSS
     margin-bottom: 10px;
 }
 
-.prod:hover, .prod.active{
-    cursor:pointer;
-    border:1px solid #ADACAC;
-    background-color:#fff;
+.prod{
+    border: 1px solid rgba(255,255,255,.0);
+    cursor: pointer;
+    padding: 10px;
+    text-align: center;
 }
 
-.prod-size:hover, .prod-size.active{
-    cursor:pointer;
-    background-color: #fff;
-    border:1px solid #ADACAC;
+.prod:hover, .prod.active{
+    background-color: #FFFFFF;
+    border: 1px solid #ADACAC;
 }
 
 #banner-pricing{
@@ -262,7 +262,7 @@ ORDER CSS
 }
 
 .wrist-size .col-md-4 {
-    width: 16.6%;
+    /*width: 16.6%;*/
     padding: 6px;
     text-align: center;
     margin-top: 10px;
@@ -370,6 +370,7 @@ ORDER CSS
     border-radius: 2px;
     margin: 10px;
     min-height: 500px;
+    text-align: center;
 }
 
 .box-color input {
@@ -477,14 +478,14 @@ div#preview-textfont{
     width: 50%;
     margin: auto;
     float: left;
-    margin-bottom: 10px;
     text-align: center;
 }
 
 #preview-pane #inside-view { width: 100% }
 /*#preview-pane .band { background:#fff; }*/
-#preview-pane .band .faded { opacity: 0.5; }
-
+#preview-pane .band-reg .faded, #preview-pane .band-fig .faded {
+    opacity: 0.5;
+}
 
 .main-content-preview {
     padding: 10px;
@@ -492,7 +493,6 @@ div#preview-textfont{
 }
 
 .band-text {
-    width: 344px;
     padding: 8px;
 }
 
@@ -642,9 +642,8 @@ div#order-summary {
         margin-top:20px;
 }
 
-.f-input span{
+.f-input span, .c-input span, .i-input span {
     color:#212f3d;
-    font-weight:bold;
 }
 
 .fclip-1, .fclip-2, .fclip-3, .bclip-1, .bclip-2, #custom-color-button, .cclip-1, .cclip-2, #font-button, .btn-add-custom-color, #free-keychain-qty{
@@ -1218,4 +1217,48 @@ span.fonttext-color{
     line-height: 34px;
     margin-bottom: 0px;
     width: 100%;
+}
+
+.title-color {
+    color: #079ca5;
+}
+
+.btn-order {
+    background-color: #17a589;
+    color: #fff;
+    border: 1px solid #117864;
+    padding: 10px;
+    border-radius: 3px;
+}
+
+.btn-order:hover {
+    background-color: #1abc9c;
+}
+
+.band {
+	background-image:url('/gd/img/belt/base.png');
+	height: 54px;
+}
+
+.band .preview-text {
+    height: 54px;
+    line-height: 54px;
+}
+
+.band-fig {
+	background-image:url('/gd/img/belt/fig-base.png');
+	height: 104px;
+}
+
+.band-fig .preview-text {
+    height: 104px;
+    line-height: 104px;
+}
+
+.box-color-qty {
+    padding: 0px 10px;
+}
+
+.row-header-step {
+    margin-bottom: 20px!important;
 }

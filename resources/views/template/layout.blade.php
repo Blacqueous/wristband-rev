@@ -29,27 +29,27 @@
 
 		<script src="js/jquery-3.1.1.min.js"></script>
 
-		<link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet" type="text/css">
+		<!-- <link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet" type="text/css"> -->
 
 		<!-- BEGIN: Google Trusted Stores -->
         <script type="text/javascript">
-            var gts = gts || [];
-
-            gts.push(["id", "725104"]);
-            gts.push(["badge_position", "USER_DEFINED"]);
-            gts.push(["badge_container", "google_trust"]);
-            gts.push(["locale", "PAGE_LANGUAGE"]);
-            gts.push(["google_base_offer_id", "ITEM_GOOGLE_SHOPPING_ID"]);
-            gts.push(["google_base_subaccount_id", "ITEM_GOOGLE_SHOPPING_ACCOUNT_ID"]);
-
-            (function() {
-                var gts = document.createElement("script");
-                gts.type = "text/javascript";
-                gts.async = true;
-                gts.src = "https://www.googlecommerce.com/trustedstores/api/js";
-                var s = document.getElementsByTagName("script")[0];
-                    s.parentNode.insertBefore(gts, s);
-            })();
+            // var gts = gts || [];
+			//
+            // gts.push(["id", "725104"]);
+            // gts.push(["badge_position", "USER_DEFINED"]);
+            // gts.push(["badge_container", "google_trust"]);
+            // gts.push(["locale", "PAGE_LANGUAGE"]);
+            // gts.push(["google_base_offer_id", "ITEM_GOOGLE_SHOPPING_ID"]);
+            // gts.push(["google_base_subaccount_id", "ITEM_GOOGLE_SHOPPING_ACCOUNT_ID"]);
+			//
+            // (function() {
+            //     var gts = document.createElement("script");
+            //     gts.type = "text/javascript";
+            //     gts.async = true;
+            //     gts.src = "https://www.googlecommerce.com/trustedstores/api/js";
+            //     var s = document.getElementsByTagName("script")[0];
+            //         s.parentNode.insertBefore(gts, s);
+            // })();
         </script>
 		<!-- END: Google Trusted Stores -->
 	</head>
@@ -76,17 +76,19 @@
         <script type="text/javascript" src="assets/js/jquery.countdown.js"></script>
         <script type="text/javascript" src="assets/js/jquery.magnific-popup.min.js"></script>
 
-        <script src="global/bootstrap/js/bootstrap.min.js"></script>
+		<script src="global/bootstrap/js/bootstrap.min.js"></script>
+
+        <script src="js/angular.min.js"></script>
 
         <!-- Javascript for wristband previews -->
-        <script type="text/javascript" src="assets/js/canvg.js"></script>
-        <script type="text/javascript" src="assets/js/stackblur.js"></script>
+        <!-- <script type="text/javascript" src="assets/js/canvg.js"></script>
+        <script type="text/javascript" src="assets/js/stackblur.js"></script> -->
         <script type="text/javascript" src="assets/js/preview.js"></script>
         <script type="text/javascript" src="assets/js/preview_band.js"></script>
 
         <script type="text/javascript" src="assets/js/promo-keychain-10.js"></script>
 
-        <script src="assets/js/main-2.js"></script>
+        <!-- <script src="assets/js/main-2.js"></script> -->
         <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
 
 		<!-- Page custom added javascripts. -->

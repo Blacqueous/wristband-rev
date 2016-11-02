@@ -1,5 +1,6 @@
 // Ajax
 var xhr;
+var data = {};
 
 $(window).ready(function() {
 
@@ -52,8 +53,32 @@ $(document).ready(function() {
         }
     });
 
+    // $('body').on('click', 'input[type=radio].wb-style', function(e) {
+    //     // e.preventDefault();
+    //     e.stopPropagation();
+    //
+    //     // check if already selected.
+    //     // if(!$(this).is(':checked')) {
+    //
+    //         // clear existing active classes.
+    //         $('.prod-style').removeClass('active');
+    //         // add active class tio parent div.
+    //         $(this).closest('.prod-style').addClass('active');
+    //         // check the checkbox.
+    //         $(this).prop('checked', true);
+    //         // reset icheck display.
+    //         $('#wb_style .iradio_square-green').removeClass('checked');
+    //         $(this).closest('.iradio_square-green').addClass('checked');
+    //
+    //         // main style click action.
+    //         loadSizes();
+    //         loadColors();
+    //         // changeWristbandColors();
+    //     // }
+    // });
+
     $('body').on('ifClicked', 'input[type=radio].wb-style', function(e) {
-        e.preventDefault();
+        // e.preventDefault();
         e.stopPropagation();
 
         // check if already selected.
@@ -101,8 +126,31 @@ $(document).ready(function() {
         }
     });
 
+    // $('body').on('click', 'input[type=radio].wb-size', function(e) {
+    //     // e.preventDefault();
+    //     e.stopPropagation();
+    //
+    //     // check if already selected.
+    //     // if(!$(this).is(':checked')) {
+    //
+    //         // clear existing active classes.
+    //         $('.prod-size').removeClass('active');
+    //         // add active class tio parent div.
+    //         $(this).closest('.prod-size').addClass('active');
+    //         // check the checkbox.
+    //         $(this).prop('checked', true);
+    //         // reset icheck display.
+    //         $('#wb_size .iradio_square-green').removeClass('checked');
+    //         $(this).closest('.iradio_square-green').addClass('checked');
+    //
+    //         // main size click action.
+    //         loadColors();
+    //         // changeWristbandColors();
+    //     // }
+    // });
+
     $('body').on('ifClicked', 'input[type=radio].wb-size', function(e) {
-        e.preventDefault();
+        // e.preventDefault();
         e.stopPropagation();
 
         // check if already selected.
@@ -127,10 +175,102 @@ $(document).ready(function() {
 
     // Load color images.
     $('body').on('mouseenter, mousemove', '.wb-color-type', function(e) {
-        // console.log('mouseenter');
+        $(this).find('img.wb-unveil:visible').trigger('unveil');
+    });
+
+    $('body').on('click', '.wb-color-type', function(e) {
+        $(this).find('img.wb-unveil:visible').trigger('unveil');
+    });
+
+    $('body').on('click', '.wb-nav-pill', function(e) {
         $(this).find('img.wb-unveil:visible').trigger('unveil');
     });
     // END: Load color images.
+
+    // $('body').on('click', '.wb-text-type', function(e) {
+    //     var value = $(this).val();
+    //     if(typeof value == "undefined") { value = "select-fb"; }
+    //
+    //     $('.wb-text-outside').addClass('hidden');
+    //
+    //     if(value == "select-c") {
+    //         $('#wb_text_outside_c').removeClass('hidden');
+    //     } else {
+    //         $('#wb_text_outside_fb').removeClass('hidden');
+    //     }
+    // });
+
+    $('body').on('ifClicked', '.wb-text-type', function(e) {
+        var value = $(this).val();
+        if(typeof value == "undefined") { value = "select-fb"; }
+
+        $('.wb-text-outside').addClass('hidden');
+
+        if(value == "select-c") {
+            $('#wb_text_outside_c').removeClass('hidden');
+
+            $('.fb-select').addClass('hidden');
+            $('.c-select').removeClass('hidden');
+        } else {
+            $('#wb_text_outside_fb').removeClass('hidden');
+
+            $('.fb-select').removeClass('hidden');
+            $('.c-select').addClass('hidden');
+        }
+    });
+
+    $('body').on('keyup', '.wb-band-text', function(e) {
+        var preview = $(this).attr('data-preview').trim();
+        var value = $(this).val().trim();
+
+        if(value == "") { value = $(this).attr('placeholder'); }
+
+        $(preview).html(value);
+    });
+
+	$('body').on('blur', '.box-color input[name="quantity[]"]', function(e) {
+
+        // New behavior. Pretty much optimized.
+        var color = $(this).attr('ref');
+        var size = $(this).attr('ref-size');
+        var style = $(this).attr('ref-style');
+        var title = $(this).attr('ref-title');
+        var value = $(this).val();
+        var qty = (value) ? parseInt(value) : 0;
+
+        if(typeof data[style] == "undefined")
+            data[style] = {};
+
+        var idx = title.toLowerCase().replace(',', '').replace(' ', '-');
+        if(typeof data[style][idx] == "undefined")
+            data[style][idx] = {};
+
+        if(typeof data[style][idx][size] == "undefined")
+            data[style][idx][size] = {};
+
+        if(value != "" && qty>0) {
+            data[style][idx][size] = {
+                'color': color,
+                'size': size,
+                'style': style,
+                'title': title,
+                'value': parseInt(value)
+            };
+        } else {
+            if(typeof data[style][idx][size] != "undefined")
+                delete data[style][idx][size];
+
+            if ($.isEmptyObject(data[style][idx]))
+                delete data[style][idx];
+
+            if ($.isEmptyObject(data[style]))
+                delete data[style];
+
+            $(this).val("");
+        }
+
+        console.log(data);
+    });
 
 });
 
@@ -150,6 +290,8 @@ function loadColors($style, $size)
         $size = $('#wb_size input[type=radio].wb-size:checked').val();
 
     $('.wb-color-type').addClass('hidden');
+    // Update
+    $('.wb-band').addClass('band-reg').removeClass('band-fig');
 
     // Get sizes for selected style.
     switch ($style) {
@@ -167,6 +309,8 @@ function loadColors($style, $size)
             } else { // 0-75inch, 1-00inch
                 $('#wb_color_type_figured_lg').removeClass('hidden');
             }
+            // Update
+            $('.wb-band').addClass('band-fig').removeClass('band-reg');
             break;
 
         default:
@@ -188,6 +332,8 @@ function loadSizes($style)
         $style = $('#wb_style input[type=radio].wb-style:checked').val();
 
     $('.prod-size').addClass('hidden');
+    // Update
+    $('.wb-band').addClass('band-reg').removeClass('band-fig');
 
     // Get sizes for selected style.
     switch ($style) {
@@ -197,10 +343,12 @@ function loadSizes($style)
 
         case 'figured':
             $('#wb_size_0-50inch, #wb_size_0-75inch, #wb_size_1-00inch').removeClass('hidden');
+            // Update
+            $('.wb-band').addClass('band-fig').removeClass('band-reg');
             break;
 
         default:
-            $('#wb_size_0-25inch, #wb_size_0-50inch, #wb_size_v0-75inch, #wb_size_1-00inch, #wb_size_1-50inch, #wb_size_2-00inch').removeClass('hidden');
+            $('#wb_size_0-25inch, #wb_size_0-50inch, #wb_size_0-75inch, #wb_size_1-00inch, #wb_size_1-50inch, #wb_size_2-00inch').removeClass('hidden');
             break;
     }
 
