@@ -24,6 +24,7 @@
         <!-- #solid tab -->
         <div id="tab_solid_fig_lg" class="tab-pane fade in active js-color" data-color-style="solid">
             <h3>Solid Colors</h3>
+
             @if(isset($colors['fig_lg']['solid']))
             <button id="addCustomSolid" class="btn-add-custom-color"><i class="fa fa-plus"></i> Add Custom Color</button>
             <div id="main-color-content" class="main-color-content">
@@ -53,9 +54,9 @@
                     </div>
                     <!-- End modal div -->
                     <div class="clearfix"></div>
-                    <div class="col-xs-4 box-color-qty"><label>Adult Qty</label><input reftitle="" ref="" type="number" name="adult-qty" class="qtyin-adult-qty" placeholder="0" /></div>
-                    <div class="col-xs-4 box-color-qty"><label>Medium Qty</label><input reftitle="" ref="" type="number" name="medium-qty" class="qtyin-medium-qty" placeholder="0" /></div>
-                    <div class="col-xs-4 box-color-qty"><label>Youth Qty</label><input reftitle="" ref="" type="number" name="youth-qty" class="qtyin-youth-qty" placeholder="0" /></div>
+                    <div class="col-xs-4 box-color-qty"><label>Adult Qty</label><input ref-size="ad" ref-style="solid" ref-title="" ref-color="" type="number" name="quantity[]" class="qtyin-adult-qty" placeholder="0" /></div>
+                    <div class="col-xs-4 box-color-qty"><label>Medium Qty</label><input ref-size="md" ref-style="solid" ref-title="" ref-color="" type="number" name="quantity[]" class="qtyin-medium-qty" placeholder="0" /></div>
+                    <div class="col-xs-4 box-color-qty"><label>Youth Qty</label><input ref-size="yt" ref-style="solid" ref-title="" ref-color="" type="number" name="quantity[]" class="qtyin-youth-qty" placeholder="0" /></div>
                     <div class="clearfix"></div>
                     <!-- Text color options -->
                     <div class="color-text" style="display:none">
@@ -73,8 +74,8 @@
                     <!-- End text color options -->
                     <span class="view-more col-xs-12">View More Sizes</span>
                     <div class="show-content collapse">
-                        <div class="col-xs-6 box-color-qty"><label>Extra Small Qty</label><input reftitle="" ref="" type="number" name="xt-small-qty" class="xt-small-qty" placeholder="0"/></div>
-                        <div class="col-xs-6 box-color-qty"><label>Extra Large Qty</label><input reftitle="" ref="" type="number" name="xt-large-qty" class="xt-large-qty" placeholder="0"/></div>
+                        <div class="col-xs-6 box-color-qty"><label>Extra Small Qty</label><input ref-size="xs" ref-style="solid" ref-title="" ref-color="" type="number" name="quantity[]" class="xt-small-qty" placeholder="0"/></div>
+                        <div class="col-xs-6 box-color-qty"><label>Extra Large Qty</label><input ref-size="xl" ref-style="solid" ref-title="" ref-color="" type="number" name="quantity[]" class="xt-large-qty" placeholder="0"/></div>
                     </div>
                 </div>
 
@@ -82,9 +83,9 @@
                 <div class="col-xs-4 box-color">
                     <img class="wb-unveil" src="assets/images/placeholder.png" data-src="{{ $value['image'] }}" />
                         <div class="nocustom_pick">{{ $value['name'] }}</div>
-                        <div class="col-xs-4 box-color-qty"><label>Adult Qty</label><input reftitle="{{ $value['name'] }}" ref="@foreach($value['hex'] as $key => $val)@if($key!=0), @endif{{ $val }}@endforeach" type="number" name="adult-qty" class="qtyin-adult-qty" placeholder="0" /></div>
-                        <div class="col-xs-4 box-color-qty"><label>Medium Qty</label><input reftitle="{{ $value['name'] }}" ref="@foreach($value['hex'] as $key => $val)@if($key!=0), @endif{{ $val }}@endforeach" type="number" name="medium-qty" class="qtyin-medium-qty" placeholder="0" /></div>
-                        <div class="col-xs-4 box-color-qty"><label>Youth Qty</label><input reftitle="{{ $value['name'] }}" ref="@foreach($value['hex'] as $key => $val)@if($key!=0), @endif{{ $val }}@endforeach" type="number" name="youth-qty" class="qtyin-youth-qty" placeholder="0" /></div>
+                        <div class="col-xs-4 box-color-qty"><label>Adult Qty</label><input ref-size="ad" ref-style="solid" ref-title="{{ $value['name'] }}" ref-color="@foreach($value['hex'] as $key => $val)@if($key!=0), @endif{{ $val }}@endforeach" type="number" name="quantity[]" class="qtyin-adult-qty" placeholder="0" /></div>
+                        <div class="col-xs-4 box-color-qty"><label>Medium Qty</label><input ref-size="md" ref-style="solid" ref-title="{{ $value['name'] }}" ref-color="@foreach($value['hex'] as $key => $val)@if($key!=0), @endif{{ $val }}@endforeach" type="number" name="quantity[]" class="qtyin-medium-qty" placeholder="0" /></div>
+                        <div class="col-xs-4 box-color-qty"><label>Youth Qty</label><input ref-size="yt" ref-style="solid" ref-title="{{ $value['name'] }}" ref-color="@foreach($value['hex'] as $key => $val)@if($key!=0), @endif{{ $val }}@endforeach" type="number" name="quantity[]" class="qtyin-youth-qty" placeholder="0" /></div>
                         <div class="clearfix"></div>
                         <!-- Text color options -->
                         <div class="color-text" style="display:none">
@@ -102,8 +103,8 @@
                         <!-- End text color options -->
                         <span class="view-more col-xs-12">View More Sizes</span>
                         <div class="show-content collapse">
-                            <div class="col-xs-6 box-color-qty"><label>Extra Small Qty</label><input reftitle="{{ $value['name'] }}" ref="@foreach($value['hex'] as $key => $val)@if($key!=0), @endif{{ $val }}@endforeach" type="number" name="xt-small-qty" class="xt-small-qty" placeholder="0"/></div>
-                            <div class="col-xs-6 box-color-qty"><label>Extra Large Qty</label><input reftitle="{{ $value['name'] }}" ref="@foreach($value['hex'] as $key => $val)@if($key!=0), @endif{{ $val }}@endforeach" type="number" name="xt-large-qty" class="xt-large-qty" placeholder="0"/></div>
+                            <div class="col-xs-6 box-color-qty"><label>Extra Small Qty</label><input ref-size="xs" ref-style="solid" ref-title="{{ $value['name'] }}" ref-color="@foreach($value['hex'] as $key => $val)@if($key!=0), @endif{{ $val }}@endforeach" type="number" name="quantity[]" class="xt-small-qty" placeholder="0"/></div>
+                            <div class="col-xs-6 box-color-qty"><label>Extra Large Qty</label><input ref-size="xl" ref-style="solid" ref-title="{{ $value['name'] }}" ref-color="@foreach($value['hex'] as $key => $val)@if($key!=0), @endif{{ $val }}@endforeach" type="number" name="quantity[]" class="xt-large-qty" placeholder="0"/></div>
                         </div>
                 </div>
                 @endforeach
@@ -147,9 +148,9 @@
                     </div>
                     <!-- End modal div -->
                     <div class="clearfix"></div>
-                    <div class="col-xs-4 box-color-qty"><label>Adult Qty</label><input reftitle="" ref="" type="number" name="adult-qty" class="qtyin-adult-qty" placeholder="0" /></div>
-                    <div class="col-xs-4 box-color-qty"><label>Medium Qty</label><input reftitle="" ref="" type="number" name="medium-qty" class="qtyin-medium-qty" placeholder="0" /></div>
-                    <div class="col-xs-4 box-color-qty"><label>Youth Qty</label><input reftitle="" ref="" type="number" name="youth-qty" class="qtyin-youth-qty" placeholder="0" /></div>
+                    <div class="col-xs-4 box-color-qty"><label>Adult Qty</label><input ref-size="ad" ref-style="segmented" ref-title="" ref-color="" type="number" name="quantity[]" class="qtyin-adult-qty" placeholder="0" /></div>
+                    <div class="col-xs-4 box-color-qty"><label>Medium Qty</label><input ref-size="md" ref-style="segmented" ref-title="" ref-color="" type="number" name="quantity[]" class="qtyin-medium-qty" placeholder="0" /></div>
+                    <div class="col-xs-4 box-color-qty"><label>Youth Qty</label><input ref-size="yt" ref-style="segmented" ref-title="" ref-color="" type="number" name="quantity[]" class="qtyin-youth-qty" placeholder="0" /></div>
                     <div class="clearfix"></div>
                     <!-- Text color options -->
                     <div class="color-text" style="display:none">
@@ -167,8 +168,8 @@
                     <!-- End text color options -->
                     <span class="view-more col-xs-12">View More Sizes</span>
                     <div class="show-content collapse">
-                        <div class="col-xs-6 box-color-qty"><label>Extra Small Qty</label><input reftitle="" ref="" type="number" name="xt-small-qty" class="xt-small-qty" placeholder="0"/></div>
-                        <div class="col-xs-6 box-color-qty"><label>Extra Large Qty</label><input reftitle="" ref="" type="number" name="xt-large-qty" class="xt-large-qty" placeholder="0"/></div>
+                        <div class="col-xs-6 box-color-qty"><label>Extra Small Qty</label><input ref-size="xs" ref-style="segmented" ref-title="" ref-color="" type="number" name="quantity[]" class="xt-small-qty" placeholder="0"/></div>
+                        <div class="col-xs-6 box-color-qty"><label>Extra Large Qty</label><input ref-size="xl" ref-style="segmented" ref-title="" ref-color="" type="number" name="quantity[]" class="xt-large-qty" placeholder="0"/></div>
                     </div>
                 </div>
 
@@ -176,9 +177,9 @@
                 <div class="col-xs-4 box-color">
                     <img class="wb-unveil" src="assets/images/placeholder.png" data-src="{{ $value['image'] }}" />
                     <div class="nocustom_pick">{{ $value['name'] }}</div>
-                    <div class="col-xs-4 box-color-qty"><label>Adult Qty</label><input reftitle="{{ $value['name'] }}" ref="@foreach($value['hex'] as $key => $val)@if($key!=0), @endif{{ $val }}@endforeach" type="number" name="adult-qty" class="qtyin-adult-qty" placeholder="0" /></div>
-                    <div class="col-xs-4 box-color-qty"><label>Medium Qty</label><input reftitle="{{ $value['name'] }}" ref="@foreach($value['hex'] as $key => $val)@if($key!=0), @endif{{ $val }}@endforeach" type="number" name="medium-qty" class="qtyin-medium-qty" placeholder="0" /></div>
-                    <div class="col-xs-4 box-color-qty"><label>Youth Qty</label><input reftitle="{{ $value['name'] }}" ref="@foreach($value['hex'] as $key => $val)@if($key!=0), @endif{{ $val }}@endforeach" type="number" name="youth-qty" class="qtyin-youth-qty" placeholder="0" /></div>
+                    <div class="col-xs-4 box-color-qty"><label>Adult Qty</label><input ref-size="ad" ref-style="segmented" ref-title="{{ $value['name'] }}" ref-color="@foreach($value['hex'] as $key => $val)@if($key!=0), @endif{{ $val }}@endforeach" type="number" name="quantity[]" class="qtyin-adult-qty" placeholder="0" /></div>
+                    <div class="col-xs-4 box-color-qty"><label>Medium Qty</label><input ref-size="md" ref-style="segmented" ref-title="{{ $value['name'] }}" ref-color="@foreach($value['hex'] as $key => $val)@if($key!=0), @endif{{ $val }}@endforeach" type="number" name="quantity[]" class="qtyin-medium-qty" placeholder="0" /></div>
+                    <div class="col-xs-4 box-color-qty"><label>Youth Qty</label><input ref-size="yt" ref-style="segmented" ref-title="{{ $value['name'] }}" ref-color="@foreach($value['hex'] as $key => $val)@if($key!=0), @endif{{ $val }}@endforeach" type="number" name="quantity[]" class="qtyin-youth-qty" placeholder="0" /></div>
                     <div class="clearfix"></div>
                     <!-- Text color options -->
                     <div class="color-text" style="display:none">
@@ -196,8 +197,8 @@
                     <!-- End text color options -->
                     <span class="view-more col-xs-12">View More Sizes</span>
                     <div class="show-content collapse">
-                        <div class="col-xs-6 box-color-qty"><label>Extra Small Qty</label><input reftitle="{{ $value['name'] }}" ref="@foreach($value['hex'] as $key => $val)@if($key!=0), @endif{{ $val }}@endforeach" type="number" name="xt-small-qty" class="xt-small-qty" placeholder="0"/></div>
-                        <div class="col-xs-6 box-color-qty"><label>Extra Large Qty</label><input reftitle="{{ $value['name'] }}" ref="@foreach($value['hex'] as $key => $val)@if($key!=0), @endif{{ $val }}@endforeach" type="number" name="xt-large-qty" class="xt-large-qty" placeholder="0"/></div>
+                        <div class="col-xs-6 box-color-qty"><label>Extra Small Qty</label><input ref-size="xs" ref-style="segmented" ref-title="{{ $value['name'] }}" ref-color="@foreach($value['hex'] as $key => $val)@if($key!=0), @endif{{ $val }}@endforeach" type="number" name="quantity[]" class="xt-small-qty" placeholder="0"/></div>
+                        <div class="col-xs-6 box-color-qty"><label>Extra Large Qty</label><input ref-size="xl" ref-style="segmented" ref-title="{{ $value['name'] }}" ref-color="@foreach($value['hex'] as $key => $val)@if($key!=0), @endif{{ $val }}@endforeach" type="number" name="quantity[]" class="xt-large-qty" placeholder="0"/></div>
                     </div>
                 </div>
                 @endforeach
@@ -210,7 +211,7 @@
 
         <!-- #swirl tab -->
         <div id="tab_swirl_fig_lg" class="tab-pane fade js-color" data-color-style="swirl">
-            <h3 style="width:auto;">Swirls Color</h3>
+            <h3>Swirl Colors</h3>
 
             @if(isset($colors['fig_lg']['swirl']))
             <button id="addCustomSwirl" class="btn-add-custom-color"><i class="fa fa-plus"></i> Add Custom Color</button>
@@ -240,10 +241,9 @@
                         </div>
                     </div>
                     <!-- End Modal Div -->
-                    <div class="clearfix"></div>
-                    <div class="col-xs-4 box-color-qty"><label>Adult Qty</label><input reftitle="" ref="" type="number" name="adult-qty" class="qtyin-adult-qty" placeholder="0" /></div>
-                    <div class="col-xs-4 box-color-qty"><label>Medium Qty</label><input reftitle="" ref="" type="number" name="medium-qty" class="qtyin-medium-qty" placeholder="0" /></div>
-                    <div class="col-xs-4 box-color-qty"><label>Youth Qty</label><input reftitle="" ref="" type="number" name="youth-qty" class="qtyin-youth-qty" placeholder="0" /></div>
+                    <div class="col-xs-4 box-color-qty"><label>Adult Qty</label><input ref-size="ad" ref-style="swirl" ref-title="" ref-color="" type="number" name="quantity[]" class="qtyin-adult-qty" placeholder="0" /></div>
+                    <div class="col-xs-4 box-color-qty"><label>Medium Qty</label><input ref-size="md" ref-style="swirl" ref-title="" ref-color="" type="number" name="quantity[]" class="qtyin-medium-qty" placeholder="0" /></div>
+                    <div class="col-xs-4 box-color-qty"><label>Youth Qty</label><input ref-size="yt" ref-style="swirl" ref-title="" ref-color="" type="number" name="quantity[]" class="qtyin-youth-qty" placeholder="0" /></div>
                     <div class="clearfix"></div>
                     <!-- Text color options -->
                     <div class="color-text" style="display:none">
@@ -261,8 +261,8 @@
                     <!-- End text color options -->
                     <span class="view-more col-xs-12">View More Sizes</span>
                     <div class="show-content collapse">
-                        <div class="col-xs-6 box-color-qty"><label>Extra Small Qty</label><input reftitle="" ref="" type="number" name="xt-small-qty" class="xt-small-qty" placeholder="0"/></div>
-                        <div class="col-xs-6 box-color-qty"><label>Extra Large Qty</label><input reftitle="" ref="" type="number" name="xt-large-qty" class="xt-large-qty" placeholder="0"/></div>
+                        <div class="col-xs-6 box-color-qty"><label>Extra Small Qty</label><input ref-size="xs" ref-style="swirl" ref-title="" ref-color="" type="number" name="quantity[]" class="xt-small-qty" placeholder="0"/></div>
+                        <div class="col-xs-6 box-color-qty"><label>Extra Large Qty</label><input ref-size="xl" ref-style="swirl" ref-title="" ref-color="" type="number" name="quantity[]" class="xt-large-qty" placeholder="0"/></div>
                     </div>
                 </div>
 
@@ -270,9 +270,9 @@
                 <div class="col-xs-4 box-color">
                     <img class="wb-unveil" src="assets/images/placeholder.png" data-src="{{ $value['image'] }}" />
                     <div class="nocustom_pick">{{ $value['name'] }}</div>
-                    <div class="col-xs-4 box-color-qty"><label>Adult Qty</label><input reftitle="{{ $value['name'] }}" ref="@foreach($value['hex'] as $key => $val)@if($key!=0), @endif{{ $val }}@endforeach" type="number" name="adult-qty" class="qtyin-adult-qty" placeholder="0" /></div>
-                    <div class="col-xs-4 box-color-qty"><label>Medium Qty</label><input reftitle="{{ $value['name'] }}" ref="@foreach($value['hex'] as $key => $val)@if($key!=0), @endif{{ $val }}@endforeach" type="number" name="medium-qty" class="qtyin-medium-qty" placeholder="0" /></div>
-                    <div class="col-xs-4 box-color-qty"><label>Youth Qty</label><input reftitle="{{ $value['name'] }}" ref="@foreach($value['hex'] as $key => $val)@if($key!=0), @endif{{ $val }}@endforeach" type="number" name="youth-qty" class="qtyin-youth-qty" placeholder="0" /></div>
+                    <div class="col-xs-4 box-color-qty"><label>Adult Qty</label><input ref-size="ad" ref-style="swirl" ref-title="{{ $value['name'] }}" ref-color="@foreach($value['hex'] as $key => $val)@if($key!=0), @endif{{ $val }}@endforeach" type="number" name="quantity[]" class="qtyin-adult-qty" placeholder="0" /></div>
+                    <div class="col-xs-4 box-color-qty"><label>Medium Qty</label><input ref-size="md" ref-style="swirl" ref-title="{{ $value['name'] }}" ref-color="@foreach($value['hex'] as $key => $val)@if($key!=0), @endif{{ $val }}@endforeach" type="number" name="quantity[]" class="qtyin-medium-qty" placeholder="0" /></div>
+                    <div class="col-xs-4 box-color-qty"><label>Youth Qty</label><input ref-size="yt" ref-style="swirl" ref-title="{{ $value['name'] }}" ref-color="@foreach($value['hex'] as $key => $val)@if($key!=0), @endif{{ $val }}@endforeach" type="number" name="quantity[]" class="qtyin-youth-qty" placeholder="0" /></div>
                     <div class="clearfix"></div>
                     <!-- Text color options -->
                     <div class="color-text" style="display:none">
@@ -290,8 +290,8 @@
                     <!-- End text color options -->
                     <span class="view-more col-xs-12">View More Sizes</span>
                     <div class="show-content collapse">
-                        <div class="col-xs-6 box-color-qty"><label>Extra Small Qty</label><input reftitle="{{ $value['name'] }}" ref="@foreach($value['hex'] as $key => $val)@if($key!=0), @endif{{ $val }}@endforeach" type="number" name="xt-small-qty" class="xt-small-qty" placeholder="0"/></div>
-                        <div class="col-xs-6 box-color-qty"><label>Extra Large Qty</label><input reftitle="{{ $value['name'] }}" ref="@foreach($value['hex'] as $key => $val)@if($key!=0), @endif{{ $val }}@endforeach" type="number" name="xt-large-qty" class="xt-large-qty" placeholder="0"/></div>
+                        <div class="col-xs-6 box-color-qty"><label>Extra Small Qty</label><input ref-size="xs" ref-style="swirl" ref-title="{{ $value['name'] }}" ref-color="@foreach($value['hex'] as $key => $val)@if($key!=0), @endif{{ $val }}@endforeach" type="number" name="quantity[]" class="xt-small-qty" placeholder="0"/></div>
+                        <div class="col-xs-6 box-color-qty"><label>Extra Large Qty</label><input ref-size="xl" ref-style="swirl" ref-title="{{ $value['name'] }}" ref-color="@foreach($value['hex'] as $key => $val)@if($key!=0), @endif{{ $val }}@endforeach" type="number" name="quantity[]" class="xt-large-qty" placeholder="0"/></div>
                     </div>
                 </div>
                 @endforeach
@@ -313,9 +313,9 @@
                 <div class="col-xs-4 box-color">
                     <img class="wb-unveil" src="assets/images/placeholder.png" data-src="{{ $value['image'] }}" />
                     <div class="nocustom_pick">{{ $value['name'] }}</div>
-                    <div class="col-xs-4 box-color-qty"><label>Adult Qty</label><input reftitle="{{ $value['name'] }}" ref="@foreach($value['hex'] as $key => $val)@if($key!=0), @endif{{ $val }}@endforeach" type="number" name="adult-qty" class="qtyin-adult-qty" placeholder="0" /></div>
-                    <div class="col-xs-4 box-color-qty"><label>Medium Qty</label><input reftitle="{{ $value['name'] }}" ref="@foreach($value['hex'] as $key => $val)@if($key!=0), @endif{{ $val }}@endforeach" type="number" name="medium-qty" class="qtyin-medium-qty" placeholder="0" /></div>
-                    <div class="col-xs-4 box-color-qty"><label>Youth Qty</label><input reftitle="{{ $value['name'] }}" ref="@foreach($value['hex'] as $key => $val)@if($key!=0), @endif{{ $val }}@endforeach" type="number" name="youth-qty" class="qtyin-youth-qty" placeholder="0" /></div>
+                    <div class="col-xs-4 box-color-qty"><label>Adult Qty</label><input ref-size="ad" ref-style="glow" ref-title="{{ $value['name'] }}" ref-color="@foreach($value['hex'] as $key => $val)@if($key!=0), @endif{{ $val }}@endforeach" type="number" name="quantity[]" class="qtyin-adult-qty" placeholder="0" /></div>
+                    <div class="col-xs-4 box-color-qty"><label>Medium Qty</label><input ref-size="md" ref-style="glow" ref-title="{{ $value['name'] }}" ref-color="@foreach($value['hex'] as $key => $val)@if($key!=0), @endif{{ $val }}@endforeach" type="number" name="quantity[]" class="qtyin-medium-qty" placeholder="0" /></div>
+                    <div class="col-xs-4 box-color-qty"><label>Youth Qty</label><input ref-size="yt" ref-style="glow" ref-title="{{ $value['name'] }}" ref-color="@foreach($value['hex'] as $key => $val)@if($key!=0), @endif{{ $val }}@endforeach" type="number" name="quantity[]" class="qtyin-youth-qty" placeholder="0" /></div>
                     <div class="clearfix"></div>
                     <!-- Text color options -->
                     <div class="color-text" style="display:none">
@@ -333,8 +333,8 @@
                     <!-- End text color options -->
                     <span class="view-more col-xs-12">View More Sizes</span>
                     <div class="show-content collapse">
-                        <div class="col-xs-6 box-color-qty"><label>Extra Small Qty</label><input reftitle="{{ $value['name'] }}" ref="@foreach($value['hex'] as $key => $val)@if($key!=0), @endif{{ $val }}@endforeach" type="number" name="xt-small-qty" class="xt-small-qty" placeholder="0"/></div>
-                        <div class="col-xs-6 box-color-qty"><label>Extra Large Qty</label><input reftitle="{{ $value['name'] }}" ref="@foreach($value['hex'] as $key => $val)@if($key!=0), @endif{{ $val }}@endforeach" type="number" name="xt-large-qty" class="xt-large-qty" placeholder="0"/></div>
+                        <div class="col-xs-6 box-color-qty"><label>Extra Small Qty</label><input ref-size="xs" ref-style="glow" ref-title="{{ $value['name'] }}" ref-color="@foreach($value['hex'] as $key => $val)@if($key!=0), @endif{{ $val }}@endforeach" type="number" name="quantity[]" class="xt-small-qty" placeholder="0"/></div>
+                        <div class="col-xs-6 box-color-qty"><label>Extra Large Qty</label><input ref-size="xl" ref-style="glow" ref-title="{{ $value['name'] }}" ref-color="@foreach($value['hex'] as $key => $val)@if($key!=0), @endif{{ $val }}@endforeach" type="number" name="quantity[]" class="xt-large-qty" placeholder="0"/></div>
                     </div>
                 </div>
                 @endforeach
