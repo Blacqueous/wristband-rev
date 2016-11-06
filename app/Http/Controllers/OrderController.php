@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Wristbands\Classes\Colors;
+use App\Wristbands\Classes\ColorsList;
 use App\Wristbands\Classes\Styles;
 use App\Wristbands\Classes\Sizes;
 use Illuminate\Http\Request;
@@ -28,6 +29,9 @@ class OrderController extends Controller
 
 		$colors = new Colors();
 		$data['colors'] = $colors->getColors();
+
+		$list = new ColorsList();
+		$data['list'] = $list->getColors();
 
         return view('order', $data);
 	}

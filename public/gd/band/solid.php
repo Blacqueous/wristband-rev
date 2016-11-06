@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 	function generate_solid($colors) {
 
@@ -29,7 +29,7 @@
 		imagesavealpha( $img_0_dst, true );
 
 		// Apply filter to change image to desired color
-		imagefilter( $img_0_dst, IMG_FILTER_NEGATE ); 
+		imagefilter( $img_0_dst, IMG_FILTER_NEGATE );
 		imagefilter( $img_0_dst, IMG_FILTER_COLORIZE, $img_0['colorR'], $img_0['colorG'], $img_0['colorB'] );
 
 

@@ -1,6 +1,8 @@
 // Ajax
 var xhr;
 var items = {};
+var viewport = "lg";
+var $fontElement;
 
 $(window).ready(function() {
 
@@ -28,6 +30,31 @@ $(document).ready(function() {
         increaseArea: '20%' // optional
     });
 
+    // $(window).on('resize',function() {
+    //     vpNow = checkViewport();
+    //
+    //     if(viewport != vpNow) {
+    //         viewport = vpNow;
+    //
+    //         if(viewport == "sm" || viewport == "xs") {
+    //             console.log(2);
+    //         } else {
+    //             console.log(4);
+    //         }
+    //
+    //         $('.box-color-container').removeClass('box-row-start');
+    //         $.each($('.main-color-content'), function( index, value ) {
+    //             // alert( index + ": " + value );
+    //             var count = 0;
+    //             $(this).find('.box-color-container').each(function(e) {
+    //                 if(count >= 4) { count=0; }
+    //                 if(count == 0) { $(this).addClass('box-row-start'); }
+    //                 count++;
+    //             });
+    //         });
+    //     }
+    // });
+
     // Change style actions.
     $('body').on('click', '.prod-style', function(e) {
         e.preventDefault();
@@ -49,6 +76,8 @@ $(document).ready(function() {
             $('input[name="quantity[]').val("");
             // Reset item Object.
             items = {};
+            // Reset item previews.
+            checkPreview();
 
             // Main style click action.
             loadSizes();
@@ -101,6 +130,8 @@ $(document).ready(function() {
             $('input[name="quantity[]').val("");
             // Reset item Object.
             items = {};
+            // Reset item previews.
+            checkPreview();
 
             // Main style click action.
             loadSizes();
@@ -131,6 +162,8 @@ $(document).ready(function() {
             $('input[name="quantity[]').val("");
             // Reset item Object.
             items = {};
+            // Reset item previews.
+            checkPreview();
 
             // Main size click action.
             loadColors();
@@ -180,6 +213,8 @@ $(document).ready(function() {
             $('input[name="quantity[]').val("");
             // Reset item Object.
             items = {};
+            // Reset item previews.
+            checkPreview();
 
             // Main size click action.
             loadColors();
@@ -194,11 +229,11 @@ $(document).ready(function() {
     });
 
     $('body').on('click', '.wb-color-type', function(e) {
-        $(this).find('img.wb-unveil:visible').trigger('unveil');
+        $('img.wb-unveil:visible').trigger('unveil');
     });
 
     $('body').on('click', '.wb-nav-pill', function(e) {
-        $(this).find('img.wb-unveil:visible').trigger('unveil');
+        $('img.wb-unveil:visible').trigger('unveil');
     });
     // END: Load color images.
 
@@ -207,18 +242,39 @@ $(document).ready(function() {
         // New behavior. Pretty much optimized.
         // Create variables to be used.
         var color = $(this).attr('ref-color');
+            color = color.trim().toUpperCase().replace(/ /g, '');
+        var font = $(this).closest('.box-color-qty').find('.fonttext .fntin').attr('ref-font-color');
         var size = $(this).attr('ref-size');
         var style = $(this).attr('ref-style');
         var title = $(this).attr('ref-title');
+        var type = $('input[type=radio].wb-style:checked').attr('data-style');
         var value = $(this).val();
         var qty = (value) ? parseInt(value) : 0;
+        // Determines if a preview is to e made
+        var makePreview = true;
+
+        $style = $('#wb_style input[type=radio].wb-style:checked').val();
+
+        switch($style) {
+            case 'embossed':
+            case 'debossed':
+            case 'blank':
+                font = '000000';
+                break;
+            case 'dual-layer':
+            case 'dual':
+                dual_color = color.split(',');
+                font = dual_color[1];
+                break;
+        }
 
         // Check if WB style exists.
         if (typeof items[style] == "undefined")
         items[style] = {}; // If not, then create object
 
         // Generate an index using title.
-        var idx = title.toLowerCase().replace(',', '').replace(' ', '-');
+        // var idx = title.toLowerCase().replace(/,/g, '').replace(/ /g, '-');
+        var idx = style + '-' + font + '-' + color.replace(/,/g, '-');
 
         // Check if WB color exists.
         if (typeof items[style][idx] == "undefined") {
@@ -228,6 +284,8 @@ $(document).ready(function() {
                 'style': style,
                 'title': title,
             };
+            // Flag to reate preview for new items
+            makePreview = true;
         }
 
         // Check WB color has existing values.
@@ -239,6 +297,7 @@ $(document).ready(function() {
             // Create new size Object.
             items[style][idx]['value'][size] = {
                 'qty': qty,
+                'font': font,
                 'size': size
             }
         } else { // If existing...
@@ -246,23 +305,38 @@ $(document).ready(function() {
         }
 
         // Check if quantity is less than 0.
-        if (!qty>0) {
+        if (qty<=0) {
 
             // Delete the WB size value from specific item.
             delete items[style][idx]['value'][size];
 
             // Delete the WB color if has size values. If not, then delete it.
-            if ($.isEmptyObject(items[style][idx]['value']))
-            delete items[style][idx];
+            if ($.isEmptyObject(items[style][idx]['value'])) {
+                delete items[style][idx];
+                // Flasg to remove preview image.
+                makePreview = false;
+            }
 
             // Delete the WB style if completely empty.
             // (Must delete, data will be useless.)
-            if ($.isEmptyObject(items[style]))
-            delete items[style];
+            if ($.isEmptyObject(items[style])) {
+                delete items[style];
+            }
 
             // If value is less than or is equal to 0, empty the field.
             $(this).val("");
         }
+
+        if(makePreview) {
+            // Create & append preview image
+            loadPreview(style, type, color, font);
+        } else {
+            // Remove preview image
+            $('.preview-' + style + '-' + type + '-' + font + '-' + color.replace(/,/g, '-')).remove();
+        }
+
+        checkPreview();
+
         console.log(items);
 
     });
@@ -308,6 +382,36 @@ $(document).ready(function() {
         $(preview).html(value);
     });
 
+    $('body').on('click', '.preview-pill', function(e) {
+        $('.preview-pill').removeClass('active');
+        $(this).addClass('active');
+
+        var font = $(this).attr('data-font-color');
+        var link = $(this).attr('data-image-link');
+
+        $('#front-view, #back-view, #continue-view, #inside-view').css({"background-image": "url('" + link + "')", "color": "#" + font});
+        $('.preview-text').css({"color": "#" + font});
+    });
+
+    $('body').on('click', '.fntin', function(e) {
+        fontElement = $(this);
+        var $container = $("#modalColorSelect .modal-body .font-color-list");
+        var $scrollTo = $('.font-color-list-' + $(this).attr('ref-font-color'));
+
+        $container.animate({scrollTop: $scrollTo.offset().top - $container.offset().top, scrollLeft: 0},300);
+        $('#modalColorSelect').modal('show');
+    });
+
+    $('body').on('click', '.font-selected', function(e) {
+        var color = $(this).attr('ref-color');
+        var name = $(this).attr('ref-name');
+
+        fontElement.attr('ref-font-name', name);
+        fontElement.attr('ref-font-color', color);
+        fontElement.css({"background-color": "#" + color});
+        $('#modalColorSelect').modal('hide');
+    });
+
 });
 
 function changeWristbandColors()
@@ -328,6 +432,9 @@ function loadColors($style, $size)
     $('.wb-color-type').addClass('hidden');
     // Update
     $('.wb-band').addClass('band-reg').removeClass('band-fig');
+    // Show fonts
+    $('.fonttext').addClass('hidden');
+    $('.box-color').removeClass('with-font');
 
     // Get sizes for selected style.
     switch ($style) {
@@ -347,7 +454,17 @@ function loadColors($style, $size)
             }
             // Update
             $('.wb-band').addClass('band-fig').removeClass('band-reg');
+            // Show fonts
+            $('.fonttext').removeClass('hidden');
+            $('.box-color').addClass('with-font');
             break;
+
+        case 'printed':
+        case 'ink-injected':
+        case 'embossed-printed':
+            // Show fonts
+            $('.fonttext').removeClass('hidden');
+            $('.box-color').addClass('with-font');
 
         default:
             if($size == '0-25inch') {
@@ -433,29 +550,70 @@ function loadWristbands($style, $size)
     // });
 }
 
-function loadPreview($style, $type, $color)
+function loadPreview($style, $type, $color, $font)
 {
-    // Stop/abort existing fetches.
-    if (xhr && xhr.readyState != 4) {
-        xhr.abort();
-    }
+    var addBlink = false;
+    var previewClass = 'preview-' + $style + '-' + $type + '-' + $font + '-' + $color.trim().toUpperCase().replace(/ /g, '').replace(/,/g, '-');
 
-    // Get proper total qty
-    xhr = $.ajax({
-    	type: 'GET',
-    	url: '/wb/colors_ss',
-    	data: {
-            'color': $color,
-            'size': $size,
-            'style': $style
-        },
-    	beforeSend: function() {
-            // Do something before submit.
-    	},
-    	success: function(data) {
-            // Do something on success.
-    	}
-    }).done(function(e) {
-        // Do something when everything is done.
-    });
+    if($('.' + previewClass).length <= 0) {
+
+        // Add new item for preview display
+        $("#preview-pill-selection").append('<div class="preview-pill ' + previewClass + '" data-font-color="" data-image-link="">Y</div>');
+
+        // Get proper total qty
+        xhr = $.ajax({
+        	type: 'GET',
+        	url: '/gd/belt.php?style='+$style+'&type='+$type+'&color='+$color.replace(/ /g, ''),
+        	data: { },
+        	beforeSend: function() {
+                // $('#preview-pill').addClass('hidden');
+        	},
+        	success: function(data) { }
+        }).done(function(link) {
+            // Do something when everything is done.
+            // $('#preview-pill').removeClass('hidden');
+            $('.' + previewClass).attr('data-font-color', $font);
+            $('.' + previewClass).attr('data-image-link', link);
+            $('.' + previewClass).css({"background-image": "url('" + link + "')", "color": "#" + $font});
+
+            // If first item, set as default.
+            if($('#preview-pill-selection div').length == 1) {
+                $('.preview-pill').removeClass('active');
+                $('.' + previewClass).addClass('active');
+
+                $('#front-view, #back-view, #continue-view, #inside-view').css({"background-image": "url('" + link + "')", "color": "#" + $font});
+                $('.preview-text').css({"color": "#" + $font});
+            }
+        });
+    }
+}
+
+function checkPreview()
+{
+    // Check if item empty.
+    if ($.isEmptyObject(items)) {
+        // Reset item previews.
+        $('#preview-pill').addClass('hidden');
+        $('#preview-pill-selection').html('');
+        // Reset text.
+        $('#front-view, #back-view, #continue-view, #inside-view').removeAttr("style");
+        $('.preview-text').removeAttr("style");
+    } else {
+        $('#preview-pill').removeClass('hidden');
+    }
+}
+
+function checkViewport()
+{
+   var winWidth =  $(window).width();
+
+   if(winWidth < 768 ) {
+      return "xs";
+   } else if( winWidth <= 991) {
+      return "sm";
+   } else if( winWidth <= 1199) {
+      return "md";
+   } else {
+      return "lg";
+   }
 }

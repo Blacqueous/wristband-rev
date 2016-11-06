@@ -78,7 +78,8 @@
 
 		<script src="global/bootstrap/js/bootstrap.min.js"></script>
 
-        <script src="js/angular.min.js"></script>
+		<script src="js/angular.min.js"></script>
+        <script src="js/jquery.blink.js"></script>
 
         <!-- Javascript for wristband previews -->
         <!-- <script type="text/javascript" src="assets/js/canvg.js"></script>

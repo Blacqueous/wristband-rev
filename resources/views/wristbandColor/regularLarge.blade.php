@@ -29,83 +29,113 @@
             <button id="addCustomSolid" class="btn-add-custom-color"><i class="fa fa-plus"></i> Add Custom Color</button>
             <div id="main-color-content" class="main-color-content">
 
-                <div class="col-xs-4 box-color">
-                    <img class="PreviewColorModal" src="assets/images/src/custom.png"/>
-                    <button id="custom-color-button" data-toggle="modal" data-target="#ColorModal">Custom Color</button>
-                    <!-- Modal -->
-                    <div class="modal fade" id="ColorModal" role="dialog">
-                        <div class="modal-dialog">
-                            <!-- Modal content-->
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                    <h4 class="modal-title">Pick Custom Color</h4>
+                <div class="col-xs-12 col-sm-6 col-md-3 box-color-container">
+                    <div class="col-xs-12 box-color">
+                        <div class="col-xs-12 box-img-container">
+                            <img class="previewColorModal wb-unveil" src="assets/images/placeholder.png" data-src="assets/images/src/custom.png" />
+                        </div>
+                        <div class="col-xs-12 box-color-title">
+                            <button id="custom-color-button" class="btn-order" data-toggle="modal" data-target="#modalColorSolidLg">Custom Color</button>
+                        </div>
+                        <div class="col-xs-4 box-color-qty">
+                            <label>Adult</label>
+                            <input ref-size="ad" ref-style="solid" ref-title="" ref-color="" type="number" name="quantity[]" class="qtyin qtyin-ad-qty" placeholder="0" />
+                                <div class="fonttext">
+                                    <span class="fonttext-color">Text Color</span>
+                                    <div ref-font-name="black" ref-font-color="000000" class="fntin fntin-ad-clr" data-toggle="tooltip" data-placement="bottom" title="Select font color" style="background-color:#000000;"></div>
                                 </div>
-                                <div class="modal-body">
-                                    <?php // // include "solid-color-template.php";?>
-                                    <div class="clearfix"></div>
+                        </div>
+                        <div class="col-xs-4 box-color-qty">
+                            <label>Medium</label>
+                            <input ref-size="md" ref-style="solid" ref-title="" ref-color="" type="number" name="quantity[]" class="qtyin qtyin-md-qty" placeholder="0" />
+                                <div class="fonttext">
+                                    <span class="fonttext-color">Text Color</span>
+                                    <div ref-font-name="black" ref-font-color="000000" class="fntin fntin-md-clr" data-toggle="tooltip" data-placement="bottom" title="Select font color" style="background-color:#000000;"></div>
                                 </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                        <div class="col-xs-4 box-color-qty">
+                            <label>Youth</label>
+                            <input ref-size="yt" ref-style="solid" ref-title="" ref-color="" type="number" name="quantity[]" class="qtyin qtyin-yt-qty" placeholder="0" />
+                                <div class="fonttext">
+                                    <span class="fonttext-color">Text Color</span>
+                                    <div ref-font-name="black" ref-font-color="000000" class="fntin fntin-yt-clr" data-toggle="tooltip" data-placement="bottom" title="Select font color" style="background-color:#000000;"></div>
                                 </div>
+                        </div>
+                        <span class="view-more col-xs-12" data-toggle="collapse" data-target="#view_more_solid_reg_lg-CUSTOM0">View More Sizes</span>
+                        <div id="view_more_solid_reg_lg-CUSTOM0" class="col-xs-12 show-content collapse">
+                            <div class="col-xs-6 box-color-qty">
+                                <label>Extra Small</label>
+                                <input ref-size="xs" ref-style="solid" ref-title="" ref-color="" type="number" name="quantity[]" class="qtyin qtyin-xs-qty" placeholder="0"/>
+                                    <div class="fonttext">
+                                        <span class="fonttext-color">Text Color</span>
+                                        <div ref-font-name="black" ref-font-color="000000" class="fntin fntin-xs-clr" data-toggle="tooltip" data-placement="bottom" title="Select font color" style="background-color:#000000;"></div>
+                                    </div>
                             </div>
-                            <!-- End modal content -->
+                            <div class="col-xs-6 box-color-qty">
+                                <label>Extra Large</label>
+                                <input ref-size="xl" ref-style="solid" ref-title="" ref-color="" type="number" name="quantity[]" class="qtyin qtyin-xl-qty" placeholder="0"/>
+                                    <div class="fonttext">
+                                        <span class="fonttext-color">Text Color</span>
+                                        <div ref-font-name="black" ref-font-color="000000" class="fntin fntin-xl-clr" data-toggle="tooltip" data-placement="bottom" title="Select font color" style="background-color:#000000;"></div>
+                                    </div>
+                            </div>
                         </div>
-                    </div>
-                    <!-- End modal div -->
-                    <div class="clearfix"></div>
-                    <div class="col-xs-4 box-color-qty"><label>Adult Qty</label><input ref-size="ad" ref-style="solid" ref-title="" ref-color="" type="number" name="quantity[]" class="qtyin-adult-qty" placeholder="0" /></div>
-                    <div class="col-xs-4 box-color-qty"><label>Medium Qty</label><input ref-size="md" ref-style="solid" ref-title="" ref-color="" type="number" name="quantity[]" class="qtyin-medium-qty" placeholder="0" /></div>
-                    <div class="col-xs-4 box-color-qty"><label>Youth Qty</label><input ref-size="yt" ref-style="solid" ref-title="" ref-color="" type="number" name="quantity[]" class="qtyin-youth-qty" placeholder="0" /></div>
-                    <div class="clearfix"></div>
-                    <!-- Text color options -->
-                    <div class="color-text" style="display:none">
-                        <div class="col-sm-1">
-                            <?php // // include "colorAdult-template.php";?>
-                        </div>
-                        <div class="col-sm-1">
-                            <?php // // include "colorMedium-template.php";?>
-                        </div>
-                        <div class="col-sm-1">
-                            <?php // // include "colorYouth-template.php";?>
-                        </div>
-                        <div class="clearfix"></div>
-                    </div>
-                    <!-- End text color options -->
-                    <span class="view-more col-xs-12">View More Sizes</span>
-                    <div class="show-content collapse">
-                        <div class="col-xs-6 box-color-qty"><label>Extra Small Qty</label><input ref-size="xs" ref-style="solid" ref-title="" ref-color="" type="number" name="quantity[]" class="xt-small-qty" placeholder="0"/></div>
-                        <div class="col-xs-6 box-color-qty"><label>Extra Large Qty</label><input ref-size="xl" ref-style="solid" ref-title="" ref-color="" type="number" name="quantity[]" class="xt-large-qty" placeholder="0"/></div>
                     </div>
                 </div>
 
                 @foreach($colors['reg_lg']['solid'] as $key => $value)
-                <div class="col-xs-4 box-color">
-                    <img class="wb-unveil" src="assets/images/placeholder.png" data-src="{{ $value['image'] }}" />
-                        <div class="nocustom_pick">{{ $value['name'] }}</div>
-                        <div class="col-xs-4 box-color-qty"><label>Adult Qty</label><input ref-size="ad" ref-style="solid" ref-title="{{ $value['name'] }}" ref-color="@foreach($value['hex'] as $key => $val)@if($key!=0), @endif{{ $val }}@endforeach" type="number" name="quantity[]" class="qtyin-adult-qty" placeholder="0" /></div>
-                        <div class="col-xs-4 box-color-qty"><label>Medium Qty</label><input ref-size="md" ref-style="solid" ref-title="{{ $value['name'] }}" ref-color="@foreach($value['hex'] as $key => $val)@if($key!=0), @endif{{ $val }}@endforeach" type="number" name="quantity[]" class="qtyin-medium-qty" placeholder="0" /></div>
-                        <div class="col-xs-4 box-color-qty"><label>Youth Qty</label><input ref-size="yt" ref-style="solid" ref-title="{{ $value['name'] }}" ref-color="@foreach($value['hex'] as $key => $val)@if($key!=0), @endif{{ $val }}@endforeach" type="number" name="quantity[]" class="qtyin-youth-qty" placeholder="0" /></div>
-                        <div class="clearfix"></div>
-                        <!-- Text color options -->
-                        <div class="color-text" style="display:none">
-                            <div class="col-sm-1">
-                                <?php // // include "colorAdult-template.php";?>
-                            </div>
-                            <div class="col-sm-1">
-                                <?php // // include "colorMedium-template.php";?>
-                            </div>
-                            <div class="col-sm-1">
-                                <?php // // include "colorYouth-template.php";?>
-                            </div>
-                            <div class="clearfix"></div>
+                <div class="col-xs-12 col-sm-6 col-md-3 box-color-container">
+                    <div class="col-xs-12 box-color">
+                        <div class="col-xs-12 box-img-container">
+                            <img class="wb-unveil" src="assets/images/placeholder.png" data-src="{{ $value['image'] }}" />
                         </div>
-                        <!-- End text color options -->
-                        <span class="view-more col-xs-12">View More Sizes</span>
-                        <div class="show-content collapse">
-                            <div class="col-xs-6 box-color-qty"><label>Extra Small Qty</label><input ref-size="xs" ref-style="solid" ref-title="{{ $value['name'] }}" ref-color="@foreach($value['hex'] as $key => $val)@if($key!=0), @endif{{ $val }}@endforeach" type="number" name="quantity[]" class="xt-small-qty" placeholder="0"/></div>
-                            <div class="col-xs-6 box-color-qty"><label>Extra Large Qty</label><input ref-size="xl" ref-style="solid" ref-title="{{ $value['name'] }}" ref-color="@foreach($value['hex'] as $key => $val)@if($key!=0), @endif{{ $val }}@endforeach" type="number" name="quantity[]" class="xt-large-qty" placeholder="0"/></div>
+                        <div class="col-xs-12 box-color-title">
+                            <label>{{ $value['name'] }}</label>
                         </div>
+                        <div class="col-xs-4 box-color-qty">
+                            <label>Adult</label>
+                            <input ref-size="ad" ref-style="solid" ref-title="{{ $value['name'] }}" ref-color="@foreach($value['hex'] as $key => $val)@if($key!=0), @endif{{ $val }}@endforeach" type="number" name="quantity[]" class="qtyin qtyin-ad-qty" placeholder="0" />
+                                <div class="fonttext">
+                                    <span class="fonttext-color">Text Color</span>
+                                    <div ref-font-name="black" ref-font-color="000000" class="fntin fntin-ad-clr" data-toggle="tooltip" data-placement="bottom" title="Select font color" style="background-color:#000000;"></div>
+                                </div>
+                        </div>
+                        <div class="col-xs-4 box-color-qty">
+                            <label>Medium</label>
+                            <input ref-size="md" ref-style="solid" ref-title="{{ $value['name'] }}" ref-color="@foreach($value['hex'] as $key => $val)@if($key!=0), @endif{{ $val }}@endforeach" type="number" name="quantity[]" class="qtyin qtyin-md-qty" placeholder="0" />
+                                <div class="fonttext">
+                                    <span class="fonttext-color">Text Color</span>
+                                    <div ref-font-name="black" ref-font-color="000000" class="fntin fntin-md-clr" data-toggle="tooltip" data-placement="bottom" title="Select font color" style="background-color:#000000;"></div>
+                                </div>
+                        </div>
+                        <div class="col-xs-4 box-color-qty">
+                            <label>Youth</label>
+                            <input ref-size="yt" ref-style="solid" ref-title="{{ $value['name'] }}" ref-color="@foreach($value['hex'] as $key => $val)@if($key!=0), @endif{{ $val }}@endforeach" type="number" name="quantity[]" class="qtyin qtyin-yt-qty" placeholder="0" />
+                                <div class="fonttext">
+                                    <span class="fonttext-color">Text Color</span>
+                                    <div ref-font-name="black" ref-font-color="000000" class="fntin fntin-yt-clr" data-toggle="tooltip" data-placement="bottom" title="Select font color" style="background-color:#000000;"></div>
+                                </div>
+                        </div>
+                        <span class="view-more col-xs-12" data-toggle="collapse" data-target="#view_more_solid_reg_lg-@foreach($value['hex'] as $key => $val)@if($key!=0)-@endif{{ $val }}@endforeach">View More Sizes</span>
+                        <div id="view_more_solid_reg_lg-@foreach($value['hex'] as $key => $val)@if($key!=0)-@endif{{ $val }}@endforeach" class="col-xs-12 show-content collapse">
+                            <div class="col-xs-6 box-color-qty">
+                                <label>Extra Small</label>
+                                <input ref-size="xs" ref-style="solid" ref-title="{{ $value['name'] }}" ref-color="@foreach($value['hex'] as $key => $val)@if($key!=0), @endif{{ $val }}@endforeach" type="number" name="quantity[]" class="qtyin qtyin-xs-qty" placeholder="0"/>
+                                    <div class="fonttext">
+                                        <span class="fonttext-color">Text Color</span>
+                                        <div ref-font-name="black" ref-font-color="000000" class="fntin fntin-xs-clr" data-toggle="tooltip" data-placement="bottom" title="Select font color" style="background-color:#000000;"></div>
+                                    </div>
+                            </div>
+                            <div class="col-xs-6 box-color-qty">
+                                <label>Extra Large</label>
+                                <input ref-size="xl" ref-style="solid" ref-title="{{ $value['name'] }}" ref-color="@foreach($value['hex'] as $key => $val)@if($key!=0), @endif{{ $val }}@endforeach" type="number" name="quantity[]" class="qtyin qtyin-xl-qty" placeholder="0"/>
+                                    <div class="fonttext">
+                                        <span class="fonttext-color">Text Color</span>
+                                        <div ref-font-name="black" ref-font-color="000000" class="fntin fntin-xl-clr" data-toggle="tooltip" data-placement="bottom" title="Select font color" style="background-color:#000000;"></div>
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 @endforeach
 
@@ -123,82 +153,112 @@
             <button id="addCustomSegmented" class="btn-add-custom-color"><i class="fa fa-plus"></i> Add Custom Color</button>
             <div id="main-color-content" class="main-color-content">
 
-                <div class="col-xs-4 box-color">
-                    <img class="segPreviewColorModal" src="assets/images/src/custom.png"/>
-                    <button id="custom-color-button" data-toggle="modal" data-target="#ColorSegModal">Custom Color</button>
-                    <!-- Modal -->
-                    <div class="modal fade" id="ColorSegModal" role="dialog">
-                        <div class="modal-dialog">
-                            <!-- Modal content-->
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                    <h4 class="modal-title">Pick Custom Color</h4>
+                <div class="col-xs-12 col-sm-6 col-md-3 box-color-container">
+                    <div class="col-xs-12 box-color">
+                        <div class="col-xs-12 box-img-container">
+                            <img class="previewColorModal wb-unveil" src="assets/images/placeholder.png" data-src="assets/images/src/custom.png" />
+                        </div>
+                        <div class="col-xs-12 box-color-title">
+                            <button id="custom-color-button" class="btn-order" data-toggle="modal" data-target="#modalColorSegmentedLg">Custom Color</button>
+                        </div>
+                        <div class="col-xs-4 box-color-qty">
+                            <label>Adult</label>
+                            <input ref-size="ad" ref-style="segmented" ref-title="" ref-color="" type="number" name="quantity[]" class="qtyin qtyin-ad-qty" placeholder="0" />
+                                <div class="fonttext">
+                                    <span class="fonttext-color">Text Color</span>
+                                    <div ref-font-name="black" ref-font-color="000000" class="fntin fntin-ad-clr" data-toggle="tooltip" data-placement="bottom" title="Select font color" style="background-color:#000000;"></div>
                                 </div>
-                                <div class="modal-body">
-                                    <?php // // include "segmented-color-template.php";?>
-                                    <div class="clearfix"></div>
+                        </div>
+                        <div class="col-xs-4 box-color-qty">
+                            <label>Medium</label>
+                            <input ref-size="md" ref-style="segmented" ref-title="" ref-color="" type="number" name="quantity[]" class="qtyin qtyin-md-qty" placeholder="0" />
+                                <div class="fonttext">
+                                    <span class="fonttext-color">Text Color</span>
+                                    <div ref-font-name="black" ref-font-color="000000" class="fntin fntin-md-clr" data-toggle="tooltip" data-placement="bottom" title="Select font color" style="background-color:#000000;"></div>
                                 </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                        <div class="col-xs-4 box-color-qty">
+                            <label>Youth</label>
+                            <input ref-size="yt" ref-style="segmented" ref-title="" ref-color="" type="number" name="quantity[]" class="qtyin qtyin-yt-qty" placeholder="0" />
+                                <div class="fonttext">
+                                    <span class="fonttext-color">Text Color</span>
+                                    <div ref-font-name="black" ref-font-color="000000" class="fntin fntin-yt-clr" data-toggle="tooltip" data-placement="bottom" title="Select font color" style="background-color:#000000;"></div>
                                 </div>
+                        </div>
+                        <span class="view-more col-xs-12" data-toggle="collapse" data-target="#view_more_segmented_reg_lg-CUSTOM0">View More Sizes</span>
+                        <div id="view_more_segmented_reg_lg-CUSTOM0" class="col-xs-12 show-content collapse">
+                            <div class="col-xs-6 box-color-qty">
+                                <label>Extra Small</label>
+                                <input ref-size="xs" ref-style="segmented" ref-title="" ref-color="" type="number" name="quantity[]" class="qtyin qtyin-xs-qty" placeholder="0"/>
+                                    <div class="fonttext">
+                                        <span class="fonttext-color">Text Color</span>
+                                        <div ref-font-name="black" ref-font-color="000000" class="fntin fntin-xs-clr" data-toggle="tooltip" data-placement="bottom" title="Select font color" style="background-color:#000000;"></div>
+                                    </div>
                             </div>
-                            <!-- End modal content -->
+                            <div class="col-xs-6 box-color-qty">
+                                <label>Extra Large</label>
+                                <input ref-size="xl" ref-style="segmented" ref-title="" ref-color="" type="number" name="quantity[]" class="qtyin qtyin-xl-qty" placeholder="0"/>
+                                    <div class="fonttext">
+                                        <span class="fonttext-color">Text Color</span>
+                                        <div ref-font-name="black" ref-font-color="000000" class="fntin fntin-xl-clr" data-toggle="tooltip" data-placement="bottom" title="Select font color" style="background-color:#000000;"></div>
+                                    </div>
+                            </div>
                         </div>
-                    </div>
-                    <!-- End modal div -->
-                    <div class="clearfix"></div>
-                    <div class="col-xs-4 box-color-qty"><label>Adult Qty</label><input ref-size="ad" ref-style="segmented" ref-title="" ref-color="" type="number" name="quantity[]" class="qtyin-adult-qty" placeholder="0" /></div>
-                    <div class="col-xs-4 box-color-qty"><label>Medium Qty</label><input ref-size="md" ref-style="segmented" ref-title="" ref-color="" type="number" name="quantity[]" class="qtyin-medium-qty" placeholder="0" /></div>
-                    <div class="col-xs-4 box-color-qty"><label>Youth Qty</label><input ref-size="yt" ref-style="segmented" ref-title="" ref-color="" type="number" name="quantity[]" class="qtyin-youth-qty" placeholder="0" /></div>
-                    <div class="clearfix"></div>
-                    <!-- Text color options -->
-                    <div class="color-text" style="display:none">
-                        <div class="col-sm-1">
-                            <?php // // include "colorAdult-template.php";?>
-                        </div>
-                        <div class="col-sm-1">
-                            <?php // // include "colorMedium-template.php";?>
-                        </div>
-                        <div class="col-sm-1">
-                            <?php // // include "colorYouth-template.php";?>
-                        </div>
-                        <div class="clearfix"></div>
-                    </div>
-                    <!-- End text color options -->
-                    <span class="view-more col-xs-12">View More Sizes</span>
-                    <div class="show-content collapse">
-                        <div class="col-xs-6 box-color-qty"><label>Extra Small Qty</label><input ref-size="xs" ref-style="segmented" ref-title="" ref-color="" type="number" name="quantity[]" class="xt-small-qty" placeholder="0"/></div>
-                        <div class="col-xs-6 box-color-qty"><label>Extra Large Qty</label><input ref-size="xl" ref-style="segmented" ref-title="" ref-color="" type="number" name="quantity[]" class="xt-large-qty" placeholder="0"/></div>
                     </div>
                 </div>
 
                 @foreach($colors['reg_lg']['segmented'] as $key => $value)
-                <div class="col-xs-4 box-color">
-                    <img class="wb-unveil" src="assets/images/placeholder.png" data-src="{{ $value['image'] }}" />
-                    <div class="nocustom_pick">{{ $value['name'] }}</div>
-                    <div class="col-xs-4 box-color-qty"><label>Adult Qty</label><input ref-size="ad" ref-style="segmented" ref-title="{{ $value['name'] }}" ref-color="@foreach($value['hex'] as $key => $val)@if($key!=0), @endif{{ $val }}@endforeach" type="number" name="quantity[]" class="qtyin-adult-qty" placeholder="0" /></div>
-                    <div class="col-xs-4 box-color-qty"><label>Medium Qty</label><input ref-size="md" ref-style="segmented" ref-title="{{ $value['name'] }}" ref-color="@foreach($value['hex'] as $key => $val)@if($key!=0), @endif{{ $val }}@endforeach" type="number" name="quantity[]" class="qtyin-medium-qty" placeholder="0" /></div>
-                    <div class="col-xs-4 box-color-qty"><label>Youth Qty</label><input ref-size="yt" ref-style="segmented" ref-title="{{ $value['name'] }}" ref-color="@foreach($value['hex'] as $key => $val)@if($key!=0), @endif{{ $val }}@endforeach" type="number" name="quantity[]" class="qtyin-youth-qty" placeholder="0" /></div>
-                    <div class="clearfix"></div>
-                    <!-- Text color options -->
-                    <div class="color-text" style="display:none">
-                        <div class="col-sm-1">
-                            <?php // // include "colorAdult-template.php";?>
+                <div class="col-xs-12 col-sm-6 col-md-3 box-color-container">
+                    <div class="col-xs-12 box-color">
+                        <div class="col-xs-12 box-img-container">
+                            <img class="wb-unveil" src="assets/images/placeholder.png" data-src="{{ $value['image'] }}" />
                         </div>
-                        <div class="col-sm-1">
-                            <?php // // include "colorMedium-template.php";?>
+                        <div class="col-xs-12 box-color-title">
+                            <label>{{ $value['name'] }}</label>
                         </div>
-                        <div class="col-sm-1">
-                            <?php // // include "colorYouth-template.php";?>
+                        <div class="col-xs-4 box-color-qty">
+                            <label>Adult</label>
+                            <input ref-size="ad" ref-style="segmented" ref-title="{{ $value['name'] }}" ref-color="@foreach($value['hex'] as $key => $val)@if($key!=0), @endif{{ $val }}@endforeach" type="number" name="quantity[]" class="qtyin qtyin-ad-qty" placeholder="0" />
+                                <div class="fonttext">
+                                    <span class="fonttext-color">Text Color</span>
+                                    <div ref-font-name="black" ref-font-color="000000" class="fntin fntin-ad-clr" data-toggle="tooltip" data-placement="bottom" title="Select font color" style="background-color:#000000;"></div>
+                                </div>
                         </div>
-                        <div class="clearfix"></div>
-                    </div>
-                    <!-- End text color options -->
-                    <span class="view-more col-xs-12">View More Sizes</span>
-                    <div class="show-content collapse">
-                        <div class="col-xs-6 box-color-qty"><label>Extra Small Qty</label><input ref-size="xs" ref-style="segmented" ref-title="{{ $value['name'] }}" ref-color="@foreach($value['hex'] as $key => $val)@if($key!=0), @endif{{ $val }}@endforeach" type="number" name="quantity[]" class="xt-small-qty" placeholder="0"/></div>
-                        <div class="col-xs-6 box-color-qty"><label>Extra Large Qty</label><input ref-size="xl" ref-style="segmented" ref-title="{{ $value['name'] }}" ref-color="@foreach($value['hex'] as $key => $val)@if($key!=0), @endif{{ $val }}@endforeach" type="number" name="quantity[]" class="xt-large-qty" placeholder="0"/></div>
+                        <div class="col-xs-4 box-color-qty">
+                            <label>Medium</label>
+                            <input ref-size="md" ref-style="segmented" ref-title="{{ $value['name'] }}" ref-color="@foreach($value['hex'] as $key => $val)@if($key!=0), @endif{{ $val }}@endforeach" type="number" name="quantity[]" class="qtyin qtyin-md-qty" placeholder="0" />
+                                <div class="fonttext">
+                                    <span class="fonttext-color">Text Color</span>
+                                    <div ref-font-name="black" ref-font-color="000000" class="fntin fntin-md-clr" data-toggle="tooltip" data-placement="bottom" title="Select font color" style="background-color:#000000;"></div>
+                                </div>
+                        </div>
+                        <div class="col-xs-4 box-color-qty">
+                            <label>Youth</label>
+                            <input ref-size="yt" ref-style="segmented" ref-title="{{ $value['name'] }}" ref-color="@foreach($value['hex'] as $key => $val)@if($key!=0), @endif{{ $val }}@endforeach" type="number" name="quantity[]" class="qtyin qtyin-yt-qty" placeholder="0" />
+                                <div class="fonttext">
+                                    <span class="fonttext-color">Text Color</span>
+                                    <div ref-font-name="black" ref-font-color="000000" class="fntin fntin-yt-clr" data-toggle="tooltip" data-placement="bottom" title="Select font color" style="background-color:#000000;"></div>
+                                </div>
+                        </div>
+                        <span class="view-more col-xs-12" data-toggle="collapse" data-target="#view_more_segmented_reg_lg-@foreach($value['hex'] as $key => $val)@if($key!=0)-@endif{{ $val }}@endforeach">View More Sizes</span>
+                        <div id="view_more_segmented_reg_lg-@foreach($value['hex'] as $key => $val)@if($key!=0)-@endif{{ $val }}@endforeach" class="col-xs-12 show-content collapse">
+                            <div class="col-xs-6 box-color-qty">
+                                <label>Extra Small</label>
+                                <input ref-size="xs" ref-style="segmented" ref-title="{{ $value['name'] }}" ref-color="@foreach($value['hex'] as $key => $val)@if($key!=0), @endif{{ $val }}@endforeach" type="number" name="quantity[]" class="qtyin qtyin-xs-qty" placeholder="0"/>
+                                    <div class="fonttext">
+                                        <span class="fonttext-color">Text Color</span>
+                                        <div ref-font-name="black" ref-font-color="000000" class="fntin fntin-xs-clr" data-toggle="tooltip" data-placement="bottom" title="Select font color" style="background-color:#000000;"></div>
+                                    </div>
+                            </div>
+                            <div class="col-xs-6 box-color-qty">
+                                <label>Extra Large</label>
+                                <input ref-size="xl" ref-style="segmented" ref-title="{{ $value['name'] }}" ref-color="@foreach($value['hex'] as $key => $val)@if($key!=0), @endif{{ $val }}@endforeach" type="number" name="quantity[]" class="qtyin qtyin-xl-qty" placeholder="0"/>
+                                    <div class="fonttext">
+                                        <span class="fonttext-color">Text Color</span>
+                                        <div ref-font-name="black" ref-font-color="000000" class="fntin fntin-xl-clr" data-toggle="tooltip" data-placement="bottom" title="Select font color" style="background-color:#000000;"></div>
+                                    </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 @endforeach
@@ -217,81 +277,112 @@
             <button id="addCustomSwirl" class="btn-add-custom-color"><i class="fa fa-plus"></i> Add Custom Color</button>
             <div id="main-color-content" class="main-color-content">
 
-                <div class="col-xs-4 box-color">
-                    <img class="swlPreviewColorModal" src="assets/images/src/custom.png"/>
-                    <button id="custom-color-button" data-toggle="modal" data-target="#ColorSwirlModal">Custom Color</button>
-                    <!-- Modal -->
-                    <div class="modal fade" id="ColorSwirlModal" role="dialog">
-                        <div class="modal-dialog">
-                            <!-- Modal content-->
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                    <h4 class="modal-title">Pick Custom Color</h4>
+                <div class="col-xs-12 col-sm-6 col-md-3 box-color-container">
+                    <div class="col-xs-12 box-color">
+                        <div class="col-xs-12 box-img-container">
+                            <img class="previewColorModal wb-unveil" src="assets/images/placeholder.png" data-src="assets/images/src/custom.png" />
+                        </div>
+                        <div class="col-xs-12 box-color-title">
+                            <button id="custom-color-button" class="btn-order" data-toggle="modal" data-target="#modalColorSwirlLg">Custom Color</button>
+                        </div>
+                        <div class="col-xs-4 box-color-qty">
+                            <label>Adult</label>
+                            <input ref-size="ad" ref-style="swirl" ref-title="" ref-color="" type="number" name="quantity[]" class="qtyin qtyin-ad-qty" placeholder="0" />
+                                <div class="fonttext">
+                                    <span class="fonttext-color">Text Color</span>
+                                    <div ref-font-name="black" ref-font-color="000000" class="fntin fntin-ad-clr" data-toggle="tooltip" data-placement="bottom" title="Select font color" style="background-color:#000000;"></div>
                                 </div>
-                                <div class="modal-body">
-                                    <?php // // include "swirl-color-template.php";?>
-                                    <div class="clearfix"></div>
+                        </div>
+                        <div class="col-xs-4 box-color-qty">
+                            <label>Medium</label>
+                            <input ref-size="md" ref-style="swirl" ref-title="" ref-color="" type="number" name="quantity[]" class="qtyin qtyin-md-qty" placeholder="0" />
+                                <div class="fonttext">
+                                    <span class="fonttext-color">Text Color</span>
+                                    <div ref-font-name="black" ref-font-color="000000" class="fntin fntin-md-clr" data-toggle="tooltip" data-placement="bottom" title="Select font color" style="background-color:#000000;"></div>
                                 </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                        <div class="col-xs-4 box-color-qty">
+                            <label>Youth</label>
+                            <input ref-size="yt" ref-style="swirl" ref-title="" ref-color="" type="number" name="quantity[]" class="qtyin qtyin-yt-qty" placeholder="0" />
+                                <div class="fonttext">
+                                    <span class="fonttext-color">Text Color</span>
+                                    <div ref-font-name="black" ref-font-color="000000" class="fntin fntin-yt-clr" data-toggle="tooltip" data-placement="bottom" title="Select font color" style="background-color:#000000;"></div>
                                 </div>
+                        </div>
+                        <span class="view-more col-xs-12" data-toggle="collapse" data-target="#view_more_swirl_reg_lg-CUSTOM0">View More Sizes</span>
+                        <div id="view_more_swirl_reg_lg-CUSTOM0" class="col-xs-12 show-content collapse">
+                            <div class="col-xs-6 box-color-qty">
+                                <label>Extra Small</label>
+                                <input ref-size="xs" ref-style="swirl" ref-title="" ref-color="" type="number" name="quantity[]" class="qtyin qtyin-xs-qty" placeholder="0"/>
+                                    <div class="fonttext">
+                                        <span class="fonttext-color">Text Color</span>
+                                        <div ref-font-name="black" ref-font-color="000000" class="fntin fntin-xs-clr" data-toggle="tooltip" data-placement="bottom" title="Select font color" style="background-color:#000000;"></div>
+                                    </div>
                             </div>
-                            <!-- End modal content -->
+                            <div class="col-xs-6 box-color-qty">
+                                <label>Extra Large</label>
+                                <input ref-size="xl" ref-style="swirl" ref-title="" ref-color="" type="number" name="quantity[]" class="qtyin qtyin-xl-qty" placeholder="0"/>
+                                    <div class="fonttext">
+                                        <span class="fonttext-color">Text Color</span>
+                                        <div ref-font-name="black" ref-font-color="000000" class="fntin fntin-xl-clr" data-toggle="tooltip" data-placement="bottom" title="Select font color" style="background-color:#000000;"></div>
+                                    </div>
+                            </div>
                         </div>
-                    </div>
-                    <!-- End Modal Div -->
-                    <div class="col-xs-4 box-color-qty"><label>Adult Qty</label><input ref-size="ad" ref-style="swirl" ref-title="" ref-color="" type="number" name="quantity[]" class="qtyin-adult-qty" placeholder="0" /></div>
-                    <div class="col-xs-4 box-color-qty"><label>Medium Qty</label><input ref-size="md" ref-style="swirl" ref-title="" ref-color="" type="number" name="quantity[]" class="qtyin-medium-qty" placeholder="0" /></div>
-                    <div class="col-xs-4 box-color-qty"><label>Youth Qty</label><input ref-size="yt" ref-style="swirl" ref-title="" ref-color="" type="number" name="quantity[]" class="qtyin-youth-qty" placeholder="0" /></div>
-                    <div class="clearfix"></div>
-                    <!-- Text color options -->
-                    <div class="color-text" style="display:none">
-                        <div class="col-sm-1">
-                            <?php // // include "colorAdult-template.php";?>
-                        </div>
-                        <div class="col-sm-1">
-                            <?php // // include "colorMedium-template.php";?>
-                        </div>
-                        <div class="col-sm-1">
-                            <?php // // include "colorYouth-template.php";?>
-                        </div>
-                        <div class="clearfix"></div>
-                    </div>
-                    <!-- End text color options -->
-                    <span class="view-more col-xs-12">View More Sizes</span>
-                    <div class="show-content collapse">
-                        <div class="col-xs-6 box-color-qty"><label>Extra Small Qty</label><input ref-size="xs" ref-style="swirl" ref-title="" ref-color="" type="number" name="quantity[]" class="xt-small-qty" placeholder="0"/></div>
-                        <div class="col-xs-6 box-color-qty"><label>Extra Large Qty</label><input ref-size="xl" ref-style="swirl" ref-title="" ref-color="" type="number" name="quantity[]" class="xt-large-qty" placeholder="0"/></div>
                     </div>
                 </div>
 
                 @foreach($colors['reg_lg']['swirl'] as $key => $value)
-                <div class="col-xs-4 box-color">
-                    <img class="wb-unveil" src="assets/images/placeholder.png" data-src="{{ $value['image'] }}" />
-                    <div class="nocustom_pick">{{ $value['name'] }}</div>
-                    <div class="col-xs-4 box-color-qty"><label>Adult Qty</label><input ref-size="ad" ref-style="swirl" ref-title="{{ $value['name'] }}" ref-color="@foreach($value['hex'] as $key => $val)@if($key!=0), @endif{{ $val }}@endforeach" type="number" name="quantity[]" class="qtyin-adult-qty" placeholder="0" /></div>
-                    <div class="col-xs-4 box-color-qty"><label>Medium Qty</label><input ref-size="md" ref-style="swirl" ref-title="{{ $value['name'] }}" ref-color="@foreach($value['hex'] as $key => $val)@if($key!=0), @endif{{ $val }}@endforeach" type="number" name="quantity[]" class="qtyin-medium-qty" placeholder="0" /></div>
-                    <div class="col-xs-4 box-color-qty"><label>Youth Qty</label><input ref-size="yt" ref-style="swirl" ref-title="{{ $value['name'] }}" ref-color="@foreach($value['hex'] as $key => $val)@if($key!=0), @endif{{ $val }}@endforeach" type="number" name="quantity[]" class="qtyin-youth-qty" placeholder="0" /></div>
-                    <div class="clearfix"></div>
-                    <!-- Text color options -->
-                    <div class="color-text" style="display:none">
-                        <div class="col-sm-1">
-                            <?php // // include "colorAdult-template.php";?>
+                <div class="col-xs-12 col-sm-6 col-md-3 box-color-container">
+                    <div class="col-xs-12 box-color">
+                        <div class="col-xs-12 box-img-container">
+                            <img class="wb-unveil" src="assets/images/placeholder.png" data-src="{{ $value['image'] }}" />
                         </div>
-                        <div class="col-sm-1">
-                            <?php // // include "colorMedium-template.php";?>
+                        <div class="col-xs-12 box-color-title">
+                            <label>{{ $value['name'] }}</label>
                         </div>
-                        <div class="col-sm-1">
-                            <?php // // include "colorYouth-template.php";?>
+                        <div class="col-xs-4 box-color-qty">
+                            <label>Adult</label>
+                            <input ref-size="ad" ref-style="swirl" ref-title="{{ $value['name'] }}" ref-color="@foreach($value['hex'] as $key => $val)@if($key!=0), @endif{{ $val }}@endforeach" type="number" name="quantity[]" class="qtyin qtyin-ad-qty" placeholder="0" />
+                                <div class="fonttext">
+                                    <span class="fonttext-color">Text Color</span>
+                                    <div ref-font-name="black" ref-font-color="000000" class="fntin fntin-ad-clr" data-toggle="tooltip" data-placement="bottom" title="Select font color" style="background-color:#000000;"></div>
+                                </div>
                         </div>
-                        <div class="clearfix"></div>
-                    </div>
-                    <!-- End text color options -->
-                    <span class="view-more col-xs-12">View More Sizes</span>
-                    <div class="show-content collapse">
-                        <div class="col-xs-6 box-color-qty"><label>Extra Small Qty</label><input ref-size="xs" ref-style="swirl" ref-title="{{ $value['name'] }}" ref-color="@foreach($value['hex'] as $key => $val)@if($key!=0), @endif{{ $val }}@endforeach" type="number" name="quantity[]" class="xt-small-qty" placeholder="0"/></div>
-                        <div class="col-xs-6 box-color-qty"><label>Extra Large Qty</label><input ref-size="xl" ref-style="swirl" ref-title="{{ $value['name'] }}" ref-color="@foreach($value['hex'] as $key => $val)@if($key!=0), @endif{{ $val }}@endforeach" type="number" name="quantity[]" class="xt-large-qty" placeholder="0"/></div>
+                        <div class="col-xs-4 box-color-qty">
+                            <label>Medium</label>
+                            <input ref-size="md" ref-style="swirl" ref-title="{{ $value['name'] }}" ref-color="@foreach($value['hex'] as $key => $val)@if($key!=0), @endif{{ $val }}@endforeach" type="number" name="quantity[]" class="qtyin qtyin-md-qty" placeholder="0" />
+                                <div class="fonttext">
+                                    <span class="fonttext-color">Text Color</span>
+                                    <div ref-font-name="black" ref-font-color="000000" class="fntin fntin-md-clr" data-toggle="tooltip" data-placement="bottom" title="Select font color" style="background-color:#000000;"></div>
+                                </div>
+                        </div>
+                        <div class="col-xs-4 box-color-qty">
+                            <label>Youth</label>
+                            <input ref-size="yt" ref-style="swirl" ref-title="{{ $value['name'] }}" ref-color="@foreach($value['hex'] as $key => $val)@if($key!=0), @endif{{ $val }}@endforeach" type="number" name="quantity[]" class="qtyin qtyin-yt-qty" placeholder="0" />
+                                <div class="fonttext">
+                                    <span class="fonttext-color">Text Color</span>
+                                    <div ref-font-name="black" ref-font-color="000000" class="fntin fntin-yt-clr" data-toggle="tooltip" data-placement="bottom" title="Select font color" style="background-color:#000000;"></div>
+                                </div>
+                        </div>
+                        <span class="view-more col-xs-12" data-toggle="collapse" data-target="#view_more_swirl_reg_lg-@foreach($value['hex'] as $key => $val)@if($key!=0)-@endif{{ $val }}@endforeach">View More Sizes</span>
+                        <div id="view_more_swirl_reg_lg-@foreach($value['hex'] as $key => $val)@if($key!=0)-@endif{{ $val }}@endforeach" class="col-xs-12 show-content collapse">
+                            <div class="col-xs-6 box-color-qty">
+                                <label>Extra Small</label>
+                                <input ref-size="xs" ref-style="swirl" ref-title="{{ $value['name'] }}" ref-color="@foreach($value['hex'] as $key => $val)@if($key!=0), @endif{{ $val }}@endforeach" type="number" name="quantity[]" class="qtyin qtyin-xs-qty" placeholder="0"/>
+                                    <div class="fonttext">
+                                        <span class="fonttext-color">Text Color</span>
+                                        <div ref-font-name="black" ref-font-color="000000" class="fntin fntin-xs-clr" data-toggle="tooltip" data-placement="bottom" title="Select font color" style="background-color:#000000;"></div>
+                                    </div>
+                            </div>
+                            <div class="col-xs-6 box-color-qty">
+                                <label>Extra Large</label>
+                                <input ref-size="xl" ref-style="swirl" ref-title="{{ $value['name'] }}" ref-color="@foreach($value['hex'] as $key => $val)@if($key!=0), @endif{{ $val }}@endforeach" type="number" name="quantity[]" class="qtyin qtyin-xl-qty" placeholder="0"/>
+                                    <div class="fonttext">
+                                        <span class="fonttext-color">Text Color</span>
+                                        <div ref-font-name="black" ref-font-color="000000" class="fntin fntin-xl-clr" data-toggle="tooltip" data-placement="bottom" title="Select font color" style="background-color:#000000;"></div>
+                                    </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 @endforeach
@@ -310,31 +401,57 @@
             <div id="main-color-content" class="main-color-content">
 
                 @foreach($colors['reg_lg']['glow'] as $key => $value)
-                <div class="col-xs-4 box-color">
-                    <img class="wb-unveil" src="assets/images/placeholder.png" data-src="{{ $value['image'] }}" />
-                    <div class="nocustom_pick">{{ $value['name'] }}</div>
-                    <div class="col-xs-4 box-color-qty"><label>Adult Qty</label><input ref-size="ad" ref-style="glow" ref-title="{{ $value['name'] }}" ref-color="@foreach($value['hex'] as $key => $val)@if($key!=0), @endif{{ $val }}@endforeach" type="number" name="quantity[]" class="qtyin-adult-qty" placeholder="0" /></div>
-                    <div class="col-xs-4 box-color-qty"><label>Medium Qty</label><input ref-size="md" ref-style="glow" ref-title="{{ $value['name'] }}" ref-color="@foreach($value['hex'] as $key => $val)@if($key!=0), @endif{{ $val }}@endforeach" type="number" name="quantity[]" class="qtyin-medium-qty" placeholder="0" /></div>
-                    <div class="col-xs-4 box-color-qty"><label>Youth Qty</label><input ref-size="yt" ref-style="glow" ref-title="{{ $value['name'] }}" ref-color="@foreach($value['hex'] as $key => $val)@if($key!=0), @endif{{ $val }}@endforeach" type="number" name="quantity[]" class="qtyin-youth-qty" placeholder="0" /></div>
-                    <div class="clearfix"></div>
-                    <!-- Text color options -->
-                    <div class="color-text" style="display:none">
-                        <div class="col-sm-1">
-                            <?php // // include "colorAdult-template.php";?>
+                <div class="col-xs-12 col-sm-6 col-md-3 box-color-container">
+                    <div class="col-xs-12 box-color">
+                        <div class="col-xs-12 box-img-container">
+                            <img class="wb-unveil" src="assets/images/placeholder.png" data-src="{{ $value['image'] }}" />
                         </div>
-                        <div class="col-sm-1">
-                            <?php // // include "colorMedium-template.php";?>
+                        <div class="col-xs-12 box-color-title">
+                            <label>{{ $value['name'] }}</label>
                         </div>
-                        <div class="col-sm-1">
-                            <?php // // include "colorYouth-template.php";?>
+                        <div class="col-xs-4 box-color-qty">
+                            <label>Adult</label>
+                            <input ref-size="ad" ref-style="glow" ref-title="{{ $value['name'] }}" ref-color="@foreach($value['hex'] as $key => $val)@if($key!=0), @endif{{ $val }}@endforeach" type="number" name="quantity[]" class="qtyin qtyin-ad-qty" placeholder="0" />
+                                <div class="fonttext">
+                                    <span class="fonttext-color">Text Color</span>
+                                    <div ref-font-name="black" ref-font-color="000000" class="fntin fntin-ad-clr" data-toggle="tooltip" data-placement="bottom" title="Select font color" style="background-color:#000000;"></div>
+                                </div>
                         </div>
-                        <div class="clearfix"></div>
-                    </div>
-                    <!-- End text color options -->
-                    <span class="view-more col-xs-12">View More Sizes</span>
-                    <div class="show-content collapse">
-                        <div class="col-xs-6 box-color-qty"><label>Extra Small Qty</label><input ref-size="xs" ref-style="glow" ref-title="{{ $value['name'] }}" ref-color="@foreach($value['hex'] as $key => $val)@if($key!=0), @endif{{ $val }}@endforeach" type="number" name="quantity[]" class="xt-small-qty" placeholder="0"/></div>
-                        <div class="col-xs-6 box-color-qty"><label>Extra Large Qty</label><input ref-size="xl" ref-style="glow" ref-title="{{ $value['name'] }}" ref-color="@foreach($value['hex'] as $key => $val)@if($key!=0), @endif{{ $val }}@endforeach" type="number" name="quantity[]" class="xt-large-qty" placeholder="0"/></div>
+                        <div class="col-xs-4 box-color-qty">
+                            <label>Medium</label>
+                            <input ref-size="md" ref-style="glow" ref-title="{{ $value['name'] }}" ref-color="@foreach($value['hex'] as $key => $val)@if($key!=0), @endif{{ $val }}@endforeach" type="number" name="quantity[]" class="qtyin qtyin-md-qty" placeholder="0" />
+                                <div class="fonttext">
+                                    <span class="fonttext-color">Text Color</span>
+                                    <div ref-font-name="black" ref-font-color="000000" class="fntin fntin-md-clr" data-toggle="tooltip" data-placement="bottom" title="Select font color" style="background-color:#000000;"></div>
+                                </div>
+                        </div>
+                        <div class="col-xs-4 box-color-qty">
+                            <label>Youth</label>
+                            <input ref-size="yt" ref-style="glow" ref-title="{{ $value['name'] }}" ref-color="@foreach($value['hex'] as $key => $val)@if($key!=0), @endif{{ $val }}@endforeach" type="number" name="quantity[]" class="qtyin qtyin-yt-qty" placeholder="0" />
+                                <div class="fonttext">
+                                    <span class="fonttext-color">Text Color</span>
+                                    <div ref-font-name="black" ref-font-color="000000" class="fntin fntin-yt-clr" data-toggle="tooltip" data-placement="bottom" title="Select font color" style="background-color:#000000;"></div>
+                                </div>
+                        </div>
+                        <span class="view-more col-xs-12" data-toggle="collapse" data-target="#view_more_glow_reg_lg-@foreach($value['hex'] as $key => $val)@if($key!=0)-@endif{{ $val }}@endforeach">View More Sizes</span>
+                        <div id="view_more_glow_reg_lg-@foreach($value['hex'] as $key => $val)@if($key!=0)-@endif{{ $val }}@endforeach" class="col-xs-12 show-content collapse">
+                            <div class="col-xs-6 box-color-qty">
+                                <label>Extra Small</label>
+                                <input ref-size="xs" ref-style="glow" ref-title="{{ $value['name'] }}" ref-color="@foreach($value['hex'] as $key => $val)@if($key!=0), @endif{{ $val }}@endforeach" type="number" name="quantity[]" class="qtyin qtyin-xs-qty" placeholder="0"/>
+                                    <div class="fonttext">
+                                        <span class="fonttext-color">Text Color</span>
+                                        <div ref-font-name="black" ref-font-color="000000" class="fntin fntin-xs-clr" data-toggle="tooltip" data-placement="bottom" title="Select font color" style="background-color:#000000;"></div>
+                                    </div>
+                            </div>
+                            <div class="col-xs-6 box-color-qty">
+                                <label>Extra Large</label>
+                                <input ref-size="xl" ref-style="glow" ref-title="{{ $value['name'] }}" ref-color="@foreach($value['hex'] as $key => $val)@if($key!=0), @endif{{ $val }}@endforeach" type="number" name="quantity[]" class="qtyin qtyin-xl-qty" placeholder="0"/>
+                                    <div class="fonttext">
+                                        <span class="fonttext-color">Text Color</span>
+                                        <div ref-font-name="black" ref-font-color="000000" class="fntin fntin-xl-clr" data-toggle="tooltip" data-placement="bottom" title="Select font color" style="background-color:#000000;"></div>
+                                    </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 @endforeach

@@ -362,43 +362,52 @@ ORDER CSS
     margin-top:10px;
 }
 
-.box-color{
+.box-color {
     background-color: #fff;
-    padding: 26px 8px;
-    width: 22%;
+    padding: 20px;
     border: 1px solid #A1A1A1;
     border-radius: 2px;
-    margin: 10px;
-    min-height: 500px;
+    min-height: 445px;
     text-align: center;
+}
+
+.box-color.with-font  {
+    min-height: 535px;
+}
+
+.box-color-container {
+    padding: 2px;
 }
 
 .box-color input {
-    width: 100%;
-    text-align: center;
-    border: 1px solid #cbc;
+    border: 1px solid #079ca5;
     border-radius: 2px;
-    color: #8f8f8f;
+    color: #8F8F8F;
+    text-align: center;
+    width: 100%;
 }
 
-.box-color label{
-    color:#A1A1A1;;
+.box-color label {
+    color: #A1A1A1;
+    font-weight: normal;
 }
 
- .box-thumb  img{
-    width:100%;
+.box-thumb img {
+    max-height: 100%;
+    max-width: 100%;
 }
 
-.box-color img{
-    width:100%;
+.box-color img {
+    max-height: 189px;
+    max-width: 100%;
 }
 
-.box-color .col-sm-4{
-    margin-bottom:26px;
+.box-color .col-sm-4 {
+    margin-bottom: 26px;
 }
 
-.tab-content h3{
-    color:#079ca5;
+.tab-content h3 {
+    color: #079ca5;
     margin-left: 10px;
 }
 
@@ -409,35 +418,35 @@ div#main-color-content {
 }
 
 .view-more {
-    cursor: pointer;
-    text-align: center;
-    color: #079ca5;
-    font-size: 12px;
-    padding: 8px 46px;
-    margin-bottom: 18px;
-    /*margin-left: 23px;*/
-    top: 12px;
+    background: #FAFAFA;
     border: 1px solid;
-}
-
-.fntin{
-    /*background-image: url(/assets/images/src/clr_bg.png);
-	    margin-top:10px;
-	*/
-    border: 1px solid #079ca5;
-    border-radius: 2px;
     cursor: pointer;
-    height:20px;
-
+    color: #079CA5;
+    font-size: 12px;
+    margin-bottom: 18px;
+    padding: 8px 46px;
+    text-align: center;
+    top: 12px;
 }
 
-.color-text .col-sm-1{
+.view-more:hover {
+    color: #1ABC9C;
+}
+
+.fntin {
+    border: 1px solid none;
+    border-radius: 4px;
+    cursor: pointer;
+    height: 25px;
+}
+
+.color-text .col-sm-1 {
     padding: 0px;
 }
 
 .show-content {
-    margin-top: 12px;
-    margin-bottom:12px;
+    margin-top: 5px;
+    padding: 0px;
 }
 
 .wrist-color-quantity {
@@ -646,7 +655,7 @@ div#order-summary {
     color:#212f3d;
 }
 
-.fclip-1, .fclip-2, .fclip-3, .bclip-1, .bclip-2, #custom-color-button, .cclip-1, .cclip-2, #font-button, .btn-add-custom-color, #free-keychain-qty{
+.fclip-1, .fclip-2, .fclip-3, .bclip-1, .bclip-2, .cclip-1, .cclip-2, #font-button, .btn-add-custom-color, #free-keychain-qty{
     background-color: #17a589;
     color: #fff;
     border: 1px solid  #117864 ;
@@ -677,10 +686,6 @@ div#order-summary {
 
 .done-button-fwb:hover{
 	background-color: #FFC107;
-}
-
-button#custom-color-button {
-    margin: 6px 56px;
 }
 
 .btn-add-custom-color{
@@ -833,11 +838,21 @@ b:hover{
 }
 
 .preview-pill {
+    background-position: 0px -15px;
+    background-repeat: no-repeat;
+    background-size: 100% 200%;
     border-radius: 50px!important;
     cursor: pointer;
+    display: inline-block;
     height: 30px;
     line-height: 30px;
+    margin: 1px;
+    opacity: 0.5;
     width: 30px;
+}
+
+.preview-pill.active {
+    opacity: 1;
 }
 
 #preview-pane #front-view, #preview-pane #back-view {
@@ -1203,7 +1218,8 @@ table.fwb-title {
     text-transform: uppercase;
 }
 
-span.fonttext-color{
+span.fonttext-color {
+    color: #A1A1A1;
 	font-size: 9px;
 }
 
@@ -1238,9 +1254,11 @@ span.fonttext-color{
 .band {
 	background-image:url('/gd/img/belt/base.png');
 	height: 54px;
+    transition: all ease .2s;
 }
 
 .band .preview-text {
+    color: #000000;
     height: 54px;
     line-height: 54px;
 }
@@ -1248,6 +1266,7 @@ span.fonttext-color{
 .band-fig {
 	background-image:url('/gd/img/belt/fig-base.png');
 	height: 104px;
+    transition: all ease .2s;
 }
 
 .band-fig .preview-text {
@@ -1261,4 +1280,32 @@ span.fonttext-color{
 
 .row-header-step {
     margin-bottom: 20px!important;
+}
+
+.box-img-container {
+    padding: 10px 0px 0px 0px;
+    height: 199px;
+}
+
+.box-color-title {
+    display: table;
+    min-height: 45px;
+}
+
+.box-color-title button {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.box-color-title label {
+    font-size: 16px;
+    font-weight: normal;
+    color: #079ca5;
+    display: table-cell;
+    margin: 0px;
+    vertical-align: middle;
+}
+
+body {
+	background: url('img/bg.jpg');
 }

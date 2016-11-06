@@ -960,8 +960,9 @@ body, a, [input type="radio"] , [input type="checkbox"]{
     width: 48%!important;
 	}
 
-	.box-color input {
-    width: 100%!important;}
+.box-color input {
+    /*width: 100%!important;*/
+}
 
   #footer-link-main, #footer-link-secondary, #footer-text{
 	float:none!important;
@@ -974,8 +975,8 @@ body, a, [input type="radio"] , [input type="checkbox"]{
   }
 
   .box-color{
-	  width:100%!important;
-	  float:none!important;
+	  /*width:100%!important;
+	  float:none!important;*/
   }
 
   .search{
@@ -1114,17 +1115,17 @@ body, a, [input type="radio"] , [input type="checkbox"]{
 	}
 
 	.i-input {
-		margin-left: 2px!important;
+		/*margin-left: 2px!important;*/
 	}
 
 	.fb-select img {
-		width: 10px!important;
-		height: 10px!important;
+		/*width: 10px!important;
+		height: 10px!important;*/
 	}
 
 	.c-select img {
-		width: 10px!important;
-		height: 10px!important;
+		/*width: 10px!important;
+		height: 10px!important;*/
 	}
 
 	span.start-fc{
@@ -1228,7 +1229,7 @@ body, a, [input type="radio"] , [input type="checkbox"]{
 	}
 
 	.c-input{
-		margin-left: -6px!important;
+		/*margin-left: -6px!important;*/
 	}
 
 	.cont-p img {
@@ -1257,7 +1258,7 @@ body, a, [input type="radio"] , [input type="checkbox"]{
 	}
 
 	.galleryimg {
-    width: 50px!important;
+    /*width: 50px!important;*/
 	}
 
 	ul.price-sidebar img {
@@ -1327,9 +1328,8 @@ body, a, [input type="radio"] , [input type="checkbox"]{
 		left: 184px!important;
 	}
 	.col-xs-6 {
-		width: 100%!important;
+		/*width: 100%!important;*/
 	}
-
 
 	.clip-sec {
     width: 44%!important;

@@ -153,6 +153,12 @@ class Colors {
 					'name' => 'Black'
 				],
 				[
+					'code' => 'Blue',
+					'hex' => ['0B45BB'],
+					'image' => 'assets/images/regular/solid/Blue.png',
+					'name' => 'Blue'
+				],
+				[
 					'code' => 'Brown',
 					'hex' => ['6A491A'],
 					'image' => 'assets/images/src/solid/Brown.png',
@@ -3124,7 +3130,7 @@ class Colors {
 				],
 				[
 					'code' => 'Glow Dark White',
-					'hex' => ['A078AD'],
+					'hex' => ['FEFEFE'],
 					'image' => 'assets/images/figured/glow/GlowDarkFIGUREDWHITE.png',
 					'name' => 'White'
 				]
@@ -3732,7 +3738,7 @@ class Colors {
 				],
 				[
 					'code' => 'Glow Dark White',
-					'hex' => ['A078AD'],
+					'hex' => ['FEFEFE'],
 					'image' => 'assets/images/figured/glow/GlowDarkFIGUREDWHITE.png',
 					'name' => 'White'
 				]

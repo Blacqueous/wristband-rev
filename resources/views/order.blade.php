@@ -64,7 +64,7 @@
 				<div class="wrist_style_container">
 					<div class="popup-order-gallery col-xs-12">
 						@foreach($styles as $key => $value)
-							<div id="wb_style_{{ $value['code'] }}" class="col-md-3 prod prod-style js-style {{ ($value['code']==$style) ? 'active' : '' }}" style="margin-bottom:10px;">
+							<div id="wb_style_{{ $value['code'] }}" class="col-xs-6 col-md-3 prod prod-style js-style {{ ($value['code']==$style) ? 'active' : '' }}" style="margin-bottom:10px;">
 								<div class="zoom">
 									<a href="{{ $value['image'] }}" title="Printed Wristband"><img src="assets/images/src/zoom.png" class="galleryimg"></a>
 								</div>
@@ -93,7 +93,7 @@
 				</div>
 				<div class="wsize-default">
 					@foreach($sizes as $key => $value)
-					<div id="wb_size_{{ $value['code'] }}" class="col-md-2 prod prod-size js-size {{ ($value['code']=='0-50inch') ? 'active' : '' }}">
+					<div id="wb_size_{{ $value['code'] }}" class="col-xs-6 col-md-2 prod prod-size js-size {{ ($value['code']=='0-50inch') ? 'active' : '' }}">
 						<div class="box-thumb"><img src="{{ $value['image'] }}"></div>
 						<input class="wrist-size wb-size" data-size="{{ $value['code'] }}" name="wb-size" type="radio" value="{{ $value['code'] }}" {{ ($value['code']=='0-50inch') ? 'checked="checked"' : '' }} >
 						<br/>
@@ -224,7 +224,7 @@
 								<input class="band-text wb-band-text col-xs-12" data-preview="#wb_text_back_preview" id="wb_text_back" maxlength="22" name="back-text" placeholder="Back Message" type="text" value="">
 								<!-- Clipart back start -->
 								<div class="clip-sec col-xs-6 text-center">
-									<button class="btn-order" data-toggle="modal" data-target="#modalClipArt" style="margin-left:-14px;">Back Start Clipart</button><br />
+									<button class="btn-order" data-toggle="modal" data-target="#modalClipArt">Back Start Clipart</button><br />
 									<a href="javascript:void(0)" data-toggle="collapse" data-target="#upload-3">or Upload your own art</a>
 									<div id="upload-3" class="collapse">
 										<!-- <label for="file">Choose Photo:</label><br/> -->
@@ -360,9 +360,11 @@
 							</div>
 						</div>
 					</div>
-					<div class="text-center">
+					<div id="preview-pill" class="text-center hidden">
 						<div class="col-xs-12 text-danger">Click below to preview wristband colors</div>
-						<ul id="preview-pane-selection" class="nav nav-pills preview-pane-colors"></ul>
+						<div class="clearfix"></div>
+						<div id="preview-pill-selection">
+						</div>
 					</div>
 				</div>
 				<!-- End preview pane -->
@@ -613,6 +615,8 @@
 
 		</div>
 	</div>
+
+	@include('modal.colorSelect')
 
 @endsection
 <!-- End: content section. -->
