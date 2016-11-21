@@ -22,3 +22,5 @@ Route::get('/wb/colors_s', 'OrderController@getWristbandColor');
 Route::match(['get', 'post'], '/wb/colors_ss', 'OrderController@getWristbandColorsByStyleSize');
 
 Route::get('/preview', 'PreviewController@makePreview');
+
+Route::get('/mail_test', 'OrderController@mailTest');

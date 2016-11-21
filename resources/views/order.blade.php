@@ -19,6 +19,10 @@
 <!-- .js section. -->
 @section('js')
 <!-- Order page custom javascript -->
+		<script type="text/javascript">
+			var price_json = '<?php echo(json_encode($prices)); ?>';
+			var addon_json = '<?php echo(json_encode($addons)); ?>';
+		</script>
 		<script src="js/order.js"></script>
 		<!-- <script src="js/angular.order.js"></script> -->
 
@@ -30,24 +34,29 @@
 
 <!-- Content section. -->
 @section('content')
-
 	<div id="main-page-content">
 		<div class="container">
 
 			<!-- PRICE TABLES -->
-			<div id="banner_pricing">
-				<table class="table">
+			<div id="price_banner">
+				<table id="price_table" class="table">
 					<caption class="wb-caption">
-						Pricing for <span class="style text-italic">Printed</span> wristbands (<span class="size text-italic">1/2</span>) as of July, 2016
+						Pricing for <span class="style text-italic">$style</span> wristbands (<span class="size text-italic">1/2</span>) as of July, 2016
 					</caption>
 					<thead>
 						<tr id="price_header">
-						<th title="Quantity">Qty</th>
+							<th title="Quantity">Qty</th>
+							@foreach($prices[$style]['0-50inch'] as $key => $value)
+								<th title="{{ $key }} Pieces">{{ $key }}</th>
+							@endforeach
 						</tr>
 					</thead>
 					<tbody>
-						<tr id="price_table">
+						<tr id="price_body">
 							<td>Price</td>
+							@foreach($prices[$style]['0-50inch'] as $key => $value)
+								<td>${{ trim($value) }}</th>
+							@endforeach
 						</tr>
 					</tbody>
 				</table>

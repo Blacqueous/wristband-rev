@@ -3,11 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\AddOns;
+use App\Models\Prices;
 use App\Wristbands\Classes\Colors;
 use App\Wristbands\Classes\ColorsList;
 use App\Wristbands\Classes\Styles;
 use App\Wristbands\Classes\Sizes;
 use Illuminate\Http\Request;
+use Mail;
 use Session;
 use Storage;
 
@@ -32,6 +35,10 @@ class OrderController extends Controller
 
 		$list = new ColorsList();
 		$data['list'] = $list->getColors();
+
+		$price = new Prices();
+		$data['prices'] = $price->getJSONPrice();
+		$data['addons'] = $price->getJSONAddOn();
 
         return view('order', $data);
 	}
@@ -64,6 +71,21 @@ class OrderController extends Controller
 		$colors = $colors->getColorByStyleSize($request->style, $request->size);
 
 		return $colors;
+	}
+
+	public function mailTest(Request $request)
+	{
+		// Mail::send('welcome', [], function ($message) {
+		// 	$message->from('egrubellano@gmail.com', 'EGR');
+		// 	$message->to('egrubellano@gmail.com');
+		// });
+		Mail::send('welcome', [], function ($m) use ($request) {
+            $m->from('egrubellano@gmail.com', 'Your Application');
+            $m->to('egrubellano@gmail.com', 'EGR')->subject('Your Reminder!');
+        });
+// print_r($result);
+// die;
+		return view('welcome', $request);
 	}
 
 }

@@ -30,31 +30,6 @@ $(document).ready(function() {
         increaseArea: '20%' // optional
     });
 
-    // $(window).on('resize',function() {
-    //     vpNow = checkViewport();
-    //
-    //     if(viewport != vpNow) {
-    //         viewport = vpNow;
-    //
-    //         if(viewport == "sm" || viewport == "xs") {
-    //             console.log(2);
-    //         } else {
-    //             console.log(4);
-    //         }
-    //
-    //         $('.box-color-container').removeClass('box-row-start');
-    //         $.each($('.main-color-content'), function( index, value ) {
-    //             // alert( index + ": " + value );
-    //             var count = 0;
-    //             $(this).find('.box-color-container').each(function(e) {
-    //                 if(count >= 4) { count=0; }
-    //                 if(count == 0) { $(this).addClass('box-row-start'); }
-    //                 count++;
-    //             });
-    //         });
-    //     }
-    // });
-
     // Change style actions.
     $('body').on('click', '.prod-style', function(e) {
         e.preventDefault();
@@ -253,9 +228,7 @@ $(document).ready(function() {
         // Determines if a preview is to e made
         var makePreview = true;
 
-        $style = $('#wb_style input[type=radio].wb-style:checked').val();
-
-        switch($style) {
+        switch(type) {
             case 'embossed':
             case 'debossed':
             case 'blank':
@@ -283,6 +256,7 @@ $(document).ready(function() {
                 'color': color,
                 'style': style,
                 'title': title,
+                'type': type,
             };
             // Flag to reate preview for new items
             makePreview = true;
@@ -302,6 +276,7 @@ $(document).ready(function() {
             }
         } else { // If existing...
             items[style][idx]['value'][size]['qty'] = qty; // Update item quantity.
+            items[style][idx]['value'][size]['font'] = font; // Update item quantity.
         }
 
         // Check if quantity is less than 0.
@@ -409,6 +384,8 @@ $(document).ready(function() {
         fontElement.attr('ref-font-name', name);
         fontElement.attr('ref-font-color', color);
         fontElement.css({"background-color": "#" + color});
+
+        resetPreview();
         $('#modalColorSelect').modal('hide');
     });
 
@@ -601,6 +578,31 @@ function checkPreview()
     } else {
         $('#preview-pill').removeClass('hidden');
     }
+}
+
+function resetPreview()
+{
+    //Clear first.
+    // Reset item previews.
+    $('#preview-pill').addClass('hidden');
+    $('#preview-pill-selection').html('');
+
+    // Reset text.
+    $('#front-view, #back-view, #continue-view, #inside-view').removeAttr("style");
+    $('.preview-text').removeAttr("style");
+
+    // Loop through all items
+    $.each(items, function( styleKey, styleVal ) {
+        $.each(styleVal, function( itemKey, itemValue ) {
+            $.each(itemValue['value'], function( sizeKey, sizeValue ) {
+                // Create & append preview image
+                console.log('loop');
+                loadPreview(styleKey, itemValue['type'], itemValue['color'], sizeValue['font']);
+            });
+        });
+    });
+    // Show again.
+    $('#preview-pill').removeClass('hidden');
 }
 
 function checkViewport()
