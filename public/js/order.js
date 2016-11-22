@@ -219,13 +219,14 @@ $(document).ready(function() {
         var color = $(this).attr('ref-color');
             color = color.trim().toUpperCase().replace(/ /g, '');
         var font = $(this).closest('.box-color-qty').find('.fonttext .fntin').attr('ref-font-color');
+        var font_name = $(this).closest('.box-color-qty').find('.fonttext .fntin').attr('ref-font-name');
         var size = $(this).attr('ref-size');
         var style = $(this).attr('ref-style');
         var title = $(this).attr('ref-title');
         var type = $('input[type=radio].wb-style:checked').attr('data-style');
         var value = $(this).val();
         var qty = (value) ? parseInt(value) : 0;
-        // Determines if a preview is to e made
+        // Determines if a preview is to be made
         var makePreview = true;
 
         switch(type) {
@@ -243,11 +244,12 @@ $(document).ready(function() {
 
         // Check if WB style exists.
         if (typeof items[style] == "undefined")
-        items[style] = {}; // If not, then create object
+            items[style] = {}; // If not, then create object
 
         // Generate an index using title.
         // var idx = title.toLowerCase().replace(/,/g, '').replace(/ /g, '-');
-        var idx = style + '-' + font + '-' + color.replace(/,/g, '-');
+        // var idx = style + '-' + font + '-' + color.replace(/,/g, '-');
+        var idx = style + '-' + color.replace(/,/g, '-');
 
         // Check if WB color exists.
         if (typeof items[style][idx] == "undefined") {
@@ -263,30 +265,32 @@ $(document).ready(function() {
         }
 
         // Check WB color has existing values.
-        if (typeof items[style][idx]['value'] == "undefined")
-        items[style][idx]['value'] = {}; // Create WB color values Object.
+        if (typeof items[style][idx]['size'] == "undefined")
+            items[style][idx]['size'] = {}; // Create WB color values Object.
 
         // Check if size is existing on current WB color.
-        if (typeof items[style][idx]['value'][size] == "undefined") {
+        if (typeof items[style][idx]['size'][size] == "undefined") {
             // Create new size Object.
-            items[style][idx]['value'][size] = {
+            items[style][idx]['size'][size] = {
                 'qty': qty,
                 'font': font,
+                'font_name': font_name,
                 'size': size
             }
         } else { // If existing...
-            items[style][idx]['value'][size]['qty'] = qty; // Update item quantity.
-            items[style][idx]['value'][size]['font'] = font; // Update item quantity.
+            items[style][idx]['size'][size]['qty'] = qty; // Update item quantity.
+            items[style][idx]['size'][size]['font'] = font; // Update item quantity.
+            items[style][idx]['size'][size]['font_name'] = font_name; // Update item quantity.
         }
 
         // Check if quantity is less than 0.
         if (qty<=0) {
 
             // Delete the WB size value from specific item.
-            delete items[style][idx]['value'][size];
+            delete items[style][idx]['size'][size];
 
             // Delete the WB color if has size values. If not, then delete it.
-            if ($.isEmptyObject(items[style][idx]['value'])) {
+            if ($.isEmptyObject(items[style][idx]['size'])) {
                 delete items[style][idx];
                 // Flasg to remove preview image.
                 makePreview = false;
@@ -378,15 +382,42 @@ $(document).ready(function() {
     });
 
     $('body').on('click', '.font-selected', function(e) {
-        var color = $(this).attr('ref-color');
-        var name = $(this).attr('ref-name');
 
-        fontElement.attr('ref-font-name', name);
-        fontElement.attr('ref-font-color', color);
-        fontElement.css({"background-color": "#" + color});
+        var inputElement = fontElement.closest('.box-color-qty').find('input[name="quantity[]"]');
+        var font_color = $(this).attr('ref-color');
+        var font_name = $(this).attr('ref-name');
+        var value = inputElement.val();
+        var qty = (value) ? parseInt(value) : 0;
 
-        resetPreview();
+        fontElement.attr('ref-font-name', font_name);
+        fontElement.attr('ref-font-color', font_color);
+        fontElement.css({"background-color": "#" + font_color});
+
+        // Check if quantity is less than 0.
+        if (qty>0) {
+
+            // New behavior. Pretty much optimized.
+            // Create variables to be used.
+            var color = inputElement.attr('ref-color');
+                color = color.trim().toUpperCase().replace(/ /g, '');
+            var size = inputElement.attr('ref-size');
+            var style = inputElement.attr('ref-style');
+            var title = inputElement.attr('ref-title');
+            var type = $('input[type=radio].wb-style:checked').attr('data-style');
+            // Generate an index using title.
+            var idx = style + '-' + color.replace(/,/g, '-');
+
+            items[style][idx]['size'][size]['font'] = font_color; // Update font color.
+            items[style][idx]['size'][size]['font_name'] = font_name.toLowerCase(); // Update font name.
+
+            resetPreview();
+
+        }
+
         $('#modalColorSelect').modal('hide');
+
+        console.log(items);
+
     });
 
 });
@@ -527,8 +558,11 @@ function loadWristbands($style, $size)
     // });
 }
 
-function loadPreview($style, $type, $color, $font)
+function loadPreview($style, $type, $color, $font, $isFirst)
 {
+    if(typeof $isFirst == "undefined")
+        $isFirst = false;
+
     var addBlink = false;
     var previewClass = 'preview-' + $style + '-' + $type + '-' + $font + '-' + $color.trim().toUpperCase().replace(/ /g, '').replace(/,/g, '-');
 
@@ -554,7 +588,8 @@ function loadPreview($style, $type, $color, $font)
             $('.' + previewClass).css({"background-image": "url('" + link + "')", "color": "#" + $font});
 
             // If first item, set as default.
-            if($('#preview-pill-selection div').length == 1) {
+            if($('#preview-pill-selection div').length == 1 || $isFirst) {
+
                 $('.preview-pill').removeClass('active');
                 $('.' + previewClass).addClass('active');
 
@@ -582,7 +617,9 @@ function checkPreview()
 
 function resetPreview()
 {
-    //Clear first.
+    // Determines if a preview is to be made
+    var isFirst = true;
+
     // Reset item previews.
     $('#preview-pill').addClass('hidden');
     $('#preview-pill-selection').html('');
@@ -594,13 +631,14 @@ function resetPreview()
     // Loop through all items
     $.each(items, function( styleKey, styleVal ) {
         $.each(styleVal, function( itemKey, itemValue ) {
-            $.each(itemValue['value'], function( sizeKey, sizeValue ) {
+            $.each(itemValue['size'], function( sizeKey, sizeValue ) {
                 // Create & append preview image
-                console.log('loop');
-                loadPreview(styleKey, itemValue['type'], itemValue['color'], sizeValue['font']);
+                loadPreview(styleKey, itemValue['type'], itemValue['color'], sizeValue['font'], isFirst);
+                if(isFirst) { isFirst = false; }
             });
         });
     });
+
     // Show again.
     $('#preview-pill').removeClass('hidden');
 }

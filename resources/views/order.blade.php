@@ -41,7 +41,7 @@
 			<div id="price_banner">
 				<table id="price_table" class="table">
 					<caption class="wb-caption">
-						Pricing for <span class="style text-italic">$style</span> wristbands (<span class="size text-italic">1/2</span>) as of July, 2016
+						Pricing for <span class="style text-italic">{{ strtoupper($style) }}</span> wristbands (<span class="size text-italic">1/2</span>) as of July, 2016
 					</caption>
 					<thead>
 						<tr id="price_header">
