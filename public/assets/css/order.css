@@ -455,7 +455,7 @@ div#main-color-content {
 
 #wrap { margin: auto; width: 800px; }
 
-#preview-pane {
+.preview-panel {
     border: 1px solid #c1c1c1;
     padding: 10px 10px;
     text-align: center;
@@ -464,7 +464,7 @@ div#main-color-content {
     font-size:18px;
 }
 
-/*#preview-pane div { line-height: 50px; }*/
+/* .preview-panel div { line-height: 50px; } */
 
 div#preview-textcolor {
     float: right;
@@ -483,16 +483,16 @@ div#preview-textfont{
     width: 150px;
 }
 
-#preview-pane #front-view, #preview-pane #back-view {
+.preview-panel #front-view, .preview-panel #back-view {
     width: 50%;
     margin: auto;
     float: left;
     text-align: center;
 }
 
-#preview-pane #inside-view { width: 100% }
-/*#preview-pane .band { background:#fff; }*/
-#preview-pane .band-reg .faded, #preview-pane .band-fig .faded {
+.preview-panel #inside-view { width: 100% }
+/* .preview-panel .band { background:#fff; } */
+.preview-panel .band-reg .faded, .preview-panel .band-fig .faded {
     opacity: 0.5;
 }
 
@@ -855,21 +855,21 @@ b:hover{
     opacity: 1;
 }
 
-#preview-pane #front-view, #preview-pane #back-view {
+.preview-panel #front-view, .preview-panel #back-view {
     background-repeat: no-repeat!important;
     background-size: 200% 100%!important;
 	position: relative;
 }
 
-#preview-pane #back-view {
+.preview-panel #back-view {
     background-position: 100%!important;
 }
 
-#preview-pane #inside-view {
+.preview-panel #inside-view {
     background-size: 100% 100%!important;
 }
 
-#preview-pane #continue-view {
+.preview-panel #continue-view {
     background-size: 100% 100%!important;
 }
 

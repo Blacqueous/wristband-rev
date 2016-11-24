@@ -29,6 +29,7 @@
 		<!-- Additional .js plugins -->
 		<script src="global/iCheck/icheck.min.js"></script>
 		<script src="global/unveil.js/jquery.unveil.js"></script>
+		<script src="global/jquery-visible/jquery.visible.min.js"></script>
 @endsection
 <!-- End: .js section. -->
 
@@ -169,7 +170,7 @@
 						<h3>INPUT TEXT DESIGN MESSAGE</h3>
 					</div>
 
-					<div class="message-selection">
+					<div id="text-option" class="message-selection">
 						<div class="col-sm-4">
 							<input class="band-text-design wb-text-type" name="wb-message" type="radio" value="select-fb" name="text-select" checked="checked"/>
 							<label for="wb-message"> Front/Back Message</label>
@@ -189,14 +190,14 @@
 									</span>
 								</h4>
 								<span class="note-m">* Maximum of 22 characters.</span>
-								<input class="band-text wb-band-text col-xs-12" data-preview="#wb_text_front_preview" id="wb_text_front" maxlength="22" name="front-text" placeholder="Front Message" type="text" value="">
+								<input class="band-text wb-band-text col-xs-12 text-center" data-preview="#wb_text_front_preview" id="wb_text_front" maxlength="22" name="front-text" placeholder="Front Message" type="text" value="">
 								<!-- Clipart front start -->
 								<div class="clip-sec col-xs-6 text-center">
 									<button class="btn-order" data-toggle="modal" data-target="#modalClipArt">Front Start Clipart</button>
 									<br/>
 									<a href="javascript:void(0)" data-toggle="collapse" data-target="#upload-1">or Upload your own art</a>
 									<div id="upload-1" class="collapse">
-										<!-- <label for="file">Choose Photo:</label><br/> -->
+										<!-- <label for	="file">Choose Photo:</label><br/> -->
 										<input class="clip-upload" id="clip_front_start" name="file_array[]" type="file" required><br/>
 										<a href="javascript:void(0)" id="rm_clip_front_start">Remove File</a>
 									</div>
@@ -230,7 +231,7 @@
 									</span>
 								</h4>
 								<span class="note-m">* Maximum of 22 characters.</span>
-								<input class="band-text wb-band-text col-xs-12" data-preview="#wb_text_back_preview" id="wb_text_back" maxlength="22" name="back-text" placeholder="Back Message" type="text" value="">
+								<input class="band-text wb-band-text col-xs-12 text-center" data-preview="#wb_text_back_preview" id="wb_text_back" maxlength="22" name="back-text" placeholder="Back Message" type="text" value="">
 								<!-- Clipart back start -->
 								<div class="clip-sec col-xs-6 text-center">
 									<button class="btn-order" data-toggle="modal" data-target="#modalClipArt">Back Start Clipart</button><br />
@@ -262,7 +263,7 @@
 									</span>
 								</h4>
 								<span class="note-m">* Maximum of 50 characters.</span>
-								<input class="band-text wb-band-text col-xs-12" data-preview="#wb_text_continue_preview" id="wb_text_continue" maxlength="50" name="continue-text" placeholder="Continuous Message" type="text" value="">
+								<input class="band-text wb-band-text col-xs-12 text-center" data-preview="#wb_text_continue_preview" id="wb_text_continue" maxlength="50" name="continue-text" placeholder="Continuous Message" type="text" value="">
 							</div>
 							<div class="clearfix"></div>
 							<!-- Clipart continue start -->
@@ -298,7 +299,7 @@
 									* Maximum of 50 characters.<br/>
 									* Inside Message will be embossed with the same color of the inside of the band
 								</span>
-								<input class="band-text wb-band-text col-xs-12" data-preview="#wb_text_inside_preview" id="wb_text_inside" maxlength="50" name="inside-text" placeholder="Inside Message" type="text" value="">
+								<input class="band-text wb-band-text col-xs-12 text-center" data-preview="#wb_text_inside_preview" id="wb_text_inside" maxlength="50" name="inside-text" placeholder="Inside Message" type="text" value="">
 								<br/>
 							</div>
 						</div>
@@ -329,7 +330,7 @@
 
 					<h3>PREVIEW</h3>
 
-					<div id="preview-pane" class="preview-panel">
+					<div id="preview-pane-fb" class="preview-panel">
 						<div class="wb-text-preview fb-select">
 							<div id="front-view" class="band band-reg wb-band">
 							<span id="clip-front-start_preview" class="start-fc"></span>
@@ -358,7 +359,7 @@
 							</div>
 						</div>
 					</div>
-					<div id="preview-pane" class="preview-panel">
+					<div id="preview-pane-c" class="preview-panel">
 						<div class="wb-text-preview i-select">
 							<div id="inside-view" class="band band-reg wb-band">
 								<span class="startIn-cc"></span>

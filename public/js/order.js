@@ -3,22 +3,36 @@ var xhr;
 var items = {};
 var viewport = "lg";
 var $fontElement;
+var resetView = true;
 
 $(window).ready(function() {
 
     // $("img.wb-unveil").unveil();
+    // $("img.wb-unveil").trigger("unveil");
     $('img.wb-unveil').unveil(0, function(e) {
         $(this).fadeTo(0, 0, function() {
             $(this).attr('src', $(this).attr('data-src'));
         }).fadeTo(1000, 1);
     });
 
-    // $("img.wb-unveil").trigger("unveil");
-
     // Load forms.
     // loadWristbands();
     loadSizes();
     loadColors();
+
+    // $(window).scroll(function() {
+    //     var v = $('#wb_message .main-content-preview').visible(true, false, 'both');
+    //
+    //     if(v) {
+    //         if(resetView) {
+    //             resetView = false;
+    //             checkPreview();
+    //         }
+    //     } else {
+    //         resetView = true;
+    //     }
+    //
+    // });
 
 });
 
@@ -239,6 +253,7 @@ $(document).ready(function() {
             case 'dual':
                 dual_color = color.split(',');
                 font = dual_color[1];
+                font_name = dual_color[1];
                 break;
         }
 
@@ -247,8 +262,6 @@ $(document).ready(function() {
             items[style] = {}; // If not, then create object
 
         // Generate an index using title.
-        // var idx = title.toLowerCase().replace(/,/g, '').replace(/ /g, '-');
-        // var idx = style + '-' + font + '-' + color.replace(/,/g, '-');
         var idx = style + '-' + color.replace(/,/g, '-');
 
         // Check if WB color exists.
@@ -304,17 +317,10 @@ $(document).ready(function() {
 
             // If value is less than or is equal to 0, empty the field.
             $(this).val("");
-        }
-
-        if(makePreview) {
-            // Create & append preview image
-            loadPreview(style, type, color, font);
         } else {
-            // Remove preview image
-            $('.preview-' + style + '-' + type + '-' + font + '-' + color.replace(/,/g, '-')).remove();
+            resetPreview();
         }
 
-        checkPreview();
 
         console.log(items);
 
@@ -611,6 +617,7 @@ function checkPreview()
         $('#front-view, #back-view, #continue-view, #inside-view').removeAttr("style");
         $('.preview-text').removeAttr("style");
     } else {
+        resetPreview();
         $('#preview-pill').removeClass('hidden');
     }
 }
