@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\AddOns;
 use App\Models\Prices;
+use App\Wristbands\Classes\ClipartList;
 use App\Wristbands\Classes\Colors;
 use App\Wristbands\Classes\ColorsList;
+use App\Wristbands\Classes\FontList;
 use App\Wristbands\Classes\Styles;
 use App\Wristbands\Classes\Sizes;
 use Illuminate\Http\Request;
@@ -33,8 +35,15 @@ class OrderController extends Controller
 		$colors = new Colors();
 		$data['colors'] = $colors->getColors();
 
-		$list = new ColorsList();
-		$data['list'] = $list->getColors();
+		$list_color = new ColorsList();
+		$data['list_colors'] = $list_color->getColors();
+
+		$list_clipart = new ClipartList();
+		$data['list_cliparts'] = $list_clipart->getCliparts();
+
+		$list_font = new FontList();
+		$list_font->reset();
+		$data['list_fonts'] = $list_font->getFonts();
 
 		$price = new Prices();
 		$data['prices'] = $price->getJSONPrice();

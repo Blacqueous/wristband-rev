@@ -490,10 +490,16 @@ div#preview-textfont{
     text-align: center;
 }
 
-.preview-panel #inside-view { width: 100% }
-/* .preview-panel .band { background:#fff; } */
-.preview-panel .band-reg .faded, .preview-panel .band-fig .faded {
+.preview-panel #inside-view {
+    width: 100%;
+}
+
+.faded, .preview-panel .band-reg .faded, .preview-panel .band-fig .faded {
     opacity: 0.5;
+}
+
+#continue-view {
+    position: relative;
 }
 
 .main-content-preview {
@@ -798,7 +804,7 @@ b:hover{
     color:#17A589;
 }
 
-.font-style-list li{
+/*.font-style-list li{
     list-style:none;
     float:left;
     padding:4px;
@@ -820,7 +826,7 @@ b:hover{
 
 .font-style-list li:hover{
     border:1px solid #17A589;
-}
+}*/
 
 
 #add-design {
@@ -980,39 +986,27 @@ input#font-color {
 }
 
 span.start-fc {
-    float: left;
     position: relative;
-    left: 150px;
 }
 
 span.end-fc {
-    float: left;
     position: relative;
-    left: 396px;
 }
 
 span.back-mc {
-    float: left;
     position: relative;
-    left: 150px;
 }
 
 span.backend-mc {
-    float: left;
     position: relative;
-    left: 396px;
 }
 
 span.start-cc {
-    float: left;
     position: relative;
-    left: 226px;
 }
 
 span.end-cc {
-    float: left;
     position: relative;
-    left: 868px;
 }
 
 .note-m {
@@ -1063,14 +1057,13 @@ span.end-cc {
 }
 
 input[type=file] {
+    border: 1px solid #CDCDCD;
+    color: #8E0000;
     display: initial;
     overflow-x: hidden;
-    width: 207px;
-    color: #8E0000;
-    border: 1px solid #CDCDCD;
     padding: 4px;
+    width: 207px;
 }
-
 
 .fig_move{
     top: 36px;
@@ -1081,22 +1074,22 @@ button.fclip-3 {
 }
 
 span.fig-fc {
+    height: 104px;
+    line-height: 100px;
     position: absolute;
-    top: 36px;
-    left: 531px;
     z-index: 1;
 }
 
-.message_wristband_100{
+.message_wristband_100 {
     color: #ffffff;
     margin-top: 14px;
     text-align:center;
 }
 
 .free-convert, .free-convert-bands, .free-convert-chains{
+    color: #ffffff;
     margin-bottom: 15px;
     padding: 20px;
-    color: #ffffff;
 }
 
 .free-convert-bands h3, .free-convert-chains h3{
@@ -1259,9 +1252,37 @@ span.fonttext-color {
 
 .band .preview-text {
     color: #000000;
+    font-size: 14px;
     height: 54px;
     line-height: 54px;
     transition: all ease .2s;
+}
+
+.preview-clipart {
+    left: 0px;
+}
+
+.preview-start {
+    float: left;
+    left: 0px;
+    padding-right: 30px;
+    position: absolute!important;
+    right: inherit;
+    text-align: right;
+}
+
+.preview-end {
+    float: right;
+    left: inherit;
+    padding-left: 30px;
+    position: absolute!important;
+    right: 0px;
+    text-align: left;
+}
+
+.band .preview-clipart {
+    height: 54px;
+    line-height: 50px;
 }
 
 .band-fig {
@@ -1272,9 +1293,15 @@ span.fonttext-color {
 
 .band-fig .preview-text {
     color: #000000;
+    font-size: 14px;
     height: 104px;
     line-height: 104px;
     transition: all ease .2s;
+}
+
+.band-fig .preview-clipart {
+    height: 104px;
+    line-height: 100px;
 }
 
 .box-color-qty {
@@ -1319,4 +1346,40 @@ body {
 
 .table > thead > tr > th {
     border-bottom: 1px solid #079CA5;
+}
+
+.font-color-list li {
+    transition: all ease .2s;
+}
+
+.font-color-list li.active, .font-color-list li:hover {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.font-style-list{
+    height: 350px;
+    margin:0;
+    overflow-x: hidden;
+    padding:0;
+}
+
+.font-style-list li {
+    float: left;
+    height: 55px;
+    list-style: none;
+    margin-left: 3px;
+    padding: 4px 4px;
+    width: 24%;
+}
+
+.font-style-list li img{
+    width:100%;
+}
+
+.font-style-list li {
+    transition: all ease .2s;
+}
+
+.font-style-list li.active, .font-style-list li:hover {
+    background: rgba(0, 0, 0, 0.1);
 }

@@ -20,8 +20,8 @@
 @section('js')
 <!-- Order page custom javascript -->
 		<script type="text/javascript">
-			var price_json = '<?php echo(json_encode($prices)); ?>';
-			var addon_json = '<?php echo(json_encode($addons)); ?>';
+			var price_json = JSON.parse('<?php echo(json_encode($prices)); ?>');
+			var addon_json = JSON.parse('<?php echo(json_encode($addons)); ?>');
 		</script>
 		<script src="js/order.js"></script>
 		<!-- <script src="js/angular.order.js"></script> -->
@@ -105,7 +105,7 @@
 					@foreach($sizes as $key => $value)
 					<div id="wb_size_{{ $value['code'] }}" class="col-xs-6 col-md-2 prod prod-size js-size {{ ($value['code']=='0-50inch') ? 'active' : '' }}">
 						<div class="box-thumb"><img src="{{ $value['image'] }}"></div>
-						<input class="wrist-size wb-size" data-size="{{ $value['code'] }}" name="wb-size" type="radio" value="{{ $value['code'] }}" {{ ($value['code']=='0-50inch') ? 'checked="checked"' : '' }} >
+						<input class="wrist-size wb-size" data-size="{{ $value['code'] }}" name="wb-size" type="radio" value="{{ $value['code'] }}" data-name="{{ $value['name'] }}" {{ ($value['code']=='0-50inch') ? 'checked="checked"' : '' }} >
 						<br/>
 						<label for="wb-style">
 							<h2>{{ $value['name'] }}</h2>
@@ -193,33 +193,32 @@
 								<input class="band-text wb-band-text col-xs-12 text-center" data-preview="#wb_text_front_preview" id="wb_text_front" maxlength="22" name="front-text" placeholder="Front Message" type="text" value="">
 								<!-- Clipart front start -->
 								<div class="clip-sec col-xs-6 text-center">
-									<button class="btn-order" data-toggle="modal" data-target="#modalClipArt">Front Start Clipart</button>
+									<button class="btn-order clipartin" ref-code="none" ref-target="#clipart-front-start">Front Start Clipart</button>
 									<br/>
 									<a href="javascript:void(0)" data-toggle="collapse" data-target="#upload-1">or Upload your own art</a>
 									<div id="upload-1" class="collapse">
-										<!-- <label for	="file">Choose Photo:</label><br/> -->
 										<input class="clip-upload" id="clip_front_start" name="file_array[]" type="file" required><br/>
 										<a href="javascript:void(0)" id="rm_clip_front_start">Remove File</a>
 									</div>
 								</div>
 								<!-- Clipart front end -->
 								<div class="clip-sec col-xs-6 text-center">
-									<button class="btn-order" data-toggle="modal" data-target="#modalClipArt">Front End Clipart</button><br />
+									<button class="btn-order clipartin" ref-code="none" ref-target="#clipart-front-end">Front End Clipart</button>
+									<br/>
 									<a href="javascript:void(0)" data-toggle="collapse" data-target="#upload-2">or Upload your own art</a>
 									<div id="upload-2" class="collapse">
-										<!-- <label for="file">Choose Photo:</label><br/> -->
 										<input class="clip-upload" id="clip_front_end" name="file_array[]" type="file" required><br/>
 										<a href="javascript:void(0)" id="rm_clip_front_end">Remove File</a>
 									</div>
 								</div>
 								<div class="clearfix"></div>
 								<!-- Clipart figured center -->
-								<div class="clip-sec col-xs-6 clip-fig text-center hidden">
-									<button class="btn-order" data-toggle="modal" data-target="#modalClipArt">Figured Center Clipart</button><br />
+								<div id="clipart_front_center_btn" class="clip-sec col-xs-6 clip-fig text-center hidden">
+									<button class="btn-order clipartin" ref-code="none" ref-target="#clipart-front-center">Figured Center Clipart</button>
+									<br/>
 									<a href="javascript:void(0)" data-toggle="collapse" data-target="#upload-7">or Upload your own art</a>
 									<div id="upload-7" class="collapse">
 										<input class="clip-upload" id="clip_front_center" name="file_array[]" type="file" required><br/>
-										<!-- <label for="file">Choose Photo:</label><br/> -->
 										<a href="javascript:void(0)" id="rm_clip_front_center">Remove File</a>
 									</div>
 								</div>
@@ -234,20 +233,20 @@
 								<input class="band-text wb-band-text col-xs-12 text-center" data-preview="#wb_text_back_preview" id="wb_text_back" maxlength="22" name="back-text" placeholder="Back Message" type="text" value="">
 								<!-- Clipart back start -->
 								<div class="clip-sec col-xs-6 text-center">
-									<button class="btn-order" data-toggle="modal" data-target="#modalClipArt">Back Start Clipart</button><br />
+									<button class="btn-order clipartin" ref-code="none" ref-target="#clipart-back-start">Back Start Clipart</button>
+									<br/>
 									<a href="javascript:void(0)" data-toggle="collapse" data-target="#upload-3">or Upload your own art</a>
 									<div id="upload-3" class="collapse">
-										<!-- <label for="file">Choose Photo:</label><br/> -->
 										<input class="clip-upload" id="clip-back-start" name="file_array[]" type="file" required><br/>
 										<a href="javascript:void(0)" id="rm-clip-back-start">Remove File</a>
 									</div>
 								</div>
 								<!-- Clipart back end -->
 								<div class="clip-sec col-xs-6 text-center">
-									<button class="btn-order" data-toggle="modal" data-target="#modalClipArt">Back End Clipart</button><br />
+									<button class="btn-order clipartin" ref-code="none" ref-target="#clipart-back-end">Back End Clipart</button>
+									<br/>
 									<a href="javascript:void(0)" data-toggle="collapse" data-target="#upload-4">or Upload your own art</a>
 									<div id="upload-4" class="collapse">
-										<!-- <label for="file">Choose Photo:</label><br/> -->
 										<input class="clip-upload" id="clip_back_end" name="file_array[]" type="file" required><br/>
 										<a href="javascript:void(0)" id="rm_clip_back_end">Remove File</a>
 									</div>
@@ -268,20 +267,20 @@
 							<div class="clearfix"></div>
 							<!-- Clipart continue start -->
 							<div class="clip-sec col-xs-6 text-center">
-								<button class="btn-order" data-toggle="modal" data-target="#modalClipArt">Start Clipart</button><br />
+								<button class="btn-order clipartin" ref-code="none" ref-target="#clipart-cont-start">Start Clipart</button>
+								<br/>
 								<a href="javascript:void(0)" data-toggle="collapse" data-target="#upload-5">or Upload your own art</a>
 								<div id="upload-5" class="collapse">
-									<!-- <label for="file">Choose Photo:</label><br/> -->
 									<input class="clip-upload" id="clip_continue_start" name="file_array[]" type="file" required><br/>
 									<a href="javascript:void(0)" id="rm_clip_continue_start">Remove File</a>
 								</div>
 							</div>
 							<!-- Clipart continue end -->
 							<div class="clip-sec col-xs-6 text-center">
-								<button class="btn-order" data-toggle="modal" data-target="#modalClipArt">End Clipart</button><br />
+								<button class="btn-order clipartin" ref-code="none" ref-target="#clipart-cont-end">End Clipart</button>
+								<br/>
 								<a href="javascript:void(0)" data-toggle="collapse" data-target="#upload-6">or Upload your own art</a>
 								<div id="upload-6" class="collapse">
-									<!-- <label for="file">Choose Photo:</label><br/> -->
 									<input class="clip-upload" id="clip_continue_end" name="file_array[]" type="file" required><br/>
 									<a href="javascript:void(0)" id="rm_clip_continue_end">Remove File</a>
 								</div>
@@ -304,66 +303,42 @@
 							</div>
 						</div>
 						<div class="clearfix"></div>
-						<!-- Start modal here -->
-						<div class="modal fade" id="modalClipArt" role="dialog">
-							<div class="modal-dialog">
-								<!-- Modal content-->
-								<div class="modal-content">
-									<div class="modal-header">
-										<button type="button" class="close" data-dismiss="modal">&times;</button>
-										<h4 class="modal-title">Pick Clipart</h4>
-									</div>
-									<div class="modal-body">
-										<?php // include "clipart-template.php";?>
-										<div class="clearfix"></div>
-									</div>
-									<div class="modal-footer">
-										<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-									</div>
-								</div>
-								<!-- End Modal Content -->
-							</div>
-						</div>
-						<div class="clear"></div>
-						<!-- End Modal Div -->
 					</div>
 
 					<h3>PREVIEW</h3>
 
 					<div id="preview-pane-fb" class="preview-panel">
-						<div class="wb-text-preview fb-select">
+						<div class="wb-text-preview fb-select" style="font-family: 'Arial Bold';">
+							<span id="clipart-front-center" class="preview-clipart faded fig-fc col-xs-12 hidden" ref-clipart-code="none" ref-clipart-name="None"></span>
 							<div id="front-view" class="band band-reg wb-band">
-							<span id="clip-front-start_preview" class="start-fc"></span>
-							<span id="clip-front-start_preview" class="end-fc"></span>
-							<span id="clip-front-start_preview" class="fig-fc"></span>
-								<div class="preview-text faded" id="wb_text_front_preview">
+								<span id="clipart-front-start" class="faded preview-clipart preview-start start-fc col-xs-3" ref-clipart-code="none" ref-clipart-name="None"></span>
+								<span id="clipart-front-end" class="faded preview-clipart preview-end end-fc col-xs-3" ref-clipart-code="none" ref-clipart-name="None"></span>
+								<div id="wb_text_front_preview" class="preview-text faded">
 									Front Message
 								</div>
 							</div>
 							<div id="back-view" class="band band-reg wb-band">
-								<span class="back-mc"></span>
-								<span class="backend-mc"></span>
-								<div class="preview-text faded" id="wb_text_back_preview">
+								<span id="clipart-back-start" class="faded preview-clipart preview-start back-mc col-xs-3" ref-clipart-code="none" ref-clipart-name="None"></span>
+								<span id="clipart-back-end" class="faded preview-clipart preview-end backend-mc col-xs-3" ref-clipart-code="none" ref-clipart-name="None"></span>
+								<div id="wb_text_back_preview" class="preview-text faded">
 									Back Message
 								</div>
 							</div>
 							<div class="clearfix"></div>
 						</div>
-						<div class="wb-text-preview c-select hidden">
+						<div class="wb-text-preview c-select hidden" style="font-family: 'Arial Bold';">
 							<div id="continue-view" class="band band-reg wb-band">
-								<span class="start-cc"></span>
-								<span class="end-cc"></span>
-								<div class="preview-text faded" id="wb_text_continue_preview">
+								<span id="clipart-cont-start" class="faded preview-clipart preview-start start-cc col-xs-2" ref-clipart-code="none" ref-clipart-name="None"></span>
+								<span id="clipart-cont-end" class="faded preview-clipart preview-end end-cc col-xs-2" ref-clipart-code="none" ref-clipart-name="None"></span>
+								<div id="wb_text_continue_preview" class="preview-text faded">
 									Continuous Message
 								</div>
 							</div>
 						</div>
 					</div>
-					<div id="preview-pane-c" class="preview-panel">
+					<div id="preview-pane-c" class="preview-panel" style="font-family: 'Arial Bold';">
 						<div class="wb-text-preview i-select">
 							<div id="inside-view" class="band band-reg wb-band">
-								<span class="startIn-cc"></span>
-								<span class="endIn-cc"></span>
 								<div class="preview-text faded" id="wb_text_inside_preview">
 									Inside Message
 								</div>
@@ -378,56 +353,11 @@
 					</div>
 				</div>
 				<!-- End preview pane -->
-				<div id="font-color" style="display:none;">
-					<h3 style="text-align: left;">Select Font Color</h3>
-					<button id="font-button" class="pull-left" data-toggle="modal" data-target="#FontColorModal">Select Font Color</button><div id="preview-textcolor"></div>
-						<!-- Modal -->
-						<div class="modal fade" id="FontColorModal" role="dialog">
-						<div class="modal-dialog">
-							<!-- Modal content-->
-							<div class="modal-content">
-								<div class="modal-header">
-									<button type="button" class="close" data-dismiss="modal">&times;</button>
-									<h4 class="modal-title">Pick Custom Text Color</h4>
-								</div>
-								<div class="modal-body">
-									<?php // include "font-color-template.php";?>
-									<div class="clearfix"></div>
-								</div>
-								<div class="modal-footer">
-									<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-								</div>
-							</div>
-							<!-- End Modal Content -->
-						</div>
-					</div>
-					<!-- End Modal Div -->
-					<div class="clearfix"></div>
-				</div>
 				<div id="add-design">
 					<!--<button>Clear</button>-->
 					<h3 style="text-align: left;">Select Font Style</h3>
-					<button id="font-button" class="pull-left" data-toggle="modal" data-target="#FontModal">Choose Font Style</button><div id="preview-textfont"></div>
-					<div class="modal fade" id="FontModal" role="dialog">
-						<div class="modal-dialog">
-							<!-- Modal content-->
-							<div class="modal-content">
-								<div class="modal-header">
-									<button type="button" class="close" data-dismiss="modal">&times;</button>
-									<h4 class="modal-title">Select Font Style</h4>
-								</div>
-								<div class="modal-body">
-									<?php // include "fonts-template.php";?>
-									<div class="clearfix"></div>
-								</div>
-								<div class="modal-footer">
-									<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-								</div>
-							</div>
-							<!-- End Modal Content -->
-						</div>
-					</div>
-					<!-- End Modal Div -->
+					<button id="btn_font_style" class="btn-order pull-left" ref-font-style-code="arial-bold">Choose Font Style</button>
+					<div id="preview-textfont"></div>
 					<div class="clearfix"></div>
 				</div>
 			</div>
@@ -626,7 +556,9 @@
 		</div>
 	</div>
 
-	@include('modal.colorSelect')
+	@include('modal.selectColor')
+	@include('modal.selectClipart')
+	@include('modal.selectFont')
 
 @endsection
 <!-- End: content section. -->

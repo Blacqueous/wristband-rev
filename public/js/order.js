@@ -2,7 +2,8 @@
 var xhr;
 var items = {};
 var viewport = "lg";
-var $fontElement;
+var fontElement;
+var clipElement
 var resetView = true;
 
 $(window).ready(function() {
@@ -19,6 +20,7 @@ $(window).ready(function() {
     // loadWristbands();
     loadSizes();
     loadColors();
+    loadPrices();
 
     // $(window).scroll(function() {
     //     var v = $('#wb_message .main-content-preview').visible(true, false, 'both');
@@ -71,33 +73,10 @@ $(document).ready(function() {
             // Main style click action.
             loadSizes();
             loadColors();
+            loadPrices();
             // changeWristbandColors();
         }
     });
-
-    // $('body').on('click', 'input[type=radio].wb-style', function(e) {
-    //     // e.preventDefault();
-    //     e.stopPropagation();
-    //
-    //     // check if already selected.
-    //     // if(!$(this).is(':checked')) {
-    //
-    //         // clear existing active classes.
-    //         $('.prod-style').removeClass('active');
-    //         // add active class tio parent div.
-    //         $(this).closest('.prod-style').addClass('active');
-    //         // check the checkbox.
-    //         $(this).prop('checked', true);
-    //         // reset icheck display.
-    //         $('#wb_style .iradio_square-green').removeClass('checked');
-    //         $(this).closest('.iradio_square-green').addClass('checked');
-    //
-    //         // main style click action.
-    //         loadSizes();
-    //         loadColors();
-    //         // changeWristbandColors();
-    //     // }
-    // });
 
     $('body').on('ifClicked', 'input[type=radio].wb-style', function(e) {
         // e.preventDefault();
@@ -125,6 +104,7 @@ $(document).ready(function() {
             // Main style click action.
             loadSizes();
             loadColors();
+            loadPrices();
             // changeWristbandColors();
         }
     });
@@ -156,32 +136,10 @@ $(document).ready(function() {
 
             // Main size click action.
             loadColors();
+            loadPrices();
             // changeWristbandColors();
         }
     });
-
-    // $('body').on('click', 'input[type=radio].wb-size', function(e) {
-    //     // e.preventDefault();
-    //     e.stopPropagation();
-    //
-    //     // check if already selected.
-    //     // if(!$(this).is(':checked')) {
-    //
-    //         // clear existing active classes.
-    //         $('.prod-size').removeClass('active');
-    //         // add active class tio parent div.
-    //         $(this).closest('.prod-size').addClass('active');
-    //         // check the checkbox.
-    //         $(this).prop('checked', true);
-    //         // reset icheck display.
-    //         $('#wb_size .iradio_square-green').removeClass('checked');
-    //         $(this).closest('.iradio_square-green').addClass('checked');
-    //
-    //         // main size click action.
-    //         loadColors();
-    //         // changeWristbandColors();
-    //     // }
-    // });
 
     $('body').on('ifClicked', 'input[type=radio].wb-size', function(e) {
         e.stopPropagation();
@@ -207,6 +165,7 @@ $(document).ready(function() {
 
             // Main size click action.
             loadColors();
+            loadPrices();
             // changeWristbandColors();
         }
     });
@@ -317,27 +276,13 @@ $(document).ready(function() {
 
             // If value is less than or is equal to 0, empty the field.
             $(this).val("");
-        } else {
-            resetPreview();
         }
 
+        resetPreview();
 
         console.log(items);
 
     });
-
-    // $('body').on('click', '.wb-text-type', function(e) {
-    //     var value = $(this).val();
-    //     if(typeof value == "undefined") { value = "select-fb"; }
-    //
-    //     $('.wb-text-outside').addClass('hidden');
-    //
-    //     if(value == "select-c") {
-    //         $('#wb_text_outside_c').removeClass('hidden');
-    //     } else {
-    //         $('#wb_text_outside_fb').removeClass('hidden');
-    //     }
-    // });
 
     $('body').on('ifClicked', '.wb-text-type', function(e) {
         var value = $(this).val();
@@ -375,16 +320,19 @@ $(document).ready(function() {
         var link = $(this).attr('data-image-link');
 
         $('#front-view, #back-view, #continue-view, #inside-view').css({"background-image": "url('" + link + "')", "color": "#" + font});
-        $('.preview-text').css({"color": "#" + font});
+        $('.preview-text, .preview-clipart').css({"color": "#" + font});
     });
 
     $('body').on('click', '.fntin', function(e) {
         fontElement = $(this);
-        var $container = $("#modalColorSelect .modal-body .font-color-list");
+        var $container = $("#modalSelectColor .modal-body .font-color-list");
         var $scrollTo = $('.font-color-list-' + $(this).attr('ref-font-color'));
 
         $container.animate({scrollTop: $scrollTo.offset().top - $container.offset().top, scrollLeft: 0},300);
-        $('#modalColorSelect').modal('show');
+
+        $('.font-selected').removeClass('active');
+        $('.font-color-list-'+$(this).attr('ref-font-color')).addClass('active');
+        $('#modalSelectColor').modal('show');
     });
 
     $('body').on('click', '.font-selected', function(e) {
@@ -420,9 +368,69 @@ $(document).ready(function() {
 
         }
 
-        $('#modalColorSelect').modal('hide');
+        $('#modalSelectColor').modal('hide');
 
         console.log(items);
+
+    });
+
+    $('body').on('click', '.clipartin', function(e) {
+        clipElement = $(this);
+        var $container = $("#modalSelectClipart .modal-body .font-color-list");
+        var $scrollTo = $('.clipart-list-none');
+
+        $container.animate({scrollTop: $scrollTo.offset().top - $container.offset().top, scrollLeft: 0},300);
+
+        $('.clipart-selected').removeClass('active');
+        $('.clipart-list-'+$(this).attr('ref-code')).addClass('active');
+        $('#modalSelectClipart').modal('show');
+    });
+
+    $('body').on('click', '.clipart-selected', function(e) {
+
+        var code = $(this).attr('ref-code');
+        var image = $(this).attr('ref-image');
+        var name = $(this).attr('ref-name');
+
+        clipElement.attr('ref-code', code);
+        var targetID = clipElement.attr('ref-target');
+
+        $(targetID).attr('ref-clipart-code', code);
+        $(targetID).attr('ref-clipart-name', name);
+        if(code!="none") {
+            if(targetID == "#clipart-front-center") {
+                $(targetID).html("<img height='50' src='" + image + "'>");
+            } else {
+                $(targetID).html("<img height='40' src='" + image + "'>");
+            }
+        } else {
+            $(targetID).html("");
+        }
+
+        $('#modalSelectClipart').modal('hide');
+
+    });
+
+    $('body').on('click', '#btn_font_style', function(e) {
+
+        $('.font-style-selected').removeClass('active');
+        $('.font-style-list-'+$(this).attr('ref-font-style-code')).addClass('active');
+        $('#modalSelectFont').modal('show');
+
+    });
+
+    $('body').on('click', '.font-style-selected', function(e) {
+
+        var code = $(this).attr('ref-code');
+        var name = $(this).attr('ref-name');
+        var file = $(this).attr('ref-font');
+        var image = $(this).attr('ref-image');
+
+        $('.wb-text-preview').css("font-family", "'" + name + "'");
+
+        $('#btn_font_style').attr('ref-font-style-code', code);
+        $('#preview-textfont').html("<img src='" + image + "'>");
+        $('#modalSelectFont').modal('hide');
 
     });
 
@@ -449,6 +457,9 @@ function loadColors($style, $size)
     // Show fonts
     $('.fonttext').addClass('hidden');
     $('.box-color').removeClass('with-font');
+    // Hide middle clipart preview & upload button
+    $('#clipart_front_center_btn').addClass('hidden');
+    $('#clipart-front-center').addClass('hidden');
 
     // Get sizes for selected style.
     switch ($style) {
@@ -468,6 +479,9 @@ function loadColors($style, $size)
             }
             // Update
             $('.wb-band').addClass('band-fig').removeClass('band-reg');
+            // Show middle clipart preview & upload button
+            $('#clipart_front_center_btn').removeClass('hidden');
+            $('#clipart-front-center').removeClass('hidden');
             // Show fonts
             $('.fonttext').removeClass('hidden');
             $('.box-color').addClass('with-font');
@@ -564,6 +578,33 @@ function loadWristbands($style, $size)
     // });
 }
 
+function loadPrices($style, $size)
+{
+    // check if $style is undefined.
+    if(typeof $style == 'undefined')
+        $style = $('#wb_style input[type=radio].wb-style:checked').val();
+
+    // check if $size is undefined.
+    if(typeof $size == 'undefined') {
+        $size = $('#wb_size input[type=radio].wb-size:checked').val();
+    }
+    $size_name = $('#wb_size input[type=radio].wb-size:checked').attr('data-name');
+
+    var tblhead = '<th title="Quantity">Qty</th>';
+    var tblbody = '<td>Price</td>';
+
+    $.each(price_json[$style][$size], function(key, value) {
+        tblhead += '<th title="' + key + ' Pieces">' + key + '</th>';
+        tblbody += '<td>$' + value + '</th>';
+    });
+
+    $('#price_table .style').html($style.toUpperCase());
+    $('#price_table .size').html($size_name.toUpperCase());
+    $('#price_header').html(tblhead);
+    $('#price_body').html(tblbody);
+
+}
+
 function loadPreview($style, $type, $color, $font, $isFirst)
 {
     if(typeof $isFirst == "undefined")
@@ -600,7 +641,7 @@ function loadPreview($style, $type, $color, $font, $isFirst)
                 $('.' + previewClass).addClass('active');
 
                 $('#front-view, #back-view, #continue-view, #inside-view').css({"background-image": "url('" + link + "')", "color": "#" + $font});
-                $('.preview-text').css({"color": "#" + $font});
+                $('.preview-text, .preview-clipart').css({"color": "#" + $font});
             }
         });
     }
@@ -615,7 +656,7 @@ function checkPreview()
         $('#preview-pill-selection').html('');
         // Reset text.
         $('#front-view, #back-view, #continue-view, #inside-view').removeAttr("style");
-        $('.preview-text').removeAttr("style");
+        $('.preview-text, .preview-clipart').removeAttr("style");
     } else {
         resetPreview();
         $('#preview-pill').removeClass('hidden');
@@ -633,7 +674,7 @@ function resetPreview()
 
     // Reset text.
     $('#front-view, #back-view, #continue-view, #inside-view').removeAttr("style");
-    $('.preview-text').removeAttr("style");
+    $('.preview-text, .preview-clipart').removeAttr("style");
 
     // Loop through all items
     $.each(items, function( styleKey, styleVal ) {
