@@ -279,8 +279,7 @@ $(document).ready(function() {
         }
 
         resetPreview();
-
-        console.log(items);
+        compTotal();
 
     });
 
@@ -369,8 +368,6 @@ $(document).ready(function() {
         }
 
         $('#modalSelectColor').modal('hide');
-
-        console.log(items);
 
     });
 
@@ -555,27 +552,6 @@ function loadWristbands($style, $size)
     if(typeof $size == 'undefined')
         $size = $('#wb_size input[type=radio].wb-size:checked').val();
 
-    // // stop/abort existing fetches.
-    // if(xhr && xhr.readyState != 4){
-    //     xhr.abort();
-    // }
-    //
-    // // get proper total qty
-    // xhr = $.ajax({
-    // 	type: 'GET',
-    // 	url: '/wb/colors_ss',
-    // 	data: {
-    //         'style': $style,
-    //         'size': $size
-    //     },
-    // 	beforeSend: function() {
-    //         // $('#wb_color_qty .content').html('loading...');
-    // 	},
-    // 	success: function(data) {
-    // 	}
-    // }).done(function(e) {
-    //     // $('#wb_color_qty .content').html('done!');
-    // });
 }
 
 function loadPrices($style, $size)
@@ -704,4 +680,60 @@ function checkViewport()
    } else {
       return "lg";
    }
+}
+
+function compTotal()
+{
+    $('#dv-100-free-wristbands, #dv-10-free-keychains').addClass('hidden');
+
+    var total = 0;
+    var html_kc = "";
+    var html_wb = "";
+
+    console.log(items);
+
+    // Loop through all items
+    $.each(items, function( styleKey, styleVal ) {
+        $.each(styleVal, function( itemKey, itemValue ) {
+            $.each(itemValue['size'], function( sizeKey, sizeValue ) {
+                // Create & append preview image
+                total += sizeValue.qty;
+                // For free wristbands
+                html_wb += '<li class="fwb-list conversion-wrist-'+itemValue.style+' free-wrist-'+itemValue.style+'-'+sizeKey+'-'+itemValue.title+'" data-band-color="' + itemValue.color.split(",").join("-") + '">';
+                html_wb += '<div class="fwb-text col-md-6 col-sm-12">';
+                    html_wb += '<div class="col-xs-4 fwb-text-content">'+itemValue.style.toUpperCase()+'</div>';
+                    html_wb += '<div class="col-xs-4 fwb-text-content">'+itemValue.title.toLowerCase().capitalizeFirstLetter()+'</div>';
+                    html_wb += '<div class="col-xs-4 fwb-text-content">'+sizeKey.toLowerCase().capitalizeFirstLetter()+'</div>';
+                html_wb += '</div>';
+                html_wb += '<div class="align-right col-md-6 col-sm-12"><h4 class="fwb-text col-xs-12 hidden-md hidden-lg text-center fwb-text-hidden-header">INPUT QUANTITY</h4><input type="number" class="freewb col-xs-12" id="freewb-'+itemValue.style+'-'+sizeKey+'-'+itemValue.color.split(",").join("-")+'" name="'+itemValue.style+'-'+sizeKey+'-'+itemValue.color.split(",").join("-")+'-fwb" data-style="'+itemValue.style+'" data-color="'+itemValue.color+'" data-font-color="'+sizeValue.font+'" data-name="'+itemValue.title+'" data-size="'+sizeKey+'" placeholder="0" data-maxlength="3" /></div>';
+                html_wb += '<div class="clearfix"></div>';
+                html_wb += '</li>';
+                // For free keychains
+                html_kc += '<li class="fwb-list conversion-wrist-'+itemValue.style+' free-wrist-'+itemValue.style+'-'+sizeKey+'-'+itemValue.title+'" data-band-color="' + itemValue.color.split(",").join("-") + '">';
+                html_kc += '<div class="fwb-text col-md-6 col-sm-12">';
+                    html_kc += '<div class="col-xs-4 fwb-text-content">'+itemValue.style.toUpperCase()+'</div>';
+                    html_kc += '<div class="col-xs-4 fwb-text-content">'+itemValue.title.toLowerCase().capitalizeFirstLetter()+'</div>';
+                    html_kc += '<div class="col-xs-4 fwb-text-content">'+sizeKey.toLowerCase().capitalizeFirstLetter()+'</div>';
+                html_kc += '</div>';
+                html_kc += '<div class="align-right col-md-6 col-sm-12"><h4 class="fwb-text col-xs-12 hidden-md hidden-lg text-center fwb-text-hidden-header">INPUT QUANTITY</h4><input type="number" class="freekc col-xs-12" id="freekc-'+itemValue.style+'-'+sizeKey+'-'+itemValue.color.split(",").join("-")+'" name="'+itemValue.style+'-'+sizeKey+'-'+itemValue.color.split(",").join("-")+'-fwb" data-style="'+itemValue.style+'" data-color="'+itemValue.color+'" data-font-color="'+sizeValue.font+'" data-name="'+itemValue.title+'" data-size="'+sizeKey+'" placeholder="0" data-maxlength="3" /></div>';
+                html_kc += '<div class="clearfix"></div>';
+                html_kc += '</li>';
+            });
+        });
+    });
+
+	// Free wristbands
+    $(".area-conversion-bands").html(html_wb);
+	$(".area-conversion-chains").html(html_kc);
+
+    console.log(total);
+
+    if(total >= 100) {
+        $('#dv-100-free-wristbands, #dv-10-free-keychains').removeClass('hidden');
+    }
+
+}
+
+String.prototype.capitalizeFirstLetter = function() {
+    return this.charAt(0).toUpperCase() + this.slice(1);
 }

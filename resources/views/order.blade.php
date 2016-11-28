@@ -371,8 +371,8 @@
 					<div class="col-xs-9 col-sm-10 offer-details float-left">ADD ONS (Optional)</div>
 					<div class="clearfix"></div>
 				</div>
-				<div class="popup-order-gallery">
-					<?php // include "promo-keychain-10.php"; ?>
+				<div id="promo_free_keychains" class="popup-order-gallery">
+					@include('promo.free_keychains')
 				</div>
 
 				<!-- End conversion wristbands -->
