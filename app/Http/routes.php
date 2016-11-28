@@ -17,10 +17,12 @@ Route::get('/sample', function () { return view('sample'); });
 
 Route::get('/order', 'OrderController@index');
 
-Route::get('/wb/colors_s', 'OrderController@getWristbandColor');
+Route::get('/wb/colorsS', 'OrderController@getWristbandColor');
 
-Route::match(['get', 'post'], '/wb/colors_ss', 'OrderController@getWristbandColorsByStyleSize');
+Route::match(['get', 'post'], '/wb/colorsSS', 'OrderController@getWristbandColorsByStyleSize');
 
 Route::get('/preview', 'PreviewController@makePreview');
 
-Route::get('/mail_test', 'OrderController@mailTest');
+Route::get('/mailTest', 'OrderController@mailTest');
+
+Route::post('/getPriceShipAndProd', 'OrderController@getPriceShipAndProd');

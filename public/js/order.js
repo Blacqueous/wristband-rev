@@ -69,13 +69,17 @@ $(document).ready(function() {
             items = {};
             // Reset item previews.
             checkPreview();
-
-            // Main style click action.
+            // Load wristband sizes.
             loadSizes();
+            // Load wristband colors.
             loadColors();
+            // Load wristband price list.
             loadPrices();
-            // changeWristbandColors();
+            // Load total amount.
+            loadTotal();
+
         }
+
     });
 
     $('body').on('ifClicked', 'input[type=radio].wb-style', function(e) {
@@ -100,13 +104,17 @@ $(document).ready(function() {
             items = {};
             // Reset item previews.
             checkPreview();
-
-            // Main style click action.
+            // Load wristband sizes.
             loadSizes();
+            // Load wristband colors.
             loadColors();
+            // Load wristband price list.
             loadPrices();
-            // changeWristbandColors();
+            // Load total amount.
+            loadTotal();
+
         }
+
     });
     // END: Change style actions.
 
@@ -133,12 +141,15 @@ $(document).ready(function() {
             items = {};
             // Reset item previews.
             checkPreview();
-
-            // Main size click action.
+            // Load wristband colors.
             loadColors();
+            // Load wristband price list.
             loadPrices();
-            // changeWristbandColors();
+            // Load total amount.
+            loadTotal();
+
         }
+
     });
 
     $('body').on('ifClicked', 'input[type=radio].wb-size', function(e) {
@@ -162,12 +173,15 @@ $(document).ready(function() {
             items = {};
             // Reset item previews.
             checkPreview();
-
-            // Main size click action.
+            // Load wristband colors.
             loadColors();
+            // Load wristband price list.
             loadPrices();
-            // changeWristbandColors();
+            // Load total amount.
+            loadTotal();
+
         }
+
     });
     // END: Change size actions.
 
@@ -278,8 +292,12 @@ $(document).ready(function() {
             $(this).val("");
         }
 
+        // reset wristband previews.
         resetPreview();
-        compTotal();
+        // Load free items.
+        loadFree();
+        // Load total amount.
+        loadTotal();
 
     });
 
@@ -431,11 +449,141 @@ $(document).ready(function() {
 
     });
 
+	// Free checkbox EVENTs
+	$('body').on("ifChanged", ".free-checkbox", function(e) {
+
+        var theContainer = $(this).closest('.message_wristband_100').find('.convert-container');
+
+        if($(this).is(':checked')) {
+            theContainer.removeClass('hidden');
+        } else {
+            theContainer.addClass('hidden');
+        }
+
+        // Load total amount.
+        loadTotal();
+
+    });
+
+    // Free keychains input fields EVENTs
+    $('body').on("blur", ".freekc", function(e) {
+
+        var qty = ($(this).val().trim() == "") ? 0 : parseInt($(this).val().trim());
+        var total = 0;
+
+        // If value is less than or is equal to 0, empty the field.
+        if(qty <= 0) { $(this).val(""); return; }
+
+        // Compute total key in items.
+        $.each($(".freekc"), function(key, element) {
+            element = $(element);
+            total += (element.val().trim() == "") ? 0 : parseInt(element.val().trim());
+        });
+
+        // Check if total is over the required free amount.
+        if(total > 10) {
+            $(this).val("");
+            $('#modal-10-free-keychains').modal('show');
+        }
+
+        // Load total amount.
+        loadTotal();
+
+    });
+
+    // Free wristbands input fields EVENTs
+    $('body').on("blur", ".freewb", function(e) {
+
+        var qty = ($(this).val().trim() == "") ? 0 : parseInt($(this).val().trim());
+        var total = 0;
+
+        // If value is less than or is equal to 0, empty the field.
+        if(qty <= 0) { $(this).val(""); return; }
+
+        // Compute total key in items.
+        $.each($(".freewb"), function(key, element) {
+            element = $(element);
+            total += (element.val().trim() == "") ? 0 : parseInt(element.val().trim());
+        });
+
+        // Check if total is over the required free amount.
+        if(total > 100) {
+            $(this).val("");
+            $('#modal-100-free-wristbands').modal('show');
+        }
+
+        // Load total amount.
+        loadTotal();
+
+    });
+
 });
 
 function changeWristbandColors()
 {
     loadWristbands();
+}
+
+function checkPreview()
+{
+    // Check if item empty.
+    if ($.isEmptyObject(items)) {
+        // Reset item previews.
+        $('#preview-pill').addClass('hidden');
+        $('#preview-pill-selection').html('');
+        // Reset text.
+        $('#front-view, #back-view, #continue-view, #inside-view').removeAttr("style");
+        $('.preview-text, .preview-clipart').removeAttr("style");
+    } else {
+        resetPreview();
+        $('#preview-pill').removeClass('hidden');
+    }
+}
+
+function checkViewport()
+{
+   var winWidth =  $(window).width();
+
+   if(winWidth < 768 ) {
+      return "xs";
+   } else if( winWidth <= 991) {
+      return "sm";
+   } else if( winWidth <= 1199) {
+      return "md";
+   } else {
+      return "lg";
+   }
+}
+
+function getSizeTitle(abbr)
+{
+
+    switch (abbr.toLowerCase()) {
+        case "ad":
+            return "Adult";
+            break;
+
+        case "md":
+            return "Medium";
+            break;
+
+        case "yt":
+            return "Youth";
+            break;
+
+        case "xs":
+            return "Extra Small";
+            break;
+
+        case "xl":
+            return "Extra Large";
+            break;
+
+        default:
+            return "None";
+            break;
+    }
+
 }
 
 function loadColors($style, $size)
@@ -503,6 +651,88 @@ function loadColors($style, $size)
     }
 }
 
+function loadFree()
+{
+    $('#dv-100-free-wristbands, #dv-10-free-keychains').addClass('hidden');
+
+    var total = 0;
+    var html_kc = "";
+    var html_wb = "";
+
+    // Loop through all items
+    $.each(items, function( styleKey, styleVal ) {
+        $.each(styleVal, function( itemKey, itemValue ) {
+            $.each(itemValue['size'], function( sizeKey, sizeValue ) {
+                // Create & append preview image
+                total += sizeValue.qty;
+
+                // For free wristbands
+                html_wb += '<li class="fwb-list conversion-wrist-'+itemValue.style+' free-wrist-'+itemValue.style+'-'+sizeKey+'-'+itemValue.title+'" data-band-color="' + itemValue.color.split(",").join("-") + '">';
+                html_wb += '<div class="fwb-text col-md-6 col-sm-12">';
+                    html_wb += '<div class="col-xs-4 fwb-text-content">'+itemValue.style.toUpperCase()+'</div>';
+                    html_wb += '<div class="col-xs-4 fwb-text-content">'+itemValue.title.toUpperCase()+'</div>';
+                    html_wb += '<div class="col-xs-4 fwb-text-content">'+getSizeTitle(sizeKey).toUpperCase()+'</div>';
+                html_wb += '</div>';
+                html_wb += '<div class="align-right col-md-6 col-sm-12"><h4 class="fwb-text col-xs-12 hidden-md hidden-lg text-center fwb-text-hidden-header">INPUT QUANTITY</h4><input type="number" class="freewb col-xs-12" id="freewb-'+itemValue.style+'-'+sizeKey+'-'+itemValue.color.split(",").join("-")+'" name="'+itemValue.style+'-'+sizeKey+'-'+itemValue.color.split(",").join("-")+'-fwb" data-style="'+itemValue.style+'" data-color="'+itemValue.color+'" data-font-color="'+sizeValue.font+'" data-name="'+itemValue.title+'" data-size="'+sizeKey+'" placeholder="0" data-maxlength="3" /></div>';
+                html_wb += '<div class="clearfix"></div>';
+                html_wb += '</li>';
+                // For free keychains
+                html_kc += '<li class="fwb-list conversion-wrist-'+itemValue.style+' free-wrist-'+itemValue.style+'-'+sizeKey+'-'+itemValue.title+'" data-band-color="' + itemValue.color.split(",").join("-") + '">';
+                html_kc += '<div class="fwb-text col-md-6 col-sm-12">';
+                    html_kc += '<div class="col-xs-4 fwb-text-content">'+itemValue.style.toUpperCase()+'</div>';
+                    html_kc += '<div class="col-xs-4 fwb-text-content">'+itemValue.title.toUpperCase()+'</div>';
+                    html_kc += '<div class="col-xs-4 fwb-text-content">'+getSizeTitle(sizeKey).toUpperCase()+'</div>';
+                html_kc += '</div>';
+                html_kc += '<div class="align-right col-md-6 col-sm-12"><h4 class="fwb-text col-xs-12 hidden-md hidden-lg text-center fwb-text-hidden-header">INPUT QUANTITY</h4><input type="number" class="freekc col-xs-12" id="freekc-'+itemValue.style+'-'+sizeKey+'-'+itemValue.color.split(",").join("-")+'" name="'+itemValue.style+'-'+sizeKey+'-'+itemValue.color.split(",").join("-")+'-fwb" data-style="'+itemValue.style+'" data-color="'+itemValue.color+'" data-font-color="'+sizeValue.font+'" data-name="'+itemValue.title+'" data-size="'+sizeKey+'" placeholder="0" data-maxlength="3" /></div>';
+                html_kc += '<div class="clearfix"></div>';
+                html_kc += '</li>';
+            });
+        });
+    });
+
+	// Free wristbands
+    $(".area-conversion-bands").html(html_wb);
+	$(".area-conversion-chains").html(html_kc);
+
+    // console.log(total);
+
+    if(total >= 100) {
+        $('#dv-100-free-wristbands, #dv-10-free-keychains').removeClass('hidden');
+    } else {
+        $('#free-keychains, #free-wristbands').iCheck('uncheck');
+        $('.message_wristband_100 .convert-container').addClass('hidden');
+        $('#dv-100-free-wristbands, #dv-10-free-keychains').addClass('hidden');
+    }
+
+}
+
+function loadPrices($style, $size)
+{
+    // check if $style is undefined.
+    if(typeof $style == 'undefined')
+        $style = $('#wb_style input[type=radio].wb-style:checked').val();
+
+    // check if $size is undefined.
+    if(typeof $size == 'undefined') {
+        $size = $('#wb_size input[type=radio].wb-size:checked').val();
+    }
+    $size_name = $('#wb_size input[type=radio].wb-size:checked').attr('data-name');
+
+    var tblhead = '<th title="Quantity">Qty</th>';
+    var tblbody = '<td>Price</td>';
+
+    $.each(price_json[$style][$size], function(key, value) {
+        tblhead += '<th title="' + key + ' Pieces">' + key + '</th>';
+        tblbody += '<td>$' + value + '</th>';
+    });
+
+    $('#price_table .style').html($style.toUpperCase());
+    $('#price_table .size').html($size_name.toUpperCase());
+    $('#price_header').html(tblhead);
+    $('#price_body').html(tblbody);
+
+}
+
 function loadSizes($style)
 {
     // Check if $size is undefined.
@@ -542,6 +772,140 @@ function loadSizes($style)
 
 }
 
+function loadTotal()
+{
+    var $style = $('#wb_style input[type=radio].wb-style:checked').val();
+    var $size = $('#wb_size input[type=radio].wb-size:checked').val();
+    var $arr_price = price_json[$style][$size];
+    var $arr_addon = addon_json;
+    var $arr_style = {};
+    var $collection = {
+        'style': $style,
+        'size': $size,
+        'items': items,
+        'price': 0,
+        'quantity': 0,
+        'total': 0
+    };
+
+    // Loop through all items
+    $.each(items, function( styleKey, styleVal ) {
+
+        // Add new fields.
+        $collection['items'][styleKey]['quantity'] = 0;
+        $collection['items'][styleKey]['price_addon'] = 0;
+        $collection['items'][styleKey]['price_total'] = 0;
+
+        $.each(styleVal, function( itemKey, itemValue ) {
+            $.each(itemValue['size'], function( sizeKey, sizeValue ) {
+                // Create & append preview image.
+                $collection.quantity += sizeValue.qty;
+                $collection['items'][styleKey]['quantity'] += sizeValue.qty;
+            });
+        });
+
+        // Get add on price.
+        var hasQty = false;
+        $.each($arr_addon[styleKey], function(addon_qty, addon_prc) {
+            // Check if already found the price.
+            if(hasQty == false) {
+                // If less than or equal.
+                if(parseInt(addon_qty) <= $collection['items'][styleKey]['quantity']) { // Get price.
+                    $collection['items'][styleKey]['price_addon'] = parseFloat(addon_prc);
+                } else if($collection['items'][styleKey]['quantity'] < 20) { // Get price.
+                    $collection['items'][styleKey]['price_addon'] = parseFloat(addon_prc);
+                    hasQty = true; // Flag! price found.
+                } else { // Flag if additional item price found.
+                    hasQty = true;
+                }
+            }
+        });
+
+        $collection['items'][styleKey]['price_total'] = ($collection['items'][styleKey]['price_addon'] * $collection['items'][styleKey]['quantity']);
+
+    });
+
+    if($collection.quantity >= 20) {
+
+        // Set item price.
+        var hasQty = false;
+        $.each($arr_price, function(price_qty, price_prc) {
+            if(hasQty == false) {
+                // If less than or equal.
+                if($collection.quantity < 20) { // Get price.
+                    $collection.price = parseFloat($data[$style][$size]['20']);
+                } else if(parseInt(price_qty) <= $collection.qty) { // Get price.
+                    $collection.price = parseFloat(price_prc);
+                } else { // Flag if item price found.
+                    hasQty = true;
+                }
+            }
+        });
+
+		// Get proper total qty
+		$.ajax({
+			type: 'POST',
+			url: '/getPriceShipAndProd',
+			data: {
+                'style': $collection.style,
+                'size': $collection.size,
+                'quantity': $collection.quantity,
+                '_token': $('meta[name="csrf-token"]').attr('content')
+            },
+			beforeSend: function() {
+                $('#total-area .has-total').addClass('hidden');
+                $('#total-area .no-total').removeClass('hidden');
+			},
+			success: function(data) {
+                console.log(data);
+				// data = $.parseJSON(data);
+				// var htmlProd, htmlShip = '';
+                //
+				// // List all production price/day data
+				// $.each(data.production, function(key, value) {
+				// 	htmlProd += "<option value='" + value.days + "' data-price='" + value.price + "'>Standard Production - " + value.days + " Days (+$" + value.price + ")</option>";
+				// });
+				// $("#ProductionTime").html(htmlProd);
+                //
+				// // List all shipping price/day data
+				// $.each(data.shipping, function(key, value) {
+				// 	htmlShip += "<option value='" + value.days + "' data-price='" + value.price + "'>Standard Shipping - " + value.days + " Days (+$" + value.price + ")</option>";
+				// });
+				// $("#ShippingTime").html(htmlShip);
+                //
+				// // Get selected production settings
+				// var $p_days = $("#ProductionTime option:selected").val();
+				// 	$p_days = ($p_days != "" && !isNaN(parseInt($p_days))) ? parseInt($p_days) : 0;
+				// var $p_price = $("#ProductionTime option:selected").attr("data-price");
+				// 	$p_price = ($p_price != "" && !isNaN(parseFloat($p_price))) ? parseFloat($p_price) : 0;
+                //
+				// // Set values
+				// collectionData.production_days = $p_days;
+				// collectionData.production_price = $p_price;
+                //
+				// // Get selected shipping settings
+				// var $s_days = $("#ShippingTime option:selected").val();
+				// 	$s_days = ($s_days != "" && !isNaN(parseInt($s_days))) ? parseInt($s_days) : 0;
+				// var $s_price = $("#ShippingTime option:selected").attr("data-price");
+				// 	$s_price = ($s_price != "" && !isNaN(parseFloat($s_price))) ? parseFloat($s_price) : 0;
+
+			}
+		});
+
+
+        $('#total-area .has-total').removeClass('hidden');
+        $('#total-area .no-total').addClass('hidden');
+
+
+    } else {
+        $('#total-area .has-total').addClass('hidden');
+        $('#total-area .no-total').removeClass('hidden');
+    }
+
+    console.log($collection);
+
+}
+
 function loadWristbands($style, $size)
 {
     // check if $style is undefined.
@@ -551,33 +915,6 @@ function loadWristbands($style, $size)
     // check if $size is undefined.
     if(typeof $size == 'undefined')
         $size = $('#wb_size input[type=radio].wb-size:checked').val();
-
-}
-
-function loadPrices($style, $size)
-{
-    // check if $style is undefined.
-    if(typeof $style == 'undefined')
-        $style = $('#wb_style input[type=radio].wb-style:checked').val();
-
-    // check if $size is undefined.
-    if(typeof $size == 'undefined') {
-        $size = $('#wb_size input[type=radio].wb-size:checked').val();
-    }
-    $size_name = $('#wb_size input[type=radio].wb-size:checked').attr('data-name');
-
-    var tblhead = '<th title="Quantity">Qty</th>';
-    var tblbody = '<td>Price</td>';
-
-    $.each(price_json[$style][$size], function(key, value) {
-        tblhead += '<th title="' + key + ' Pieces">' + key + '</th>';
-        tblbody += '<td>$' + value + '</th>';
-    });
-
-    $('#price_table .style').html($style.toUpperCase());
-    $('#price_table .size').html($size_name.toUpperCase());
-    $('#price_header').html(tblhead);
-    $('#price_body').html(tblbody);
 
 }
 
@@ -623,22 +960,6 @@ function loadPreview($style, $type, $color, $font, $isFirst)
     }
 }
 
-function checkPreview()
-{
-    // Check if item empty.
-    if ($.isEmptyObject(items)) {
-        // Reset item previews.
-        $('#preview-pill').addClass('hidden');
-        $('#preview-pill-selection').html('');
-        // Reset text.
-        $('#front-view, #back-view, #continue-view, #inside-view').removeAttr("style");
-        $('.preview-text, .preview-clipart').removeAttr("style");
-    } else {
-        resetPreview();
-        $('#preview-pill').removeClass('hidden');
-    }
-}
-
 function resetPreview()
 {
     // Determines if a preview is to be made
@@ -665,73 +986,6 @@ function resetPreview()
 
     // Show again.
     $('#preview-pill').removeClass('hidden');
-}
-
-function checkViewport()
-{
-   var winWidth =  $(window).width();
-
-   if(winWidth < 768 ) {
-      return "xs";
-   } else if( winWidth <= 991) {
-      return "sm";
-   } else if( winWidth <= 1199) {
-      return "md";
-   } else {
-      return "lg";
-   }
-}
-
-function compTotal()
-{
-    $('#dv-100-free-wristbands, #dv-10-free-keychains').addClass('hidden');
-
-    var total = 0;
-    var html_kc = "";
-    var html_wb = "";
-
-    console.log(items);
-
-    // Loop through all items
-    $.each(items, function( styleKey, styleVal ) {
-        $.each(styleVal, function( itemKey, itemValue ) {
-            $.each(itemValue['size'], function( sizeKey, sizeValue ) {
-                // Create & append preview image
-                total += sizeValue.qty;
-                // For free wristbands
-                html_wb += '<li class="fwb-list conversion-wrist-'+itemValue.style+' free-wrist-'+itemValue.style+'-'+sizeKey+'-'+itemValue.title+'" data-band-color="' + itemValue.color.split(",").join("-") + '">';
-                html_wb += '<div class="fwb-text col-md-6 col-sm-12">';
-                    html_wb += '<div class="col-xs-4 fwb-text-content">'+itemValue.style.toUpperCase()+'</div>';
-                    html_wb += '<div class="col-xs-4 fwb-text-content">'+itemValue.title.toLowerCase().capitalizeFirstLetter()+'</div>';
-                    html_wb += '<div class="col-xs-4 fwb-text-content">'+sizeKey.toLowerCase().capitalizeFirstLetter()+'</div>';
-                html_wb += '</div>';
-                html_wb += '<div class="align-right col-md-6 col-sm-12"><h4 class="fwb-text col-xs-12 hidden-md hidden-lg text-center fwb-text-hidden-header">INPUT QUANTITY</h4><input type="number" class="freewb col-xs-12" id="freewb-'+itemValue.style+'-'+sizeKey+'-'+itemValue.color.split(",").join("-")+'" name="'+itemValue.style+'-'+sizeKey+'-'+itemValue.color.split(",").join("-")+'-fwb" data-style="'+itemValue.style+'" data-color="'+itemValue.color+'" data-font-color="'+sizeValue.font+'" data-name="'+itemValue.title+'" data-size="'+sizeKey+'" placeholder="0" data-maxlength="3" /></div>';
-                html_wb += '<div class="clearfix"></div>';
-                html_wb += '</li>';
-                // For free keychains
-                html_kc += '<li class="fwb-list conversion-wrist-'+itemValue.style+' free-wrist-'+itemValue.style+'-'+sizeKey+'-'+itemValue.title+'" data-band-color="' + itemValue.color.split(",").join("-") + '">';
-                html_kc += '<div class="fwb-text col-md-6 col-sm-12">';
-                    html_kc += '<div class="col-xs-4 fwb-text-content">'+itemValue.style.toUpperCase()+'</div>';
-                    html_kc += '<div class="col-xs-4 fwb-text-content">'+itemValue.title.toLowerCase().capitalizeFirstLetter()+'</div>';
-                    html_kc += '<div class="col-xs-4 fwb-text-content">'+sizeKey.toLowerCase().capitalizeFirstLetter()+'</div>';
-                html_kc += '</div>';
-                html_kc += '<div class="align-right col-md-6 col-sm-12"><h4 class="fwb-text col-xs-12 hidden-md hidden-lg text-center fwb-text-hidden-header">INPUT QUANTITY</h4><input type="number" class="freekc col-xs-12" id="freekc-'+itemValue.style+'-'+sizeKey+'-'+itemValue.color.split(",").join("-")+'" name="'+itemValue.style+'-'+sizeKey+'-'+itemValue.color.split(",").join("-")+'-fwb" data-style="'+itemValue.style+'" data-color="'+itemValue.color+'" data-font-color="'+sizeValue.font+'" data-name="'+itemValue.title+'" data-size="'+sizeKey+'" placeholder="0" data-maxlength="3" /></div>';
-                html_kc += '<div class="clearfix"></div>';
-                html_kc += '</li>';
-            });
-        });
-    });
-
-	// Free wristbands
-    $(".area-conversion-bands").html(html_wb);
-	$(".area-conversion-chains").html(html_kc);
-
-    console.log(total);
-
-    if(total >= 100) {
-        $('#dv-100-free-wristbands, #dv-10-free-keychains').removeClass('hidden');
-    }
-
 }
 
 String.prototype.capitalizeFirstLetter = function() {

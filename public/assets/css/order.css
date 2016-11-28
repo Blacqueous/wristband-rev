@@ -1081,19 +1081,19 @@ span.fig-fc {
 }
 
 .message_wristband_100 {
-    color: #ffffff;
+    color: #FFFFFF;
     margin-top: 14px;
     text-align:center;
 }
 
-.free-convert, .free-convert-bands, .free-convert-chains{
-    color: #ffffff;
-    margin-bottom: 15px;
-    padding: 20px;
+.free-convert, .free-convert-bands, .free-convert-chains {
+    border-top: 1px solid #CBCBCB;
+    color: #FFFFFF;
+    padding: 25px 20px 35px 20px;
 }
 
 .free-convert-bands h3, .free-convert-chains h3{
-    color: #008da9;
+    color: #008DA9;
     margin-top: 0px;
 }
 
@@ -1101,11 +1101,11 @@ span.fig-fc {
     text-decoration: underline;
 }
 
-.span-text-con1{
-    color: #8f8fa5;
+.span-text-con1 {
+    color: #8F8FA5;
     font-size: 14px;
+    margin: 0 auto 20px auto;
     padding: 0px;
-    margin: 0 auto 10px auto;
 }
 
 .area-conversion-list {
@@ -1382,4 +1382,56 @@ body {
 
 .font-style-list li.active, .font-style-list li:hover {
     background: rgba(0, 0, 0, 0.1);
+}
+
+.promo-add-ons .icheckbox_square-green {
+    bottom: 5px;
+    /*border: 1px solid #087C77;*/
+}
+
+.promo-add-ons .icheckbox_square-green.checked {
+    border: 0px;
+}
+
+#dv-10-free-keychains.promo-add-ons {
+	margin-top: 30px;
+}
+
+#dv-10-free-keychains .box-thumb, .message_wristband_100 .box-thumb {
+	background: #FFFFFF;
+	padding: 0px;
+}
+
+.message_wristband_100 .row-title {
+	background: #FFFFFF;
+    color: #087C77;
+	padding-bottom: 25px;
+}
+
+.message_wristband_100 .row-title h1 {
+	color: #3B5E86;
+	font-size: 45px;
+	margin: 25px 0;
+}
+
+.message_wristband_100 span {
+    font-size: 20px;
+    font-weight: normal;
+    margin-left: 10px;
+}
+
+.message_wristband_100 .fwb-text-header {
+	background-color: #05859E;
+	color: #FFFFFF;
+	height: 100%;
+	text-decoration: underline;
+}
+
+.message_wristband_100 .fwb-text-hidden-header {
+	background-color: #325277;
+	color: #ffffff;
+	font-weight: bold;
+	height: 100%;
+	padding: 5px 0;
+	text-decoration: underline;
 }

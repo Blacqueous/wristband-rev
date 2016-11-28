@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\AddOns;
 use App\Models\Prices;
+use App\Models\TimeProduction;
+use App\Models\TimeShipping;
 use App\Wristbands\Classes\ClipartList;
 use App\Wristbands\Classes\Colors;
 use App\Wristbands\Classes\ColorsList;
@@ -69,10 +71,20 @@ class OrderController extends Controller
 		return $data;
 	}
 
-	public function getWristbandColors()
+	public function getPriceShipAndProd(Request $request)
 	{
+		$timeProduction = new TimeProduction();
+		$timeProduction = $timeProduction->getPriceByFilter($request->style, $request->size, $request->quantity);
+		$timeProduction = json_decode(json_encode($timeProduction), true);
 
+		$timeShipping = new TimeShipping();
+		$timeShipping = $timeShipping->getPriceByFilter($request->style, $request->size, $request->quantity);
+		$timeShipping = json_decode(json_encode($timeShipping), true);
+
+		return ['production' => $timeProduction, 'shipping' => $timeShipping];
 	}
+
+	public function getWristbandColors() {}
 
 	public function getWristbandColorsByStyleSize(Request $request)
 	{
@@ -84,16 +96,11 @@ class OrderController extends Controller
 
 	public function mailTest(Request $request)
 	{
-		// Mail::send('welcome', [], function ($message) {
-		// 	$message->from('egrubellano@gmail.com', 'EGR');
-		// 	$message->to('egrubellano@gmail.com');
-		// });
 		Mail::send('welcome', [], function ($m) use ($request) {
             $m->from('egrubellano@gmail.com', 'Your Application');
             $m->to('egrubellano@gmail.com', 'EGR')->subject('Your Reminder!');
         });
-// print_r($result);
-// die;
+
 		return view('welcome', $request);
 	}
 

@@ -20,8 +20,8 @@
 @section('js')
 <!-- Order page custom javascript -->
 		<script type="text/javascript">
-			var price_json = JSON.parse('<?php echo(json_encode($prices)); ?>');
-			var addon_json = JSON.parse('<?php echo(json_encode($addons)); ?>');
+			const price_json = JSON.parse('<?php echo(json_encode($prices)); ?>');
+			const addon_json = JSON.parse('<?php echo(json_encode($addons)); ?>');
 		</script>
 		<script src="js/order.js"></script>
 		<!-- <script src="js/angular.order.js"></script> -->
@@ -482,9 +482,9 @@
 			<div class="clearfix"></div>
 
 			<!-- TOTAL -->
-			<div class="total-area">
-				<div class="js-total" style="display:none;">
-					<div class="prod-ship col-md-4" style="display:none;">
+			<div id="total-area" class="total-area">
+				<div class="has-total hidden">
+					<div class="prod-ship col-md-4">
 						<h5>Production Time</h5>
 						<select name="ProductionTime" id="ProductionTime" class="uk-form-large uk-width-1-1 js-production-options js-time-options" data-title="Production" required="" data-validation-error="Please select production time." data-validation-slide-pos="production-shipping">
 						</select>
@@ -547,8 +547,8 @@
 					</div>
 					<div class="clearfix"></div>
 				</div>
-				<div class="js-no-total">
-					<h1>Minimum order should be at least <u>20 pieces.</u></h1>
+				<div class="no-total text-center">
+					<h1 style="margin:20px auto;">Minimum order should be at least <u>20 pieces</u></h1>
 				</div>
 			</div>
 			<!-- End TOTAL -->
