@@ -15,6 +15,9 @@
 		<!-- Bootstrap core CSS -->
 		<link href="assets/css/bootstrap.min.css" rel="stylesheet">
 
+		<!-- Font Awesome core CSS -->
+		<link href="global/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+
 		<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
 		<link href="assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
 

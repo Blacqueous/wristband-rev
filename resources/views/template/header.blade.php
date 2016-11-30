@@ -6,17 +6,16 @@
 				<a class="navbar-brand" href="index.php"><img src="assets/images/src/prom_logo.jpg"></a>
 			</div>
 			<div class="header-right-box">
-			<div id="google_trust">
-			</div>
-			<div class="search">
-				  <div id="hour-img">Monday - Friday | 11am - 8pm EST</div>
-				  <span class="fa fa-search">1-800-989-0440</span>
-				  <p><span class="fa-text">sales@promotionalwristband.com</span></p>
-
-			</div>
+    			<div id="google_trust">
+    			</div>
+    			<div class="search">
+                    <div id="hour-img">Monday - Friday | 11am - 8pm EST</div>
+                    <span class="span-search"><i class="fa fa-search"></i> 1-800-989-0440</span>
+                    <p><span class="fa-text">sales@promotionalwristband.com</span></p>
+    			</div>
 				<div class="clearfix"></div>
 			</div>
-				<div class="clearfix"></div>
+			<div class="clearfix"></div>
 		</div>
     </nav>
 
@@ -78,7 +77,7 @@
 			$homepage = "/dev/homepage.php";
 			$currentpage = $_SERVER['REQUEST_URI'];
 			if($homepage==$currentpage) {
-			?>
+		?>
 
 			<div class="banner">
 				<div id="slideshow">
@@ -95,9 +94,7 @@
 					<div class=""></div>
 			</div>
 
-		   <?php
-				}
-			?>
+		   <?php } ?>
 
 			<!--/.Banner Slideshow -->
 			<div class="timer-area">

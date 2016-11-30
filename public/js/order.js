@@ -517,6 +517,12 @@ $(document).ready(function() {
 
     });
 
+    $('body').on("change", ".js-time-options", function(e) {
+
+        // Load total amount.
+        loadTotal(false);
+    });
+
 });
 
 function changeWristbandColors()
@@ -553,6 +559,82 @@ function checkViewport()
    } else {
       return "lg";
    }
+}
+
+function displayTotal($collection)
+{
+    $('.summary-table-state').addClass('hidden')
+
+    // $('#summary-table-style .value')
+    //
+    // $('#summary-table-size .value')
+    //
+    // $('#summary-table-wristbands')
+    // $('#summary-table-wristbands .qty')
+    // $('#summary-table-wristbands .price')
+    // $('#summary-table-wristbands .total')
+    //
+    // $('#summary-table-segmented')
+    // $('#summary-table-segmented .qty')
+    // $('#summary-table-segmented .price')
+    // $('#summary-table-segmented .total')
+    //
+    // $('#summary-table-swirl')
+    // $('#summary-table-swirl .qty')
+    // $('#summary-table-swirl .price')
+    // $('#summary-table-swirl .total')
+    //
+    // $('#summary-table-production')
+    // $('#summary-table-production .days')
+    // $('#summary-table-production .total')
+    //
+    // $('#summary-table-shipping')
+    // $('#summary-table-shipping .days')
+    // $('#summary-table-shipping .total')
+    //
+    // $('#summary-table-addon')
+    //
+    //     $('#summary-table-addon #addon-3mm-thick')
+    //     $('#summary-table-addon #addon-3mm-thick .qty')
+    //     $('#summary-table-addon #addon-3mm-thick .price')
+    //     $('#summary-table-addon #addon-3mm-thick .total')
+    //
+    //     $('#summary-table-addon #addon-digital-proof')
+    //     $('#summary-table-addon #addon-digital-proof .qty')
+    //     $('#summary-table-addon #addon-digital-proof .price')
+    //     $('#summary-table-addon #addon-digital-proof .total')
+    //
+    //     $('#summary-table-addon #addon-eco-friendly')
+    //     $('#summary-table-addon #addon-eco-friendly .qty')
+    //     $('#summary-table-addon #addon-eco-friendly .price')
+    //     $('#summary-table-addon #addon-eco-friendly .total')
+    //
+    //     $('#summary-table-addon #addon-glitters')
+    //     $('#summary-table-addon #addon-glitters .qty')
+    //     $('#summary-table-addon #addon-glitters .price')
+    //     $('#summary-table-addon #addon-glitters .total')
+    //
+    //     $('#summary-table-addon #addon-individual')
+    //     $('#summary-table-addon #addon-individual .qty')
+    //     $('#summary-table-addon #addon-individual .price')
+    //     $('#summary-table-addon #addon-individual .total')
+    //
+    //     $('#summary-table-addon #addon-key-chain')
+    //     $('#summary-table-addon #addon-key-chain .qty')
+    //     $('#summary-table-addon #addon-key-chain .price')
+    //     $('#summary-table-addon #addon-key-chain .total')
+    //
+    // $('#summary-table-free')
+    //
+    //     $('#summary-table-free #free-key-chain')
+    //     $('#summary-table-free #free-key-chain .qty')
+    //     $('#summary-table-free #free-key-chain .total')
+    //
+    //     $('#summary-table-free #addon-wristband')
+    //     $('#summary-table-free #addon-wristband .qty')
+    //     $('#summary-table-free #addon-wristband .total')
+    //
+    // $('#total-price')
 }
 
 function getSizeTitle(abbr)
@@ -772,7 +854,7 @@ function loadSizes($style)
 
 }
 
-function loadTotal()
+function loadTotal(loadProdShip)
 {
     var $style = $('#wb_style input[type=radio].wb-style:checked').val();
     var $size = $('#wb_size input[type=radio].wb-size:checked').val();
@@ -785,8 +867,13 @@ function loadTotal()
         'items': items,
         'price': 0,
         'quantity': 0,
+        'time_production': { 'days': 0, 'price': 0 },
+        'time_shipping': { 'days': 0, 'price': 0 },
         'total': 0
     };
+
+    if(typeof loadProdShip == "undefined")
+        loadProdShip = true;
 
     // Loop through all items
     $.each(items, function( styleKey, styleVal ) {
@@ -842,67 +929,82 @@ function loadTotal()
             }
         });
 
-		// Get proper total qty
-		$.ajax({
-			type: 'POST',
-			url: '/getPriceShipAndProd',
-			data: {
-                'style': $collection.style,
-                'size': $collection.size,
-                'quantity': $collection.quantity,
-                '_token': $('meta[name="csrf-token"]').attr('content')
-            },
-			beforeSend: function() {
-                $('#total-area .has-total').addClass('hidden');
-                $('#total-area .no-total').removeClass('hidden');
-			},
-			success: function(data) {
-                console.log(data);
-				// data = $.parseJSON(data);
-				// var htmlProd, htmlShip = '';
-                //
-				// // List all production price/day data
-				// $.each(data.production, function(key, value) {
-				// 	htmlProd += "<option value='" + value.days + "' data-price='" + value.price + "'>Standard Production - " + value.days + " Days (+$" + value.price + ")</option>";
-				// });
-				// $("#ProductionTime").html(htmlProd);
-                //
-				// // List all shipping price/day data
-				// $.each(data.shipping, function(key, value) {
-				// 	htmlShip += "<option value='" + value.days + "' data-price='" + value.price + "'>Standard Shipping - " + value.days + " Days (+$" + value.price + ")</option>";
-				// });
-				// $("#ShippingTime").html(htmlShip);
-                //
-				// // Get selected production settings
-				// var $p_days = $("#ProductionTime option:selected").val();
-				// 	$p_days = ($p_days != "" && !isNaN(parseInt($p_days))) ? parseInt($p_days) : 0;
-				// var $p_price = $("#ProductionTime option:selected").attr("data-price");
-				// 	$p_price = ($p_price != "" && !isNaN(parseFloat($p_price))) ? parseFloat($p_price) : 0;
-                //
-				// // Set values
-				// collectionData.production_days = $p_days;
-				// collectionData.production_price = $p_price;
-                //
-				// // Get selected shipping settings
-				// var $s_days = $("#ShippingTime option:selected").val();
-				// 	$s_days = ($s_days != "" && !isNaN(parseInt($s_days))) ? parseInt($s_days) : 0;
-				// var $s_price = $("#ShippingTime option:selected").attr("data-price");
-				// 	$s_price = ($s_price != "" && !isNaN(parseFloat($s_price))) ? parseFloat($s_price) : 0;
+        if(loadProdShip) {
 
-			}
-		});
+            // Get proper total qty.
+            $.ajax({
+            	type: 'POST',
+            	url: '/getPriceShipAndProd',
+            	data: {
+                    'style': $collection.style,
+                    'size': $collection.size,
+                    'quantity': $collection.quantity,
+                    '_token': $('meta[name="csrf-token"]').attr('content')
+                },
+            	beforeSend: function() {
+                    $('#total-area .has-total').addClass('hidden');
+                    $('#total-area .no-total').removeClass('hidden');
+            	},
+            	success: function(data) {}
+            }).done(function(data) {
+                //
+                var htmlProd, htmlShip = '';
 
+                // List all production price/day data
+                if(typeof data.production != "undefined") {
+                    $.each(data.production, function(key, value) {
+                        htmlProd += "<option value='" + value.days + "' data-price='" + value.price + "'>Standard Production - " + value.days + " Days (+$" + value.price + ")</option>";
+                    });
+                }
+                $("#ProductionTime").html(htmlProd);
 
-        $('#total-area .has-total').removeClass('hidden');
-        $('#total-area .no-total').addClass('hidden');
+                // List all shipping price/day data
+                if(typeof data.shipping != "undefined") {
+                    $.each(data.shipping, function(key, value) {
+                        htmlShip += "<option value='" + value.days + "' data-price='" + value.price + "'>Standard Shipping - " + value.days + " Days (+$" + value.price + ")</option>";
+                    });
+                }
+                $("#ShippingTime").html(htmlShip);
 
+                // Get selected production settings
+                $collection.time_production.days = data.production[0].days;
+                $collection.time_production.price = data.production[0].price;
+                $collection.time_shipping.days = data.shipping[0].days;
+                $collection.time_shipping.price = data.shipping[0].price;
+
+                // Collection
+                displayTotal($collection);
+
+                $('#total-area .has-total').removeClass('hidden');
+                $('#total-area .no-total').addClass('hidden');
+    		});
+
+        } else {
+
+    		// Get selected production settings
+            var elementProd = $("#ProductionTime option:selected");
+            $collection.time_production.days = ( elementProd.val() != "" && !isNaN( parseInt(elementProd.val()) ) ) ? parseInt(elementProd.val()) : 0;
+            $collection.time_production.price = ( elementProd.attr("data-price") != "" && !isNaN( parseFloat(elementProd.attr("data-price")) ) ) ? parseFloat(elementProd.attr("data-price")) : 0;
+            var elementShip = $("#ShippingTime option:selected");
+            $collection.time_shipping.days = ( elementShip.val() != "" && !isNaN( parseInt(elementShip.val()) ) ) ? parseInt(elementShip.val()) : 0;
+            $collection.time_shipping.price = ( elementShip.attr("data-price") != "" && !isNaN( parseFloat(elementShip.attr("data-price")) ) ) ? parseFloat(elementShip.attr("data-price")) : 0;
+
+            // Collection
+            displayTotal($collection);
+
+            $('#total-area .has-total').removeClass('hidden');
+            $('#total-area .no-total').addClass('hidden');
+        }
 
     } else {
+
         $('#total-area .has-total').addClass('hidden');
         $('#total-area .no-total').removeClass('hidden');
+
     }
 
-    console.log($collection);
+    // Collection
+    displayTotal($collection);
 
 }
 
@@ -932,7 +1034,7 @@ function loadPreview($style, $type, $color, $font, $isFirst)
         $("#preview-pill-selection").append('<div class="preview-pill ' + previewClass + '" data-font-color="" data-image-link="">Y</div>');
 
         // Get proper total qty
-        xhr = $.ajax({
+        $.ajax({
         	type: 'GET',
         	url: '/gd/belt.php?style='+$style+'&type='+$type+'&color='+$color.replace(/ /g, ''),
         	data: { },

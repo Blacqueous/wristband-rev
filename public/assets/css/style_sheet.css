@@ -40,12 +40,13 @@ a:hover{
 }
 
 .search input { text-indent: 32px;}
-.fa-search {
+
+.span-search {
 	font-size: 20px;
     color: #079BA5;
 }
 
-.fa-text{
+.fa-text {
 	font-size:15px;
 }
 

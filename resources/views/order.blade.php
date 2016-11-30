@@ -371,6 +371,7 @@
 					<div class="col-xs-9 col-sm-10 offer-details float-left">ADD ONS (Optional)</div>
 					<div class="clearfix"></div>
 				</div>
+
 				<div id="promo_free_keychains" class="popup-order-gallery">
 					@include('promo.free_keychains')
 				</div>
@@ -380,7 +381,7 @@
 					<div class="box-thumb"><a href="assets/images/src/add-ons/3mm-thick.png" title="3mm thick option"><img src="assets/images/src/add-ons/3mm-thick.png" class="galleryimg"></a></div>
 					<div class="icon-img"><img src="assets/images/src/icon.png"/> <div class="icon-text" style="width:150px;">Available for 1/2 and 3/4 inch wristbands only.</div></div>
 					<div class="add-ons-radio">
-						<input type="checkbox" name="add-ons-extra" class="add-ons" data-code="3mm-thick"/>
+						<input type="checkbox" name="addon[]" class="add-ons" data-code="3mm-thick"/>
 						<h2>3mm Thick Option</h2>
 					</div>
 				</div>
@@ -388,21 +389,21 @@
 					<div class="box-thumb"><a href="assets/images/src/add-ons/Digital-Proof.png" title="Digital Proof"><img src="assets/images/src/add-ons/Digital-Proof.png" class="galleryimg"></a></div>
 					<div class="icon-img"><img src="assets/images/src/icon.png"/> <div class="icon-text" style="width:150px;">We'll send you a proof for approval before production begins.</div></div>
 					<div class="add-ons-radio">
-						<input type="checkbox" name="add-ons-extra" class="add-ons" data-code="digital-proof"/>
+						<input type="checkbox" name="addon[]" class="add-ons" data-code="digital-proof"/>
 						<h2>Digital Proof</h2>
 					</div>
 				</div>
 				<div class="col-md-4 add-ons">
 					<div class="box-thumb"><a href="assets/images/src/add-ons/ecofriendly.png" title="Eco Friendly"><img src="assets/images/src/add-ons/ecofriendly.png" class="galleryimg"></a></div>
 					<div class="add-ons-radio">
-						<input type="checkbox" name="add-ons-extra" class="add-ons" data-code="eco-friendly"/>
+						<input type="checkbox" name="addon[]" class="add-ons" data-code="eco-friendly"/>
 						<h2>Eco Friendly</h2>
 					</div>
 				</div>
 				<div class="col-md-4 add-ons">
 					<div class="box-thumb"><a href="assets/images/src/add-ons/Glitters.png" title="Glitters"><img src="assets/images/src/add-ons/Glitters.png" class="galleryimg"></a></div>
 					<div class="add-ons-radio">
-						<input type="checkbox" name="add-ons-extra" class="add-ons" data-code="glitters"/>
+						<input type="checkbox" name="addon[]" class="add-ons" data-code="glitters"/>
 						<h2>Glitters</h2>
 					</div>
 				</div>
@@ -410,7 +411,7 @@
 					<div class="box-thumb"><a href="assets/images/src/add-ons/Individual-pack.png" title="Individual pack"><img src="assets/images/src/add-ons/Individual-pack.png" class="galleryimg"></a></div>
 					<div class="icon-img"><img src="assets/images/src/icon.png"/> <div class="icon-text" style="width:200px;">Professionally sealed on biodegradable bags with clear back to see product inside.</div></div>
 					<div class="add-ons-radio">
-						<input type="checkbox" name="add-ons-extra" class="add-ons" data-code="individual"/>
+						<input type="checkbox" name="addon[]" class="add-ons" data-code="individual"/>
 						<h2>Individually Pack</h2>
 					</div>
 				</div>
@@ -418,7 +419,7 @@
 					<div class="box-thumb"><a href="assets/images/src/add-ons/KeyChain.png" title="KeyChain"><img src="assets/images/src/add-ons/KeyChain.png" class="galleryimg"></a></div>
 					<div class="icon-img"><img src="assets/images/src/icon.png"/> <div class="icon-text" style="width:132px;"> Available for 1/2 inch wristbands only.</div></div>
 					<div class="add-ons-radio">
-						<input type="checkbox" name="add-ons-extra" class="add-ons" data-code="key-chain"/>
+						<input type="checkbox" name="addon[]" class="add-ons" data-code="key-chain"/>
 						<h2>Keychain</h2>
 					</div>
 				</div>
@@ -485,64 +486,167 @@
 			<div id="total-area" class="total-area">
 				<div class="has-total hidden">
 					<div class="prod-ship col-md-4">
+						<h3><i class="fa"></i> </h3>
 						<h5>Production Time</h5>
-						<select name="ProductionTime" id="ProductionTime" class="uk-form-large uk-width-1-1 js-production-options js-time-options" data-title="Production" required="" data-validation-error="Please select production time." data-validation-slide-pos="production-shipping">
-						</select>
-						<div style="padding-top:10px;"></div>
+							<select name="ProductionTime" id="ProductionTime" class="form-control js-production-options js-time-options" data-validation-error="Please select production time." data-modal-target="#modalproduction-shipping">
+							</select>
 						<h5>Shipping Time</h5>
-						<select name="Delivery" id="ShippingTime" class="uk-form-large uk-width-1-1 js-shipping-options js-time-options" data-title="Shipping" required="" data-validation-error="Please select shipping time." data-validation-slide-pos="production-shipping">
-						</select>
+							<select name="Delivery" id="ShippingTime" class="form-control js-shipping-options js-time-options" data-validation-error="Please select shipping time." data-target="#production-shipping">
+							</select>
 					</div>
-					<div class="col-md-6" id="summary-order">
-						<div id="order-summary">
-							<h3>Order Summary</h3>
-							<div class="summary-table">
-								<div class="row">
-									<div class="col-md-12">
-										<p>
-											<strong>Style : </strong>
-											<u><span id="wristband_style"></span></u>
-											<br />
-											<strong>Size : </strong>
-											<u><span id="wristband_size"></span></u>
-											<br />
-											<br />
-											<strong>Add-Ons Total : </strong>
-											<u><span id="wristband_add_ons" data-addon-total="0">$0.00</span></u>
-											<br />
-											<span id="wristband_add_on_list"></span>
-											<br />
-											<strong>Production Time : </strong>
-											<u><span id="wristband_ptime" data-production-time="0" data-production-price="0">0 Days ($0.00)</span></u>
-											<br />
-											<strong>Shipping Time : </strong>
-											<u><span id="wristband_stime" data-shipping-time="0" data-shipping-price="0">0 Days ($0.00)</span></u>
-										</p>
+					<div id="order-summary" class="col-md-8">
+						<h3>Order Summary</h3>
+						<div class="summary-table">
+							<div class="row header">
+								<div class="col-xs-9 no-padding-left">Description</div>
+								<div class="col-xs-3 no-padding-right text-right">Subtotal</div>
+							</div>
+							<div class="row">
+								<div id="summary-table-style" class="summary-table-group summary-table-state hidden">
+									<div class="col-xs-9 container-style no-padding-left">
+										<i class="fa fa-eye"></i>Style (<span class="value">Printed</span>)
+									</div>
+									<div class="col-xs-3 text-right no-padding-right">-</div>
+								</div>
+								<div id="summary-table-size" class="summary-table-group summary-table-state hidden">
+									<div class="col-xs-9 no-padding-left">
+										<i class="fa fa-arrows-alt"></i>Size (<span class="value">1/2 inch</span>)
+									</div>
+									<div class="col-xs-3 text-right no-padding-right">-</div>
+								</div>
+								<div id="summary-table-wristbands" class="summary-table-group summary-table-state hidden">
+									<div class="col-xs-9 no-padding-left">
+										<i class="fa fa-circle-o-notch"></i>Wristbands (<span class="qty">0</span> x $<span class="price">0.00</span> each)
+									</div>
+									<div class="col-xs-3 text-right no-padding-right">
+										$<span class="total">0.00</span>
 									</div>
 								</div>
-								<div class="row">
-									<div class="col-xs-6"><strong>Colors : </strong></div>
-									<div class="col-xs-6 align-right"><strong>Subtotal</strong></div>
+								<div id="summary-table-segmented" class="summary-table-group summary-table-state hidden">
+									<div class="col-xs-9 no-padding-left">
+										<i class="fa fa-life-ring"></i>Segmented Wristbands (<span class="qty">0</span> x $<span class="price">0.00</span> each)
+									</div>
+									<div class="col-xs-3 text-right no-padding-right">
+										$<span class="total">0.00</span>
+									</div>
 								</div>
-								<div class="summary-list-item js-item-summary">
+								<div id="summary-table-swirl" class="summary-table-group summary-table-state hidden">
+									<div class="col-xs-9 no-padding-left">
+										<i class="fa fa-life-ring"></i>Swirl Wristbands (<span class="qty">0</span> x $<span class="price">0.00</span> each)
+									</div>
+									<div class="col-xs-3 text-right no-padding-right">
+										$<span class="total">0.00</span>
+									</div>
 								</div>
-								<div class="row total-summary-free" style="display:none;">
-									<br/>
-									<div class="col-xs-12"><strong>Free : </strong></div>
-									<div class="col-xs-12 align-right"><strong></strong></div>
-									<div class="col-sm-12 align-right"><strong></strong></div>
+								<div id="summary-table-glow" class="summary-table-group summary-table-state hidden">
+									<div class="col-xs-9 no-padding-left">
+										<i class="fa fa-life-ring"></i>Glow Wristbands (<span class="qty">0</span> x $<span class="price">0.00</span> each)
+									</div>
+									<div class="col-xs-3 text-right no-padding-right">
+										$<span class="total">0.00</span>
+									</div>
 								</div>
-								<div class="row total-summary-after" style="display:none;"></div>
-								<div class="summary-list-item js-free-summary total-summary-free" style="display:none;">
+								<div id="summary-table-production" class="summary-table-group summary-table-state hidden">
+									<div class="col-xs-9 no-padding-left">
+										<i class="fa fa-dropbox"></i>Production (<span class="days">0</span> Days)
+									</div>
+									<div class="col-xs-3 text-right no-padding-right">
+										$<span class="total">0.00</span>
+									</div>
+								</div>
+								<div id="summary-table-shipping" class="summary-table-group summary-table-state hidden">
+									<div class="col-xs-9 no-padding-left">
+										<i class="fa fa-truck"></i>Shipping (<span class="days">0</span> Days)
+									</div>
+									<div class="col-xs-3 text-right no-padding-right">
+										$<span class="total">0.00</span>
+									</div>
+								</div>
+							</div>
+							<div id="summary-table-addon" class="row summary-table-state hidden" style="margin-top:10px;">
+								<div class="col-xs-12 no-padding-left" style="padding-bottom:5px;">
+									<i class="fa fa-plus-circle"></i>Add Ons :
+								</div>
+								<!-- list -->
+								<div id="addon-3mm-thick" class="summary-table-group summary-table-state hidden">
+									<div class="col-xs-9 padding-left-25">
+										<i class="fa fa-angle-right"></i>3mm Thick (<span class="qty">0</span> x $<span class="price">0.00</span> each)
+									</div>
+									<div class="col-xs-3 text-right no-padding-right">
+										$<span class="total">0.00</span>
+									</div>
+								</div>
+								<div id="addon-digital-proof" class="summary-table-group summary-table-state hidden">
+									<div class="col-xs-9 padding-left-25">
+										<i class="fa fa-angle-right"></i>Digital Proof (<span class="qty">0</span> x $<span class="price">0.00</span> each)
+									</div>
+									<div class="col-xs-3 text-right no-padding-right">
+										$<span class="total">0.00</span>
+									</div>
+								</div>
+								<div id="addon-eco-friendly" class="summary-table-group summary-table-state hidden">
+									<div class="col-xs-9 padding-left-25">
+										<i class="fa fa-angle-right"></i>Eco Friendly (<span class="qty">0</span> x $<span class="price">0.00</span> each)
+									</div>
+									<div class="col-xs-3 text-right no-padding-right">
+										$<span class="total">0.00</span>
+									</div>
+								</div>
+								<div id="addon-glitters" class="summary-table-group summary-table-state hidden">
+									<div class="col-xs-9 padding-left-25">
+										<i class="fa fa-angle-right"></i>Glitter (<span class="qty">0</span> x $<span class="price">0.00</span> each)
+									</div>
+									<div class="col-xs-3 text-right no-padding-right">
+										$<span class="total">0.00</span>
+									</div>
+								</div>
+								<div id="addon-individual" class="summary-table-group summary-table-state hidden">
+									<div class="col-xs-9 padding-left-25">
+										<i class="fa fa-angle-right"></i>Individual (<span class="qty">0</span> x $<span class="price">0.00</span> each)
+									</div>
+									<div class="col-xs-3 text-right no-padding-right">
+										$<span class="total">0.00</span>
+									</div>
+								</div>
+								<div id="addon-key-chain" class="summary-table-group summary-table-state hidden">
+									<div class="col-xs-9 padding-left-25">
+										<i class="fa fa-angle-right"></i>Keychain (<span class="qty">0</span> x $<span class="price">0.00</span> each)
+									</div>
+									<div class="col-xs-3 text-right no-padding-right">
+										$<span class="total">0.00</span>
+									</div>
+								</div>
+							</div>
+							<div id="summary-table-free" class="row summary-table-state hidden" style="margin-top:10px;">
+								<div class="col-xs-12 no-padding-left" style="padding-bottom:5px;">
+									<i class="fa fa-gift"></i>Free :
+								</div>
+								<!-- list -->
+								<div id="free-key-chain" class="summary-table-group summary-table-state hidden">
+									<div class="col-xs-9 padding-left-25">
+										<i class="fa fa-angle-right"></i>Keychain (+ <span class="qty">0</span>)
+									</div>
+									<div class="col-xs-3 text-right no-padding-right">
+										$<span class="total">0.00</span>
+									</div>
+								</div>
+								<div id="free-wristband" class="summary-table-group summary-table-state hidden">
+									<div class="col-xs-9 padding-left-25">
+										<i class="fa fa-angle-right"></i>Wristband (+ <span class="qty">0</span>)
+									</div>
+									<div class="col-xs-3 text-right no-padding-right">
+										$<span class="total">0.00</span>
+									</div>
 								</div>
 							</div>
 						</div>
-						<hr>
-						<h1 class="align-right">Total: <span id= "totalPrice" data-total="0">$0.00</span></h1>
-					</div>
-					<div class="col-md-12">
-						<div class="button-cart">
-							<?php // include "submit_type.php"; ?>
+						<div class="summary-total">
+							<div class="col-xs-9 no-padding-left">
+								<h1>Total :</h1>
+							</div>
+							<div class="col-xs-3 text-right no-padding-right">
+								<h1>$<span id="total-price" class="total-price">0.00</span></h1>
+							</div>
 						</div>
 					</div>
 					<div class="clearfix"></div>
