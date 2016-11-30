@@ -495,7 +495,7 @@
 							</select>
 					</div>
 					<div id="order-summary" class="col-md-8">
-						<h3>Order Summary</h3>
+						<h1>Order Summary</h1>
 						<div class="summary-table">
 							<div class="row header">
 								<div class="col-xs-9 no-padding-left">Description</div>
@@ -626,26 +626,22 @@
 									<div class="col-xs-9 padding-left-25">
 										<i class="fa fa-angle-right"></i>Keychain (+ <span class="qty">0</span>)
 									</div>
-									<div class="col-xs-3 text-right no-padding-right">
-										$<span class="total">0.00</span>
-									</div>
+									<div class="col-xs-3 text-right no-padding-right">-</div>
 								</div>
 								<div id="free-wristband" class="summary-table-group summary-table-state hidden">
 									<div class="col-xs-9 padding-left-25">
 										<i class="fa fa-angle-right"></i>Wristband (+ <span class="qty">0</span>)
 									</div>
-									<div class="col-xs-3 text-right no-padding-right">
-										$<span class="total">0.00</span>
-									</div>
+									<div class="col-xs-3 text-right no-padding-right">-</div>
 								</div>
 							</div>
 						</div>
 						<div class="summary-total">
 							<div class="col-xs-9 no-padding-left">
-								<h1>Total :</h1>
+								<h3>Total :</h3>
 							</div>
 							<div class="col-xs-3 text-right no-padding-right">
-								<h1>$<span id="total-price" class="total-price">0.00</span></h1>
+								<h3>$<span id="total-price" class="total-price">0.00</span></h3>
 							</div>
 						</div>
 					</div>

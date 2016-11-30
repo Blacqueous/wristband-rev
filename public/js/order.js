@@ -1,5 +1,7 @@
 // Ajax
 var xhr;
+var free = {};
+var addon = {};
 var items = {};
 var viewport = "lg";
 var fontElement;
@@ -8,8 +10,6 @@ var resetView = true;
 
 $(window).ready(function() {
 
-    // $("img.wb-unveil").unveil();
-    // $("img.wb-unveil").trigger("unveil");
     $('img.wb-unveil').unveil(0, function(e) {
         $(this).fadeTo(0, 0, function() {
             $(this).attr('src', $(this).attr('data-src'));
@@ -17,24 +17,9 @@ $(window).ready(function() {
     });
 
     // Load forms.
-    // loadWristbands();
     loadSizes();
     loadColors();
     loadPrices();
-
-    // $(window).scroll(function() {
-    //     var v = $('#wb_message .main-content-preview').visible(true, false, 'both');
-    //
-    //     if(v) {
-    //         if(resetView) {
-    //             resetView = false;
-    //             checkPreview();
-    //         }
-    //     } else {
-    //         resetView = true;
-    //     }
-    //
-    // });
 
 });
 
@@ -451,17 +436,41 @@ $(document).ready(function() {
 
 	// Free checkbox EVENTs
 	$('body').on("ifChanged", ".free-checkbox", function(e) {
+        e.preventDefault();
+        e.stopPropagation();
 
         var theContainer = $(this).closest('.message_wristband_100').find('.convert-container');
 
         if($(this).is(':checked')) {
+            // Check and create the object.
+            switch ($(this).attr('data-code')) {
+                case "free-keychains":
+                    free['key-chain'] = 0;
+                    $('.freekc').val(''); // Clear free fields.
+                    break;
+                case "free-wristbands":
+                    free['wristbands'] = 0;
+                    $('.freewb').val(''); // Clear free fields.
+                    break;
+            }
             theContainer.removeClass('hidden');
         } else {
+            // Delete the object.
+            switch ($(this).attr('data-code')) {
+                case "free-keychains":
+                    delete free['key-chain'];
+                    $('.freekc').val(''); // Clear free fields.
+                    break;
+                case "free-wristbands":
+                    delete free['wristbands'];
+                    $('.freewb').val(''); // Clear free fields.
+                    break;
+            }
             theContainer.addClass('hidden');
         }
 
         // Load total amount.
-        loadTotal();
+        loadTotal(false);
 
     });
 
@@ -483,11 +492,20 @@ $(document).ready(function() {
         // Check if total is over the required free amount.
         if(total > 10) {
             $(this).val("");
+                total = 0;
+                // Compute total key in items.
+                $.each($(".freekc"), function(key, element) {
+                    element = $(element);
+                    total += (element.val().trim() == "") ? 0 : parseInt(element.val().trim());
+                });
+                free['key-chain'] = total;
             $('#modal-10-free-keychains').modal('show');
+        } else {
+            // Set value for free
+            free['key-chain'] = total;
         }
-
         // Load total amount.
-        loadTotal();
+        loadTotal(false);
 
     });
 
@@ -509,15 +527,75 @@ $(document).ready(function() {
         // Check if total is over the required free amount.
         if(total > 100) {
             $(this).val("");
+                total = 0;
+                // Compute total key in items.
+                $.each($(".freewb"), function(key, element) {
+                    element = $(element);
+                    total += (element.val().trim() == "") ? 0 : parseInt(element.val().trim());
+                });
+                free['wristbands'] = total;
             $('#modal-100-free-wristbands').modal('show');
+        } else {
+            // Set value for free
+            free['wristbands'] = total;
         }
-
         // Load total amount.
-        loadTotal();
+        loadTotal(false);
 
     });
 
     $('body').on("change", ".js-time-options", function(e) {
+        // Load total amount.
+        loadTotal(false);
+    });
+
+    $('body').on("ifChanged", ".add-ons", function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        if($(this).is(':checked')) {
+            switch ($(this).attr('data-code')) {
+                case '3mm-thick':
+                    addon['3mm-thick'] = { 'price': 0, 'quantity': 0, 'total': 0 };
+                    break;
+                case 'digital-proof':
+                    addon['digital-proof'] = { 'price': 0, 'quantity': 0, 'total': 0 };
+                    break;
+                case 'eco-friendly':
+                    addon['eco-friendly'] = { 'price': 0, 'quantity': 0, 'total': 0 };
+                    break;
+                case 'glitters':
+                    addon['glitters'] = { 'price': 0, 'quantity': 0, 'total': 0 };
+                    break;
+                case 'individual':
+                    addon['individual'] = { 'price': 0, 'quantity': 0, 'total': 0 };
+                    break;
+                case 'key-chain':
+                    addon['key-chain'] = { 'price': 0, 'quantity': 0, 'total': 0 };
+                    break;
+            }
+        } else {
+            switch ($(this).attr('data-code')) {
+                case '3mm-thick':
+                    delete addon['3mm-thick'];
+                    break;
+                case 'digital-proof':
+                    delete addon['digital-proof'];
+                    break;
+                case 'eco-friendly':
+                    delete addon['eco-friendly'];
+                    break;
+                case 'glitters':
+                    delete addon['glitters'];
+                    break;
+                case 'individual':
+                    delete addon['individual'];
+                    break;
+                case 'key-chain':
+                    delete addon['key-chain'];
+                    break;
+            }
+        }
 
         // Load total amount.
         loadTotal(false);
@@ -563,78 +641,118 @@ function checkViewport()
 
 function displayTotal($collection)
 {
+console.log($collection);
     $('.summary-table-state').addClass('hidden')
 
-    // $('#summary-table-style .value')
-    //
-    // $('#summary-table-size .value')
-    //
-    // $('#summary-table-wristbands')
-    // $('#summary-table-wristbands .qty')
-    // $('#summary-table-wristbands .price')
-    // $('#summary-table-wristbands .total')
-    //
-    // $('#summary-table-segmented')
-    // $('#summary-table-segmented .qty')
-    // $('#summary-table-segmented .price')
-    // $('#summary-table-segmented .total')
-    //
-    // $('#summary-table-swirl')
-    // $('#summary-table-swirl .qty')
-    // $('#summary-table-swirl .price')
-    // $('#summary-table-swirl .total')
-    //
-    // $('#summary-table-production')
-    // $('#summary-table-production .days')
-    // $('#summary-table-production .total')
-    //
-    // $('#summary-table-shipping')
-    // $('#summary-table-shipping .days')
-    // $('#summary-table-shipping .total')
-    //
-    // $('#summary-table-addon')
-    //
-    //     $('#summary-table-addon #addon-3mm-thick')
-    //     $('#summary-table-addon #addon-3mm-thick .qty')
-    //     $('#summary-table-addon #addon-3mm-thick .price')
-    //     $('#summary-table-addon #addon-3mm-thick .total')
-    //
-    //     $('#summary-table-addon #addon-digital-proof')
-    //     $('#summary-table-addon #addon-digital-proof .qty')
-    //     $('#summary-table-addon #addon-digital-proof .price')
-    //     $('#summary-table-addon #addon-digital-proof .total')
-    //
-    //     $('#summary-table-addon #addon-eco-friendly')
-    //     $('#summary-table-addon #addon-eco-friendly .qty')
-    //     $('#summary-table-addon #addon-eco-friendly .price')
-    //     $('#summary-table-addon #addon-eco-friendly .total')
-    //
-    //     $('#summary-table-addon #addon-glitters')
-    //     $('#summary-table-addon #addon-glitters .qty')
-    //     $('#summary-table-addon #addon-glitters .price')
-    //     $('#summary-table-addon #addon-glitters .total')
-    //
-    //     $('#summary-table-addon #addon-individual')
-    //     $('#summary-table-addon #addon-individual .qty')
-    //     $('#summary-table-addon #addon-individual .price')
-    //     $('#summary-table-addon #addon-individual .total')
-    //
-    //     $('#summary-table-addon #addon-key-chain')
-    //     $('#summary-table-addon #addon-key-chain .qty')
-    //     $('#summary-table-addon #addon-key-chain .price')
-    //     $('#summary-table-addon #addon-key-chain .total')
-    //
-    // $('#summary-table-free')
-    //
-    //     $('#summary-table-free #free-key-chain')
-    //     $('#summary-table-free #free-key-chain .qty')
-    //     $('#summary-table-free #free-key-chain .total')
-    //
-    //     $('#summary-table-free #addon-wristband')
-    //     $('#summary-table-free #addon-wristband .qty')
-    //     $('#summary-table-free #addon-wristband .total')
-    //
-    // $('#total-price')
+    if(typeof $collection.style != "undefined") {
+        $('#summary-table-style').removeClass('hidden');
+        $('#summary-table-style .value').html( $collection.style.capitalizeFirstLetter() );
+    }
+
+    if(typeof $collection.size != "undefined") {
+        $('#summary-table-size').removeClass('hidden');
+        $('#summary-table-size .value').html( getWBSizeTitle($collection.size) );
+    }
+
+    $('#summary-table-wristbands').removeClass('hidden');
+    $('#summary-table-wristbands .qty').html( $collection.quantity );
+    $('#summary-table-wristbands .price').html( ($collection.price).formatMoney() );
+    $('#summary-table-wristbands .total').html( ($collection.quantity * $collection.price).formatMoney() );
+
+    if(typeof $collection.items['segmented'] != "undefined") {
+        $('#summary-table-segmented').removeClass('hidden');
+        $('#summary-table-segmented .qty').html( $collection.items['segmented'].quantity );
+        $('#summary-table-segmented .price').html( ($collection.items['segmented'].price_addon).formatMoney() );
+        $('#summary-table-segmented .total').html( ($collection.items['segmented'].price_total).formatMoney() );
+    }
+
+    if(typeof $collection.items['swirl'] != "undefined") {
+        $('#summary-table-swirl').removeClass('hidden');
+        $('#summary-table-swirl .qty').html( $collection.items['swirl'].quantity );
+        $('#summary-table-swirl .price').html( ($collection.items['swirl'].price_addon).formatMoney() );
+        $('#summary-table-swirl .total').html( ($collection.items['swirl'].price_total).formatMoney() );
+    }
+
+    if(typeof $collection.items['glow'] != "undefined") {
+        $('#summary-table-glow').removeClass('hidden');
+        $('#summary-table-glow .qty').html( $collection.items['glow'].quantity );
+        $('#summary-table-glow .price').html( ($collection.items['glow'].price_addon).formatMoney() );
+        $('#summary-table-glow .total').html( ($collection.items['glow'].price_total).formatMoney() );
+    }
+
+    if(typeof $collection.time_production != "undefined") {
+        $('#summary-table-production').removeClass('hidden');
+        $('#summary-table-production .days').html( $collection.time_production.days );
+        $('#summary-table-production .total').html( ($collection.time_production.price).formatMoney() );
+    }
+
+    if(typeof $collection.time_shipping != "undefined") {
+        $('#summary-table-shipping').removeClass('hidden');
+        $('#summary-table-shipping .days').html( $collection.time_shipping.days );
+        $('#summary-table-shipping .total').html( ($collection.time_shipping.price).formatMoney() );
+    }
+
+    if (!$.isEmptyObject($collection.addon)) {
+        $('#summary-table-addon').removeClass('hidden');
+
+        if(typeof $collection.addon['3mm-thick'] != "undefined") {
+            $('#summary-table-addon #addon-3mm-thick').removeClass('hidden');
+            $('#summary-table-addon #addon-3mm-thick .qty').html( $collection.addon['3mm-thick'].quantity );
+            $('#summary-table-addon #addon-3mm-thick .price').html( ($collection.addon['3mm-thick'].price).formatMoney() );
+            $('#summary-table-addon #addon-3mm-thick .total').html( ($collection.addon['3mm-thick'].total).formatMoney() );
+        }
+
+        if(typeof $collection.addon['digital-proof'] != "undefined") {
+            $('#summary-table-addon #addon-digital-proof').removeClass('hidden');
+            $('#summary-table-addon #addon-digital-proof .qty').html( $collection.addon['digital-proof'].quantity );
+            $('#summary-table-addon #addon-digital-proof .price').html( ($collection.addon['digital-proof'].price).formatMoney() );
+            $('#summary-table-addon #addon-digital-proof .total').html( ($collection.addon['digital-proof'].total).formatMoney() );
+        }
+
+        if(typeof $collection.addon['eco-friendly'] != "undefined") {
+            $('#summary-table-addon #addon-eco-friendly').removeClass('hidden');
+            $('#summary-table-addon #addon-eco-friendly .qty').html( $collection.addon['eco-friendly'].quantity );
+            $('#summary-table-addon #addon-eco-friendly .price').html( ($collection.addon['eco-friendly'].price).formatMoney() );
+            $('#summary-table-addon #addon-eco-friendly .total').html( ($collection.addon['eco-friendly'].total).formatMoney() );
+        }
+
+        if(typeof $collection.addon['glitters'] != "undefined") {
+            $('#summary-table-addon #addon-glitters').removeClass('hidden');
+            $('#summary-table-addon #addon-glitters .qty').html( $collection.addon['glitters'].quantity );
+            $('#summary-table-addon #addon-glitters .price').html( ($collection.addon['glitters'].price).formatMoney() );
+            $('#summary-table-addon #addon-glitters .total').html( ($collection.addon['glitters'].total).formatMoney() );
+        }
+
+        if(typeof $collection.addon['individual'] != "undefined") {
+            $('#summary-table-addon #addon-individual').removeClass('hidden');
+            $('#summary-table-addon #addon-individual .qty').html( $collection.addon['individual'].quantity );
+            $('#summary-table-addon #addon-individual .price').html( ($collection.addon['individual'].price).formatMoney() );
+            $('#summary-table-addon #addon-individual .total').html( ($collection.addon['individual'].total).formatMoney() );
+        }
+
+        if(typeof $collection.addon['key-chain'] != "undefined") {
+            $('#summary-table-addon #addon-key-chain').removeClass('hidden');
+            $('#summary-table-addon #addon-key-chain .qty').html( $collection.addon['key-chain'].quantity );
+            $('#summary-table-addon #addon-key-chain .price').html( ($collection.addon['key-chain'].price).formatMoney() );
+            $('#summary-table-addon #addon-key-chain .total').html( ($collection.addon['key-chain'].total).formatMoney() );
+        }
+    }
+
+    if (!$.isEmptyObject($collection.free)) {
+        $('#summary-table-free').removeClass('hidden');
+
+        if(typeof $collection.free['key-chain'] != "undefined") {
+            $('#summary-table-free #free-key-chain').removeClass('hidden');
+            $('#summary-table-free #free-key-chain .qty').html( $collection.free['key-chain'] );
+        }
+
+        if(typeof $collection.free['wristbands'] != "undefined") {
+            $('#summary-table-free #free-wristband').removeClass('hidden');
+            $('#summary-table-free #free-wristband .qty').html( $collection.free['wristbands'] );
+        }
+    }
+
+    $('#total-price').html( ($collection.total).formatMoney() );
 }
 
 function getSizeTitle(abbr)
@@ -659,6 +777,41 @@ function getSizeTitle(abbr)
 
         case "xl":
             return "Extra Large";
+            break;
+
+        default:
+            return "None";
+            break;
+    }
+
+}
+
+function getWBSizeTitle(abbr)
+{
+
+    switch (abbr.toLowerCase()) {
+        case "0-25inch":
+            return "1/4 Inch";
+            break;
+
+        case "0-50inch":
+            return "1/2 Inch";
+            break;
+
+        case "0-75inch":
+            return "3/4 Inch";
+            break;
+
+        case "1-00inch":
+            return "1 Inch";
+            break;
+
+        case "1-50inch":
+            return "1 1/2 Inch";
+            break;
+
+        case "2-00inch":
+            return "2 Inch";
             break;
 
         default:
@@ -865,6 +1018,8 @@ function loadTotal(loadProdShip)
         'style': $style,
         'size': $size,
         'items': items,
+        'free': free,
+        'addon': addon,
         'price': 0,
         'quantity': 0,
         'time_production': { 'days': 0, 'price': 0 },
@@ -876,15 +1031,15 @@ function loadTotal(loadProdShip)
         loadProdShip = true;
 
     // Loop through all items
-    $.each(items, function( styleKey, styleVal ) {
+    $.each($collection['items'], function(styleKey, styleVal) {
 
         // Add new fields.
         $collection['items'][styleKey]['quantity'] = 0;
         $collection['items'][styleKey]['price_addon'] = 0;
         $collection['items'][styleKey]['price_total'] = 0;
 
-        $.each(styleVal, function( itemKey, itemValue ) {
-            $.each(itemValue['size'], function( sizeKey, sizeValue ) {
+        $.each(styleVal, function(itemKey, itemValue) {
+            $.each(itemValue['size'], function(sizeKey, sizeValue) {
                 // Create & append preview image.
                 $collection.quantity += sizeValue.qty;
                 $collection['items'][styleKey]['quantity'] += sizeValue.qty;
@@ -897,11 +1052,11 @@ function loadTotal(loadProdShip)
             // Check if already found the price.
             if(hasQty == false) {
                 // If less than or equal.
-                if(parseInt(addon_qty) <= $collection['items'][styleKey]['quantity']) { // Get price.
-                    $collection['items'][styleKey]['price_addon'] = parseFloat(addon_prc);
-                } else if($collection['items'][styleKey]['quantity'] < 20) { // Get price.
+                if($collection['items'][styleKey]['quantity'] <= 20) { // Get price.
                     $collection['items'][styleKey]['price_addon'] = parseFloat(addon_prc);
                     hasQty = true; // Flag! price found.
+                } else if(parseInt(addon_qty) <= $collection['items'][styleKey]['quantity']) { // Get price.
+                    $collection['items'][styleKey]['price_addon'] = parseFloat(addon_prc);
                 } else { // Flag if additional item price found.
                     hasQty = true;
                 }
@@ -917,16 +1072,40 @@ function loadTotal(loadProdShip)
         // Set item price.
         var hasQty = false;
         $.each($arr_price, function(price_qty, price_prc) {
+            // Check if already found the price.
             if(hasQty == false) {
                 // If less than or equal.
-                if($collection.quantity < 20) { // Get price.
-                    $collection.price = parseFloat($data[$style][$size]['20']);
-                } else if(parseInt(price_qty) <= $collection.qty) { // Get price.
+                if($collection.quantity <= 20) { // Get price.
+                    $collection.price = parseFloat($arr_price['20']);
+                    hasQty = true;
+                } else if(parseInt(price_qty) <= $collection.quantity) { // Get price.
                     $collection.price = parseFloat(price_prc);
                 } else { // Flag if item price found.
                     hasQty = true;
                 }
             }
+        });
+
+        // Loop through all add ons
+        $.each($collection['addon'], function(styleKey, styleVal) {
+            $collection['addon'][styleKey]['quantity'] = $collection.quantity;
+            // Get add ons price.
+            var hasQty = false;
+            $.each($arr_addon[styleKey], function(addon_qty, addon_prc) {
+                // Check if already found the price.
+                if(hasQty == false) {
+                    // If less than or equal.
+                    if(parseInt(addon_qty) <= $collection.quantity) { // Get price.
+                        $collection['addon'][styleKey]['price'] = parseFloat(addon_prc);
+                    } else if($collection.quantity <= 20) { // Get price.
+                        $collection['addon'][styleKey]['price'] = parseFloat(addon_prc);
+                        hasQty = true; // Flag! price found.
+                    } else { // Flag if additional item price found.
+                        hasQty = true;
+                    }
+                }
+            });
+            $collection['addon'][styleKey]['total'] = ( $collection['addon'][styleKey]['price'] * $collection.quantity );
         });
 
         if(loadProdShip) {
@@ -953,7 +1132,7 @@ function loadTotal(loadProdShip)
                 // List all production price/day data
                 if(typeof data.production != "undefined") {
                     $.each(data.production, function(key, value) {
-                        htmlProd += "<option value='" + value.days + "' data-price='" + value.price + "'>Standard Production - " + value.days + " Days (+$" + value.price + ")</option>";
+                        htmlProd += "<option value='" + value.days + "' data-price='" + value.price + "'>Standard Production - " + value.days + " Days (+ $" + (value.price).formatMoney() + ")</option>";
                     });
                 }
                 $("#ProductionTime").html(htmlProd);
@@ -961,7 +1140,7 @@ function loadTotal(loadProdShip)
                 // List all shipping price/day data
                 if(typeof data.shipping != "undefined") {
                     $.each(data.shipping, function(key, value) {
-                        htmlShip += "<option value='" + value.days + "' data-price='" + value.price + "'>Standard Shipping - " + value.days + " Days (+$" + value.price + ")</option>";
+                        htmlShip += "<option value='" + value.days + "' data-price='" + value.price + "'>Standard Shipping - " + value.days + " Days (+ $" + (value.price).formatMoney() + ")</option>";
                     });
                 }
                 $("#ShippingTime").html(htmlShip);
@@ -971,6 +1150,67 @@ function loadTotal(loadProdShip)
                 $collection.time_production.price = data.production[0].price;
                 $collection.time_shipping.days = data.shipping[0].days;
                 $collection.time_shipping.price = data.shipping[0].price;
+
+                        // COMPUTE THE TOTAL PRICE
+                        $collection.total += $collection.quantity * $collection.price;
+
+                        if(typeof $collection.items['segmented'] != "undefined") {
+                            $collection.total += $collection.items['segmented'].price_total;
+                        }
+
+                        if(typeof $collection.items['swirl'] != "undefined") {
+                            $collection.total += $collection.items['swirl'].price_total;
+                        }
+
+                        if(typeof $collection.items['glow'] != "undefined") {
+                            $collection.total += $collection.items['glow'].price_total;
+                        }
+
+                        if(typeof $collection.time_production != "undefined") {
+                            $collection.total += $collection.time_production.price;
+                        }
+
+                        if(typeof $collection.time_shipping != "undefined") {
+                            $collection.total += $collection.time_shipping.price;
+                        }
+
+                        if (!$.isEmptyObject($collection.addon)) {
+
+                            if(typeof $collection.addon['3mm-thick'] != "undefined") {
+                                $collection.total += $collection.addon['3mm-thick'].total;
+                            }
+
+                            if(typeof $collection.addon['digital-proof'] != "undefined") {
+                                $collection.total += $collection.addon['digital-proof'].total;
+                            }
+
+                            if(typeof $collection.addon['eco-friendly'] != "undefined") {
+                                $collection.total += $collection.addon['eco-friendly'].total;
+                            }
+
+                            if(typeof $collection.addon['glitters'] != "undefined") {
+                                $collection.total += $collection.addon['glitters'].total;
+                            }
+
+                            if(typeof $collection.addon['individual'] != "undefined") {
+                                $collection.total += $collection.addon['individual'].total;
+                            }
+
+                            if(typeof $collection.addon['key-chain'] != "undefined") {
+                                $collection.total += $collection.addon['key-chain'].total;
+                            }
+                        }
+
+                        if (!$.isEmptyObject($collection.free)) {
+
+                            if(typeof $collection.free['key-chain'] != "undefined") {
+                                $collection.total += $collection.free['key-chain'];
+                            }
+
+                            if(typeof $collection.free['wristbands'] != "undefined") {
+                                $collection.total += $collection.free['wristbands'];
+                            }
+                        }
 
                 // Collection
                 displayTotal($collection);
@@ -989,6 +1229,67 @@ function loadTotal(loadProdShip)
             $collection.time_shipping.days = ( elementShip.val() != "" && !isNaN( parseInt(elementShip.val()) ) ) ? parseInt(elementShip.val()) : 0;
             $collection.time_shipping.price = ( elementShip.attr("data-price") != "" && !isNaN( parseFloat(elementShip.attr("data-price")) ) ) ? parseFloat(elementShip.attr("data-price")) : 0;
 
+                    // COMPUTE THE TOTAL PRICE
+                    $collection.total += $collection.quantity * $collection.price;
+
+                    if(typeof $collection.items['segmented'] != "undefined") {
+                        $collection.total += $collection.items['segmented'].price_total;
+                    }
+
+                    if(typeof $collection.items['swirl'] != "undefined") {
+                        $collection.total += $collection.items['swirl'].price_total;
+                    }
+
+                    if(typeof $collection.items['glow'] != "undefined") {
+                        $collection.total += $collection.items['glow'].price_total;
+                    }
+
+                    if(typeof $collection.time_production != "undefined") {
+                        $collection.total += $collection.time_production.price;
+                    }
+
+                    if(typeof $collection.time_shipping != "undefined") {
+                        $collection.total += $collection.time_shipping.price;
+                    }
+
+                    if (!$.isEmptyObject($collection.addon)) {
+
+                        if(typeof $collection.addon['3mm-thick'] != "undefined") {
+                            $collection.total += $collection.addon['3mm-thick'].total;
+                        }
+
+                        if(typeof $collection.addon['digital-proof'] != "undefined") {
+                            $collection.total += $collection.addon['digital-proof'].total;
+                        }
+
+                        if(typeof $collection.addon['eco-friendly'] != "undefined") {
+                            $collection.total += $collection.addon['eco-friendly'].total;
+                        }
+
+                        if(typeof $collection.addon['glitters'] != "undefined") {
+                            $collection.total += $collection.addon['glitters'].total;
+                        }
+
+                        if(typeof $collection.addon['individual'] != "undefined") {
+                            $collection.total += $collection.addon['individual'].total;
+                        }
+
+                        if(typeof $collection.addon['key-chain'] != "undefined") {
+                            $collection.total += $collection.addon['key-chain'].total;
+                        }
+                    }
+
+                    if (!$.isEmptyObject($collection.free)) {
+
+                        if(typeof $collection.free['key-chain'] != "undefined") {
+                            $collection.total += $collection.free['key-chain'];
+                        }
+
+                        if(typeof $collection.free['wristbands'] != "undefined") {
+                            $collection.total += $collection.free['wristbands'];
+                        }
+                    }
+
             // Collection
             displayTotal($collection);
 
@@ -1002,9 +1303,6 @@ function loadTotal(loadProdShip)
         $('#total-area .no-total').removeClass('hidden');
 
     }
-
-    // Collection
-    displayTotal($collection);
 
 }
 
@@ -1093,3 +1391,14 @@ function resetPreview()
 String.prototype.capitalizeFirstLetter = function() {
     return this.charAt(0).toUpperCase() + this.slice(1);
 }
+
+Number.prototype.formatMoney = function(c, d, t) {
+    var n = this,
+    c = isNaN(c = Math.abs(c)) ? 2 : c,
+    d = d == undefined ? "." : d,
+    t = t == undefined ? "," : t,
+    s = n < 0 ? "-" : "",
+    i = String(parseInt(n = Math.abs(Number(n) || 0).toFixed(c))),
+    j = (j = i.length) > 3 ? j % 3 : 0;
+    return s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");
+};

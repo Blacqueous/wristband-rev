@@ -565,10 +565,8 @@ div#preview-textfont{
 
 .total-area h1 {
     color:#fff;
-}
-
-.total-area h3 {
-    margin-bottom: 30px;
+    margin-bottom: 10px;
+    margin-top: 5px;
 }
 
 .total-area .prod-ship {
