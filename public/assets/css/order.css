@@ -1185,7 +1185,7 @@ span.fig-fc {
     font-weight: bolder;
 }
 
-input.freewb, input.freekc  {
+input.freewb, input.freekc, input.addonkc  {
     border: none;
     border-radius: 5px;
     color: #333333;
@@ -1236,7 +1236,7 @@ table.fwb-title {
 .convert-keychain-area-some {
     background-color: rgb(7,153,182);
     color: #ffffff;
-    margin: 0 0 20px 0;
+    margin: 0 0 10px 0;
     min-height: 60px;
 }
 

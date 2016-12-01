@@ -7,6 +7,8 @@ var viewport = "lg";
 var fontElement;
 var clipElement
 var resetView = true;
+var maxKeychain = 0;
+var inputQuantity;
 
 $(window).ready(function() {
 
@@ -15,10 +17,11 @@ $(window).ready(function() {
             $(this).attr('src', $(this).attr('data-src'));
         }).fadeTo(1000, 1);
     });
-
-    // Load forms.
+    // Load wristband sizes.
     loadSizes();
+    // Load wristband colors.
     loadColors();
+    // Load wristband price list.
     loadPrices();
 
 });
@@ -184,105 +187,114 @@ $(document).ready(function() {
     });
     // END: Load color images.
 
+    $('body').on('focus', '.box-color input[name="quantity[]"]', function(e) {
+        inputQuantity = $(this).val();
+    });
+
+
     $('body').on('blur', '.box-color input[name="quantity[]"]', function(e) {
 
-        // New behavior. Pretty much optimized.
-        // Create variables to be used.
-        var color = $(this).attr('ref-color');
-            color = color.trim().toUpperCase().replace(/ /g, '');
-        var font = $(this).closest('.box-color-qty').find('.fonttext .fntin').attr('ref-font-color');
-        var font_name = $(this).closest('.box-color-qty').find('.fonttext .fntin').attr('ref-font-name');
-        var size = $(this).attr('ref-size');
-        var style = $(this).attr('ref-style');
-        var title = $(this).attr('ref-title');
-        var type = $('input[type=radio].wb-style:checked').attr('data-style');
-        var value = $(this).val();
-        var qty = (value) ? parseInt(value) : 0;
-        // Determines if a preview is to be made
-        var makePreview = true;
+        if(inputQuantity != $(this).val()) {
 
-        switch(type) {
-            case 'embossed':
-            case 'debossed':
-            case 'blank':
-                font = '000000';
-                break;
-            case 'dual-layer':
-            case 'dual':
-                dual_color = color.split(',');
-                font = dual_color[1];
-                font_name = dual_color[1];
-                break;
-        }
+            // New behavior. Pretty much optimized.
+            // Create variables to be used.
+            var color = $(this).attr('ref-color');
+                color = color.trim().toUpperCase().replace(/ /g, '');
+            var font = $(this).closest('.box-color-qty').find('.fonttext .fntin').attr('ref-font-color');
+            var font_name = $(this).closest('.box-color-qty').find('.fonttext .fntin').attr('ref-font-name');
+            var size = $(this).attr('ref-size');
+            var style = $(this).attr('ref-style');
+            var title = $(this).attr('ref-title');
+            var type = $('input[type=radio].wb-style:checked').attr('data-style');
+            var value = $(this).val();
+            var qty = (value) ? parseInt(value) : 0;
+            // Determines if a preview is to be made
+            var makePreview = true;
 
-        // Check if WB style exists.
-        if (typeof items[style] == "undefined")
-            items[style] = {}; // If not, then create object
-
-        // Generate an index using title.
-        var idx = style + '-' + color.replace(/,/g, '-');
-
-        // Check if WB color exists.
-        if (typeof items[style][idx] == "undefined") {
-            // Create WB color.
-            items[style][idx] = {
-                'color': color,
-                'style': style,
-                'title': title,
-                'type': type,
-            };
-            // Flag to reate preview for new items
-            makePreview = true;
-        }
-
-        // Check WB color has existing values.
-        if (typeof items[style][idx]['size'] == "undefined")
-            items[style][idx]['size'] = {}; // Create WB color values Object.
-
-        // Check if size is existing on current WB color.
-        if (typeof items[style][idx]['size'][size] == "undefined") {
-            // Create new size Object.
-            items[style][idx]['size'][size] = {
-                'qty': qty,
-                'font': font,
-                'font_name': font_name,
-                'size': size
-            }
-        } else { // If existing...
-            items[style][idx]['size'][size]['qty'] = qty; // Update item quantity.
-            items[style][idx]['size'][size]['font'] = font; // Update item quantity.
-            items[style][idx]['size'][size]['font_name'] = font_name; // Update item quantity.
-        }
-
-        // Check if quantity is less than 0.
-        if (qty<=0) {
-
-            // Delete the WB size value from specific item.
-            delete items[style][idx]['size'][size];
-
-            // Delete the WB color if has size values. If not, then delete it.
-            if ($.isEmptyObject(items[style][idx]['size'])) {
-                delete items[style][idx];
-                // Flasg to remove preview image.
-                makePreview = false;
+            switch(type) {
+                case 'embossed':
+                case 'debossed':
+                case 'blank':
+                    font = '000000';
+                    break;
+                case 'dual-layer':
+                case 'dual':
+                    dual_color = color.split(',');
+                    font = dual_color[1];
+                    font_name = dual_color[1];
+                    break;
             }
 
-            // Delete the WB style if completely empty.
-            // (Must delete, data will be useless.)
-            if ($.isEmptyObject(items[style])) {
-                delete items[style];
+            // Check if WB style exists.
+            if (typeof items[style] == "undefined")
+                items[style] = {}; // If not, then create object
+
+            // Generate an index using title.
+            var idx = style + '-' + color.replace(/,/g, '-');
+
+            // Check if WB color exists.
+            if (typeof items[style][idx] == "undefined") {
+                // Create WB color.
+                items[style][idx] = {
+                    'color': color,
+                    'style': style,
+                    'title': title,
+                    'type': type,
+                };
+                // Flag to reate preview for new items
+                makePreview = true;
             }
 
-            // If value is less than or is equal to 0, empty the field.
-            $(this).val("");
-        }
+            // Check WB color has existing values.
+            if (typeof items[style][idx]['size'] == "undefined")
+                items[style][idx]['size'] = {}; // Create WB color values Object.
 
-        // reset wristband previews.
-        resetPreview();
-        // Load free items.
-        loadFree();
-        // Load total amount.
-        loadTotal();
+            // Check if size is existing on current WB color.
+            if (typeof items[style][idx]['size'][size] == "undefined") {
+                // Create new size Object.
+                items[style][idx]['size'][size] = {
+                    'qty': qty,
+                    'font': font,
+                    'font_name': font_name,
+                    'size': size
+                }
+            } else { // If existing...
+                items[style][idx]['size'][size]['qty'] = qty; // Update item quantity.
+                items[style][idx]['size'][size]['font'] = font; // Update item quantity.
+                items[style][idx]['size'][size]['font_name'] = font_name; // Update item quantity.
+            }
+
+            // Check if quantity is less than 0.
+            if (qty<=0) {
+
+                // Delete the WB size value from specific item.
+                delete items[style][idx]['size'][size];
+
+                // Delete the WB color if has size values. If not, then delete it.
+                if ($.isEmptyObject(items[style][idx]['size'])) {
+                    delete items[style][idx];
+                    // Flasg to remove preview image.
+                    makePreview = false;
+                }
+
+                // Delete the WB style if completely empty.
+                // (Must delete, data will be useless.)
+                if ($.isEmptyObject(items[style])) {
+                    delete items[style];
+                }
+
+                // If value is less than or is equal to 0, empty the field.
+                $(this).val("");
+            }
+
+            // reset wristband previews.
+            resetPreview();
+            // Load free items.
+            loadFree();
+            // Load total amount.
+            loadTotal();
+
+        }
 
     });
 
@@ -571,7 +583,12 @@ $(document).ready(function() {
                     addon['individual'] = { 'price': 0, 'quantity': 0, 'total': 0 };
                     break;
                 case 'key-chain':
-                    addon['key-chain'] = { 'price': 0, 'quantity': 0, 'total': 0 };
+                    addon['key-chain'] = { 'price': 0, 'quantity': 0, 'total': 0, 'all': true };
+                    $('#convert-keychain-area-all').removeClass('hidden');
+                    $('#convert-keychain-area-some').addClass('hidden');
+                    $('#convert-keychain-input-all').iCheck('check');
+                    // $('#convert-keychain-input-some').iCheck('uncheck');
+                    $('#convert-keychain').removeClass('hidden');
                     break;
             }
         } else {
@@ -593,12 +610,70 @@ $(document).ready(function() {
                     break;
                 case 'key-chain':
                     delete addon['key-chain'];
+                    $('#convert-keychain').addClass('hidden');
                     break;
             }
         }
 
         // Load total amount.
         loadTotal(false);
+    });
+
+    $('body').on("ifChanged", ".convert-keychain-input", function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        if($(this).is(':checked')) {
+
+            if($(this).val() == 'all') {
+                $('#convert-keychain-area-all').removeClass('hidden');
+                $('#convert-keychain-area-some').addClass('hidden');
+                addon['key-chain']['all'] = true;
+            } else {
+                $('#convert-keychain-area-all').addClass('hidden');
+                $('#convert-keychain-area-some').removeClass('hidden');
+                $('.addonkc').trigger('blur');
+                addon['key-chain']['all'] = false;
+            }
+
+            // Load total amount.
+            loadTotal(false);
+        }
+    });
+
+    $('body').on("blur", ".addonkc", function(e) {
+        var qty = ($(this).val().trim() == "") ? 0 : parseInt($(this).val().trim());
+        var total = 0;
+
+        // If value is less than or is equal to 0, empty the field.
+        if(qty <= 0) { $(this).val(""); return; }
+
+        // Compute total key in items.
+        $.each($(".addonkc"), function(key, element) {
+            element = $(element);
+            total += (element.val().trim() == "") ? 0 : parseInt(element.val().trim());
+        });
+
+        // Check if total is over the required free amount.
+        if(total > maxKeychain) {
+            $(this).val("");
+                // total = 0;
+                // // Compute total key in items.
+                // $.each($(".addonkc"), function(key, element) {
+                //     element = $(element);
+                //     total += (element.val().trim() == "") ? 0 : parseInt(element.val().trim());
+                // });
+                // addon['key-chain']['quantity'] = total;
+            $('#modal-some-keychains .qty').html(maxKeychain);
+            $('#modal-some-keychains').modal('show');
+        } else {
+            // Set value for free
+            // addon['key-chain']['quantity'] = total;
+        }
+
+        // Load total amount.
+        loadTotal(false);
+
     });
 
 });
@@ -641,7 +716,9 @@ function checkViewport()
 
 function displayTotal($collection)
 {
-console.log($collection);
+
+    console.log($collection);
+
     $('.summary-table-state').addClass('hidden')
 
     if(typeof $collection.style != "undefined") {
@@ -891,6 +968,7 @@ function loadFree()
     $('#dv-100-free-wristbands, #dv-10-free-keychains').addClass('hidden');
 
     var total = 0;
+    var html = "";
     var html_kc = "";
     var html_wb = "";
 
@@ -921,6 +999,16 @@ function loadFree()
                 html_kc += '<div class="align-right col-md-6 col-sm-12"><h4 class="fwb-text col-xs-12 hidden-md hidden-lg text-center fwb-text-hidden-header">INPUT QUANTITY</h4><input type="number" class="freekc col-xs-12" id="freekc-'+itemValue.style+'-'+sizeKey+'-'+itemValue.color.split(",").join("-")+'" name="'+itemValue.style+'-'+sizeKey+'-'+itemValue.color.split(",").join("-")+'-fwb" data-style="'+itemValue.style+'" data-color="'+itemValue.color+'" data-font-color="'+sizeValue.font+'" data-name="'+itemValue.title+'" data-size="'+sizeKey+'" placeholder="0" data-maxlength="3" /></div>';
                 html_kc += '<div class="clearfix"></div>';
                 html_kc += '</li>';
+                // For free wristbands
+                html += '<li class="fwb-list conversion-wrist-'+itemValue.style+' free-wrist-'+itemValue.style+'-'+sizeKey+'-'+itemValue.title+'" data-band-color="' + itemValue.color.split(",").join("-") + '">';
+                html += '<div class="fwb-text col-md-6 col-sm-12">';
+                    html += '<div class="col-xs-4 fwb-text-content">'+itemValue.style.toUpperCase()+'</div>';
+                    html += '<div class="col-xs-4 fwb-text-content">'+itemValue.title.toUpperCase()+'</div>';
+                    html += '<div class="col-xs-4 fwb-text-content">'+getSizeTitle(sizeKey).toUpperCase()+'</div>';
+                html += '</div>';
+                html += '<div class="align-right col-md-6 col-sm-12"><h4 class="fwb-text col-xs-12 hidden-md hidden-lg text-center fwb-text-hidden-header">INPUT QUANTITY</h4><input type="number" class="addonkc col-xs-12" id="freewb-'+itemValue.style+'-'+sizeKey+'-'+itemValue.color.split(",").join("-")+'" name="'+itemValue.style+'-'+sizeKey+'-'+itemValue.color.split(",").join("-")+'-fwb" data-style="'+itemValue.style+'" data-color="'+itemValue.color+'" data-font-color="'+sizeValue.font+'" data-name="'+itemValue.title+'" data-size="'+sizeKey+'" placeholder="0" data-maxlength="3" /></div>';
+                html += '<div class="clearfix"></div>';
+                html += '</li>';
             });
         });
     });
@@ -928,8 +1016,7 @@ function loadFree()
 	// Free wristbands
     $(".area-conversion-bands").html(html_wb);
 	$(".area-conversion-chains").html(html_kc);
-
-    // console.log(total);
+    $(".convert-keychain-some-list").html(html);
 
     if(total >= 100) {
         $('#dv-100-free-wristbands, #dv-10-free-keychains').removeClass('hidden');
@@ -938,6 +1025,9 @@ function loadFree()
         $('.message_wristband_100 .convert-container').addClass('hidden');
         $('#dv-100-free-wristbands, #dv-10-free-keychains').addClass('hidden');
     }
+
+    // Get maximum quantity for keychains
+    maxKeychain = total;
 
 }
 
@@ -1088,7 +1178,21 @@ function loadTotal(loadProdShip)
 
         // Loop through all add ons
         $.each($collection['addon'], function(styleKey, styleVal) {
-            $collection['addon'][styleKey]['quantity'] = $collection.quantity;
+            if(styleKey == 'key-chain') {
+                if($collection['addon'][styleKey]['all']) {
+                    $collection['addon'][styleKey]['quantity'] = $collection.quantity;
+                } else {
+                    total = 0;
+                    // Compute total key in items.
+                    $.each($(".addonkc"), function(key, element) {
+                        element = $(element);
+                        total += (element.val().trim() == "") ? 0 : parseInt(element.val().trim());
+                    });
+                    $collection['addon'][styleKey]['quantity'] = total;
+                }
+            } else {
+                $collection['addon'][styleKey]['quantity'] = $collection.quantity;
+            }
             // Get add ons price.
             var hasQty = false;
             $.each($arr_addon[styleKey], function(addon_qty, addon_prc) {
@@ -1105,7 +1209,7 @@ function loadTotal(loadProdShip)
                     }
                 }
             });
-            $collection['addon'][styleKey]['total'] = ( $collection['addon'][styleKey]['price'] * $collection.quantity );
+            $collection['addon'][styleKey]['total'] = ( $collection['addon'][styleKey]['price'] * $collection['addon'][styleKey]['quantity'] );
         });
 
         if(loadProdShip) {

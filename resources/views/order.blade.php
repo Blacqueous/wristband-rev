@@ -424,8 +424,8 @@
 					</div>
 				</div>
 
-				<div id="convert-keychain" class="col-md-12" style="display:none;">
-					<div class="box-thumb clearfix" style="padding:20px 14px;">
+				<div id="convert-keychain" class="col-md-12 hidden">
+					<div class="box-thumb clearfix" style="min-height:300px;padding:20px 14px;">
 						<div class="row row-title">
 							<h3 style="color:#008da9;"><strong>Convert My Wristbands to Keychain.</strong></h3>
 							<span style="color:#8f8fa5;">Convert your wristbands to keychain.</span>
@@ -442,12 +442,12 @@
 							</div>
 						</div>
 						<div class="row row-content">
-							<div id="convert-keychain-area-all" class="col-md-12 convert-keychain-area" style="display:block;">
+							<div id="convert-keychain-area-all" class="col-md-12 convert-keychain-area">
 								<div class="convert-keychain-area-all">
 									<h4><i class="glyphicon glyphicon-ok"></i> Convert all <strong id="convert-keychain-area-all-qty">0</strong> wristbands to keychain.</h4>
 								</div>
 							</div>
-							<div id="convert-keychain-area-some" class="col-md-12 convert-keychain-area" style="display:none;">
+							<div id="convert-keychain-area-some" class="col-md-12 convert-keychain-area hidden">
 								<div class="convert-keychain-area-some">
 									<div class="row">
 										<div class="col-md-6 col-sm-12 fwb-text fwb-text-header text-center list-header">
@@ -463,16 +463,28 @@
 									</ul>
 									<div class="clearfix"></div>
 								</div>
-								<div class="js-keychain-add-ons-save" style="display:none">
-									<div style="color:#00C273;text-align:center;">
-										<div>Converted Keychains have been saved.</div>
-									</div>
-								</div>
-								<div class="submit">
-									<button id="done_convert_keychain" class="btn-wristband btn-lg" type="button"><i class="glyphicon glyphicon-ok"></i>&nbsp;&nbsp;Done</button>
-								</div>
 							</div>
 						</div>
+					</div>
+				</div>
+
+				<div id="modal-some-keychains" class="modal fade" role="dialog">
+					<div class="modal-dialog">
+						<!-- Modal content-->
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal">&times;</button>
+								<h4 class="modal-title">Keychain Quantity Error</h4>
+							</div>
+							<div class="modal-body text-center">
+								<h2 style="font-size:25px;padding:10px 0;">Total quantity must not be over <span class="qty">0</span> pieces.</h2>
+								<div class="clearfix"></div>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-default modal-close" data-dismiss="modal" style="padding:10px 15px;">Close</button>
+							</div>
+						</div>
+						<!-- End Modal Content -->
 					</div>
 				</div>
 
