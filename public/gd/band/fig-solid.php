@@ -1,12 +1,12 @@
 <?php
 
-	function generate_solid($colors)
+	function generate_fig_solid($colors)
 	{
 		// Set colors as the image name
 		$name = strtoupper(implode("-", $colors));
 
 		// Check if image is already created.
-		if (!file_exists("img/custom/regular/solid/" . $name . ".png")) {
+		if (!file_exists("img/custom/figured/solid/" . $name . ".png")) {
 
 			header('Content-Type: image/png');
 
@@ -19,7 +19,7 @@
 
 			// Declare image variables
 			list( $r_0, $g_0, $b_0 ) = sscanf( $hex_0, "#%02x%02x%02x" );
-			$img_0 = array(	'file'	 => 'img\band\base.png',
+			$img_0 = array(	'file'	 => 'img\band\fig-base.png',
 							'colorR' => $r_0,
 							'colorG' => $g_0,
 							'colorB' => $b_0 );
@@ -65,7 +65,7 @@
 
 			// For image shaded effect >>>>>
 			// Declare image variables
-			$img_shade = imagecreatefrompng( 'img\band\shade.png' );
+			$img_shade = imagecreatefrompng( 'img\band\fig-shade.png' );
 
 			// Let's make image background transparent
 			imagefill( $img_shade, 0, 0, IMG_COLOR_TRANSPARENT );
@@ -76,11 +76,11 @@
 			imagecopy( $img_0_dst, $img_shade, 0, 0, 0, 0, $width, $height );
 
 			// Check if image drectory is set
-			if (!file_exists('img/custom/regular/solid')) {
-				mkdir('img/custom/regular/solid', 0777, true); // If not, then create directory path
+			if (!file_exists('img/custom/figured/solid')) {
+				mkdir('img/custom/figured/solid', 0777, true); // If not, then create directory path
 			}
 			// Make image
-			imagepng( $img_0_dst, "img/custom/regular/solid/" . $name . ".png" );
+			imagepng( $img_0_dst, "img/custom/figured/solid/" . $name . ".png" );
 
 			// Clean Up
 			// 1st Part
@@ -91,7 +91,7 @@
 
 		}
 
-		echo( "/gd/img/custom/regular/solid/" . $name . ".png" );
+		echo( "/gd/img/custom/figured/solid/" . $name . ".png" );
 
 	}
 

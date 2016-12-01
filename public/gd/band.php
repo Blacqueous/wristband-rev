@@ -3,6 +3,9 @@
 	include_once 'band/solid.php';
 	include_once 'band/segmented.php';
 	include_once 'band/swirl.php';
+	include_once 'band/fig-solid.php';
+	include_once 'band/fig-segmented.php';
+	include_once 'band/fig-swirl.php';
 
 	// Only allowed styles
 	$list_style = array( 'solid', 'segmented', 'swirl' );
@@ -15,6 +18,7 @@
 
 	$style = trim($_REQUEST['style']);
 	$color = explode( ',', trim($_REQUEST['color']));
+	$type = isset($_REQUEST['type']) ? trim($_REQUEST['type']) : "";
 
 	// Check if style selected is valid
 	if ( !in_array( $style, $list_style ) ) {
@@ -29,26 +33,62 @@
 		}
 	}
 
-	// Check selected colors
-	if ( $style == 'solid' ) {
+	if ($type !== "figured") {
 
-		// Check maximum & minimum color count
-		if ( count( $color ) == 1 ) {
-			generate_solid($color);
+		// Check selected colors
+		if ( $style == 'solid' ) {
+
+			// Check maximum & minimum color count
+			if ( count( $color ) == 1 ) {
+				generate_solid($color);
+				die;
+			}
+
+		} else if ( $style == 'segmented' ) {
+
+			// Check maximum & minimum color count
+			if ( count( $color ) <= 6 && count( $color ) >= 1 ) {
+				generate_segmented($color);
+				die;
+			}
+
+		} else if ( $style == 'swirl' ) {
+
+			// Check maximum & minimum color count
+			if ( count( $color ) <= 4 && count( $color ) >= 1 ) {
+				generate_swirl($color);
+				die;
+			}
+
 		}
 
-	} else if ( $style == 'segmented' ) {
+	} else {
 
-		// Check maximum & minimum color count
-		if ( count( $color ) <= 6 && count( $color ) >= 1 ) {
-			generate_segmented($color);
-		}
+		// Check selected colors
+		if ( $style == 'solid' ) {
 
-	} else if ( $style == 'swirl' ) {
+			// Check maximum & minimum color count
+			if ( count( $color ) == 1 ) {
+				generate_fig_solid($color);
+				die;
+			}
 
-		// Check maximum & minimum color count
-		if ( count( $color ) <= 4 && count( $color ) >= 1 ) {
-			generate_swirl($color);
+		} else if ( $style == 'segmented' ) {
+
+			// Check maximum & minimum color count
+			if ( count( $color ) <= 6 && count( $color ) >= 1 ) {
+				generate_fig_segmented($color);
+				die;
+			}
+
+		} else if ( $style == 'swirl' ) {
+
+			// Check maximum & minimum color count
+			if ( count( $color ) <= 4 && count( $color ) >= 1 ) {
+				generate_fig_swirl($color);
+				die;
+			}
+
 		}
 
 	}

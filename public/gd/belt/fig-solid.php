@@ -54,7 +54,6 @@
 			$img_emboss = imagecreatefrompng( 'img/belt/fig-emboss.png' );
 
 			// Let's make image background transparent
-			// imagefilledrectangle( $img_emboss, 0, 0, $width, $height, 0xFF );
 			imagefill( $img_emboss, 0, 0, IMG_COLOR_TRANSPARENT );
 			imagealphablending( $img_emboss, true );
 			imagesavealpha( $img_emboss, true );

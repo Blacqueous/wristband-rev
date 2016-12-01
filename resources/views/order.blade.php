@@ -357,7 +357,7 @@
 					<!--<button>Clear</button>-->
 					<h3 style="text-align: left;">Select Font Style</h3>
 					<button id="btn_font_style" class="btn-order pull-left" ref-font-style-code="arial-bold">Choose Font Style</button>
-					<div id="preview-textfont"></div>
+					<div id="preview-textfont"><img src="assets/images/src/fonts/Arialold.png"></div>
 					<div class="clearfix"></div>
 				</div>
 			</div>
@@ -378,7 +378,7 @@
 
 				<!-- End conversion wristbands -->
 				<div class="col-md-4 add-ons">
-					<div class="box-thumb"><a href="assets/images/src/add-ons/3mm-thick.png" title="3mm thick option"><img src="assets/images/src/add-ons/3mm-thick.png" class="galleryimg"></a></div>
+					<div class="box-thumb"><a href="assets/images/src/add-ons/3mm-thick.png" title="3mm Thick Option"><img src="assets/images/src/add-ons/3mm-thick.png" class="galleryimg"></a></div>
 					<div class="icon-img"><img src="assets/images/src/icon.png"/> <div class="icon-text" style="width:150px;">Available for 1/2 and 3/4 inch wristbands only.</div></div>
 					<div class="add-ons-radio">
 						<input type="checkbox" name="addon[]" class="add-ons" data-code="3mm-thick"/>
@@ -401,14 +401,14 @@
 					</div>
 				</div>
 				<div class="col-md-4 add-ons">
-					<div class="box-thumb"><a href="assets/images/src/add-ons/Glitters.png" title="Glitters"><img src="assets/images/src/add-ons/Glitters.png" class="galleryimg"></a></div>
+					<div class="box-thumb"><a href="assets/images/src/add-ons/Glitters.png" title="Glitter"><img src="assets/images/src/add-ons/Glitters.png" class="galleryimg"></a></div>
 					<div class="add-ons-radio">
 						<input type="checkbox" name="addon[]" class="add-ons" data-code="glitters"/>
-						<h2>Glitters</h2>
+						<h2>Glitter</h2>
 					</div>
 				</div>
 				<div class="col-md-4 add-ons">
-					<div class="box-thumb"><a href="assets/images/src/add-ons/Individual-pack.png" title="Individual pack"><img src="assets/images/src/add-ons/Individual-pack.png" class="galleryimg"></a></div>
+					<div class="box-thumb"><a href="assets/images/src/add-ons/Individual-pack.png" title="Individually Pack"><img src="assets/images/src/add-ons/Individual-pack.png" class="galleryimg"></a></div>
 					<div class="icon-img"><img src="assets/images/src/icon.png"/> <div class="icon-text" style="width:200px;">Professionally sealed on biodegradable bags with clear back to see product inside.</div></div>
 					<div class="add-ons-radio">
 						<input type="checkbox" name="addon[]" class="add-ons" data-code="individual"/>
@@ -416,7 +416,7 @@
 					</div>
 				</div>
 				<div class="col-md-4 add-ons">
-					<div class="box-thumb"><a href="assets/images/src/add-ons/KeyChain.png" title="KeyChain"><img src="assets/images/src/add-ons/KeyChain.png" class="galleryimg"></a></div>
+					<div class="box-thumb"><a href="assets/images/src/add-ons/KeyChain.png" title="Keychain"><img src="assets/images/src/add-ons/KeyChain.png" class="galleryimg"></a></div>
 					<div class="icon-img"><img src="assets/images/src/icon.png"/> <div class="icon-text" style="width:132px;"> Available for 1/2 inch wristbands only.</div></div>
 					<div class="add-ons-radio">
 						<input type="checkbox" name="addon[]" class="add-ons" data-code="key-chain"/>
