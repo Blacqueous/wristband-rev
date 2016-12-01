@@ -10,6 +10,10 @@ var resetView = true;
 var maxKeychain = 0;
 var inputQuantity;
 
+var inputQuantityFreeKC;
+var inputQuantityFreeWB;
+var inputQuantityAddonKC;
+
 $(window).ready(function() {
 
     $('img.wb-unveil').unveil(0, function(e) {
@@ -487,72 +491,88 @@ $(document).ready(function() {
     });
 
     // Free keychains input fields EVENTs
+    $('body').on("focus", ".freekc", function(e) {
+        inputQuantityFreeKC = $(this).val();
+    });
+
     $('body').on("blur", ".freekc", function(e) {
 
-        var qty = ($(this).val().trim() == "") ? 0 : parseInt($(this).val().trim());
-        var total = 0;
+        if(inputQuantityFreeKC != $(this).val()) {
 
-        // If value is less than or is equal to 0, empty the field.
-        if(qty <= 0) { $(this).val(""); return; }
+            var qty = ($(this).val().trim() == "") ? 0 : parseInt($(this).val().trim());
+            var total = 0;
 
-        // Compute total key in items.
-        $.each($(".freekc"), function(key, element) {
-            element = $(element);
-            total += (element.val().trim() == "") ? 0 : parseInt(element.val().trim());
-        });
+            // If value is less than or is equal to 0, empty the field.
+            if(qty <= 0) { $(this).val(""); return; }
 
-        // Check if total is over the required free amount.
-        if(total > 10) {
-            $(this).val("");
-                total = 0;
-                // Compute total key in items.
-                $.each($(".freekc"), function(key, element) {
-                    element = $(element);
-                    total += (element.val().trim() == "") ? 0 : parseInt(element.val().trim());
-                });
+            // Compute total key in items.
+            $.each($(".freekc"), function(key, element) {
+                element = $(element);
+                total += (element.val().trim() == "") ? 0 : parseInt(element.val().trim());
+            });
+
+            // Check if total is over the required free amount.
+            if(total > 10) {
+                $(this).val("");
+                    total = 0;
+                    // Compute total key in items.
+                    $.each($(".freekc"), function(key, element) {
+                        element = $(element);
+                        total += (element.val().trim() == "") ? 0 : parseInt(element.val().trim());
+                    });
+                    free['key-chain'] = total;
+                $('#modal-10-free-keychains').modal('show');
+            } else {
+                // Set value for free
                 free['key-chain'] = total;
-            $('#modal-10-free-keychains').modal('show');
-        } else {
-            // Set value for free
-            free['key-chain'] = total;
+            }
+            // Load total amount.
+            loadTotal(false);
+
         }
-        // Load total amount.
-        loadTotal(false);
 
     });
 
     // Free wristbands input fields EVENTs
+    $('body').on("focus", ".freewb", function(e) {
+        inputQuantityFreeWB = $(this).val();
+    });
+
     $('body').on("blur", ".freewb", function(e) {
 
-        var qty = ($(this).val().trim() == "") ? 0 : parseInt($(this).val().trim());
-        var total = 0;
+        if(inputQuantityFreeWB != $(this).val()) {
 
-        // If value is less than or is equal to 0, empty the field.
-        if(qty <= 0) { $(this).val(""); return; }
+            var qty = ($(this).val().trim() == "") ? 0 : parseInt($(this).val().trim());
+            var total = 0;
 
-        // Compute total key in items.
-        $.each($(".freewb"), function(key, element) {
-            element = $(element);
-            total += (element.val().trim() == "") ? 0 : parseInt(element.val().trim());
-        });
+            // If value is less than or is equal to 0, empty the field.
+            if(qty <= 0) { $(this).val(""); return; }
 
-        // Check if total is over the required free amount.
-        if(total > 100) {
-            $(this).val("");
-                total = 0;
-                // Compute total key in items.
-                $.each($(".freewb"), function(key, element) {
-                    element = $(element);
-                    total += (element.val().trim() == "") ? 0 : parseInt(element.val().trim());
-                });
+            // Compute total key in items.
+            $.each($(".freewb"), function(key, element) {
+                element = $(element);
+                total += (element.val().trim() == "") ? 0 : parseInt(element.val().trim());
+            });
+
+            // Check if total is over the required free amount.
+            if(total > 100) {
+                $(this).val("");
+                    total = 0;
+                    // Compute total key in items.
+                    $.each($(".freewb"), function(key, element) {
+                        element = $(element);
+                        total += (element.val().trim() == "") ? 0 : parseInt(element.val().trim());
+                    });
+                    free['wristbands'] = total;
+                $('#modal-100-free-wristbands').modal('show');
+            } else {
+                // Set value for free
                 free['wristbands'] = total;
-            $('#modal-100-free-wristbands').modal('show');
-        } else {
-            // Set value for free
-            free['wristbands'] = total;
+            }
+            // Load total amount.
+            loadTotal(false);
+
         }
-        // Load total amount.
-        loadTotal(false);
 
     });
 
@@ -632,7 +652,6 @@ $(document).ready(function() {
             } else {
                 $('#convert-keychain-area-all').addClass('hidden');
                 $('#convert-keychain-area-some').removeClass('hidden');
-                $('.addonkc').trigger('blur');
                 addon['key-chain']['all'] = false;
             }
 
@@ -641,38 +660,36 @@ $(document).ready(function() {
         }
     });
 
+    $('body').on("focus", ".addonkc", function(e) {
+        inputQuantityAddonKC = $(this).val();
+    });
+
     $('body').on("blur", ".addonkc", function(e) {
-        var qty = ($(this).val().trim() == "") ? 0 : parseInt($(this).val().trim());
-        var total = 0;
 
-        // If value is less than or is equal to 0, empty the field.
-        if(qty <= 0) { $(this).val(""); return; }
+        if(inputQuantityAddonKC != $(this).val()) {
 
-        // Compute total key in items.
-        $.each($(".addonkc"), function(key, element) {
-            element = $(element);
-            total += (element.val().trim() == "") ? 0 : parseInt(element.val().trim());
-        });
+            var qty = ($(this).val().trim() == "") ? 0 : parseInt($(this).val().trim());
+            var total = 0;
 
-        // Check if total is over the required free amount.
-        if(total > maxKeychain) {
-            $(this).val("");
-                // total = 0;
-                // // Compute total key in items.
-                // $.each($(".addonkc"), function(key, element) {
-                //     element = $(element);
-                //     total += (element.val().trim() == "") ? 0 : parseInt(element.val().trim());
-                // });
-                // addon['key-chain']['quantity'] = total;
-            $('#modal-some-keychains .qty').html(maxKeychain);
-            $('#modal-some-keychains').modal('show');
-        } else {
-            // Set value for free
-            // addon['key-chain']['quantity'] = total;
+            // If value is less than or is equal to 0, empty the field.
+            if(qty <= 0) { $(this).val(""); return; }
+
+            // Compute total key in items.
+            $.each($(".addonkc"), function(key, element) {
+                element = $(element);
+                total += (element.val().trim() == "") ? 0 : parseInt(element.val().trim());
+            });
+
+            // Check if total is over the required free amount.
+            if(total > maxKeychain) {
+                $(this).val("");
+                $('#modal-some-keychains .qty').html(maxKeychain);
+                $('#modal-some-keychains').modal('show');
+            } else { }
+            // Load total amount.
+            loadTotal(false);
+
         }
-
-        // Load total amount.
-        loadTotal(false);
 
     });
 
@@ -1013,10 +1030,18 @@ function loadFree()
         });
     });
 
+    if(html == "") {
+        html += '<li class="fwb-list">';
+            html += '<div class="col-xs-12 fwb-text-content">No Wristbands.</div>';
+        html += '<div class="clearfix"></div>';
+        html += '</li>';
+    }
+
 	// Free wristbands
     $(".area-conversion-bands").html(html_wb);
 	$(".area-conversion-chains").html(html_kc);
     $(".convert-keychain-some-list").html(html);
+    $("#convert-keychain-area-all-qty").html(total);
 
     if(total >= 100) {
         $('#dv-100-free-wristbands, #dv-10-free-keychains').removeClass('hidden');

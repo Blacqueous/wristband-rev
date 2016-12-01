@@ -460,6 +460,10 @@
 										</div>
 									</div>
 									<ul id="convert-keychain-some-list" class="convert-keychain-some-list" style="margin-bottom:0px;padding-left:0px;">
+										<li class="fwb-list">
+									        <div class="col-xs-12 fwb-text-content">No Wristbands.</div>
+									        <div class="clearfix"></div>
+								        </li>
 									</ul>
 									<div class="clearfix"></div>
 								</div>
