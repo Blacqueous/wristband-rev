@@ -364,7 +364,7 @@
 				</div>
 
 				<!-- End conversion wristbands -->
-				<div class="col-md-4 add-ons">
+				<div class="col-md-4 add-ons optional-add-ons 0-25-only 0-75-only">
 					<div class="box-thumb"><a href="assets/images/src/add-ons/3mm-thick.png" title="3mm Thick Option"><img src="assets/images/src/add-ons/3mm-thick.png" class="galleryimg"></a></div>
 					<div class="icon-img"><img src="assets/images/src/icon.png"/> <div class="icon-text" style="width:150px;">Available for 1/2 and 3/4 inch wristbands only.</div></div>
 					<div class="add-ons-radio">
@@ -402,7 +402,7 @@
 						<h2>Individually Pack</h2>
 					</div>
 				</div>
-				<div class="col-md-4 add-ons">
+				<div class="col-md-4 add-ons optional-add-ons 0-25-only">
 					<div class="box-thumb"><a href="assets/images/src/add-ons/KeyChain.png" title="Keychain"><img src="assets/images/src/add-ons/KeyChain.png" class="galleryimg"></a></div>
 					<div class="icon-img"><img src="assets/images/src/icon.png"/> <div class="icon-text" style="width:132px;"> Available for 1/2 inch wristbands only.</div></div>
 					<div class="add-ons-radio">

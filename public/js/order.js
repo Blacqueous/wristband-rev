@@ -1378,6 +1378,14 @@ function loadColors($style, $size)
             }
             break;
     }
+
+    // Check addons
+    $('.optional-add-ons').addClass('hidden');
+    if($size == '0-25inch') {
+        $('.0-25-only').removeClass('hidden');
+    } else if($size == '0-75inch') {
+        $('.0-75-only').removeClass('hidden');
+    }
 }
 
 function loadFree()
@@ -1509,6 +1517,8 @@ function loadSizes($style)
             $('#wb_size_0-25inch, #wb_size_0-50inch, #wb_size_0-75inch, #wb_size_1-00inch, #wb_size_1-50inch, #wb_size_2-00inch').removeClass('hidden');
             break;
     }
+
+    $('.optional-add-ons')
 
     // Get the visible selected size.
     $size = $('#wb_size .prod-size:visible input[type=radio].wb-size:checked').val();
