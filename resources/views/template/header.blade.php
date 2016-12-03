@@ -3,7 +3,7 @@
     <nav class="navbar navbar-inverse navbar-default">
 		<div class="container">
 			<div id="logo">
-				<a class="navbar-brand" href="index.php"><img src="assets/images/src/prom_logo.jpg"></a>
+				<a class="navbar-brand" href="/"><img src="assets/images/src/prom_logo.jpg"></a>
 			</div>
 			<div class="header-right-box">
     			<div id="google_trust">

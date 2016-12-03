@@ -1,52 +1,59 @@
-@include('template.header')
 
-<script>
-    $(document).ready(function() {
+@extends('template.layout')
 
-        var id = '#dialog';
+@section('title', ' - Welcome')
 
-        //Get the screen height and width
-        var maskHeight = $(document).height();
-        var maskWidth = $(window).width();
+@section('css')
+@endsection
 
-        //Set heigth and width to mask to fill up the whole screen
-        $('#mask').css({'width':maskWidth,'height':maskHeight});
+@section('js')
+<!-- Order page custom javascript -->
+		<script type="text/javascript">
+            $(document).ready(function() {
+                var id = '#dialog';
+                //Get the screen height and width
+                var maskHeight = $(document).height();
+                var maskWidth = $(window).width();
+                //Set heigth and width to mask to fill up the whole screen
+                $('#mask').css({'width':maskWidth,'height':maskHeight});
+                //transition effect
+                $('#mask').fadeIn(500);
+                $('#mask').fadeTo("slow",0.9);
 
-        //transition effect
-        $('#mask').fadeIn(500);
-        $('#mask').fadeTo("slow",0.9);
+                //Get the window height and width
+                var winH = $(window).height();
+                var winW = $(window).width();
 
-        //Get the window height and width
-        var winH = $(window).height();
-        var winW = $(window).width();
+                //Set the popup window to center
+                $(id).css('top',  winH/2-$(id).height()/2);
+                $(id).css('left', winW/2-$(id).width()/2);
 
-        //Set the popup window to center
-        $(id).css('top',  winH/2-$(id).height()/2);
-        $(id).css('left', winW/2-$(id).width()/2);
+                //transition effect
+                $(id).fadeIn(2000);
 
-        //transition effect
-        $(id).fadeIn(2000);
+                //if close button is clicked
+                $('.window .close').click(function (e) {
+                //Cancel the link behavior
+                e.preventDefault();
 
-        //if close button is clicked
-        $('.window .close').click(function (e) {
-        //Cancel the link behavior
-        e.preventDefault();
+                $('#mask').hide();
+                $('.window').hide();
+                });
 
-        $('#mask').hide();
-        $('.window').hide();
-        });
-
-        //if mask is clicked
-        $('#mask').click(function () {
-        $(this).hide();
-        $('.window').hide();
-        });
+                //if mask is clicked
+                $('#mask').click(function () {
+                $(this).hide();
+                $('.window').hide();
+                });
 
 
-        $('#emf-container').css('background-color','none');
-        $('#emf-container').css('color','#FFFFFF');
-    });
-</script>
+                $('#emf-container').css('background-color','none');
+                $('#emf-container').css('color','#FFFFFF');
+            });
+		</script>
+@endsection
+
+@section('content')
 
     <!-- Main jumbotron for a primary marketing message or call to action -->
     <div class="jumbotron" style="display:none;">
@@ -73,22 +80,22 @@
         </div>
 
         <div class="images-clips">
-            <div class="col-md-2">
-                <a href="quote.php"><img src="assets/images/src/Get_A_Quote.jpg"></a>
+            <div class="col-md-4">
+                <a href="/quote"><img src="assets/images/src/Get_A_Quote.jpg"></a>
             </div>
-            <div class="col-md-2">
-                <a href="school_po.php"><img src="assets/images/src/PO.jpg"></a>
+            <div class="col-md-4">
+                <a href="/school_po"><img src="assets/images/src/PO.jpg"></a>
             </div>
-            <div class="col-md-2">
-                <a href="digital_design.php"><img src="assets/images/src/Digital_Design.jpg"></a>
+            <div class="col-md-4">
+                <a href="/digital_design"><img src="assets/images/src/Digital_Design.jpg"></a>
             </div>
-            <div class="col-md-2">
+            <div class="col-md-4">
                 <a href="#"><img src="assets/images/src/Rush_Shipping.jpg"></a>
             </div>
-            <div class="col-md-2">
+            <div class="col-md-4">
                 <a href="#"><img src="assets/images/src/1Day_Production.jpg"></a>
             </div>
-            <div class="col-md-2">
+            <div class="col-md-4">
                 <a href="#"><img src="assets/images/src/Eco_Friendly.jpg"></a>
             </div>
             <div class="clearfix"></div>
@@ -98,49 +105,49 @@
                 <div class="box-thumb"><img src="assets/images/src/Printed.png"></div>
                 <h2>Printed</h2>
                 <div class="prod_price">$0.09</div>
-                <p><a class="btn btn-default" href="order.php?q=printed" role="button">Order Now</a></p>
+                <p><a class="btn btn-default" href="/order?style=printed" role="button">ORDER NOW</a></p>
             </div>
             <div class="col-md-4">
                 <div class="box-thumb"><img src="assets/images/src/Debossed.png"></div>
                 <h2>Debossed</h2>
                 <div class="prod_price">$0.06</div>
-                <p><a class="btn btn-default" href="order.php?q=debossed" role="button">Order Now</a></p>
+                <p><a class="btn btn-default" href="/order?style=debossed" role="button">ORDER NOW</a></p>
             </div>
             <div class="col-md-4">
                 <div class="box-thumb"><img src="assets/images/src/Color-Filled.png"></div>
                 <h2>Ink Injected</h2>
                 <div class="prod_price">$0.07</div>
-                <p><a class="btn btn-default" href="order.php?q=ink-injected" role="button">Order Now</a></p>
+                <p><a class="btn btn-default" href="/order?style=ink-injected" role="button">ORDER NOW</a></p>
             </div>
             <div class="col-md-4">
                 <div class="box-thumb"><img src="assets/images/src/Embossed.png"></div>
                 <h2>Embossed</h2>
                 <div class="prod_price">$0.07</div>
-                <p><a class="btn btn-default" href="order.php?q=embossed" role="button">Order Now</a></p>
+                <p><a class="btn btn-default" href="/order?style=embossed" role="button">ORDER NOW</a></p>
             </div>
             <div class="col-md-4">
                 <div class="box-thumb"><img src="assets/images/src/Dual-Layer.png"></div>
                 <h2>Dual Layer</h2>
                 <div class="prod_price">$0.06</div>
-                <p><a class="btn btn-default" href="order.php?q=dual-layer" role="button">Order Now</a></p>
+                <p><a class="btn btn-default" href="/order?style=?q=dual-layer" role="button">ORDER NOW</a></p>
             </div>
             <div class="col-md-4">
                 <div class="box-thumb"><img src="assets/images/src/Embossed-Printed.png"></div>
                 <h2>Embossed Printed</h2>
                 <div class="prod_price">$0.09</div>
-                <p><a class="btn btn-default" href="order.php?q=embossed-printed" role="button">Order Now</a></p>
+                <p><a class="btn btn-default" href="/order?style=?q=embossed-printed" role="button">ORDER NOW</a></p>
             </div>
             <div class="col-md-4">
                 <div class="box-thumb"><img src="assets/images/src/Figured.png"></div>
                 <h2>Figured</h2>
                 <div class="prod_price">$0.06</div>
-                <p><a class="btn btn-default" href="order.php?q=figured" role="button">Order Now</a></p>
+                <p><a class="btn btn-default" href="order.php?q=figured" role="button">ORDER NOW</a></p>
             </div>
             <div class="col-md-4">
                 <div class="box-thumb"><img src="assets/images/src/Blank.png"></div>
                 <h2>Blank</h2>
                 <div class="prod_price">$0.06</div>
-                <p><a class="btn btn-default" href="order.php?q=blank" role="button">Order Now</a></p>
+                <p><a class="btn btn-default" href="order.php?q=blank" role="button">ORDER NOW</a></p>
             </div>
             <div class="clearfix"></div>
             <div class="container content-main">
@@ -354,5 +361,4 @@
         </div>
     </div>
 <!-- End container -->
-
-@include('template/footer')
+@endsection

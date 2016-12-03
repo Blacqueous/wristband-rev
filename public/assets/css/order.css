@@ -1292,18 +1292,6 @@ span.fonttext-color {
     color: #079ca5;
 }
 
-.btn-order {
-    background-color: #17a589;
-    color: #fff;
-    border: 1px solid #117864;
-    padding: 10px;
-    border-radius: 3px;
-}
-
-.btn-order:hover {
-    background-color: #1abc9c;
-}
-
 .band {
 	background-image:url('/gd/img/belt/base.png');
 	height: 54px;
@@ -1607,4 +1595,37 @@ body {
     background: white;
     cursor: inherit;
     display: block;
+}
+
+.images-clips .col-md-4 {
+    margin-bottom: 5px;
+}
+
+.btn:hover, .btn:focus {
+    background-color: #FFFFFF;
+}
+
+.btn-default {
+    color: #fff;
+    background-color: #079ca5;
+    border-color: #ccc;
+    padding: 16px 22px;
+}
+
+.btn-default:hover, .btn-default:focus {
+	background-color: #fff;
+	border:1px solid #079ca5;
+	color:#079ca5;
+}
+
+.btn-order {
+    background-color: #17a589;
+    color: #fff;
+    border: 1px solid #117864;
+    padding: 10px;
+    border-radius: 3px;
+}
+
+.btn-order:hover, .btn-order:focus {
+    background-color: #1abc9c;
 }

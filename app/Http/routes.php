@@ -11,9 +11,13 @@
 |
 */
 
-Route::get('/', function () { return view('homepage'); });
+Route::get('/', function () {
+    return view('homepage');
+});
 
-Route::get('/sample', function () { return view('sample'); });
+Route::get('/sample', function () {
+    return view('sample');
+});
 
 Route::get('/order', 'OrderController@index');
 
