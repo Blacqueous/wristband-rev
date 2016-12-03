@@ -190,6 +190,19 @@
 			}
 
 
+			// For inner image shaded effect >>>>>
+			// Declare image variables
+			$img_shade = imagecreatefrompng( 'img\band\dual-shade.png' );
+
+			// Let's make image background transparent
+			imagefill( $img_shade, 0, 0, IMG_COLOR_TRANSPARENT );
+			imagealphablending( $img_shade, true );
+			imagesavealpha( $img_shade, true );
+
+			// Merge image shade
+			imagecopy( $img_0_dst, $img_shade, 0, 0, 0, 0, $width, $height );
+
+
 			// For image shaded effect >>>>>
 			// Declare image variables
 			$img_shade = imagecreatefrompng( 'img\band\shade.png' );
@@ -201,6 +214,7 @@
 
 			// Merge image shade
 			imagecopy( $img_0_dst, $img_shade, 0, 0, 0, 0, $width, $height );
+
 
 			// Check if image drectory is set
 			if (!file_exists('img/custom/regular/swirl')) {

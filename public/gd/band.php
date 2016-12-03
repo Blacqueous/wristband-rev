@@ -1,14 +1,16 @@
 <?php
 
+	include_once 'band/dual.php';
 	include_once 'band/solid.php';
 	include_once 'band/segmented.php';
 	include_once 'band/swirl.php';
+	include_once 'band/fig-dual.php';
 	include_once 'band/fig-solid.php';
 	include_once 'band/fig-segmented.php';
 	include_once 'band/fig-swirl.php';
 
 	// Only allowed styles
-	$list_style = array( 'solid', 'segmented', 'swirl' );
+	$list_style = array( 'solid', 'segmented', 'swirl', 'dual' );
 
 	if( !isset( $_REQUEST['style'] ) ) {
 		die('Error: Library not defined!');
@@ -60,6 +62,14 @@
 				die;
 			}
 
+		} else if ( $style == 'dual' ) {
+
+			// Check maximum & minimum color count
+			if ( count( $color ) <= 2 && count( $color ) >= 1 ) {
+				generate_dual($color);
+				die;
+			}
+
 		}
 
 	} else {
@@ -86,6 +96,14 @@
 			// Check maximum & minimum color count
 			if ( count( $color ) <= 4 && count( $color ) >= 1 ) {
 				generate_fig_swirl($color);
+				die;
+			}
+
+		} else if ( $style == 'dual' ) {
+
+			// Check maximum & minimum color count
+			if ( count( $color ) <= 2 && count( $color ) >= 1 ) {
+				generate_fig_dual($color);
 				die;
 			}
 

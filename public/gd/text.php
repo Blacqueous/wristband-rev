@@ -1,50 +1,50 @@
 <?php
-
-	// Only allowed styles
-	$list_style = array( 'deboss', 'emboss', 'emboss-print', 'print' );
-
-	if( !isset( $_REQUEST['style'] ) ) {
-		die('Error: Library not defined!');
-	} else if ( !isset( $_REQUEST['text'] ) ) {
-		die('Error: Library not defined!');
-	} else if ( !isset( $_REQUEST['font'] ) ) {
-		die('Error: Library not defined!');
-	}
-
-	$style = trim($_REQUEST['style']);
-	$text = trim($_REQUEST['text']);
-	$font = '../assets/fonts/'.trim($_REQUEST['font']).'.ttf';
-
-	if ( !file_exists( $font ) ) {
-		echo 'Error: Library not defined!';
-		die;
-	}
-
-	// Check if style selected is valid
-	if ( !in_array( $style, $list_style ) ) {
-		echo 'Error: Library not defined!';
-		die;
-	}
-
-	// Canvas size	
-	$height = 100;
-	$width = 3000;
-
-	$font_size = 30;
-	$font_pos_x = $width/2;
-	$font_pos_y = $height/2;
-
-	// Create the image
-	$im = imagecreatetruecolor($width, $height);
-
-	// Create some colors
-	$black = imagecolorallocate($im, 0, 0, 0);
-	$white = imagecolorallocate($im, 255, 255, 255);
-
-	// imagefilledrectangle($im, 0, 0, $width, $height, 0xFFFFFF);
-	imagefill($im, 0, 0, IMG_COLOR_TRANSPARENT);
-	imagealphablending($im, true);
-	imagesavealpha($im, true);
+	//
+	// // Only allowed styles
+	// $list_style = array( 'deboss', 'emboss', 'emboss-print', 'print' );
+	//
+	// if( !isset( $_REQUEST['style'] ) ) {
+	// 	die('Error: Library not defined!');
+	// } else if ( !isset( $_REQUEST['text'] ) ) {
+	// 	die('Error: Library not defined!');
+	// } else if ( !isset( $_REQUEST['font'] ) ) {
+	// 	die('Error: Library not defined!');
+	// }
+	//
+	// $style = trim($_REQUEST['style']);
+	// $text = trim($_REQUEST['text']);
+	// $font = '../assets/fonts/'.trim($_REQUEST['font']).'.ttf';
+	//
+	// if ( !file_exists( $font ) ) {
+	// 	echo 'Error: Library not defined!';
+	// 	die;
+	// }
+	//
+	// // Check if style selected is valid
+	// if ( !in_array( $style, $list_style ) ) {
+	// 	echo 'Error: Library not defined!';
+	// 	die;
+	// }
+	//
+	// // Canvas size
+	// $height = 100;
+	// $width = 3000;
+	//
+	// $font_size = 30;
+	// $font_pos_x = $width/2;
+	// $font_pos_y = $height/2;
+	//
+	// // Create the image
+	// $im = imagecreatetruecolor($width, $height);
+	//
+	// // Create some colors
+	// $black = imagecolorallocate($im, 0, 0, 0);
+	// $white = imagecolorallocate($im, 255, 255, 255);
+	//
+	// // imagefilledrectangle($im, 0, 0, $width, $height, 0xFFFFFF);
+	// imagefill($im, 0, 0, IMG_COLOR_TRANSPARENT);
+	// imagealphablending($im, true);
+	// imagesavealpha($im, true);
 
 // 	// EMBOSSED ----------------------------------
 
@@ -159,7 +159,7 @@
 // 			if( imagecolorat( $im, imagesx( $im ) - $b_rt-1, $y ) != IMG_COLOR_TRANSPARENT ) {
 // 				break 2; //out of the 'right' loop
 // 			}
-// 		} 
+// 		}
 // 	}
 
 // 	// $newSize = getTextSize($im);
@@ -210,102 +210,102 @@
 
 
 
-
-	// EMBOSSED ----------------------------------
-
-	$lite = imagecolorallocatealpha($im, 255, 255, 255, 0);
-	$dark = imagecolorallocatealpha($im, 0, 0, 0, 0);
-	$rand1 = imagecolorallocatealpha($im, 255, 0, 0, 0);
-	$rand2 = imagecolorallocatealpha($im, 0, 0, 0, 0);
-
-	imagettftext($im, $font_size, 0, $font_pos_x+2, $font_pos_y+2, $lite, $font, $text);
-	imagettftext($im, $font_size, 0, $font_pos_x+1, $font_pos_y+2, $lite, $font, $text);
-	imagettftext($im, $font_size, 0, $font_pos_x, $font_pos_y, $dark, $font, $text);
-	imagettftext($im, $font_size, 0, $font_pos_x+1, $font_pos_y+1, $rand1, $font, $text);
-
-	$b_top = $b_btm = $b_lft = $b_rt = 0;
-
-	// Top whitespace
-	for( ; $b_top < imagesy( $im ); ++$b_top ) {
-		for( $x = 0; $x < imagesx( $im ); ++$x ) {
-			if( imagecolorat( $im, $x, $b_top ) != IMG_COLOR_TRANSPARENT ) {
-				break 2; //out of the 'top' loop
-			}
-		}
-	}
-
-	// Bottom whitespace
-	for( ; $b_btm < imagesy( $im ); ++$b_btm ) {
-		for( $x = 0; $x < imagesx( $im ); ++$x ) {
-			if( imagecolorat( $im, $x, imagesy( $im ) - $b_btm-1) != IMG_COLOR_TRANSPARENT ) {
-				break 2; //out of the 'bottom' loop
-			}
-		}
-	}
-
-	// Left whitespace
-	for( ; $b_lft < imagesx( $im ); ++$b_lft ) {
-		for( $y = 0; $y < imagesy( $im ); ++$y ) {
-			if( imagecolorat( $im, $b_lft, $y ) != IMG_COLOR_TRANSPARENT ) {
-				break 2; //out of the 'left' loop
-			}
-		}
-	}
-
-	// Right whitespace
-	for( ; $b_rt < imagesx( $im ); ++$b_rt ) {
-		for( $y = 0; $y < imagesy( $im ); ++$y ) {
-			if( imagecolorat( $im, imagesx( $im ) - $b_rt-1, $y ) != IMG_COLOR_TRANSPARENT ) {
-				break 2; //out of the 'right' loop
-			}
-		} 
-	}
-
-	// $newSize = getTextSize($im);
-	$newSize = array('height' => imagesy($im) - ($b_top + $b_btm), 'width' => imagesx($im) - ($b_lft + $b_rt));
-
-	//copy the contents, excluding the border
-	$newimg = imagecreatetruecolor($newSize['width']+2, $newSize['height']+2);
-
-	imagefilledrectangle($newimg, 0, 0, imagesx($im), imagesy($im), imagecolorallocate($im, 255, 0, 0));
-	// imagefill($newimg, 0, 0, IMG_COLOR_TRANSPARENT);
-	// imagealphablending($newimg, true);
-	// imagesavealpha($newimg, true);
-
-	$newwidth = imagesx($im);
-	$newheight = imagesy($im);
-
-	// Resize
-	imagecopy($newimg, $im, 0, 0, $b_lft-1, $b_top-1, $newwidth, $newheight);
-
-	$old = $newimg;
-	$new = $newimg;
-	$img_1_w = imagesx($old);
-	$img_1_h = imagesy($old);
-// var_dump($img_1_w, $img_1_h);
+//
+// 	// EMBOSSED ----------------------------------
+//
+// 	$lite = imagecolorallocatealpha($im, 255, 255, 255, 0);
+// 	$dark = imagecolorallocatealpha($im, 0, 0, 0, 0);
+// 	$rand1 = imagecolorallocatealpha($im, 255, 0, 0, 0);
+// 	$rand2 = imagecolorallocatealpha($im, 0, 0, 0, 0);
+//
+// 	imagettftext($im, $font_size, 0, $font_pos_x+2, $font_pos_y+2, $lite, $font, $text);
+// 	imagettftext($im, $font_size, 0, $font_pos_x+1, $font_pos_y+2, $lite, $font, $text);
+// 	imagettftext($im, $font_size, 0, $font_pos_x, $font_pos_y, $dark, $font, $text);
+// 	imagettftext($im, $font_size, 0, $font_pos_x+1, $font_pos_y+1, $rand1, $font, $text);
+//
+// 	$b_top = $b_btm = $b_lft = $b_rt = 0;
+//
+// 	// Top whitespace
+// 	for( ; $b_top < imagesy( $im ); ++$b_top ) {
+// 		for( $x = 0; $x < imagesx( $im ); ++$x ) {
+// 			if( imagecolorat( $im, $x, $b_top ) != IMG_COLOR_TRANSPARENT ) {
+// 				break 2; //out of the 'top' loop
+// 			}
+// 		}
+// 	}
+//
+// 	// Bottom whitespace
+// 	for( ; $b_btm < imagesy( $im ); ++$b_btm ) {
+// 		for( $x = 0; $x < imagesx( $im ); ++$x ) {
+// 			if( imagecolorat( $im, $x, imagesy( $im ) - $b_btm-1) != IMG_COLOR_TRANSPARENT ) {
+// 				break 2; //out of the 'bottom' loop
+// 			}
+// 		}
+// 	}
+//
+// 	// Left whitespace
+// 	for( ; $b_lft < imagesx( $im ); ++$b_lft ) {
+// 		for( $y = 0; $y < imagesy( $im ); ++$y ) {
+// 			if( imagecolorat( $im, $b_lft, $y ) != IMG_COLOR_TRANSPARENT ) {
+// 				break 2; //out of the 'left' loop
+// 			}
+// 		}
+// 	}
+//
+// 	// Right whitespace
+// 	for( ; $b_rt < imagesx( $im ); ++$b_rt ) {
+// 		for( $y = 0; $y < imagesy( $im ); ++$y ) {
+// 			if( imagecolorat( $im, imagesx( $im ) - $b_rt-1, $y ) != IMG_COLOR_TRANSPARENT ) {
+// 				break 2; //out of the 'right' loop
+// 			}
+// 		}
+// 	}
+//
+// 	// $newSize = getTextSize($im);
+// 	$newSize = array('height' => imagesy($im) - ($b_top + $b_btm), 'width' => imagesx($im) - ($b_lft + $b_rt));
+//
+// 	//copy the contents, excluding the border
+// 	$newimg = imagecreatetruecolor($newSize['width']+2, $newSize['height']+2);
+//
+// 	imagefilledrectangle($newimg, 0, 0, imagesx($im), imagesy($im), imagecolorallocate($im, 255, 0, 0));
+// 	// imagefill($newimg, 0, 0, IMG_COLOR_TRANSPARENT);
+// 	// imagealphablending($newimg, true);
+// 	// imagesavealpha($newimg, true);
+//
+// 	$newwidth = imagesx($im);
+// 	$newheight = imagesy($im);
+//
+// 	// Resize
+// 	imagecopy($newimg, $im, 0, 0, $b_lft-1, $b_top-1, $newwidth, $newheight);
+//
+// 	$old = $newimg;
+// 	$new = $newimg;
+// 	$img_1_w = imagesx($old);
+// 	$img_1_h = imagesy($old);
+// // var_dump($img_1_w, $img_1_h);
+// // die;
+// 	// Apply desired color and place proper alpha
+// 	for($x=0; $x < $img_1_w; $x++) {
+// 		for($y=0; $y < $img_1_h; $y++) {
+// 			$alpha = imagecolorat($old, $x, $y);
+// 			print_r($alpha);
+// 			// $col = imagecolorallocatealpha($new, 255, 255, 0, 100);
+// 			// imagesetpixel($new, $x, $y, $col);
+// 		}
+// 		echo("<br/>");
+// 	}
 // die;
-	// Apply desired color and place proper alpha
-	for($x=0; $x < $img_1_w; $x++) {
-		for($y=0; $y < $img_1_h; $y++) {
-			$alpha = imagecolorat($old, $x, $y);
-			print_r($alpha);
-			// $col = imagecolorallocatealpha($new, 255, 255, 0, 100);
-			// imagesetpixel($new, $x, $y, $col);
-		}
-		echo("<br/>");
-	}
-die;
-	// Set the content-type
-	header('Content-Type: image/png');
-
-	// Using imagepng() results in clearer text compared with imagejpeg()
-	imagepng($newimg);
-
-
-
-
-
-
+// 	// Set the content-type
+// 	header('Content-Type: image/png');
+//
+// 	// Using imagepng() results in clearer text compared with imagejpeg()
+// 	imagepng($newimg);
+//
+//
+//
+//
+//
+//
 
 
 
@@ -418,6 +418,20 @@ die;
 // imagedestroy($aa);
 // imagedestroy($normal);
 
+
+    $font = 25;
+    $string = 'My Text';
+    $im = @imagecreatetruecolor(strlen($string) * $font / 1.5, $font);
+    imagesavealpha($im, true);
+    imagealphablending($im, false);
+    $white = imagecolorallocatealpha($im, 255, 255, 255, 127);
+    imagefill($im, 0, 0, $white);
+    $lime = imagecolorallocate($im, 204, 255, 51);
+
+    imagettftext($im, $font, 0, 0, $font - 3, $lime, "../assets/fonts/".trim($_REQUEST['font']).".ttf", $string);
+    header("Content-type: image/png");
+    imagepng($im);
+    imagedestroy($im);
 
 
 

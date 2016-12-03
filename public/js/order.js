@@ -198,7 +198,7 @@ $(document).ready(function() {
 
     $('body').on('blur', '.box-color input[name="quantity[]"]', function(e) {
 
-        if(inputQuantity != $(this).val()) {
+        if(inputQuantity != $(this).val() && $(this).attr('ref-color')) {
 
             // New behavior. Pretty much optimized.
             // Create variables to be used.
@@ -234,7 +234,8 @@ $(document).ready(function() {
                 items[style] = {}; // If not, then create object
 
             // Generate an index using title.
-            var idx = style + '-' + color.replace(/,/g, '-');
+            // var idx = style + '-' + color.replace(/,/g, '-');
+            var idx = $(this).attr('ref-index');
 
             // Check if WB color exists.
             if (typeof items[style][idx] == "undefined") {
@@ -247,6 +248,8 @@ $(document).ready(function() {
                 };
                 // Flag to reate preview for new items
                 makePreview = true;
+            } else {
+                items[style][idx]['color'] = color;
             }
 
             // Check WB color has existing values.
@@ -298,6 +301,8 @@ $(document).ready(function() {
             // Load total amount.
             loadTotal();
 
+        } else {
+            // $(this).val("");
         }
 
     });
@@ -693,7 +698,149 @@ $(document).ready(function() {
 
     });
 
+    var customImgTarget = "#";
+    var customMax = "0";
+    var customStyle = "solid";
+    var customType = "regular";
+    var customIndex = "";
+
+    $('body').on("click", ".custom-color-button", function(e) {
+
+        customImgTarget = $(this).attr("data-img-target");
+        customIndex = $(this).attr("data-index");
+        customMax = $(this).attr("data-max");
+        customStyle = $(this).attr("data-style");
+        customType = $('#wb_style input[type=radio].wb-style:checked').val();
+
+        $('.custom-color-selected.active').removeClass('active'); // Clear selected boxes.
+        $('.field-'+customStyle+' input').attr('ref-value', '').val(''); // Clear selected input fields.
+        $('.field-container').addClass('hidden'); // Hide fields.
+        $('.field-'+customStyle).removeClass('hidden'); // Show proper fields.
+
+        $('#modalWristbandColor').attr('data-max', customMax);
+        $('#modalWristbandColor').attr('data-style', customStyle);
+        $('#modalWristbandColor').attr('data-type', customType);
+        $('#modalWristbandColor').modal('show');
+
+    });
+
+    $('body').on('click', '.custom-color-selected', function(e) {
+
+        var customField;
+
+        if(!$(this).hasClass('active')) {
+
+            $('.field-'+customStyle+' input').each(function() {
+                if( !$(this).val().trim() && $(this).val().length <= 0  ) {
+                    customField = $(this);
+                    return false;
+                }
+            });
+
+            if(customField) {
+                $(this).addClass('active');
+                customField.attr('ref-value', $(this).attr('ref-color')).val($(this).attr('ref-name'));
+            }
+
+        } else {
+
+            $('.field-'+customStyle+' input[ref-value="'+$(this).attr('ref-color')+'"]').attr('ref-value', '').val('');
+            $(this).removeClass('active');
+
+        }
+
+    });
+
+    $('body').on('click', '#btnCustomClear', function(e) {
+        // Clear selected values.
+        $('.field-'+customStyle+' input').attr('ref-value', '').val('');
+        $('.custom-color-selected.active').removeClass('active');
+    });
+
+    $('body').on('click', '#btnCustomSubmit', function(e) {
+
+        var customColors = [];
+
+        $('.field-'+customStyle+' input').each(function() {
+            if( $(this).val().trim() && $(this).val().length > 0  ) {
+                customColors.push($(this).attr('ref-value').trim());
+            }
+        });
+
+        loadCustomWristband(customStyle, customType, customColors.join(","), customImgTarget);
+        $('#modalWristbandColor').modal('hide');
+
+        if(typeof items[customStyle] != "undefined") {
+            if(typeof items[customStyle][customIndex] != "undefined") {
+                items[customStyle][customIndex]['color'] = customColors.join(",");
+            }
+        }
+
+        // reset wristband previews.
+        resetPreview();
+        // Load total amount.
+        loadTotal();
+
+    });
+
+    $('body').on('click', '.add-custom', function(e) {
+        $type = $(this).attr('ref-style');
+        $parent = $(this).closest('.tab-pane').find('.main-color-content');
+        $style = $('#wb_style input[type=radio].wb-style:checked').val();
+
+        // Get proper total qty
+        $.ajax({
+        	type: 'GET',
+        	url: '/getTemplateCustomWristband?type='+$type+'&style='+$style,
+        	data: { },
+        	beforeSend: function() { },
+        	success: function() { }
+        }).done(function(data) {
+            // Do something when everything is done.
+            // console.log(data);
+            $parent.prepend(data);
+        });
+    });
+
+    $('body').on('click', '.btn-close-custom-color', function(e) {
+        $(this).closest('.box-color-container').remove();
+        var delStyle = $(this).attr('data-style');
+        var delIndex = $(this).attr('data-index');
+
+        delete items[delStyle][delIndex];
+
+        // Delete the WB style if completely empty.
+        // (Must delete, data will be useless.)
+        if ($.isEmptyObject(items[delStyle])) {
+            delete items[delStyle];
+        }
+
+        // reset wristband previews.
+        resetPreview();
+        // Load total amount.
+        loadTotal();
+    });
+
 });
+
+function loadCustomWristband($style, $type, $colors, $target)
+{
+
+    // Get proper total qty
+    $.ajax({
+    	type: 'GET',
+    	url: '/gd/band.php?style='+$style+'&type='+$type+'&color='+$colors,
+    	data: { },
+    	beforeSend: function() { $($target).css({'opacity':'0'}); },
+    	success: function(link) { }
+    }).done(function(link) {
+        // Do something when everything is done.
+        // $($target).css({"background-image": "url('" + link + "')"});
+        $($target).attr('src', link).animate({'opacity':'1'}, 1000);
+        $($target).closest('.box-color').find('input').attr('ref-color', $colors);
+    });
+
+}
 
 function changeWristbandColors()
 {
@@ -1447,13 +1594,13 @@ function loadWristbands($style, $size)
 
 }
 
-function loadPreview($style, $type, $color, $font, $isFirst)
+function loadPreview($style, $type, $colors, $font, $isFirst)
 {
     if(typeof $isFirst == "undefined")
         $isFirst = false;
 
     var addBlink = false;
-    var previewClass = 'preview-' + $style + '-' + $type + '-' + $font + '-' + $color.trim().toUpperCase().replace(/ /g, '').replace(/,/g, '-');
+    var previewClass = 'preview-' + $style + '-' + $type + '-' + $font + '-' + $colors.trim().toUpperCase().replace(/ /g, '').replace(/,/g, '-');
 
     if($('.' + previewClass).length <= 0) {
 
@@ -1463,7 +1610,7 @@ function loadPreview($style, $type, $color, $font, $isFirst)
         // Get proper total qty
         $.ajax({
         	type: 'GET',
-        	url: '/gd/belt.php?style='+$style+'&type='+$type+'&color='+$color.replace(/ /g, ''),
+        	url: '/gd/belt.php?style='+$style+'&type='+$type+'&color='+$colors.replace(/ /g, ''),
         	data: { },
         	beforeSend: function() {
                 // $('#preview-pill').addClass('hidden');

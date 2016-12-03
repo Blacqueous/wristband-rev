@@ -1,12 +1,8 @@
 
-<!-- Use layout. -->
 @extends('template.layout')
 
-<!-- Title section. -->
 @section('title', ' - Order Now')
-<!-- End: title section. -->
 
-<!-- .css section. -->
 @section('css')
 <!-- Order page custom stylesheet -->
 		<link href="css/order.css" rel="stylesheet">
@@ -14,9 +10,7 @@
 		<!-- Additional .css plugins -->
 		<link href="global/iCheck/skins/square/green.css" rel="stylesheet">
 @endsection
-<!-- End: .css section. -->
 
-<!-- .js section. -->
 @section('js')
 <!-- Order page custom javascript -->
 		<script type="text/javascript">
@@ -31,9 +25,7 @@
 		<script src="global/unveil.js/jquery.unveil.js"></script>
 		<script src="global/jquery-visible/jquery.visible.min.js"></script>
 @endsection
-<!-- End: .js section. -->
 
-<!-- Content section. -->
 @section('content')
 	<div id="main-page-content">
 		<div class="container">
@@ -675,6 +667,6 @@
 	@include('modal.selectColor')
 	@include('modal.selectClipart')
 	@include('modal.selectFont')
+	@include('modal.customWristbandColor')
 
 @endsection
-<!-- End: content section. -->

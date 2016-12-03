@@ -26,3 +26,5 @@ Route::get('/preview', 'PreviewController@makePreview');
 Route::get('/mailTest', 'OrderController@mailTest');
 
 Route::post('/getPriceShipAndProd', 'OrderController@getPriceShipAndProd');
+
+Route::get('/getTemplateCustomWristband', 'TemplateController@getCustomWristband');

@@ -743,12 +743,22 @@ div#order-summary {
 	margin-bottom: 20px;
 }
 
-.btn-close-custom-color{
+.btn-close-custom-color {
     border: none;
     border-radius: 25px;
+    color: #fff;
     position: absolute;
     right: 5px;
     top: 5px;
+    z-index: 1;
+}
+
+.btn-close-custom-color:hover {
+    background-color: #c9302c;
+}
+
+.btn-close-custom-color:focus {
+    background-color: #c9302c;
 }
 
 .pick-color-list {
@@ -1236,7 +1246,7 @@ table.fwb-title {
 .convert-keychain-area-some {
     background-color: rgb(7,153,182);
     color: #ffffff;
-    margin: 0 0 10px 0;
+    margin: 0 0 20px 0;
     min-height: 60px;
 }
 
@@ -1479,4 +1489,78 @@ body {
 	height: 100%;
 	padding: 5px 0;
 	text-decoration: underline;
+}
+
+.custom-color-list {
+    height: 300px;
+    margin: 0;
+    overflow-x: hidden;
+    padding: 0;
+}
+
+.custom-color-list li {
+    float: left;
+    list-style: none;
+    margin-left: 3px;
+    padding: 4px 4px;
+    transition: all ease .2s;
+    width: 16%;
+}
+
+.custom-color-list li img {
+    width:100%;
+}
+
+.custom-color-list li.active {
+    background: rgba(0, 0, 0, 0.1);
+    border: 1px solid #079ca5;
+}
+
+.custom-color-list li:hover {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.btn-danger:hover {
+    border: 1px solid #d9534f;
+    color: #d9534f;
+}
+
+#modalWristbandColor input {
+    background: #FFFFFF;
+    font-size: 14px;
+    margin-bottom: 10px;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+#modalWristbandColor h5 {
+    margin-top: 0px;
+    margin-bottom: 20px;
+}
+
+#modalWristbandColor .field-container {
+    padding-bottom: 0px;
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+#modalWristbandColor .field-center {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+#modalWristbandColor .field-left {
+    padding-right: 5px;
+}
+
+#modalWristbandColor .field-right {
+    padding-left: 5px;
+}
+
+#modalWristbandColor .modal-body {
+    padding: 15px 15px 10px 15px;
+}
+
+.btn {
+    outline-color: transparent;
 }
