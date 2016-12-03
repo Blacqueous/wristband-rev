@@ -47,8 +47,8 @@
                 <div class="clearfix"></div>
 			</div>
 			<div class="modal-footer">
-                <button id="btnCustomClear" type="button" class="btn btn-danger pull-left">Clear</button>
-				<button id="btnCustomSubmit" type="button" class="btn btn-default">OK</button>
+                <button id="btnCustomClear" type="button" class="btn btn-danger pull-left"><i class="fa fa-eraser"></i> Clear</button>
+				<button id="btnCustomSubmit" type="button" class="btn btn-success"><i class="fa fa-check"></i> OK</button>
     			<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
 			</div>
 		</div>

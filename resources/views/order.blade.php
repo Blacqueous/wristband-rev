@@ -175,45 +175,34 @@
 					</div>
 					<div id="band-text" class="margin-div">
 						<div id="wb_text_outside_fb" class="wb-text-outside f-input">
-							<div class="col-sm-6" style="border-right:2px solid #154360;">
+							<div class="col-sm-6">
 								<h4>
 									<span>
 										Front Message:
 									</span>
 								</h4>
 								<span class="note-m">* Maximum of 22 characters.</span>
-								<input class="band-text wb-band-text col-xs-12 text-center" data-preview="#wb_text_front_preview" id="wb_text_front" maxlength="22" name="front-text" placeholder="Front Message" type="text" value="">
+								<input class="band-text wb-band-text col-xs-12 text-center" data-preview="#wb_text_front_preview" id="wb_text_front" maxlength="22" ref-text="front" name="front-text" placeholder="Front Message" type="text" value="">
+
 								<!-- Clipart front start -->
 								<div class="clip-sec col-xs-6 text-center">
-									<button class="btn-order clipartin" ref-code="none" ref-target="#clipart-front-start">Front Start Clipart</button>
-									<br/>
-									<a href="javascript:void(0)" data-toggle="collapse" data-target="#upload-1">or Upload your own art</a>
-									<div id="upload-1" class="collapse">
-										<input class="clip-upload" id="clip_front_start" name="file_array[]" type="file" required><br/>
-										<a href="javascript:void(0)" id="rm_clip_front_start">Remove File</a>
+									<h5 style="margin-top:0px;">Front Start Clipart</h5>
+									<div class="btn-group col-xs-12">
+										<button type="button" class="btn btn-order clipartin col-xs-6" ref-code="none" ref-target="#clipart-front-start"><i class="fa fa-folder-open"></i> Browse</button>
+										<button type="button" class="btn btn-order btn-file clipartup col-xs-6"><i class="fa fa-upload"></i> Upload<input id="clipartup_front_start" class="clipart-fileupload" type="file" accept="image/*" ref-target="#clipart-front-start"></button>
 									</div>
+									<a href="javascript:void(0)" id="rm_clip_front_start" class="text-danger clipart-remove" ref-target="#clipart-front-start">Remove</a>
 								</div>
 								<!-- Clipart front end -->
 								<div class="clip-sec col-xs-6 text-center">
-									<button class="btn-order clipartin" ref-code="none" ref-target="#clipart-front-end">Front End Clipart</button>
-									<br/>
-									<a href="javascript:void(0)" data-toggle="collapse" data-target="#upload-2">or Upload your own art</a>
-									<div id="upload-2" class="collapse">
-										<input class="clip-upload" id="clip_front_end" name="file_array[]" type="file" required><br/>
-										<a href="javascript:void(0)" id="rm_clip_front_end">Remove File</a>
+									<h5 style="margin-top:0px;">Front End Clipart</h5>
+									<div class="btn-group col-xs-12">
+										<button type="button" class="btn btn-order clipartin col-xs-6" ref-code="none" ref-target="#clipart-front-end"><i class="fa fa-folder-open"></i> Browse</button>
+										<button type="button" class="btn btn-order btn-file clipartup col-xs-6"><i class="fa fa-upload"></i> Upload<input id="clipartup_front_end" class="clipart-fileupload" type="file" accept="image/*" ref-target="#clipart-front-end"></button>
 									</div>
+									<a href="javascript:void(0)" id="rm_clip_front_end" class="text-danger clipart-remove" ref-target="#clipart-front-end">Remove</a>
 								</div>
 								<div class="clearfix"></div>
-								<!-- Clipart figured center -->
-								<div id="clipart_front_center_btn" class="clip-sec col-xs-6 clip-fig text-center hidden">
-									<button class="btn-order clipartin" ref-code="none" ref-target="#clipart-front-center">Figured Center Clipart</button>
-									<br/>
-									<a href="javascript:void(0)" data-toggle="collapse" data-target="#upload-7">or Upload your own art</a>
-									<div id="upload-7" class="collapse">
-										<input class="clip-upload" id="clip_front_center" name="file_array[]" type="file" required><br/>
-										<a href="javascript:void(0)" id="rm_clip_front_center">Remove File</a>
-									</div>
-								</div>
 							</div>
 							<div class="col-sm-6">
 								<h4>
@@ -222,28 +211,35 @@
 									</span>
 								</h4>
 								<span class="note-m">* Maximum of 22 characters.</span>
-								<input class="band-text wb-band-text col-xs-12 text-center" data-preview="#wb_text_back_preview" id="wb_text_back" maxlength="22" name="back-text" placeholder="Back Message" type="text" value="">
+								<input class="band-text wb-band-text col-xs-12 text-center" data-preview="#wb_text_back_preview" id="wb_text_back" maxlength="22" ref-text="back" name="back-text" placeholder="Back Message" type="text" value="">
 								<!-- Clipart back start -->
 								<div class="clip-sec col-xs-6 text-center">
-									<button class="btn-order clipartin" ref-code="none" ref-target="#clipart-back-start">Back Start Clipart</button>
-									<br/>
-									<a href="javascript:void(0)" data-toggle="collapse" data-target="#upload-3">or Upload your own art</a>
-									<div id="upload-3" class="collapse">
-										<input class="clip-upload" id="clip-back-start" name="file_array[]" type="file" required><br/>
-										<a href="javascript:void(0)" id="rm-clip-back-start">Remove File</a>
+									<h5 style="margin-top:0px;">Back Start Clipart</h5>
+									<div class="btn-group col-xs-12">
+										<button type="button" class="btn btn-order clipartin col-xs-6" ref-code="none" ref-target="#clipart-back-start"><i class="fa fa-folder-open"></i> Browse</button>
+										<button type="button" class="btn btn-order btn-file clipartup col-xs-6"><i class="fa fa-upload"></i> Upload<input id="clipartup_back_start" class="clipart-fileupload" type="file" accept="image/*" ref-target="#clipart-back-start"></button>
 									</div>
+									<a href="javascript:void(0)" id="rm_clip_back_start" class="text-danger clipart-remove" ref-target="#clipart-back-start">Remove</a>
 								</div>
 								<!-- Clipart back end -->
 								<div class="clip-sec col-xs-6 text-center">
-									<button class="btn-order clipartin" ref-code="none" ref-target="#clipart-back-end">Back End Clipart</button>
-									<br/>
-									<a href="javascript:void(0)" data-toggle="collapse" data-target="#upload-4">or Upload your own art</a>
-									<div id="upload-4" class="collapse">
-										<input class="clip-upload" id="clip_back_end" name="file_array[]" type="file" required><br/>
-										<a href="javascript:void(0)" id="rm_clip_back_end">Remove File</a>
+									<h5 style="margin-top:0px;">Back End Clipart</h5>
+									<div class="btn-group col-xs-12">
+										<button type="button" class="btn btn-order clipartin col-xs-6" ref-code="none" ref-target="#clipart-back-end"><i class="fa fa-folder-open"></i> Browse</button>
+										<button type="button" class="btn btn-order btn-file clipartup col-xs-6"><i class="fa fa-upload"></i> Upload<input id="clipartup_back_end" class="clipart-fileupload" type="file" accept="image/*" ref-target="#clipart-back-end"></button>
 									</div>
+									<a href="javascript:void(0)" id="rm_clip_back_end" class="text-danger clipart-remove" ref-target="#clipart-back-end">Remove</a>
 								</div>
 								<div class="clearfix"></div>
+							</div>
+							<!-- Clipart figured center -->
+							<div id="clipart_front_center_btn" class="clip-sec col-xs-4 col-xs-offset-4 clip-fig text-center hidden">
+								<h5 style="margin-top:0px;">Figured Center Clipart</h5>
+								<div class="btn-group col-xs-12">
+									<button type="button" class="btn btn-order clipartin col-xs-6" ref-code="none" ref-target="#clipart-front-center"><i class="fa fa-folder-open"></i> Browse</button>
+									<button type="button" class="btn btn-order btn-file clipartup col-xs-6"><i class="fa fa-upload"></i> Upload<input id="clipartup_front_center" class="clipart-fileupload" type="file" accept="image/*" ref-target="#clipart-front-center"></button>
+								</div>
+								<a href="javascript:void(0)" id="rm_clip_front_center" class="text-danger clipart-remove" ref-target="#clipart-front-center">Remove</a>
 							</div>
 						</div>
 						<div id="wb_text_outside_c" class="wb-text-outside c-input hidden">
@@ -254,28 +250,27 @@
 									</span>
 								</h4>
 								<span class="note-m">* Maximum of 50 characters.</span>
-								<input class="band-text wb-band-text col-xs-12 text-center" data-preview="#wb_text_continue_preview" id="wb_text_continue" maxlength="50" name="continue-text" placeholder="Continuous Message" type="text" value="">
+								<input class="band-text wb-band-text col-xs-12 text-center" data-preview="#wb_text_continue_preview" id="wb_text_continue" maxlength="50" ref-text="continue" name="continue-text" placeholder="Continuous Message" type="text" value="">
 							</div>
 							<div class="clearfix"></div>
 							<!-- Clipart continue start -->
-							<div class="clip-sec col-xs-6 text-center">
-								<button class="btn-order clipartin" ref-code="none" ref-target="#clipart-cont-start">Start Clipart</button>
-								<br/>
-								<a href="javascript:void(0)" data-toggle="collapse" data-target="#upload-5">or Upload your own art</a>
-								<div id="upload-5" class="collapse">
-									<input class="clip-upload" id="clip_continue_start" name="file_array[]" type="file" required><br/>
-									<a href="javascript:void(0)" id="rm_clip_continue_start">Remove File</a>
+							<div class="clip-sec col-xs-4 col-xs-offset-1 text-center">
+								<h5 style="margin-top:0px;">Start Clipart</h5>
+								<div class="btn-group col-xs-12">
+									<button type="button" class="btn btn-order clipartin col-xs-6" ref-code="none" ref-target="#clipart-cont-start"><i class="fa fa-folder-open"></i> Browse</button>
+									<button type="button" class="btn btn-order btn-file clipartup col-xs-6"><i class="fa fa-upload"></i> Upload<input id="clipartup_cont_start" class="clipart-fileupload" type="file" accept="image/*" ref-target="#clipart-cont-start"></button>
 								</div>
+								<a href="javascript:void(0)" id="rm_clip_cont_start" class="text-danger clipart-remove" ref-target="#clipart-cont-start">Remove</a>
 							</div>
+							<div class="col-xs-2"></div>
 							<!-- Clipart continue end -->
-							<div class="clip-sec col-xs-6 text-center">
-								<button class="btn-order clipartin" ref-code="none" ref-target="#clipart-cont-end">End Clipart</button>
-								<br/>
-								<a href="javascript:void(0)" data-toggle="collapse" data-target="#upload-6">or Upload your own art</a>
-								<div id="upload-6" class="collapse">
-									<input class="clip-upload" id="clip_continue_end" name="file_array[]" type="file" required><br/>
-									<a href="javascript:void(0)" id="rm_clip_continue_end">Remove File</a>
+							<div class="clip-sec col-xs-4 text-center">
+								<h5 style="margin-top:0px;">End Clipart</h5>
+								<div class="btn-group col-xs-12">
+									<button type="button" class="btn btn-order clipartin col-xs-6" ref-code="none" ref-target="#clipart-cont-end"><i class="fa fa-folder-open"></i> Browse</button>
+									<button type="button" class="btn btn-order btn-file clipartup col-xs-6"><i class="fa fa-upload"></i> Upload<input id="clipartup_cont_end" class="clipart-fileupload" type="file" accept="image/*" ref-target="#clipart-cont-end"></button>
 								</div>
+								<a href="javascript:void(0)" id="rm_clip_cont_end" class="text-danger clipart-remove" ref-target="#clipart-cont-end">Remove</a>
 							</div>
 						</div>
 						<br/>
@@ -290,7 +285,7 @@
 									* Maximum of 50 characters.<br/>
 									* Inside Message will be embossed with the same color of the inside of the band
 								</span>
-								<input class="band-text wb-band-text col-xs-12 text-center" data-preview="#wb_text_inside_preview" id="wb_text_inside" maxlength="50" name="inside-text" placeholder="Inside Message" type="text" value="">
+								<input class="band-text wb-band-text col-xs-12 text-center" data-preview="#wb_text_inside_preview" id="wb_text_inside" maxlength="50" ref-text="inside" name="inside-text" placeholder="Inside Message" type="text" value="">
 								<br/>
 							</div>
 						</div>
@@ -565,6 +560,106 @@
 								<div id="summary-table-shipping" class="summary-table-group summary-table-state hidden">
 									<div class="col-xs-9 no-padding-left">
 										<i class="fa fa-truck"></i>Shipping (<span class="days">0</span> Days)
+									</div>
+									<div class="col-xs-3 text-right no-padding-right">
+										$<span class="total">0.00</span>
+									</div>
+								</div>
+							</div>
+							<div id="summary-table-text" class="row summary-table-state hidden" style="margin-top:10px;">
+								<div class="col-xs-12 no-padding-left" style="padding-bottom:5px;">
+									<i class="fa fa-file-text"></i>Text :
+								</div>
+								<!-- list -->
+								<div id="text-front" class="summary-table-group summary-table-state hidden">
+									<div class="col-xs-9 padding-left-25">
+										<i class="fa fa-angle-right"></i>Front (<span class="qty">0</span> x $<span class="price">0.00</span> each)
+									</div>
+									<div class="col-xs-3 text-right no-padding-right">
+										$<span class="total">0.00</span>
+									</div>
+								</div>
+								<div id="text-back" class="summary-table-group summary-table-state hidden">
+									<div class="col-xs-9 padding-left-25">
+										<i class="fa fa-angle-right"></i>Back (<span class="qty">0</span> x $<span class="price">0.00</span> each)
+									</div>
+									<div class="col-xs-3 text-right no-padding-right">
+										$<span class="total">0.00</span>
+									</div>
+								</div>
+								<div id="text-continuous" class="summary-table-group summary-table-state hidden">
+									<div class="col-xs-9 padding-left-25">
+										<i class="fa fa-angle-right"></i>Continuous (<span class="qty">0</span> x $<span class="price">0.00</span> each)
+									</div>
+									<div class="col-xs-3 text-right no-padding-right">
+										$<span class="total">0.00</span>
+									</div>
+								</div>
+								<div id="text-inside" class="summary-table-group summary-table-state hidden">
+									<div class="col-xs-9 padding-left-25">
+										<i class="fa fa-angle-right"></i>Inside (<span class="qty">0</span> x $<span class="price">0.00</span> each)
+									</div>
+									<div class="col-xs-3 text-right no-padding-right">
+										$<span class="total">0.00</span>
+									</div>
+								</div>
+							</div>
+							<div id="summary-table-clipart" class="row summary-table-state hidden" style="margin-top:10px;">
+								<div class="col-xs-12 no-padding-left" style="padding-bottom:5px;">
+									<i class="fa fa-image"></i>Cliparts :
+								</div>
+								<!-- list -->
+								<div id="clipart-front-start" class="summary-table-group summary-table-state hidden">
+									<div class="col-xs-9 padding-left-25">
+										<i class="fa fa-angle-right"></i>Front (Start) (<span class="qty">0</span> x $<span class="price">0.00</span> each)
+									</div>
+									<div class="col-xs-3 text-right no-padding-right">
+										$<span class="total">0.00</span>
+									</div>
+								</div>
+								<div id="clipart-front-end" class="summary-table-group summary-table-state hidden">
+									<div class="col-xs-9 padding-left-25">
+										<i class="fa fa-angle-right"></i>Front (End) (<span class="qty">0</span> x $<span class="price">0.00</span> each)
+									</div>
+									<div class="col-xs-3 text-right no-padding-right">
+										$<span class="total">0.00</span>
+									</div>
+								</div>
+								<div id="clipart-back-start" class="summary-table-group summary-table-state hidden">
+									<div class="col-xs-9 padding-left-25">
+										<i class="fa fa-angle-right"></i>Back (Start) (<span class="qty">0</span> x $<span class="price">0.00</span> each)
+									</div>
+									<div class="col-xs-3 text-right no-padding-right">
+										$<span class="total">0.00</span>
+									</div>
+								</div>
+								<div id="clipart-back-end" class="summary-table-group summary-table-state hidden">
+									<div class="col-xs-9 padding-left-25">
+										<i class="fa fa-angle-right"></i>Back (End) (<span class="qty">0</span> x $<span class="price">0.00</span> each)
+									</div>
+									<div class="col-xs-3 text-right no-padding-right">
+										$<span class="total">0.00</span>
+									</div>
+								</div>
+								<div id="clipart-cont-start" class="summary-table-group summary-table-state hidden">
+									<div class="col-xs-9 padding-left-25">
+										<i class="fa fa-angle-right"></i>Continuous (Start) (<span class="qty">0</span> x $<span class="price">0.00</span> each)
+									</div>
+									<div class="col-xs-3 text-right no-padding-right">
+										$<span class="total">0.00</span>
+									</div>
+								</div>
+								<div id="clipart-cont-end" class="summary-table-group summary-table-state hidden">
+									<div class="col-xs-9 padding-left-25">
+										<i class="fa fa-angle-right"></i>Continuous (End) (<span class="qty">0</span> x $<span class="price">0.00</span> each)
+									</div>
+									<div class="col-xs-3 text-right no-padding-right">
+										$<span class="total">0.00</span>
+									</div>
+								</div>
+								<div id="clipart-front-center" class="summary-table-group summary-table-state hidden">
+									<div class="col-xs-9 padding-left-25">
+										<i class="fa fa-angle-right"></i>Center (<span class="qty">0</span> x $<span class="price">0.00</span> each)
 									</div>
 									<div class="col-xs-3 text-right no-padding-right">
 										$<span class="total">0.00</span>

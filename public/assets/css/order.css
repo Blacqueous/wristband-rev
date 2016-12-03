@@ -495,6 +495,8 @@ div#preview-textfont{
 }
 
 .faded, .preview-panel .band-reg .faded, .preview-panel .band-fig .faded {
+    filter: drop-shadow(2px 2px 6px #909090 );
+    -webkit-filter: drop-shadow(2px 2px 6px #909090 );
     opacity: 0.5;
 }
 
@@ -701,9 +703,9 @@ div#order-summary {
         margin-top:20px;
 }
 
-.f-input span, .c-input span, .i-input span {
+/*.f-input span, .c-input span, .i-input span {
     color:#212f3d;
-}
+}*/
 
 .fclip-1, .fclip-2, .fclip-3, .bclip-1, .bclip-2, .cclip-1, .cclip-2, #font-button, .btn-add-custom-color, #free-keychain-qty{
     background-color: #17a589;
@@ -1176,6 +1178,10 @@ span.fig-fc {
     text-align: center;
 }
 
+.fwb-text .fwb-text {
+    fwb-text
+}
+
 .fwb-text{
     line-height: 35px;
     min-height: 35px;
@@ -1521,8 +1527,25 @@ body {
 }
 
 .btn-danger:hover {
-    border: 1px solid #d9534f;
-    color: #d9534f;
+    border: 1px solid #D9534F;
+    color: #D9534F;
+}
+
+.btn-danger:focus {
+    background-color: #c9302c;
+    border: 1px solid #761C19;
+    color: #FFFFFF;
+}
+
+.btn-success:hover {
+    border: 1px solid #398439;
+    color: #398439;
+}
+
+.btn-success:focus {
+    background-color: #449d44;
+    border: 1px solid #255625;
+    color: #FFFFFF;
 }
 
 #modalWristbandColor input {
@@ -1563,4 +1586,25 @@ body {
 
 .btn {
     outline-color: transparent;
+}
+
+.btn-file {
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-file input[type=file] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 100%;
+    min-height: 100%;
+    /*font-size: 100px;
+    text-align: right;*/
+    filter: alpha(opacity=0);
+    opacity: 0;
+    outline: none;
+    background: white;
+    cursor: inherit;
+    display: block;
 }
