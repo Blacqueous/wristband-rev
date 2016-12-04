@@ -6,14 +6,20 @@
 				<a class="navbar-brand" href="/"><img src="assets/images/src/prom_logo.jpg"></a>
 			</div>
 			<div class="header-right-box">
-                <a href="#"><i class="fa fa-shopping-cart" style="font-size:30px;"></i></a>
-    			<div id="google_trust">
-    			</div>
-    			<div class="search">
+    			<!-- <div id="google_trust" class="pull-right">
+    			</div> -->
+    			<div class="search pull-right">
                     <div id="hour-img">Monday - Friday | 11am - 8pm EST</div>
                     <span class="span-search"><i class="fa fa-search"></i> 1-800-989-0440</span>
                     <p><span class="fa-text">sales@promotionalwristband.com</span></p>
     			</div>
+                <style>
+                    .button-wrapper + .tooltip > .tooltip-inner { color: #04adb7; font-family: 'Varela Round', sans-serif!important; font-size: 14px; padding: 10px 15px; }
+                    .button-wrapper + .tooltip > .tooltip-arrow { }
+                </style>
+                <button class="button-wrapper pull-right" data-toggle="tooltip" data-placement="left" title="VIEW CART">
+                    <span class="glyphicon glyphicon-shopping-cart"></span><span class="items label label-default">0</span>
+                </button>
 				<div class="clearfix"></div>
 			</div>
 			<div class="clearfix"></div>

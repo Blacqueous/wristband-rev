@@ -113,6 +113,8 @@
 			$(window).ready(function() {
 				$('body').addClass('loaded');
 				$('.loader-section').addClass('done');
+
+				$('[data-toggle="tooltip"]').tooltip()
 			});
 
             $(function() {

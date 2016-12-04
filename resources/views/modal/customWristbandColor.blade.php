@@ -1,4 +1,4 @@
-<div id="modalWristbandColor" class="modal fade" role="dialog" data-style="" data-type="" data-max="">
+<div class="modal fade" id="modalWristbandColor" role="dialog" data-style="" data-type="" data-max="">
 	<div class="modal-dialog">
 		<!-- Modal content-->
 		<div class="modal-content">
