@@ -3,25 +3,23 @@
     <div class="container">
         <div id="footer-link-main">
             <ul class="footer-menu-item menu">
-                <li><a href="index.php">Home</a></li>
-                <li><a href="order.php">Order Now</a></li>
-                <li><a href="price.php">Prices</a></li>
-                <li><a href="product-printed.php">Products</a></li>
-                <li><a href="fonts.php">Wristband Options</a></li>
-                <li><a href="gallery.php">Photo Gallery</a></li>
-                <li><a href="contact-us.php">Contact Us</a></li>
-                <li><a href="#">Live Chat</a></li>
+                <li><a href="/">Home</a></li>
+                <li><a href="order">Order Now</a></li>
+                <li><a href="price">Prices</a></li>
+                <li><a href="product-printed">Products</a></li>
+                <li><a href="fonts">Wristband Options</a></li>
+                <li><a href="gallery">Photo Gallery</a></li>
+                <li><a href="contact">Contact Us</a></li>
                 <div class="clearfix"></div>
             </ul>
         </div>
         <div id="footer-link-secondary">
             <ul id="menu-footer-secondary">
-                <li><a href="about-us.php">About Us</a></li>
-                <li><a href="#">Our Blog</a></li>
-                <li><a href="privacy.php">Privacy</a></li>
-                <li><a href="return-policy.php">Return Policy</a></li>
-                <li><a href="faq.php">FAQ</a></li>
-                <li><a href="terms-and-conditions.php">Terms and Conditions</a></li>
+                <li><a href="about">About Us</a></li>
+                <li><a href="privacy">Privacy</a></li>
+                <li><a href="return-policy">Return Policy</a></li>
+                <li><a href="faq">FAQ</a></li>
+                <li><a href="terms-and-conditions">Terms and Conditions</a></li>
             </ul>
         </div>
         <div id="footer-text">

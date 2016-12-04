@@ -44,7 +44,6 @@ class OrderController extends Controller
 		$data['list_cliparts'] = $list_clipart->getCliparts();
 
 		$list_font = new FontList();
-		$list_font->reset();
 		$data['list_fonts'] = $list_font->getFonts();
 
 		$price = new Prices();
