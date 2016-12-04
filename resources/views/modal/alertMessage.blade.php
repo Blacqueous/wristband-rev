@@ -1,4 +1,3 @@
-<!-- Modal ~ custom messages -->
 <div class="modal fade" id="modal-message" role="dialog" style="z-index:1060;">
 	<div class="modal-dialog">
 		<!-- Modal content -->
@@ -24,4 +23,3 @@
 		<!-- End modal content -->
 	</div>
 </div>
-<!--End modal ~ custom messages -->

@@ -516,52 +516,6 @@ $(document).ready(function() {
 
     });
 
-    $('body').on('change', '.clipart-fileupload', function(e) {
-        var targetID = $(this).attr('ref-target');
-        var image = "assets/images/src/upload-icon.png";
-
-        if(targetID == "#clipart-front-center") {
-            $(targetID).html("<img height='50' src='" + image + "'>");
-        } else {
-            $(targetID).html("<img height='40' src='" + image + "'>");
-        }
-
-        $(targetID).attr('ref-clipart-code', 'upload');
-        $(targetID).attr('ref-clipart-name', 'Upload');
-
-        if(typeof clips['logo'] == "undefined") {
-            clips['logo'] = { };
-        }
-
-        switch (targetID) {
-            case "#clipart-front-center":
-                clips['logo']['front-center'] = {'image': 'upload', 'price': 0, 'total': 0};
-                break;
-            case "#clipart-front-end":
-                clips['logo']['front-end'] = {'image': 'upload', 'price': 0, 'total': 0};
-                break;
-            case "#clipart-front-start":
-                clips['logo']['front-start'] = {'image': 'upload', 'price': 0, 'total': 0};
-                break;
-            case "#clipart-back-end":
-                clips['logo']['back-end'] = {'image': 'upload', 'price': 0, 'total': 0};
-                break;
-            case "#clipart-back-start":
-                clips['logo']['back-start'] =  {'image': 'upload', 'price': 0, 'total': 0};
-                break;
-            case "#clipart-cont-end":
-                clips['logo']['cont-end'] =  {'image': 'upload', 'price': 0, 'total': 0};
-                break;
-            case "#clipart-cont-start":
-                clips['logo']['cont-start'] = {'image': 'upload', 'price': 0, 'total': 0};
-                break;
-        }
-
-        // Load total amount.
-        loadTotal(false);
-
-    });
-
     $('body').on('click', '.clipart-remove', function(e) {
         var targetID = $(this).attr('ref-target');
         $(targetID).attr('ref-clipart-code', 'none');
@@ -1006,6 +960,195 @@ $(document).ready(function() {
         loadTotal();
     });
 
+    // Submit to cart
+    $('body').on('click', '#submitOrder', function(e) {
+        console.log(getTotal());
+    });
+
+    $.ajaxSetup({ headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') } });
+
+    'use strict';
+
+    $('#clipartup_front_start').fileupload({
+        url: "/upload",
+//         dataType : 'json',
+//         maxNumberOfFiles : 1,
+//         process: [ { action: 'load', fileTypes: /^image\/(gif|jpeg|png)$/, maxFileSize: 500000 }, { action: 'resize', maxWidth: 1024, maxHeight: 1024 }, { action: 'save' } ],
+//         add : function(e,data) {
+//             var uploadErrors = [];
+//             var acceptFileTypes = /^image\/(gif|jpe?g|png)$/i;
+//             if(data.originalFiles[0]['type'].length && !acceptFileTypes.test(data.originalFiles[0]['type'])) {
+//                 uploadErrors.push('Not an accepted file type');
+//             }
+//             if(data.originalFiles[0]['size'] > 500000) {
+//                 uploadErrors.push('Filesize is too big');
+//             }
+//             if(uploadErrors.length > 0) {
+//                 $('#modal-message-title').html("Error");
+//                 $('#modal-message-content').html(uploadErrors.join("\n"));
+//                 $('#modal-message').modal("show");
+//             } else {
+//                 console.log('add');
+//                 console.log(data.files[0]);
+// data.submit();
+//                 // $('#clipart-front-start').html("<img height='40' src='assets/images/src/upload-icon.png'>");
+//                 //
+//                 //
+//                 // clips['logo']['front-start'] = {'image': 'upload', 'price': 0, 'total': 0};
+//                 //
+//                 // // Load total amount.
+//                 // loadTotal(false);
+//
+//             }
+//         },
+//         done: function (e, data) { },
+//         fail: function (e, data) {
+//             var msg = "Upload file error: ";
+//             $.each(data.messages, function (index, error) {
+//                 msg += error + ', ';
+//             });
+//             $('#modal-message-title').html("Error");
+//             $('#modal-message-content').html(msg);
+//             $('#modal-message').modal("show");
+//         },
+    });
+
+    $('#clipartup_front_end').fileupload({
+        dataType : 'json',
+        autoUpload : false,
+        maxNumberOfFiles : 1,
+        add : function(e,data) {
+            var uploadErrors = [];
+            var acceptFileTypes = /^image\/(gif|jpe?g|png)$/i;
+            if(data.originalFiles[0]['type'].length && !acceptFileTypes.test(data.originalFiles[0]['type'])) {
+                uploadErrors.push('Not an accepted file type');
+            }
+            if(data.originalFiles[0]['size'] > 500000) {
+                uploadErrors.push('Filesize is too big');
+            }
+            if(uploadErrors.length > 0) {
+                $('#modal-message-title').html("Error");
+                $('#modal-message-content').html(uploadErrors.join("\n"));
+                $('#modal-message').modal("show");
+            } else {
+                console.log('add');
+                console.log(data.files[0]);
+            }
+        },
+        done: function (e, data) { },
+        fail: function (e, data) {
+            var msg = "Upload file error: ";
+            $.each(data.messages, function (index, error) {
+                msg += error + ', ';
+            });
+            $('#modal-message-title').html("Error");
+            $('#modal-message-content').html(msg);
+            $('#modal-message').modal("show");
+        },
+    });
+
+    $('#clipartup_front_center').fileupload({
+        dataType : 'json',
+        autoUpload : false,
+        maxNumberOfFiles : 1,
+        add : function(e,data) {
+            var uploadErrors = [];
+            var acceptFileTypes = /^image\/(gif|jpe?g|png)$/i;
+            if(data.originalFiles[0]['type'].length && !acceptFileTypes.test(data.originalFiles[0]['type'])) {
+                uploadErrors.push('Not an accepted file type');
+            }
+            if(data.originalFiles[0]['size'] > 500000) {
+                uploadErrors.push('Filesize is too big');
+            }
+            if(uploadErrors.length > 0) {
+                $('#modal-message-title').html("Error");
+                $('#modal-message-content').html(uploadErrors.join("\n"));
+                $('#modal-message').modal("show");
+            } else {
+                console.log('add');
+                console.log(data.files[0]);
+            }
+        },
+        done: function (e, data) { },
+        fail: function (e, data) {
+            var msg = "Upload file error: ";
+            $.each(data.messages, function (index, error) {
+                msg += error + ', ';
+            });
+            $('#modal-message-title').html("Error");
+            $('#modal-message-content').html(msg);
+            $('#modal-message').modal("show");
+        },
+    });
+
+    $('#clipartup_back_start').fileupload({
+        dataType : 'json',
+        autoUpload : false,
+        maxNumberOfFiles : 1,
+        add : function(e,data) {
+            var uploadErrors = [];
+            var acceptFileTypes = /^image\/(gif|jpe?g|png)$/i;
+            if(data.originalFiles[0]['type'].length && !acceptFileTypes.test(data.originalFiles[0]['type'])) {
+                uploadErrors.push('Not an accepted file type');
+            }
+            if(data.originalFiles[0]['size'] > 500000) {
+                uploadErrors.push('Filesize is too big');
+            }
+            if(uploadErrors.length > 0) {
+                $('#modal-message-title').html("Error");
+                $('#modal-message-content').html(uploadErrors.join("\n"));
+                $('#modal-message').modal("show");
+            } else {
+                console.log('add');
+                console.log(data.files[0]);
+            }
+        },
+        done: function (e, data) { },
+        fail: function (e, data) {
+            var msg = "Upload file error: ";
+            $.each(data.messages, function (index, error) {
+                msg += error + ', ';
+            });
+            $('#modal-message-title').html("Error");
+            $('#modal-message-content').html(msg);
+            $('#modal-message').modal("show");
+        },
+    });
+
+    $('#clipartup_back_end').fileupload({
+        dataType : 'json',
+        autoUpload : false,
+        maxNumberOfFiles : 1,
+        add : function(e,data) {
+            var uploadErrors = [];
+            var acceptFileTypes = /^image\/(gif|jpe?g|png)$/i;
+            if(data.originalFiles[0]['type'].length && !acceptFileTypes.test(data.originalFiles[0]['type'])) {
+                uploadErrors.push('Not an accepted file type');
+            }
+            if(data.originalFiles[0]['size'] > 500000) {
+                uploadErrors.push('Filesize is too big');
+            }
+            if(uploadErrors.length > 0) {
+                $('#modal-message-title').html("Error");
+                $('#modal-message-content').html(uploadErrors.join("\n"));
+                $('#modal-message').modal("show");
+            } else {
+                console.log('add');
+                console.log(data.files[0]);
+            }
+        },
+        done: function (e, data) { },
+        fail: function (e, data) {
+            var msg = "Upload file error: ";
+            $.each(data.messages, function (index, error) {
+                msg += error + ', ';
+            });
+            $('#modal-message-title').html("Error");
+            $('#modal-message-content').html(msg);
+            $('#modal-message').modal("show");
+        },
+    });
+
 });
 
 function loadCustomWristband($style, $type, $colors, $target)
@@ -1064,9 +1207,6 @@ function checkViewport()
 
 function displayTotal($collection)
 {
-
-    console.log($collection);
-
     $('.summary-table-state').addClass('hidden')
 
     if(typeof $collection.style != "undefined") {
@@ -1331,6 +1471,297 @@ function getWBSizeTitle(abbr)
             return "None";
             break;
     }
+
+}
+
+function getTotal()
+{
+    var $style = $('#wb_style input[type=radio].wb-style:checked').val();
+    var $size = $('#wb_size input[type=radio].wb-size:checked').val();
+    var $arr_price = price_json[$style][$size];
+    var $arr_addon = addon_json;
+    var $arr_style = {};
+    var $collection = {
+        'style': $style,
+        'size': $size,
+        'items': items,
+        'free': free,
+        'addon': addon,
+        'price': 0,
+        'quantity': 0,
+        'time_production': { 'days': 0, 'price': 0 },
+        'time_shipping': { 'days': 0, 'price': 0 },
+        'total': 0
+    };
+
+    if($style != "blank") {
+        $collection['fonts'] = $('#btn_font_style').attr('ref-font-style-code');
+        $collection['clips'] = clips;
+        $collection['texts'] = texts;
+    } else {
+        $collection['fonts'] = "";
+    }
+
+    if(typeof loadProdShip == "undefined")
+        loadProdShip = true;
+
+    // Loop through all items
+    $.each($collection['items'], function(styleKey, styleVal) {
+
+        // Add new fields.
+        $collection['items'][styleKey]['quantity'] = 0;
+        $collection['items'][styleKey]['price_addon'] = 0;
+        $collection['items'][styleKey]['price_total'] = 0;
+
+        $.each(styleVal, function(itemKey, itemValue) {
+            $.each(itemValue['size'], function(sizeKey, sizeValue) {
+                // Create & append preview image.
+                $collection.quantity += sizeValue.qty;
+                $collection['items'][styleKey]['quantity'] += sizeValue.qty;
+            });
+        });
+
+        // Get add on price.
+        var hasQty = false;
+        $.each($arr_addon[styleKey], function(addon_qty, addon_prc) {
+            // Check if already found the price.
+            if(hasQty == false) {
+                // If less than or equal.
+                if($collection['items'][styleKey]['quantity'] <= 20) { // Get price.
+                    $collection['items'][styleKey]['price_addon'] = parseFloat(addon_prc);
+                    hasQty = true; // Flag! price found.
+                } else if(parseInt(addon_qty) <= $collection['items'][styleKey]['quantity']) { // Get price.
+                    $collection['items'][styleKey]['price_addon'] = parseFloat(addon_prc);
+                } else { // Flag if additional item price found.
+                    hasQty = true;
+                }
+            }
+        });
+
+        $collection['items'][styleKey]['price_total'] = ($collection['items'][styleKey]['price_addon'] * $collection['items'][styleKey]['quantity']);
+
+    });
+
+    // Set item price.
+    var hasQty = false;
+    $.each($arr_price, function(price_qty, price_prc) {
+        // Check if already found the price.
+        if(hasQty == false) {
+            // If less than or equal.
+            if($collection.quantity <= 20) { // Get price.
+                $collection.price = parseFloat($arr_price['20']);
+                hasQty = true;
+            } else if(parseInt(price_qty) <= $collection.quantity) { // Get price.
+                $collection.price = parseFloat(price_prc);
+            } else { // Flag if item price found.
+                hasQty = true;
+            }
+        }
+    });
+
+    // Loop through all add ons
+    $.each($collection['addon'], function(styleKey, styleVal) {
+        if(styleKey == 'key-chain') {
+            if($collection['addon'][styleKey]['all']) {
+                $collection['addon'][styleKey]['quantity'] = $collection.quantity;
+            } else {
+                total = 0;
+                // Compute total key in items.
+                $.each($(".addonkc"), function(key, element) {
+                    element = $(element);
+                    total += (element.val().trim() == "") ? 0 : parseInt(element.val().trim());
+                });
+                $collection['addon'][styleKey]['quantity'] = total;
+            }
+        } else {
+            $collection['addon'][styleKey]['quantity'] = $collection.quantity;
+        }
+        // Get add ons price.
+        var hasQty = false;
+        $.each($arr_addon[styleKey], function(addon_qty, addon_prc) {
+            // Check if already found the price.
+            if(hasQty == false) {
+                // If less than or equal.
+                if(parseInt(addon_qty) <= $collection.quantity) { // Get price.
+                    $collection['addon'][styleKey]['price'] = parseFloat(addon_prc);
+                } else if($collection.quantity <= 20) { // Get price.
+                    $collection['addon'][styleKey]['price'] = parseFloat(addon_prc);
+                    hasQty = true; // Flag! price found.
+                } else { // Flag if additional item price found.
+                    hasQty = true;
+                }
+            }
+        });
+        $collection['addon'][styleKey]['total'] = ( $collection['addon'][styleKey]['price'] * $collection['addon'][styleKey]['quantity'] );
+    });
+
+    // Loop through all cliparts
+    $.each($collection['clips'], function(styleKey, styleVal) {
+        // $collection['clips'][styleKey]['total'] = 0;
+        $.each(styleVal, function(itemKey, itemValue) {
+            if(itemKey != 'total') {
+                $collection['clips'][styleKey][itemKey]['quantity'] = $collection.quantity;
+                // Get cliparts price.
+                var hasQty = false;
+                $.each($arr_addon[styleKey], function(addon_qty, addon_prc) {
+                    // Check if already found the price.
+                    if(hasQty == false) {
+                        // If less than or equal.
+                        if(parseInt(addon_qty) <= $collection.quantity) { // Get price.
+                            $collection['clips'][styleKey][itemKey]['price'] = parseFloat(addon_prc);
+                        } else if($collection.quantity <= 20) { // Get price.
+                            $collection['clips'][styleKey][itemKey]['price'] = parseFloat(addon_prc);
+                            hasQty = true; // Flag! price found.
+                        } else { // Flag if additional item price found.
+                            hasQty = true;
+                        }
+                    }
+                });
+                $collection['clips'][styleKey][itemKey]['total'] = ( $collection['clips'][styleKey][itemKey]['price'] * $collection['clips'][styleKey][itemKey]['quantity'] );
+            }
+            // Download real cliparts.
+            if($collection['clips'][styleKey][itemKey]['image'] == 'upload') {
+                // Get file.
+                //
+            }
+        });
+    });
+
+    // Loop through all texts
+    $.each($collection['texts'], function(styleKey, styleVal) {
+        // Get add ons price.
+        var hasQty = false;
+        $.each($arr_addon[styleKey], function(addon_qty, addon_prc) {
+            $collection['texts'][styleKey]['quantity'] = $collection.quantity;
+            // Check if already found the price.
+            if(hasQty == false) {
+                // If less than or equal.
+                if(parseInt(addon_qty) <= $collection.quantity) { // Get price.
+                    $collection['texts'][styleKey]['price'] = parseFloat(addon_prc);
+                } else if($collection.quantity <= 20) { // Get price.
+                    $collection['texts'][styleKey]['price'] = parseFloat(addon_prc);
+                    hasQty = true; // Flag! price found.
+                } else { // Flag if additional item price found.
+                    hasQty = true;
+                }
+            }
+        });
+        $collection['texts'][styleKey]['total'] = ( $collection['texts'][styleKey]['price'] * $collection.quantity );
+    });
+
+	// Get selected production settings
+    var elementProd = $("#ProductionTime option:selected");
+    $collection.time_production.days = ( elementProd.val() != "" && !isNaN( parseInt(elementProd.val()) ) ) ? parseInt(elementProd.val()) : 0;
+    $collection.time_production.price = ( elementProd.attr("data-price") != "" && !isNaN( parseFloat(elementProd.attr("data-price")) ) ) ? parseFloat(elementProd.attr("data-price")) : 0;
+    var elementShip = $("#ShippingTime option:selected");
+    $collection.time_shipping.days = ( elementShip.val() != "" && !isNaN( parseInt(elementShip.val()) ) ) ? parseInt(elementShip.val()) : 0;
+    $collection.time_shipping.price = ( elementShip.attr("data-price") != "" && !isNaN( parseFloat(elementShip.attr("data-price")) ) ) ? parseFloat(elementShip.attr("data-price")) : 0;
+
+    // COMPUTE THE TOTAL PRICE
+    $collection.total += $collection.quantity * $collection.price;
+
+    if(typeof $collection.items['segmented'] != "undefined") {
+        $collection.total += $collection.items['segmented'].price_total;
+    }
+
+    if(typeof $collection.items['swirl'] != "undefined") {
+        $collection.total += $collection.items['swirl'].price_total;
+    }
+
+    if(typeof $collection.items['glow'] != "undefined") {
+        $collection.total += $collection.items['glow'].price_total;
+    }
+
+    if(typeof $collection.time_production != "undefined") {
+        $collection.total += $collection.time_production.price;
+    }
+
+    if(typeof $collection.time_shipping != "undefined") {
+        $collection.total += $collection.time_shipping.price;
+    }
+
+    if (!$.isEmptyObject($collection.texts)) {
+
+        if(typeof $collection.texts['front'] != "undefined") {
+            $collection.total += $collection.texts['front'].total;
+        }
+
+        if(typeof $collection.texts['back'] != "undefined") {
+            $collection.total += $collection.texts['back'].total;
+        }
+
+        if(typeof $collection.texts['continue'] != "undefined") {
+            $collection.total += $collection.texts['continue'].total;
+        }
+
+        if(typeof $collection.texts['inside'] != "undefined") {
+            $collection.total += $collection.texts['inside'].total;
+        }
+    }
+
+    if(typeof $collection.clips != "undefined") {
+        if (!$.isEmptyObject($collection.clips.logo)) {
+
+            if(typeof $collection.clips.logo['front-start'] != "undefined") {
+                $collection.total += $collection.clips.logo['front-start'].total;
+            }
+
+            if(typeof $collection.clips.logo['front-end'] != "undefined") {
+                $collection.total += $collection.clips.logo['front-end'].total;
+            }
+
+            if(typeof $collection.clips.logo['back-start'] != "undefined") {
+                $collection.total += $collection.clips.logo['back-start'].total;
+            }
+
+            if(typeof $collection.clips.logo['back-end'] != "undefined") {
+                $collection.total += $collection.clips.logo['back-end'].total;
+            }
+
+            if(typeof $collection.clips.logo['cont-start'] != "undefined") {
+                $collection.total += $collection.clips.logo['cont-start'].total;
+            }
+
+            if(typeof $collection.clips.logo['cont-end'] != "undefined") {
+                $collection.total += $collection.clips.logo['cont-end'].total;
+            }
+
+            if(typeof $collection.clips.logo['front-center'] != "undefined") {
+                $collection.total += $collection.clips.logo['front-center'].total;
+            }
+
+        }
+    }
+
+    if (!$.isEmptyObject($collection.addon)) {
+
+        if(typeof $collection.addon['3mm-thick'] != "undefined") {
+            $collection.total += $collection.addon['3mm-thick'].total;
+        }
+
+        if(typeof $collection.addon['digital-proof'] != "undefined") {
+            $collection.total += $collection.addon['digital-proof'].total;
+        }
+
+        if(typeof $collection.addon['eco-friendly'] != "undefined") {
+            $collection.total += $collection.addon['eco-friendly'].total;
+        }
+
+        if(typeof $collection.addon['glitters'] != "undefined") {
+            $collection.total += $collection.addon['glitters'].total;
+        }
+
+        if(typeof $collection.addon['individual'] != "undefined") {
+            $collection.total += $collection.addon['individual'].total;
+        }
+
+        if(typeof $collection.addon['key-chain'] != "undefined") {
+            $collection.total += $collection.addon['key-chain'].total;
+        }
+    }
+
+    // Collection
+    return $collection;
 
 }
 

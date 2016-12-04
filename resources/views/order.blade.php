@@ -24,6 +24,12 @@
 		<script src="global/iCheck/icheck.min.js"></script>
 		<script src="global/unveil.js/jquery.unveil.js"></script>
 		<script src="global/jquery-visible/jquery.visible.min.js"></script>
+		<!-- The jQuery UI widget factory, can be omitted if jQuery UI is already included -->
+		<script src="global/jquery-file-upload/js/vendor/jquery.ui.widget.js"></script>
+		<!-- The Iframe Transport is required for browsers without support for XHR file uploads -->
+		<script src="global/jquery-file-upload/js/jquery.iframe-transport.js"></script>
+		<!-- The basic File Upload plugin -->
+		<script src="global/jquery-file-upload/js/jquery.fileupload.js"></script>
 @endsection
 
 @section('content')
@@ -766,5 +772,6 @@
 	@include('modal.selectClipart')
 	@include('modal.selectFont')
 	@include('modal.customWristbandColor')
+	@include('modal.alertMessage')
 
 @endsection

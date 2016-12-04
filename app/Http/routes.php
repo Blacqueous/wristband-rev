@@ -224,3 +224,5 @@ Route::get('/mailTest', 'OrderController@mailTest');
 Route::post('/getPriceShipAndProd', 'OrderController@getPriceShipAndProd');
 
 Route::get('/getTemplateCustomWristband', 'TemplateController@getCustomWristband');
+
+Route::post('/upload', 'UploadController@uploadTemp');
