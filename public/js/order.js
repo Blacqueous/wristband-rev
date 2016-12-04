@@ -70,6 +70,8 @@ $(document).ready(function() {
             loadColors();
             // Load wristband price list.
             loadPrices();
+            // Load free items.
+            loadFree();
             // Load total amount.
             loadTotal();
 
@@ -105,6 +107,8 @@ $(document).ready(function() {
             loadColors();
             // Load wristband price list.
             loadPrices();
+            // Load free items.
+            loadFree();
             // Load total amount.
             loadTotal();
 
@@ -140,6 +144,8 @@ $(document).ready(function() {
             loadColors();
             // Load wristband price list.
             loadPrices();
+            // Load free items.
+            loadFree();
             // Load total amount.
             loadTotal();
 
@@ -172,6 +178,8 @@ $(document).ready(function() {
             loadColors();
             // Load wristband price list.
             loadPrices();
+            // Load free items.
+            loadFree();
             // Load total amount.
             loadTotal();
 
@@ -1133,58 +1141,60 @@ function displayTotal($collection)
         }
     }
 
-    if (!$.isEmptyObject($collection.clips.logo)) {
-        $('#summary-table-clipart').removeClass('hidden');
+    if(typeof $collection.clips != "undefined") {
+        if (!$.isEmptyObject($collection.clips.logo)) {
+            $('#summary-table-clipart').removeClass('hidden');
 
-        if(typeof $collection.clips.logo['front-start'] != "undefined") {
-            $('#summary-table-clipart #clipart-front-start').removeClass('hidden');
-            $('#summary-table-clipart #clipart-front-start .qty').html( $collection.clips.logo['front-start'].quantity );
-            $('#summary-table-clipart #clipart-front-start .price').html( ($collection.clips.logo['front-start'].price).formatMoney() );
-            $('#summary-table-clipart #clipart-front-start .total').html( ($collection.clips.logo['front-start'].total).formatMoney() );
+            if(typeof $collection.clips.logo['front-start'] != "undefined") {
+                $('#summary-table-clipart #clipart-front-start').removeClass('hidden');
+                $('#summary-table-clipart #clipart-front-start .qty').html( $collection.clips.logo['front-start'].quantity );
+                $('#summary-table-clipart #clipart-front-start .price').html( ($collection.clips.logo['front-start'].price).formatMoney() );
+                $('#summary-table-clipart #clipart-front-start .total').html( ($collection.clips.logo['front-start'].total).formatMoney() );
+            }
+
+            if(typeof $collection.clips.logo['front-end'] != "undefined") {
+                $('#summary-table-clipart #clipart-front-end').removeClass('hidden');
+                $('#summary-table-clipart #clipart-front-end .qty').html( $collection.clips.logo['front-end'].quantity );
+                $('#summary-table-clipart #clipart-front-end .price').html( ($collection.clips.logo['front-end'].price).formatMoney() );
+                $('#summary-table-clipart #clipart-front-end .total').html( ($collection.clips.logo['front-end'].total).formatMoney() );
+            }
+
+            if(typeof $collection.clips.logo['back-start'] != "undefined") {
+                $('#summary-table-clipart #clipart-back-start').removeClass('hidden');
+                $('#summary-table-clipart #clipart-back-start .qty').html( $collection.clips.logo['back-start'].quantity );
+                $('#summary-table-clipart #clipart-back-start .price').html( ($collection.clips.logo['back-start'].price).formatMoney() );
+                $('#summary-table-clipart #clipart-back-start .total').html( ($collection.clips.logo['back-start'].total).formatMoney() );
+            }
+
+            if(typeof $collection.clips.logo['back-end'] != "undefined") {
+                $('#summary-table-clipart #clipart-back-end').removeClass('hidden');
+                $('#summary-table-clipart #clipart-back-end .qty').html( $collection.clips.logo['back-end'].quantity );
+                $('#summary-table-clipart #clipart-back-end .price').html( ($collection.clips.logo['back-end'].price).formatMoney() );
+                $('#summary-table-clipart #clipart-back-end .total').html( ($collection.clips.logo['back-end'].total).formatMoney() );
+            }
+
+            if(typeof $collection.clips.logo['cont-start'] != "undefined") {
+                $('#summary-table-clipart #clipart-cont-start').removeClass('hidden');
+                $('#summary-table-clipart #clipart-cont-start .qty').html( $collection.clips.logo['cont-start'].quantity );
+                $('#summary-table-clipart #clipart-cont-start .price').html( ($collection.clips.logo['cont-start'].price).formatMoney() );
+                $('#summary-table-clipart #clipart-cont-start .total').html( ($collection.clips.logo['cont-start'].total).formatMoney() );
+            }
+
+            if(typeof $collection.clips.logo['cont-end'] != "undefined") {
+                $('#summary-table-clipart #clipart-cont-end').removeClass('hidden');
+                $('#summary-table-clipart #clipart-cont-end .qty').html( $collection.clips.logo['cont-end'].quantity );
+                $('#summary-table-clipart #clipart-cont-end .price').html( ($collection.clips.logo['cont-end'].price).formatMoney() );
+                $('#summary-table-clipart #clipart-cont-end .total').html( ($collection.clips.logo['cont-end'].total).formatMoney() );
+            }
+
+            if(typeof $collection.clips.logo['front-center'] != "undefined") {
+                $('#summary-table-clipart #clipart-front-center').removeClass('hidden');
+                $('#summary-table-clipart #clipart-front-center .qty').html( $collection.clips.logo['front-center'].quantity );
+                $('#summary-table-clipart #clipart-front-center .price').html( ($collection.clips.logo['front-center'].price).formatMoney() );
+                $('#summary-table-clipart #clipart-front-center .total').html( ($collection.clips.logo['front-center'].total).formatMoney() );
+            }
+
         }
-
-        if(typeof $collection.clips.logo['front-end'] != "undefined") {
-            $('#summary-table-clipart #clipart-front-end').removeClass('hidden');
-            $('#summary-table-clipart #clipart-front-end .qty').html( $collection.clips.logo['front-end'].quantity );
-            $('#summary-table-clipart #clipart-front-end .price').html( ($collection.clips.logo['front-end'].price).formatMoney() );
-            $('#summary-table-clipart #clipart-front-end .total').html( ($collection.clips.logo['front-end'].total).formatMoney() );
-        }
-
-        if(typeof $collection.clips.logo['back-start'] != "undefined") {
-            $('#summary-table-clipart #clipart-back-start').removeClass('hidden');
-            $('#summary-table-clipart #clipart-back-start .qty').html( $collection.clips.logo['back-start'].quantity );
-            $('#summary-table-clipart #clipart-back-start .price').html( ($collection.clips.logo['back-start'].price).formatMoney() );
-            $('#summary-table-clipart #clipart-back-start .total').html( ($collection.clips.logo['back-start'].total).formatMoney() );
-        }
-
-        if(typeof $collection.clips.logo['back-end'] != "undefined") {
-            $('#summary-table-clipart #clipart-back-end').removeClass('hidden');
-            $('#summary-table-clipart #clipart-back-end .qty').html( $collection.clips.logo['back-end'].quantity );
-            $('#summary-table-clipart #clipart-back-end .price').html( ($collection.clips.logo['back-end'].price).formatMoney() );
-            $('#summary-table-clipart #clipart-back-end .total').html( ($collection.clips.logo['back-end'].total).formatMoney() );
-        }
-
-        if(typeof $collection.clips.logo['cont-start'] != "undefined") {
-            $('#summary-table-clipart #clipart-cont-start').removeClass('hidden');
-            $('#summary-table-clipart #clipart-cont-start .qty').html( $collection.clips.logo['cont-start'].quantity );
-            $('#summary-table-clipart #clipart-cont-start .price').html( ($collection.clips.logo['cont-start'].price).formatMoney() );
-            $('#summary-table-clipart #clipart-cont-start .total').html( ($collection.clips.logo['cont-start'].total).formatMoney() );
-        }
-
-        if(typeof $collection.clips.logo['cont-end'] != "undefined") {
-            $('#summary-table-clipart #clipart-cont-end').removeClass('hidden');
-            $('#summary-table-clipart #clipart-cont-end .qty').html( $collection.clips.logo['cont-end'].quantity );
-            $('#summary-table-clipart #clipart-cont-end .price').html( ($collection.clips.logo['cont-end'].price).formatMoney() );
-            $('#summary-table-clipart #clipart-cont-end .total').html( ($collection.clips.logo['cont-end'].total).formatMoney() );
-        }
-
-        if(typeof $collection.clips.logo['front-center'] != "undefined") {
-            $('#summary-table-clipart #clipart-front-center').removeClass('hidden');
-            $('#summary-table-clipart #clipart-front-center .qty').html( $collection.clips.logo['front-center'].quantity );
-            $('#summary-table-clipart #clipart-front-center .price').html( ($collection.clips.logo['front-center'].price).formatMoney() );
-            $('#summary-table-clipart #clipart-front-center .total').html( ($collection.clips.logo['front-center'].total).formatMoney() );
-        }
-
     }
 
     if (!$.isEmptyObject($collection.addon)) {
@@ -1336,6 +1346,11 @@ function loadColors($style, $size)
     $('#clipart_front_center_btn').addClass('hidden');
     $('#clipart-front-center').addClass('hidden');
 
+    // Unhide message section.
+    $('#wb_message').removeClass('hidden');
+    // Set add-ons as step 5.
+    $('#wb-add-ons .sRename').html("5");
+
     // Get sizes for selected style.
     switch ($style) {
         case 'dual-layer':
@@ -1347,7 +1362,7 @@ function loadColors($style, $size)
             break;
 
         case 'figured':
-            if($size == '0-50inch') {
+            if($size == '0-50inch') { // 1/2 inch
                 $('#wb_color_type_figured').removeClass('hidden');
             } else { // 0-75inch, 1-00inch
                 $('#wb_color_type_figured_lg').removeClass('hidden');
@@ -1361,6 +1376,11 @@ function loadColors($style, $size)
             $('.fonttext').removeClass('hidden');
             $('.box-color').addClass('with-font');
             break;
+
+        case 'blank':
+            $('#wb_message').addClass('hidden');
+            // Set add-ons as step 4.
+            $('#wb-add-ons .sRename').html("4");
 
         case 'printed':
         case 'ink-injected':
@@ -1544,9 +1564,7 @@ function loadTotal(loadProdShip)
         'style': $style,
         'size': $size,
         'items': items,
-        'clips': clips,
         'free': free,
-        'texts': texts,
         'addon': addon,
         'price': 0,
         'quantity': 0,
@@ -1554,6 +1572,11 @@ function loadTotal(loadProdShip)
         'time_shipping': { 'days': 0, 'price': 0 },
         'total': 0
     };
+
+    if($style != "blank") {
+        $collection['clips'] = clips;
+        $collection['texts'] = texts;
+    }
 
     if(typeof loadProdShip == "undefined")
         loadProdShip = true;
@@ -1785,34 +1808,36 @@ function loadTotal(loadProdShip)
                             }
                         }
 
-                        if (!$.isEmptyObject($collection.clips.logo)) {
+                        if(typeof $collection.clips != "undefined") {
+                            if (!$.isEmptyObject($collection.clips.logo)) {
 
-                            if(typeof $collection.clips.logo['front-start'] != "undefined") {
-                                $collection.total += $collection.clips.logo['front-start'].total;
-                            }
+                                if(typeof $collection.clips.logo['front-start'] != "undefined") {
+                                    $collection.total += $collection.clips.logo['front-start'].total;
+                                }
 
-                            if(typeof $collection.clips.logo['front-end'] != "undefined") {
-                                $collection.total += $collection.clips.logo['front-end'].total;
-                            }
+                                if(typeof $collection.clips.logo['front-end'] != "undefined") {
+                                    $collection.total += $collection.clips.logo['front-end'].total;
+                                }
 
-                            if(typeof $collection.clips.logo['back-start'] != "undefined") {
-                                $collection.total += $collection.clips.logo['back-start'].total;
-                            }
+                                if(typeof $collection.clips.logo['back-start'] != "undefined") {
+                                    $collection.total += $collection.clips.logo['back-start'].total;
+                                }
 
-                            if(typeof $collection.clips.logo['back-end'] != "undefined") {
-                                $collection.total += $collection.clips.logo['back-end'].total;
-                            }
+                                if(typeof $collection.clips.logo['back-end'] != "undefined") {
+                                    $collection.total += $collection.clips.logo['back-end'].total;
+                                }
 
-                            if(typeof $collection.clips.logo['cont-start'] != "undefined") {
-                                $collection.total += $collection.clips.logo['cont-start'].total;
-                            }
+                                if(typeof $collection.clips.logo['cont-start'] != "undefined") {
+                                    $collection.total += $collection.clips.logo['cont-start'].total;
+                                }
 
-                            if(typeof $collection.clips.logo['cont-end'] != "undefined") {
-                                $collection.total += $collection.clips.logo['cont-end'].total;
-                            }
+                                if(typeof $collection.clips.logo['cont-end'] != "undefined") {
+                                    $collection.total += $collection.clips.logo['cont-end'].total;
+                                }
 
-                            if(typeof $collection.clips.logo['front-center'] != "undefined") {
-                                $collection.total += $collection.clips.logo['front-center'].total;
+                                if(typeof $collection.clips.logo['front-center'] != "undefined") {
+                                    $collection.total += $collection.clips.logo['front-center'].total;
+                                }
                             }
                         }
 
@@ -1913,36 +1938,38 @@ function loadTotal(loadProdShip)
                         }
                     }
 
-                    if (!$.isEmptyObject($collection.clips.logo)) {
+                    if(typeof $collection.clips != "undefined") {
+                        if (!$.isEmptyObject($collection.clips.logo)) {
 
-                        if(typeof $collection.clips.logo['front-start'] != "undefined") {
-                            $collection.total += $collection.clips.logo['front-start'].total;
+                            if(typeof $collection.clips.logo['front-start'] != "undefined") {
+                                $collection.total += $collection.clips.logo['front-start'].total;
+                            }
+
+                            if(typeof $collection.clips.logo['front-end'] != "undefined") {
+                                $collection.total += $collection.clips.logo['front-end'].total;
+                            }
+
+                            if(typeof $collection.clips.logo['back-start'] != "undefined") {
+                                $collection.total += $collection.clips.logo['back-start'].total;
+                            }
+
+                            if(typeof $collection.clips.logo['back-end'] != "undefined") {
+                                $collection.total += $collection.clips.logo['back-end'].total;
+                            }
+
+                            if(typeof $collection.clips.logo['cont-start'] != "undefined") {
+                                $collection.total += $collection.clips.logo['cont-start'].total;
+                            }
+
+                            if(typeof $collection.clips.logo['cont-end'] != "undefined") {
+                                $collection.total += $collection.clips.logo['cont-end'].total;
+                            }
+
+                            if(typeof $collection.clips.logo['front-center'] != "undefined") {
+                                $collection.total += $collection.clips.logo['front-center'].total;
+                            }
+
                         }
-
-                        if(typeof $collection.clips.logo['front-end'] != "undefined") {
-                            $collection.total += $collection.clips.logo['front-end'].total;
-                        }
-
-                        if(typeof $collection.clips.logo['back-start'] != "undefined") {
-                            $collection.total += $collection.clips.logo['back-start'].total;
-                        }
-
-                        if(typeof $collection.clips.logo['back-end'] != "undefined") {
-                            $collection.total += $collection.clips.logo['back-end'].total;
-                        }
-
-                        if(typeof $collection.clips.logo['cont-start'] != "undefined") {
-                            $collection.total += $collection.clips.logo['cont-start'].total;
-                        }
-
-                        if(typeof $collection.clips.logo['cont-end'] != "undefined") {
-                            $collection.total += $collection.clips.logo['cont-end'].total;
-                        }
-
-                        if(typeof $collection.clips.logo['front-center'] != "undefined") {
-                            $collection.total += $collection.clips.logo['front-center'].total;
-                        }
-
                     }
 
                     if (!$.isEmptyObject($collection.addon)) {

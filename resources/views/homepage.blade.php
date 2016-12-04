@@ -141,13 +141,13 @@
                 <div class="box-thumb"><img src="assets/images/src/Figured.png"></div>
                 <h2>Figured</h2>
                 <div class="prod_price">$0.06</div>
-                <p><a class="btn btn-default" href="order.php?style=figured" role="button">ORDER NOW</a></p>
+                <p><a class="btn btn-default" href="/order?style=figured" role="button">ORDER NOW</a></p>
             </div>
             <div class="col-md-4">
                 <div class="box-thumb"><img src="assets/images/src/Blank.png"></div>
                 <h2>Blank</h2>
                 <div class="prod_price">$0.06</div>
-                <p><a class="btn btn-default" href="order.php?style=blank" role="button">ORDER NOW</a></p>
+                <p><a class="btn btn-default" href="/order?style=blank" role="button">ORDER NOW</a></p>
             </div>
             <div class="clearfix"></div>
             <div class="container content-main">

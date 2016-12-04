@@ -351,7 +351,7 @@
 			<!-- END WRIST MESSAGE -->
 
 			<!-- ADD ONS -->
-			<div class="product-add-ons">
+			<div id="wb-add-ons" class="product-add-ons">
 				<div class="row offer-bar row-header-step">
 					<div class="col-xs-3 col-sm-2 offerpv float-left step-5">Step <span class="sRename">5</span></div>
 					<!-- <div class="col-xs-3 col-sm-2 offerpv float-left step-4">Step <span class="sRename">4</span></div> -->
