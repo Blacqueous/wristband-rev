@@ -1634,8 +1634,11 @@ body {
     color: #fff;
 }
 
-.btn-submit.disable {
-    background: #03758c;
+.btn-submit.disabled {
+    background: #f3f3f3;
+    border: 1px solid #ffffff;
+    color: #5d6569;
+    opacity: 1;
 }
 
 /* For the loader */
@@ -1817,15 +1820,15 @@ body {
     margin-right: 15px;
     margin-top: 10px;
     outline: none;
-    padding: 10px 9px 10px 5px;
+    padding: 10px 11px 10px 9px;
     position: relative;
-    height: 70px;
-    width: 65px;
+    height: 71px;
 }
 
 .button-wrapper:hover {
-    border: 1px solid #03b9c3;
-    color: #03b9c3;
+    background-color: #04adb7;
+    border: 1px solid #fff;
+    color: #fff;
 }
 
 .button-wrapper:focus, .button-wrapper:active {
@@ -1842,5 +1845,15 @@ body {
     padding: 4px 6px;
     position: absolute;
     right: 3px;
-    top: 3px;
+    top: 8px;
+}
+
+.toast.toast-success h3 {
+    margin-top: 10px;
+}
+
+.btn-cart:hover, .btn-cart:focus {
+    color: #008c94;
+    text-decoration: underline;
+    background-color: transparent;
 }

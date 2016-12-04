@@ -114,7 +114,8 @@
 				$('body').addClass('loaded');
 				$('.loader-section').addClass('done');
 
-				$('[data-toggle="tooltip"]').tooltip()
+				$('[data-toggle="tooltip"]').tooltip();
+
 			});
 
             $(function() {
@@ -124,6 +125,9 @@
             });
 
             $(document).ready(function() {
+
+				$(document).scrollTop(0);
+
                 $('.popup-order-gallery').magnificPopup({
                     delegate: 'a',
                     type: 'image',

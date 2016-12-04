@@ -34,3 +34,11 @@ Route::post('/getPriceShipAndProd', 'OrderController@getPriceShipAndProd');
 Route::get('/getTemplateCustomWristband', 'TemplateController@getCustomWristband');
 
 Route::post('/upload', 'UploadController@uploadTemp');
+
+Route::get('/cart', 'CartController@index');
+
+Route::post('/cart/add', 'CartController@cartAdd');
+
+Route::post('/cart/remove', 'CartController@cartRemove');
+
+Route::post('/cart/clear', 'CartController@cartClear');

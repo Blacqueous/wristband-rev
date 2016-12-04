@@ -5,10 +5,11 @@
 
 @section('css')
 <!-- Order page custom stylesheet -->
-		<link href="css/order.css" rel="stylesheet">
-
+		<link href="css/order.css" rel="stylesheet" type="text/css">
 		<!-- Additional .css plugins -->
-		<link href="global/iCheck/skins/square/green.css" rel="stylesheet">
+		<link href="global/iCheck/skins/square/green.css" rel="stylesheet" type="text/css">
+		<!-- Toastr Notification plugin -->
+		<link href="global/toastr/build/toastr.css" rel="stylesheet" type="text/css">
 @endsection
 
 @section('js')
@@ -18,8 +19,6 @@
 			const addon_json = JSON.parse('<?php echo(json_encode($addons)); ?>');
 		</script>
 		<script src="js/order.js"></script>
-		<!-- <script src="js/angular.order.js"></script> -->
-
 		<!-- Additional .js plugins -->
 		<script src="global/iCheck/icheck.min.js"></script>
 		<script src="global/unveil.js/jquery.unveil.js"></script>
@@ -30,6 +29,8 @@
 		<script src="global/jquery-file-upload/js/jquery.iframe-transport.js"></script>
 		<!-- The basic File Upload plugin -->
 		<script src="global/jquery-file-upload/js/jquery.fileupload.js"></script>
+		<!-- Toastr Notification plugin -->
+		<script src="global/toastr/build/toastr.min.js"></script>
 @endsection
 
 @section('content')

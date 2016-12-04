@@ -17,9 +17,9 @@
                     .button-wrapper + .tooltip > .tooltip-inner { color: #04adb7; font-family: 'Varela Round', sans-serif!important; font-size: 14px; padding: 10px 15px; }
                     .button-wrapper + .tooltip > .tooltip-arrow { }
                 </style>
-                <button class="button-wrapper pull-right" data-toggle="tooltip" data-placement="left" title="VIEW CART">
-                    <span class="glyphicon glyphicon-shopping-cart"></span><span class="items label label-default">0</span>
-                </button>
+                <a href="/cart" class="button-wrapper pull-right" data-toggle="tooltip" data-placement="left" title="VIEW CART">
+                    <span class="glyphicon glyphicon-shopping-cart"></span><span class="items label label-default">{{ (Session::has('_cart')) ? count(Session::get('_cart')) : "0" }}</span>
+                </a>
 				<div class="clearfix"></div>
 			</div>
 			<div class="clearfix"></div>

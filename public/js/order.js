@@ -41,6 +41,24 @@ $(document).ready(function() {
         increaseArea: '20%' // optional
     });
 
+    toastr.options = {
+        "closeButton": false,
+        "debug": false,
+        "newestOnTop": false,
+        "progressBar": false,
+        "positionClass": "toast-bottom-right",
+        "preventDuplicates": false,
+        "onclick": null,
+        "showDuration": "300",
+        "hideDuration": "1000",
+        "timeOut": "5000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+    }
+
     // Change style actions.
     $('body').on('click', '.prod-style', function(e) {
         e.preventDefault();
@@ -962,212 +980,667 @@ $(document).ready(function() {
 
     // Submit to cart
     $('body').on('click', '#submitOrder', function(e) {
-        console.log(getTotal());
+
+        var data = getTotal();
+        var showMessage = true;
+
+        // Get proper total qty
+        $.ajax({
+        	type: 'POST',
+        	url: '/cart/add',
+            dataType: 'json',
+        	data: {
+                data : data,
+                '_token': $('meta[name="csrf-token"]').attr('content')
+            },
+        	beforeSend: function() {
+                $('#submitOrder').prop('disabled', true);
+                $('#submitOrder').addClass('disabled');
+            },
+        	success: function(data) {
+                // Display success message.
+                if(showMessage) {
+                    toastr.success('', '<h3>Order added to cart!</h3>');
+                    showMessage = false;
+                }
+                // Reload this page.
+                setTimeout(function(){ // wait for 2 secs.
+                    location.reload(); // then reload the page.
+                }, 2000);
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                // Display error message.
+                if(showMessage) {
+                    toastr.error('', '<h3>Ooops! Something went wrong.</h3>');
+                    showMessage = false;
+                }
+                // Re-enable submit button
+                $('#submitOrder').prop('disabled', false);
+                $('#submitOrder').removeClass('disabled');
+            }
+        }).done(function(data) {
+            if(data.status == true) {
+                // Display success message.
+                if(showMessage) {
+                    toastr.success('', '<h3>Order added to cart!</h3>');
+                    showMessage = false;
+                }
+                // Reload this page.
+                setTimeout(function(){ // wait for 2 secs.
+                    location.reload(); // then reload the page.
+                }, 2000);
+            } else {
+                // Display error message.
+                if(showMessage) {
+                    toastr.error('', '<h3>Ooops! Something went wrong.</h3>');
+                    showMessage = false;
+                }
+                // Re-enable submit button
+                $('#submitOrder').prop('disabled', false);
+                $('#submitOrder').removeClass('disabled');
+            }
+        }).fail(function(xhr, status, error) {
+            // Display error message.
+            if(showMessage) {
+                toastr.error('', '<h3>Ooops! Something went wrong.</h3>');
+                showMessage = false;
+            }
+            // Re-enable submit button
+            $('#submitOrder').prop('disabled', false);
+            $('#submitOrder').removeClass('disabled');
+        });
+
     });
-
-    $.ajaxSetup({ headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') } });
-
-    'use strict';
 
     $('#clipartup_front_start').fileupload({
         url: "/upload",
-//         dataType : 'json',
-//         maxNumberOfFiles : 1,
-//         process: [ { action: 'load', fileTypes: /^image\/(gif|jpeg|png)$/, maxFileSize: 500000 }, { action: 'resize', maxWidth: 1024, maxHeight: 1024 }, { action: 'save' } ],
-//         add : function(e,data) {
-//             var uploadErrors = [];
-//             var acceptFileTypes = /^image\/(gif|jpe?g|png)$/i;
-//             if(data.originalFiles[0]['type'].length && !acceptFileTypes.test(data.originalFiles[0]['type'])) {
-//                 uploadErrors.push('Not an accepted file type');
-//             }
-//             if(data.originalFiles[0]['size'] > 500000) {
-//                 uploadErrors.push('Filesize is too big');
-//             }
-//             if(uploadErrors.length > 0) {
-//                 $('#modal-message-title').html("Error");
-//                 $('#modal-message-content').html(uploadErrors.join("\n"));
-//                 $('#modal-message').modal("show");
-//             } else {
-//                 console.log('add');
-//                 console.log(data.files[0]);
-// data.submit();
-//                 // $('#clipart-front-start').html("<img height='40' src='assets/images/src/upload-icon.png'>");
-//                 //
-//                 //
-//                 // clips['logo']['front-start'] = {'image': 'upload', 'price': 0, 'total': 0};
-//                 //
-//                 // // Load total amount.
-//                 // loadTotal(false);
-//
-//             }
-//         },
-//         done: function (e, data) { },
-//         fail: function (e, data) {
-//             var msg = "Upload file error: ";
-//             $.each(data.messages, function (index, error) {
-//                 msg += error + ', ';
-//             });
-//             $('#modal-message-title').html("Error");
-//             $('#modal-message-content').html(msg);
-//             $('#modal-message').modal("show");
-//         },
+        dataType : 'json',
+        maxNumberOfFiles : 1,
+        formData: {
+            name : 'front_start',
+            _token: $('meta[name="csrf-token"]').attr('content')
+        },
+        add : function(e, data) {
+            var hasError = false;
+            var acceptFileTypes = /^image\/(gif|jpe?g|png)$/i;
+            if(data.originalFiles[0]['type'].length && !acceptFileTypes.test(data.originalFiles[0]['type'])) {
+                hasError = true;
+                toastr.error('', 'Not an accepted image file type.');
+            }
+            if(data.originalFiles[0]['size'] > 500000) {
+                hasError = true;
+                toastr.error('', 'File size is too big. Must not be over 500KB.');
+            }
+            if(hasError) {
+                if(typeof clips['logo'] != "undefined") {
+                    if(typeof clips['logo']['front-start'] != "undefined") {
+                        delete clips['logo']['front-start'];
+                        // Clear preview.
+                        $('#clipart-front-start').attr('ref-clipart-code', 'none');
+                        $('#clipart-front-start').attr('ref-clipart-name', 'None');
+                        $('#clipart-front-start').html("");
+                        // Load total amount.
+                        loadTotal(false);
+                    }
+                }
+                return false;
+            } else {
+                data.submit();
+            }
+        },
+        done: function (e, data) {
+            if(data.result.status) {
+                if(typeof clips['logo'] == "undefined") {
+                    clips['logo'] = {};
+                }
+                clips['logo']['front-start'] = {
+                    'image': data.result.path,
+                    'price': 0,
+                    'total': 0
+                };
+                toastr.success('', 'Upload Successful!');
+                // Display preview.
+                $('#clipart-front-start').attr('ref-clipart-code', 'upload');
+                $('#clipart-front-start').attr('ref-clipart-name', 'Upload');
+                $('#clipart-front-start').html("<img height='40' src='assets/images/src/upload-icon.png'>");
+                // Load total amount.
+                loadTotal(false);
+            } else {
+                if(typeof clips['logo'] != "undefined") {
+                    if(typeof clips['logo']['front-start'] != "undefined") {
+                        delete clips['logo']['front-start'];
+                        // Clear preview.
+                        $('#clipart-front-start').attr('ref-clipart-code', 'none');
+                        $('#clipart-front-start').attr('ref-clipart-name', 'None');
+                        $('#clipart-front-start').html("");
+                        // Load total amount.
+                        loadTotal(false);
+                    }
+                }
+                toastr.error('', 'Upload Failed. Kindly Try Again.');
+            }
+        },
+        fail: function (e, data) {
+            if(typeof clips['logo'] != "undefined") {
+                if(typeof clips['logo']['front-start'] != "undefined") {
+                    delete clips['logo']['front-start'];
+                    // Clear preview.
+                    $('#clipart-front-start').attr('ref-clipart-code', 'none');
+                    $('#clipart-front-start').attr('ref-clipart-name', 'None');
+                    $('#clipart-front-start').html("");
+                    // Load total amount.
+                    loadTotal(false);
+                }
+            }
+            toastr.error('', 'Upload Failed. Kindly Try Again.');
+        }
     });
 
     $('#clipartup_front_end').fileupload({
+        url: "/upload",
         dataType : 'json',
-        autoUpload : false,
         maxNumberOfFiles : 1,
-        add : function(e,data) {
-            var uploadErrors = [];
+        formData: {
+            name : 'front_end',
+            _token: $('meta[name="csrf-token"]').attr('content')
+        },
+        add : function(e, data) {
+            var hasError = false;
             var acceptFileTypes = /^image\/(gif|jpe?g|png)$/i;
             if(data.originalFiles[0]['type'].length && !acceptFileTypes.test(data.originalFiles[0]['type'])) {
-                uploadErrors.push('Not an accepted file type');
+                hasError = true;
+                toastr.error('', 'Not an accepted image file type.');
             }
             if(data.originalFiles[0]['size'] > 500000) {
-                uploadErrors.push('Filesize is too big');
+                hasError = true;
+                toastr.error('', 'File size is too big. Must not be over 500KB.');
             }
-            if(uploadErrors.length > 0) {
-                $('#modal-message-title').html("Error");
-                $('#modal-message-content').html(uploadErrors.join("\n"));
-                $('#modal-message').modal("show");
+            if(hasError) {
+                if(typeof clips['logo'] != "undefined") {
+                    if(typeof clips['logo']['front-end'] != "undefined") {
+                        delete clips['logo']['front-end'];
+                        // Clear preview.
+                        $('#clipart-front-end').attr('ref-clipart-code', 'none');
+                        $('#clipart-front-end').attr('ref-clipart-name', 'None');
+                        $('#clipart-front-end').html("");
+                        // Load total amount.
+                        loadTotal(false);
+                    }
+                }
+                return false;
             } else {
-                console.log('add');
-                console.log(data.files[0]);
+                data.submit();
             }
         },
-        done: function (e, data) { },
-        fail: function (e, data) {
-            var msg = "Upload file error: ";
-            $.each(data.messages, function (index, error) {
-                msg += error + ', ';
-            });
-            $('#modal-message-title').html("Error");
-            $('#modal-message-content').html(msg);
-            $('#modal-message').modal("show");
+        done: function (e, data) {
+            if(data.result.status) {
+                if(typeof clips['logo'] == "undefined") {
+                    clips['logo'] = {};
+                }
+                clips['logo']['front-end'] = {
+                    'image': data.result.path,
+                    'price': 0,
+                    'total': 0
+                };
+                toastr.success('', 'Upload Successful!');
+                // Display preview.
+                $('#clipart-front-end').attr('ref-clipart-code', 'upload');
+                $('#clipart-front-end').attr('ref-clipart-name', 'Upload');
+                $('#clipart-front-end').html("<img height='40' src='assets/images/src/upload-icon.png'>");
+                // Load total amount.
+                loadTotal(false);
+            } else {
+                if(typeof clips['logo'] != "undefined") {
+                    if(typeof clips['logo']['front-end'] != "undefined") {
+                        delete clips['logo']['front-end'];
+                        // Clear preview.
+                        $('#clipart-front-end').attr('ref-clipart-code', 'none');
+                        $('#clipart-front-end').attr('ref-clipart-name', 'None');
+                        $('#clipart-front-end').html("");
+                        // Load total amount.
+                        loadTotal(false);
+                    }
+                }
+                toastr.error('', 'Upload Failed. Kindly Try Again.');
+            }
         },
+        fail: function (e, data) {
+            if(typeof clips['logo'] != "undefined") {
+                if(typeof clips['logo']['front-end'] != "undefined") {
+                    delete clips['logo']['front-end'];
+                    // Clear preview.
+                    $('#clipart-front-end').attr('ref-clipart-code', 'none');
+                    $('#clipart-front-end').attr('ref-clipart-name', 'None');
+                    $('#clipart-front-end').html("");
+                    // Load total amount.
+                    loadTotal(false);
+                }
+            }
+            toastr.error('', 'Upload Failed. Kindly Try Again.');
+        }
     });
 
     $('#clipartup_front_center').fileupload({
+        url: "/upload",
         dataType : 'json',
-        autoUpload : false,
         maxNumberOfFiles : 1,
-        add : function(e,data) {
-            var uploadErrors = [];
+        formData: {
+            name : 'front_center',
+            _token: $('meta[name="csrf-token"]').attr('content')
+        },
+        add : function(e, data) {
+            var hasError = false;
             var acceptFileTypes = /^image\/(gif|jpe?g|png)$/i;
             if(data.originalFiles[0]['type'].length && !acceptFileTypes.test(data.originalFiles[0]['type'])) {
-                uploadErrors.push('Not an accepted file type');
+                hasError = true;
+                toastr.error('', 'Not an accepted image file type.');
             }
             if(data.originalFiles[0]['size'] > 500000) {
-                uploadErrors.push('Filesize is too big');
+                hasError = true;
+                toastr.error('', 'File size is too big. Must not be over 500KB.');
             }
-            if(uploadErrors.length > 0) {
-                $('#modal-message-title').html("Error");
-                $('#modal-message-content').html(uploadErrors.join("\n"));
-                $('#modal-message').modal("show");
+            if(hasError) {
+                if(typeof clips['logo'] != "undefined") {
+                    if(typeof clips['logo']['front-center'] != "undefined") {
+                        delete clips['logo']['front-center'];
+                        // Clear preview.
+                        $('#clipart-front-center').attr('ref-clipart-code', 'none');
+                        $('#clipart-front-center').attr('ref-clipart-name', 'None');
+                        $('#clipart-front-center').html("");
+                        // Load total amount.
+                        loadTotal(false);
+                    }
+                }
+                return false;
             } else {
-                console.log('add');
-                console.log(data.files[0]);
+                data.submit();
             }
         },
-        done: function (e, data) { },
-        fail: function (e, data) {
-            var msg = "Upload file error: ";
-            $.each(data.messages, function (index, error) {
-                msg += error + ', ';
-            });
-            $('#modal-message-title').html("Error");
-            $('#modal-message-content').html(msg);
-            $('#modal-message').modal("show");
+        done: function (e, data) {
+            if(data.result.status) {
+                if(typeof clips['logo'] == "undefined") {
+                    clips['logo'] = {};
+                }
+                clips['logo']['front-center'] = {
+                    'image': data.result.path,
+                    'price': 0,
+                    'total': 0
+                };
+                toastr.success('', 'Upload Successful!');
+                // Display preview.
+                $('#clipart-front-center').attr('ref-clipart-code', 'upload');
+                $('#clipart-front-center').attr('ref-clipart-name', 'Upload');
+                $('#clipart-front-center').html("<img height='50' src='assets/images/src/upload-icon.png'>");
+                // Load total amount.
+                loadTotal(false);
+            } else {
+                if(typeof clips['logo'] != "undefined") {
+                    if(typeof clips['logo']['front-center'] != "undefined") {
+                        delete clips['logo']['front-center'];
+                        // Clear preview.
+                        $('#clipart-front-center').attr('ref-clipart-code', 'none');
+                        $('#clipart-front-center').attr('ref-clipart-name', 'None');
+                        $('#clipart-front-center').html("");
+                        // Load total amount.
+                        loadTotal(false);
+                    }
+                }
+                toastr.error('', 'Upload Failed. Kindly Try Again.');
+            }
         },
+        fail: function (e, data) {
+            if(typeof clips['logo'] != "undefined") {
+                if(typeof clips['logo']['front-center'] != "undefined") {
+                    delete clips['logo']['front-center'];
+                    // Clear preview.
+                    $('#clipart-front-center').attr('ref-clipart-code', 'none');
+                    $('#clipart-front-center').attr('ref-clipart-name', 'None');
+                    $('#clipart-front-center').html("");
+                    // Load total amount.
+                    loadTotal(false);
+                }
+            }
+            toastr.error('', 'Upload Failed. Kindly Try Again.');
+        }
     });
 
     $('#clipartup_back_start').fileupload({
+        url: "/upload",
         dataType : 'json',
-        autoUpload : false,
         maxNumberOfFiles : 1,
-        add : function(e,data) {
-            var uploadErrors = [];
+        formData: {
+            name : 'back_start',
+            _token: $('meta[name="csrf-token"]').attr('content')
+        },
+        add : function(e, data) {
+            var hasError = false;
             var acceptFileTypes = /^image\/(gif|jpe?g|png)$/i;
             if(data.originalFiles[0]['type'].length && !acceptFileTypes.test(data.originalFiles[0]['type'])) {
-                uploadErrors.push('Not an accepted file type');
+                hasError = true;
+                toastr.error('', 'Not an accepted image file type.');
             }
             if(data.originalFiles[0]['size'] > 500000) {
-                uploadErrors.push('Filesize is too big');
+                hasError = true;
+                toastr.error('', 'File size is too big. Must not be over 500KB.');
             }
-            if(uploadErrors.length > 0) {
-                $('#modal-message-title').html("Error");
-                $('#modal-message-content').html(uploadErrors.join("\n"));
-                $('#modal-message').modal("show");
+            if(hasError) {
+                if(typeof clips['logo'] != "undefined") {
+                    if(typeof clips['logo']['back-start'] != "undefined") {
+                        delete clips['logo']['back-start'];
+                        // Clear preview.
+                        $('#clipart-back-start').attr('ref-clipart-code', 'none');
+                        $('#clipart-back-start').attr('ref-clipart-name', 'None');
+                        $('#clipart-back-start').html("");
+                        // Load total amount.
+                        loadTotal(false);
+                    }
+                }
+                return false;
             } else {
-                console.log('add');
-                console.log(data.files[0]);
+                data.submit();
             }
         },
-        done: function (e, data) { },
-        fail: function (e, data) {
-            var msg = "Upload file error: ";
-            $.each(data.messages, function (index, error) {
-                msg += error + ', ';
-            });
-            $('#modal-message-title').html("Error");
-            $('#modal-message-content').html(msg);
-            $('#modal-message').modal("show");
+        done: function (e, data) {
+            if(data.result.status) {
+                if(typeof clips['logo'] == "undefined") {
+                    clips['logo'] = {};
+                }
+                clips['logo']['back-start'] = {
+                    'image': data.result.path,
+                    'price': 0,
+                    'total': 0
+                };
+                toastr.success('', 'Upload Successful!');
+                // Display preview.
+                $('#clipart-back-start').attr('ref-clipart-code', 'upload');
+                $('#clipart-back-start').attr('ref-clipart-name', 'Upload');
+                $('#clipart-back-start').html("<img height='40' src='assets/images/src/upload-icon.png'>");
+                // Load total amount.
+                loadTotal(false);
+            } else {
+                if(typeof clips['logo'] != "undefined") {
+                    if(typeof clips['logo']['back-start'] != "undefined") {
+                        delete clips['logo']['back-start'];
+                        // Clear preview.
+                        $('#clipart-back-start').attr('ref-clipart-code', 'none');
+                        $('#clipart-back-start').attr('ref-clipart-name', 'None');
+                        $('#clipart-back-start').html("");
+                        // Load total amount.
+                        loadTotal(false);
+                    }
+                }
+                toastr.error('', 'Upload Failed. Kindly Try Again.');
+            }
         },
+        fail: function (e, data) {
+            if(typeof clips['logo'] != "undefined") {
+                if(typeof clips['logo']['back-start'] != "undefined") {
+                    delete clips['logo']['back-start'];
+                    // Clear preview.
+                    $('#clipart-back-start').attr('ref-clipart-code', 'none');
+                    $('#clipart-back-start').attr('ref-clipart-name', 'None');
+                    $('#clipart-back-start').html("");
+                    // Load total amount.
+                    loadTotal(false);
+                }
+            }
+            toastr.error('', 'Upload Failed. Kindly Try Again.');
+        }
     });
 
     $('#clipartup_back_end').fileupload({
+        url: "/upload",
         dataType : 'json',
-        autoUpload : false,
         maxNumberOfFiles : 1,
-        add : function(e,data) {
-            var uploadErrors = [];
+        formData: {
+            name : 'back_end',
+            _token: $('meta[name="csrf-token"]').attr('content')
+        },
+        add : function(e, data) {
+            var hasError = false;
             var acceptFileTypes = /^image\/(gif|jpe?g|png)$/i;
             if(data.originalFiles[0]['type'].length && !acceptFileTypes.test(data.originalFiles[0]['type'])) {
-                uploadErrors.push('Not an accepted file type');
+                hasError = true;
+                toastr.error('', 'Not an accepted image file type.');
             }
             if(data.originalFiles[0]['size'] > 500000) {
-                uploadErrors.push('Filesize is too big');
+                hasError = true;
+                toastr.error('', 'File size is too big. Must not be over 500KB.');
             }
-            if(uploadErrors.length > 0) {
-                $('#modal-message-title').html("Error");
-                $('#modal-message-content').html(uploadErrors.join("\n"));
-                $('#modal-message').modal("show");
+            if(hasError) {
+                if(typeof clips['logo'] != "undefined") {
+                    if(typeof clips['logo']['back-end'] != "undefined") {
+                        delete clips['logo']['back-end'];
+                        // Clear preview.
+                        $('#clipart-back-end').attr('ref-clipart-code', 'none');
+                        $('#clipart-back-end').attr('ref-clipart-name', 'None');
+                        $('#clipart-back-end').html("");
+                        // Load total amount.
+                        loadTotal(false);
+                    }
+                }
+                return false;
             } else {
-                console.log('add');
-                console.log(data.files[0]);
+                data.submit();
             }
         },
-        done: function (e, data) { },
-        fail: function (e, data) {
-            var msg = "Upload file error: ";
-            $.each(data.messages, function (index, error) {
-                msg += error + ', ';
-            });
-            $('#modal-message-title').html("Error");
-            $('#modal-message-content').html(msg);
-            $('#modal-message').modal("show");
+        done: function (e, data) {
+            if(data.result.status) {
+                if(typeof clips['logo'] == "undefined") {
+                    clips['logo'] = {};
+                }
+                clips['logo']['back-end'] = {
+                    'image': data.result.path,
+                    'price': 0,
+                    'total': 0
+                };
+                toastr.success('', 'Upload Successful!');
+                // Display preview.
+                $('#clipart-back-end').attr('ref-clipart-code', 'upload');
+                $('#clipart-back-end').attr('ref-clipart-name', 'Upload');
+                $('#clipart-back-end').html("<img height='40' src='assets/images/src/upload-icon.png'>");
+                // Load total amount.
+                loadTotal(false);
+            } else {
+                if(typeof clips['logo'] != "undefined") {
+                    if(typeof clips['logo']['back-end'] != "undefined") {
+                        delete clips['logo']['back-end'];
+                        // Clear preview.
+                        $('#clipart-back-end').attr('ref-clipart-code', 'none');
+                        $('#clipart-back-end').attr('ref-clipart-name', 'None');
+                        $('#clipart-back-end').html("");
+                        // Load total amount.
+                        loadTotal(false);
+                    }
+                }
+                toastr.error('', 'Upload Failed. Kindly Try Again.');
+            }
         },
+        fail: function (e, data) {
+            if(typeof clips['logo'] != "undefined") {
+                if(typeof clips['logo']['back-end'] != "undefined") {
+                    delete clips['logo']['back-end'];
+                    // Clear preview.
+                    $('#clipart-back-end').attr('ref-clipart-code', 'none');
+                    $('#clipart-back-end').attr('ref-clipart-name', 'None');
+                    $('#clipart-back-end').html("");
+                    // Load total amount.
+                    loadTotal(false);
+                }
+            }
+            toastr.error('', 'Upload Failed. Kindly Try Again.');
+        }
+    });
+
+    $('#clipartup_cont_start').fileupload({
+        url: "/upload",
+        dataType : 'json',
+        maxNumberOfFiles : 1,
+        formData: {
+            name : 'cont_start',
+            _token: $('meta[name="csrf-token"]').attr('content')
+        },
+        add : function(e, data) {
+            var hasError = false;
+            var acceptFileTypes = /^image\/(gif|jpe?g|png)$/i;
+            if(data.originalFiles[0]['type'].length && !acceptFileTypes.test(data.originalFiles[0]['type'])) {
+                hasError = true;
+                toastr.error('', 'Not an accepted image file type.');
+            }
+            if(data.originalFiles[0]['size'] > 500000) {
+                hasError = true;
+                toastr.error('', 'File size is too big. Must not be over 500KB.');
+            }
+            if(hasError) {
+                if(typeof clips['logo'] != "undefined") {
+                    if(typeof clips['logo']['cont-start'] != "undefined") {
+                        delete clips['logo']['cont-start'];
+                        // Clear preview.
+                        $('#clipart-cont-start').attr('ref-clipart-code', 'none');
+                        $('#clipart-cont-start').attr('ref-clipart-name', 'None');
+                        $('#clipart-cont-start').html("");
+                        // Load total amount.
+                        loadTotal(false);
+                    }
+                }
+                return false;
+            } else {
+                data.submit();
+            }
+        },
+        done: function (e, data) {
+            if(data.result.status) {
+                if(typeof clips['logo'] == "undefined") {
+                    clips['logo'] = {};
+                }
+                clips['logo']['cont-start'] = {
+                    'image': data.result.path,
+                    'price': 0,
+                    'total': 0
+                };
+                toastr.success('', 'Upload Successful!');
+                // Display preview.
+                $('#clipart-cont-start').attr('ref-clipart-code', 'upload');
+                $('#clipart-cont-start').attr('ref-clipart-name', 'Upload');
+                $('#clipart-cont-start').html("<img height='40' src='assets/images/src/upload-icon.png'>");
+                // Load total amount.
+                loadTotal(false);
+            } else {
+                if(typeof clips['logo'] != "undefined") {
+                    if(typeof clips['logo']['cont-start'] != "undefined") {
+                        delete clips['logo']['cont-start'];
+                        // Clear preview.
+                        $('#clipart-cont-start').attr('ref-clipart-code', 'none');
+                        $('#clipart-cont-start').attr('ref-clipart-name', 'None');
+                        $('#clipart-cont-start').html("");
+                        // Load total amount.
+                        loadTotal(false);
+                    }
+                }
+                toastr.error('', 'Upload Failed. Kindly Try Again.');
+            }
+        },
+        fail: function (e, data) {
+            if(typeof clips['logo'] != "undefined") {
+                if(typeof clips['logo']['cont-start'] != "undefined") {
+                    delete clips['logo']['cont-start'];
+                    // Clear preview.
+                    $('#clipart-cont-start').attr('ref-clipart-code', 'none');
+                    $('#clipart-cont-start').attr('ref-clipart-name', 'None');
+                    $('#clipart-cont-start').html("");
+                    // Load total amount.
+                    loadTotal(false);
+                }
+            }
+            toastr.error('', 'Upload Failed. Kindly Try Again.');
+        }
+    });
+
+    $('#clipartup_cont_end').fileupload({
+        url: "/upload",
+        dataType : 'json',
+        maxNumberOfFiles : 1,
+        formData: {
+            name : 'cont_end',
+            _token: $('meta[name="csrf-token"]').attr('content')
+        },
+        add : function(e, data) {
+            var hasError = false;
+            var acceptFileTypes = /^image\/(gif|jpe?g|png)$/i;
+            if(data.originalFiles[0]['type'].length && !acceptFileTypes.test(data.originalFiles[0]['type'])) {
+                hasError = true;
+                toastr.error('', 'Not an accepted image file type.');
+            }
+            if(data.originalFiles[0]['size'] > 500000) {
+                hasError = true;
+                toastr.error('', 'File size is too big. Must not be over 500KB.');
+            }
+            if(hasError) {
+                if(typeof clips['logo'] != "undefined") {
+                    if(typeof clips['logo']['cont-end'] != "undefined") {
+                        delete clips['logo']['cont-end'];
+                        // Clear preview.
+                        $('#clipart-cont-end').attr('ref-clipart-code', 'none');
+                        $('#clipart-cont-end').attr('ref-clipart-name', 'None');
+                        $('#clipart-cont-end').html("");
+                        // Load total amount.
+                        loadTotal(false);
+                    }
+                }
+                return false;
+            } else {
+                data.submit();
+            }
+        },
+        done: function (e, data) {
+            if(data.result.status) {
+                if(typeof clips['logo'] == "undefined") {
+                    clips['logo'] = {};
+                }
+                clips['logo']['cont-end'] = {
+                    'image': data.result.path,
+                    'price': 0,
+                    'total': 0
+                };
+                toastr.success('', 'Upload Successful!');
+                // Display preview.
+                $('#clipart-cont-end').attr('ref-clipart-code', 'upload');
+                $('#clipart-cont-end').attr('ref-clipart-name', 'Upload');
+                $('#clipart-cont-end').html("<img height='40' src='assets/images/src/upload-icon.png'>");
+                // Load total amount.
+                loadTotal(false);
+            } else {
+                if(typeof clips['logo'] != "undefined") {
+                    if(typeof clips['logo']['cont-end'] != "undefined") {
+                        delete clips['logo']['cont-end'];
+                        // Clear preview.
+                        $('#clipart-cont-end').attr('ref-clipart-code', 'none');
+                        $('#clipart-cont-end').attr('ref-clipart-name', 'None');
+                        $('#clipart-cont-end').html("");
+                        // Load total amount.
+                        loadTotal(false);
+                    }
+                }
+                toastr.error('', 'Upload Failed. Kindly Try Again.');
+            }
+        },
+        fail: function (e, data) {
+            if(typeof clips['logo'] != "undefined") {
+                if(typeof clips['logo']['cont-end'] != "undefined") {
+                    delete clips['logo']['cont-end'];
+                    // Clear preview.
+                    $('#clipart-cont-end').attr('ref-clipart-code', 'none');
+                    $('#clipart-cont-end').attr('ref-clipart-name', 'None');
+                    $('#clipart-cont-end').html("");
+                    // Load total amount.
+                    loadTotal(false);
+                }
+            }
+            toastr.error('', 'Upload Failed. Kindly Try Again.');
+        }
     });
 
 });
-
-function loadCustomWristband($style, $type, $colors, $target)
-{
-
-    // Get proper total qty
-    $.ajax({
-    	type: 'GET',
-    	url: '/gd/band.php?style='+$style+'&type='+$type+'&color='+$colors,
-    	data: { },
-    	beforeSend: function() { $($target).css({'opacity':'0'}); },
-    	success: function(link) { }
-    }).done(function(link) {
-        // Do something when everything is done.
-        $($target).attr('src', link).animate({'opacity':'1'}, 1000);
-        $($target).closest('.box-color').find('input').attr('ref-color', $colors);
-    });
-
-}
 
 function changeWristbandColors()
 {
@@ -1854,6 +2327,24 @@ function loadColors($style, $size)
     } else if($size == '0-75inch') {
         $('.0-75-only').removeClass('hidden');
     }
+}
+
+function loadCustomWristband($style, $type, $colors, $target)
+{
+
+    // Get proper total qty
+    $.ajax({
+    	type: 'GET',
+    	url: '/gd/band.php?style='+$style+'&type='+$type+'&color='+$colors,
+    	data: { },
+    	beforeSend: function() { $($target).css({'opacity':'0'}); },
+    	success: function(link) { }
+    }).done(function(link) {
+        // Do something when everything is done.
+        $($target).attr('src', link).animate({'opacity':'1'}, 1000);
+        $($target).closest('.box-color').find('input').attr('ref-color', $colors);
+    });
+
 }
 
 function loadFree()
