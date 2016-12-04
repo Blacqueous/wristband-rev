@@ -1,4 +1,18 @@
+@section('js')
+	<script>
+		jQuery("#slideshow > div:gt(0)").hide();
 
+		setInterval(function() {
+		  jQuery('#slideshow > div:first')
+			.fadeOut(1000)
+			.next()
+			.fadeIn(1000)
+			.end()
+			.appendTo('#slideshow');
+		},  7000);
+
+	</script>
+@endsection
 <header>
     <nav class="navbar navbar-inverse navbar-default">
 		<div class="container">
@@ -41,36 +55,36 @@
 
 					<div class="primary-navigation">
 						<ul id="menu-header-menu" class="menu-item menu">
-							<li class="menu-item menu-item-type-post_type current-menu-item page_item"><a href="index.php">Home</a></li>
-							<li class="menu-item menu-item-type-post_type"><a href="order.php">Order Now</a></li>
-							<li class="menu-item menu-item-type-post_type"><a href="price.php">Prices</a></li>
+							<li class="menu-item menu-item-type-post_type current-menu-item page_item"><a href="/">Home</a></li>
+							<li class="menu-item menu-item-type-post_type"><a href="order">Order Now</a></li>
+							<li class="menu-item menu-item-type-post_type"><a href="price">Prices</a></li>
 							<li class="dropdown menu-item menu-item-type-post_type"><a id="prod-main" data-toggle="dropdown" class="dropdown-toggle">Products</a>
 								<ul class="dropdown-menu">
-									<li><a href="product-printed.php">Printed</a></li>
-									<li><a href="product-debossed.php">Debossed</a></li>
-									<li><a href="product-ink-injected.php">Ink Injected</a></li>
-									<li><a href="product-embossed.php">Embossed</a></li>
-									<li><a href="product-dual-layer.php">Dual Layer</a></li>
-									<li><a href="product-embossed-printed.php">Embossed Printed</a></li>
-									<li><a href="product-figured.php">Figured</a></li>
-									<li><a href="product-blank.php">Blank</a></li>
+									<li><a href="product-printed">Printed</a></li>
+									<li><a href="product-debossed">Debossed</a></li>
+									<li><a href="product-ink-injected">Ink Injected</a></li>
+									<li><a href="product-embossed">Embossed</a></li>
+									<li><a href="product-dual-layer">Dual Layer</a></li>
+									<li><a href="product-embossed-printed">Embossed Printed</a></li>
+									<li><a href="product-figured">Figured</a></li>
+									<li><a href="product-blank">Blank</a></li>
 								</ul>
 							</li>
 							<li class="dropdown menu-item menu-item menu-item-type-post_type"><a id="prod-main2" href="#" data-toggle="dropdown" class="dropdown-toggle">Wristband Options</a>
 								<ul class="dropdown-menu">
-									<li><a href="fonts.php">Fonts</a></li>
-									<li><a href="cliparts.php">Cliparts</a></li>
-									<li><a href="colors.php">Color Chart</a></li>
-									<li><a href="sizes.php">Sizes</a></li>
+									<li><a href="fonts">Fonts</a></li>
+									<li><a href="cliparts">Cliparts</a></li>
+									<li><a href="colors">Color Chart</a></li>
+									<li><a href="sizes">Sizes</a></li>
 								</ul>
 
 
 							</li>
-							<li class="menu-item menu-item-type-post_type"><a href="gallery.php">Photo Gallery</a></li>
-							<li class="menu-item menu-item-type-post_type"><a href="contact-us.php">Contact Us</a></li>
-							<li class="menu-item menu-item-type-post_type"><a class="live-chat" href="#">Live Chat</a>
+							<li class="menu-item menu-item-type-post_type"><a href="gallery">Photo Gallery</a></li>
+							<li class="menu-item menu-item-type-post_type"><a href="contact">Contact Us</a></li>
+							<!--<li class="menu-item menu-item-type-post_type"><a class="live-chat" href="#">Live Chat</a>
 								<!-- <script type='text/javascript' data-cfasync='false'>window.purechatApi = { l: [], t: [], on: function () { this.l.push(arguments); } }; (function () { var done = false; var script = document.createElement('script'); script.async = true; script.type = 'text/javascript'; script.src = 'https://app.purechat.com/VisitorWidget/WidgetScript'; document.getElementsByTagName('HEAD').item(0).appendChild(script); script.onreadystatechange = script.onload = function (e) { if (!done && (!this.readyState || this.readyState == 'loaded' || this.readyState == 'complete')) { var w = new PCWidget({c: 'ff8c4d2b-032b-4f3f-9c29-8411120648ad', f: true }); done = f; } }; })();</script> -->
-							</li>
+							<!--</li>--->
 								<div class="clearfix"></div>
 						</ul>
 					</div>
@@ -80,10 +94,12 @@
 
 		<!--.Banner Slideshow -->
 		 <?php
-			/*$homepage = "/promotional/homepage.php";*/
-			$homepage = "/dev/homepage.php";
-			$currentpage = $_SERVER['REQUEST_URI'];
-			if($homepage==$currentpage) {
+			
+
+			if (Route::getCurrentRoute()->uri() == '/')
+			{
+				// You're on the root route
+			
 		?>
 
 			<div class="banner">

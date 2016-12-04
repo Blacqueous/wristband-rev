@@ -54,6 +54,27 @@ class Prices extends Model {
 		Storage::put('json/wristband/prices.json', json_encode($prices));
 	}
 
+	public function getJSONPrices()
+	{
+		// check if .json file exists.
+		if(!Storage::has('json/wristband/prices_size.json')) {
+            // price array container.
+            $prices = [];
+            // get results.
+            $priceList = $this->getPriceCodeAndName();
+    		if($priceList) {
+    			foreach($priceList as $key => $value) {
+    				$prices[strtolower($value->style_code)][$value->qty][$value->size_code] = $value->price;
+    			}
+    		}
+			// generate and save .json file.
+			 Storage::put('json/wristband/prices_size.json', json_encode($prices));
+		}
+		// return data from .json file.
+		return json_decode(Storage::get('json/wristband/prices_size.json'), true);
+	}
+
+
 	public function getJSONPrice()
 	{
 		// check if .json file exists.
