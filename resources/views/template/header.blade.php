@@ -6,6 +6,7 @@
 				<a class="navbar-brand" href="/"><img src="assets/images/src/prom_logo.jpg"></a>
 			</div>
 			<div class="header-right-box">
+                <a href="#"><i class="fa fa-shopping-cart" style="font-size:30px;"></i></a>
     			<div id="google_trust">
     			</div>
     			<div class="search">

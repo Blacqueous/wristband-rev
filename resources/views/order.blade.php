@@ -150,19 +150,19 @@
 			<!-- END WRIST COLORS-->
 
 			<!-- WRIST MESSAGE -->
-			<div id="wb_message" class="wrist-messsage">
-				<div class="row offer-bar row-header-step">
+			<div id="wb_message">
+				<div  class="row offer-bar row-header-step optional-messsage">
 					<div class="col-xs-3 col-sm-2 offerpv float-left">Step <span class="sRename">4</span></div>
 					<div class="col-xs-9 col-sm-10 offer-details float-left">Enter Message for preview</div>
 					<div class="clearfix"></div>
 				</div>
 				<div class="main-content-preview">
 
-					<div id="text-design">
+					<div id="text-design" class="optional-messsage">
 						<h3>INPUT TEXT DESIGN MESSAGE</h3>
 					</div>
 
-					<div id="text-option" class="message-selection">
+					<div id="text-option" class="message-selection optional-messsage">
 						<div class="col-sm-4">
 							<input class="band-text-design wb-text-type" name="wb-message" type="radio" value="select-fb" name="text-select" checked="checked"/>
 							<label for="wb-message"> Front/Back Message</label>
@@ -173,7 +173,7 @@
 						</div>
 						<div class="clearfix"></div>
 					</div>
-					<div id="band-text" class="margin-div">
+					<div id="band-text" class="margin-div optional-messsage">
 						<div id="wb_text_outside_fb" class="wb-text-outside f-input">
 							<div class="col-sm-6">
 								<h4>
@@ -296,18 +296,18 @@
 
 					<div id="preview-pane-fb" class="preview-panel">
 						<div class="wb-text-preview fb-select" style="font-family: 'Arial Bold';">
-							<span id="clipart-front-center" class="preview-clipart faded fig-fc col-xs-12 hidden" ref-clipart-code="none" ref-clipart-name="None"></span>
+							<span id="clipart-front-center" class="preview-clipart faded fig-fc col-xs-12 optional-messsage hidden" ref-clipart-code="none" ref-clipart-name="None"></span>
 							<div id="front-view" class="band band-reg wb-band">
-								<span id="clipart-front-start" class="faded preview-clipart preview-start start-fc col-xs-3" ref-clipart-code="none" ref-clipart-name="None"></span>
-								<span id="clipart-front-end" class="faded preview-clipart preview-end end-fc col-xs-3" ref-clipart-code="none" ref-clipart-name="None"></span>
-								<div id="wb_text_front_preview" class="preview-text faded">
+								<span id="clipart-front-start" class="faded preview-clipart preview-start start-fc col-xs-3 optional-messsage" ref-clipart-code="none" ref-clipart-name="None"></span>
+								<span id="clipart-front-end" class="faded preview-clipart preview-end end-fc col-xs-3 optional-messsage" ref-clipart-code="none" ref-clipart-name="None"></span>
+								<div id="wb_text_front_preview" class="preview-text faded optional-messsage">
 									Front Message
 								</div>
 							</div>
 							<div id="back-view" class="band band-reg wb-band">
-								<span id="clipart-back-start" class="faded preview-clipart preview-start back-mc col-xs-3" ref-clipart-code="none" ref-clipart-name="None"></span>
-								<span id="clipart-back-end" class="faded preview-clipart preview-end backend-mc col-xs-3" ref-clipart-code="none" ref-clipart-name="None"></span>
-								<div id="wb_text_back_preview" class="preview-text faded">
+								<span id="clipart-back-start" class="faded preview-clipart preview-start back-mc col-xs-3 optional-messsage" ref-clipart-code="none" ref-clipart-name="None"></span>
+								<span id="clipart-back-end" class="faded preview-clipart preview-end backend-mc col-xs-3 optional-messsage" ref-clipart-code="none" ref-clipart-name="None"></span>
+								<div id="wb_text_back_preview" class="preview-text faded optional-messsage">
 									Back Message
 								</div>
 							</div>
@@ -315,9 +315,9 @@
 						</div>
 						<div class="wb-text-preview c-select hidden" style="font-family: 'Arial Bold';">
 							<div id="continue-view" class="band band-reg wb-band">
-								<span id="clipart-cont-start" class="faded preview-clipart preview-start start-cc col-xs-2" ref-clipart-code="none" ref-clipart-name="None"></span>
-								<span id="clipart-cont-end" class="faded preview-clipart preview-end end-cc col-xs-2" ref-clipart-code="none" ref-clipart-name="None"></span>
-								<div id="wb_text_continue_preview" class="preview-text faded">
+								<span id="clipart-cont-start" class="faded preview-clipart preview-start start-cc col-xs-2 optional-messsage" ref-clipart-code="none" ref-clipart-name="None"></span>
+								<span id="clipart-cont-end" class="faded preview-clipart preview-end end-cc col-xs-2 optional-messsage" ref-clipart-code="none" ref-clipart-name="None"></span>
+								<div id="wb_text_continue_preview" class="preview-text faded optional-messsage">
 									Continuous Message
 								</div>
 							</div>
@@ -326,13 +326,13 @@
 					<div id="preview-pane-c" class="preview-panel" style="font-family: 'Arial Bold';">
 						<div class="wb-text-preview i-select">
 							<div id="inside-view" class="band band-reg wb-band">
-								<div class="preview-text faded" id="wb_text_inside_preview">
+								<div id="wb_text_inside_preview" class="preview-text faded optional-messsage">
 									Inside Message
 								</div>
 							</div>
 						</div>
 					</div>
-					<div id="preview-pill" class="text-center hidden">
+					<div id="preview-pill" class="text-center hidden" style="min-height:75px;">
 						<div class="col-xs-12 text-danger">Click below to preview wristband colors</div>
 						<div class="clearfix"></div>
 						<div id="preview-pill-selection">
@@ -340,7 +340,7 @@
 					</div>
 				</div>
 				<!-- End preview pane -->
-				<div id="add-design">
+				<div id="add-design" class="optional-messsage">
 					<!--<button>Clear</button>-->
 					<h3 style="text-align: left;">Select Font Style</h3>
 					<button id="btn_font_style" class="btn-order pull-left" ref-font-style-code="arial-bold">Choose Font Style</button>
@@ -489,11 +489,11 @@
 			<div id="total-area" class="total-area">
 				<div class="has-total hidden">
 					<div class="prod-ship col-md-4">
-						<h3><i class="fa"></i> </h3>
-						<h5>Production Time</h5>
+						<h3 class="hidden-sm hidden-xs"><i class="fa"></i> </h3>
+						<h3>Production Time</h3>
 							<select name="ProductionTime" id="ProductionTime" class="form-control js-production-options js-time-options" data-validation-error="Please select production time." data-modal-target="#modalproduction-shipping">
 							</select>
-						<h5>Shipping Time</h5>
+						<h3>Shipping Time</h3>
 							<select name="Delivery" id="ShippingTime" class="form-control js-shipping-options js-time-options" data-validation-error="Please select shipping time." data-target="#production-shipping">
 							</select>
 					</div>
@@ -727,13 +727,13 @@
 								<!-- list -->
 								<div id="free-key-chain" class="summary-table-group summary-table-state hidden">
 									<div class="col-xs-9 padding-left-25">
-										<i class="fa fa-angle-right"></i>Keychain (+ <span class="qty">0</span>)
+										<i class="fa fa-angle-right"></i>Keychain (+<span class="qty">0</span>)
 									</div>
 									<div class="col-xs-3 text-right no-padding-right">-</div>
 								</div>
 								<div id="free-wristband" class="summary-table-group summary-table-state hidden">
 									<div class="col-xs-9 padding-left-25">
-										<i class="fa fa-angle-right"></i>Wristband (+ <span class="qty">0</span>)
+										<i class="fa fa-angle-right"></i>Wristband (+<span class="qty">0</span>)
 									</div>
 									<div class="col-xs-3 text-right no-padding-right">-</div>
 								</div>
@@ -741,12 +741,15 @@
 						</div>
 						<div class="summary-total">
 							<div class="col-xs-9 no-padding-left">
-								<h3>Total :</h3>
+								<h1>Total :</h1>
 							</div>
 							<div class="col-xs-3 text-right no-padding-right">
-								<h3>$<span id="total-price" class="total-price">0.00</span></h3>
+								<h1>$<span id="total-price" class="total-price">0.00</span></h1>
 							</div>
 						</div>
+					</div>
+					<div class="col-xs-12" style="padding-top:30px;">
+						<button id="submitOrder" class="btn btn-submit pull-right" type="button"><i class="fa fa-cart-plus" style="padding-right:5px;"></i> ADD TO CART</button>
 					</div>
 					<div class="clearfix"></div>
 				</div>
