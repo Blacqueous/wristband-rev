@@ -23,6 +23,7 @@ $(window).ready(function() {
             $(this).attr('src', $(this).attr('data-src'));
         }).fadeTo(1000, 1);
     });
+
     // Load wristband sizes.
     loadSizes();
     // Load wristband colors.
@@ -1381,8 +1382,8 @@ function loadColors($style, $size)
 
     // Check addons
     $('.optional-add-ons').addClass('hidden');
-    if($size == '0-25inch') {
-        $('.0-25-only').removeClass('hidden');
+    if($size == '0-50inch') {
+        $('.0-50-only').removeClass('hidden');
     } else if($size == '0-75inch') {
         $('.0-75-only').removeClass('hidden');
     }

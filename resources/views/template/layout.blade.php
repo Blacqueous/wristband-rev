@@ -60,6 +60,14 @@
 
     <body>
 
+		<div class="loader-container">
+			<div id="loader-wrapper">
+				<div id="loader"></div>
+				<div class="loader-section section-left"></div>
+				<div class="loader-section section-right"></div>
+			</div>
+		</div>
+
         @include('template.header')
 
         <div id="main">
@@ -100,28 +108,19 @@
         @section('js')
         @show
 
-        <script>
+        <script language="javascript">
+
+			$(window).ready(function() {
+				$('body').addClass('loaded');
+				$('.loader-section').addClass('done');
+			});
+
             $(function() {
                 $('#fs > option').hover(function() {
                     $(this).parent().css({fontFamily:$(this).val()})
                 });
             });
-        </script>
 
-        <script>
-            jQuery("#slideshow > div:gt(0)").hide();
-
-            setInterval(function() {
-                jQuery('#slideshow > div:first')
-                    .fadeOut(1000)
-                    .next()
-                    .fadeIn(1000)
-                    .end()
-                    .appendTo('#slideshow');
-            },  7000);
-        </script>
-
-        <script language="javascript">
             $(document).ready(function() {
                 $('.popup-order-gallery').magnificPopup({
                     delegate: 'a',
@@ -141,6 +140,22 @@
                     }
                 });
             });
+
+        </script>
+
+        <script language="javascript">
+
+            jQuery("#slideshow > div:gt(0)").hide();
+
+            setInterval(function() {
+                jQuery('#slideshow > div:first')
+                    .fadeOut(1000)
+                    .next()
+                    .fadeIn(1000)
+                    .end()
+                    .appendTo('#slideshow');
+            },  7000);
+
         </script>
 
     </body>
