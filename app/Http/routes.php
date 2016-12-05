@@ -231,6 +231,12 @@ Route::get('/cart', 'CartController@index');
 
 Route::post('/cart/add', 'CartController@cartAdd');
 
+Route::get('/cart/update', function () {
+    return redirect('/order');
+});
+
+Route::get('/cart/update/{index}', 'CartController@cartUpdate');
+
 Route::post('/cart/delete', 'CartController@cartDelete');
 
 Route::post('/cart/clear', 'CartController@cartClear');

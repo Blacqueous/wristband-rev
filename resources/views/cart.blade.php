@@ -35,18 +35,7 @@
 
             // Update cart event.
             $('body').on('click', '.cartUpdate', function(e) {
-                $.ajax({
-                	type: 'POST',
-                	url: '/cart/update',
-                	data: {
-                        cart_index: '0',
-                        _token: $('meta[name="csrf-token"]').attr('content')
-                    },
-                	beforeSend: function() { },
-                	success: function(link) { }
-                }).done(function(link) {
-                    // Do something when everything is done.
-                });
+                window.location.replace("/cart/update/"+$(this).attr('data-cart-token'));
             });
 
             // Delete cart event.
@@ -422,24 +411,28 @@
                                     @endif
                                 </div>
                                 @endif
-                                @if(isset($value['free']))
+                                @if($value['free']['key-chain']['quantity'] > 0 || $value['free']['wristbands']['quantity'] > 0)
                                 <div class="row" style="padding-top:10px;">
                                     <div class="col-xs-12" style="padding-bottom:5px;">
                                         <i class="fa fa-gift"></i>Free :
                                     </div>
                                     <!-- list -->
+                                    @if( $value['free']['key-chain']['quantity'] > 0)
                                     <div id="free-key-chain" class="summary-table-group">
                                         <div class="col-xs-9 padding-left-25">
-                                            <i class="fa fa-angle-right"></i>Keychain (+{{ $value['free']['key-chain'] }})
+                                            <i class="fa fa-angle-right"></i>Keychain (+{{ $value['free']['key-chain']['quantity'] }})
                                         </div>
                                         <div class="col-xs-3 text-right">-</div>
                                     </div>
+                                    @endif
+                                    @if( $value['free']['wristbands']['quantity'] > 0)
                                     <div id="free-wristband" class="summary-table-group">
                                         <div class="col-xs-9 padding-left-25">
-                                            <i class="fa fa-angle-right"></i>Wristband (+{{ $value['free']['wristbands'] }})
+                                            <i class="fa fa-angle-right"></i>Wristband (+{{ $value['free']['wristbands']['quantity'] }})
                                         </div>
                                         <div class="col-xs-3 text-right">-</div>
                                     </div>
+                                    @endif
                                 </div>
                                 @endif
                                 <div class="row" style="padding:10px 0px 20px 0px;"></div>
@@ -501,7 +494,7 @@
                         <br/>
                         <h1>CART IS EMPTY</h1>
                         <br/>
-                        <a href="/order" class="btn btn-xs btn-secondary btn-cart" style="font-size:14px;padding:10px;">Click here to start your Order!</a>
+                        <a href="/order" class="btn btn-xs btn-secondary btn-cart" style="font-size:18px;margin-bottom:10px;padding:0px;">Click here to start your Order!</a>
                     </div>
                 </div>
             <?php endif; ?>

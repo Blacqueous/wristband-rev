@@ -1957,3 +1957,9 @@ body {
 .cartUpdate {
     margin-bottom: 10px;
 }
+
+.dropdown-menu {
+    background-color: #000;
+    border: 1px solid #008c94;
+    margin: 0px;
+}
