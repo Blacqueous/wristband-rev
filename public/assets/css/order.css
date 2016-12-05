@@ -1535,9 +1535,9 @@ body {
 }
 
 .btn-danger:focus, .btn-danger:active {
-    background-color: #c9302c;
-    border: 1px solid #761C19;
-    color: #FFFFFF;
+    background-color: #c9302c!important;
+    border: 1px solid #761C19!important;
+    color: #FFFFFF!important;
 }
 
 .btn-warning:hover {
@@ -1546,9 +1546,9 @@ body {
 }
 
 .btn-warning:focus, .btn-warning:active {
-    background-color: #ec971f;
-    border: 1px solid #eea236;
-    color: #FFFFFF;
+    background-color: #ec971f!important;
+    border: 1px solid #eea236!important;
+    color: #FFFFFF!important;
 }
 
 .btn-success:hover {

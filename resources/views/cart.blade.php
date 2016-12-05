@@ -148,7 +148,7 @@
                                                         break;
                                                 }
                                             ?>
-                                            <i class="fa fa-arrows-alt"></i>Size ({{ $value['size'] }})
+                                            <i class="fa fa-arrows-alt"></i>Size (<span class="value">{{ $value['size'] }}</span>)
                                         </div>
                                         <div class="col-xs-3 text-right">-</div>
                                     </div>
@@ -164,7 +164,7 @@
                                         @if(isset($value['items']['segmented']))
                                         <div id="summary-table-segmented" class="summary-table-group">
                                             <div class="col-xs-9">
-                                                <i class="fa fa-life-ring"></i>Segmented Wristbands ({{ $value['items']['segmented']['quantity'] }} x ${{ number_format($value['items']['segmented']['price_addon'], 2) }} each)
+                                                <i class="fa fa-life-ring"></i>Segmented Wristbands (<span class="value">{{ $value['items']['segmented']['quantity'] }} x ${{ number_format($value['items']['segmented']['price_addon'], 2) }} each</span>)
                                             </div>
                                             <div class="col-xs-3 text-right">
                                                 ${{ number_format($value['items']['segmented']['price_total'], 2) }}
@@ -174,7 +174,7 @@
                                         @if(isset($value['items']['swirl']))
                                         <div id="summary-table-swirl" class="summary-table-group">
                                             <div class="col-xs-9">
-                                                <i class="fa fa-life-ring"></i>Swirl Wristbands ({{ $value['items']['swirl']['quantity'] }} x ${{ number_format($value['items']['swirl']['price_addon'], 2) }} each)
+                                                <i class="fa fa-life-ring"></i>Swirl Wristbands (<span class="value">{{ $value['items']['swirl']['quantity'] }} x ${{ number_format($value['items']['swirl']['price_addon'], 2) }} each</span>)
                                             </div>
                                             <div class="col-xs-3 text-right">
                                                 ${{ number_format($value['items']['swirl']['price_total'], 2) }}
@@ -184,7 +184,7 @@
                                         @if(isset($value['items']['glow']))
                                         <div id="summary-table-glow" class="summary-table-group">
                                             <div class="col-xs-9">
-                                                <i class="fa fa-life-ring"></i>Glow Wristbands ({{ $value['items']['glow']['quantity'] }} x ${{ number_format($value['items']['glow']['price_addon'], 2) }} each)
+                                                <i class="fa fa-life-ring"></i>Glow Wristbands (<span class="value">{{ $value['items']['glow']['quantity'] }} x ${{ number_format($value['items']['glow']['price_addon'], 2) }} each</span>)
                                             </div>
                                             <div class="col-xs-3 text-right">
                                                 ${{ number_format($value['items']['glow']['price_total'], 2) }}
@@ -195,7 +195,7 @@
                                     @if(isset($value['time_production']))
                                     <div id="summary-table-production" class="summary-table-group">
                                         <div class="col-xs-9">
-                                            <i class="fa fa-dropbox"></i>Production ({{ $value['time_production']['days'] }} Days)
+                                            <i class="fa fa-dropbox"></i>Production (<span class="value">{{ $value['time_production']['days'] }} Days</span>)
                                         </div>
                                         <div class="col-xs-3 text-right">
                                             ${{ number_format($value['time_production']['price'], 2) }}
@@ -205,7 +205,7 @@
                                     @if(isset($value['time_shipping']))
                                     <div id="summary-table-shipping" class="summary-table-group">
                                         <div class="col-xs-9">
-                                            <i class="fa fa-truck"></i>Shipping ({{ $value['time_shipping']['days'] }} Days)
+                                            <i class="fa fa-truck"></i>Shipping (<span class="value">{{ $value['time_shipping']['days'] }} Days</span>)
                                         </div>
                                         <div class="col-xs-3 text-right">
                                             ${{ number_format($value['time_shipping']['price'], 2) }}

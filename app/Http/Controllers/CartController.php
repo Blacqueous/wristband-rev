@@ -118,4 +118,22 @@ class CartController extends Controller
 		return redirect('/order');
 	}
 
+	public function cartUpdateStart(Request $request)
+	{
+		// Check if cart session exists.
+        if(Session::has('_cart')) {
+			// Get the cart.
+			$items = Session::get('_cart');
+			// check if order exists in cart.
+			if(isset($items[$request->index])) {
+				$items[$request->index] = $request->data;
+				Session::put('_cart', $items);
+				// Return success!
+		 		return json_encode(true);
+			}
+		}
+		// Something is wrong.
+		return json_encode(false);
+	}
+
 }

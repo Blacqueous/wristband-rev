@@ -241,6 +241,8 @@ Route::get('/cart/update', function () {
 
 Route::get('/cart/update/{index}', 'CartController@cartUpdate');
 
+Route::post('/cart/update/{index}', 'CartController@cartUpdateStart');
+
 Route::post('/cart/delete', 'CartController@cartDelete');
 
 Route::post('/cart/clear', 'CartController@cartClear');

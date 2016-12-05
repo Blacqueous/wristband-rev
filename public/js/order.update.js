@@ -675,10 +675,10 @@ $(document).ready(function() {
                 // Set value for free
                 free['key-chain'] = total;
             }
-            // Load total amount.
-            loadTotal(false);
 
         }
+        // Load total amount.
+        loadTotal(false);
 
     });
 
@@ -718,10 +718,10 @@ $(document).ready(function() {
                 // Set value for free
                 free['wristbands'] = total;
             }
-            // Load total amount.
-            loadTotal(false);
 
         }
+        // Load total amount.
+        loadTotal(false);
 
     });
 
@@ -834,10 +834,10 @@ $(document).ready(function() {
                 $('#modal-some-keychains .qty').html(maxKeychain);
                 $('#modal-some-keychains').modal('show');
             } else { }
-            // Load total amount.
-            loadTotal(false);
 
         }
+        // Load total amount.
+        loadTotal(false);
 
     });
 
@@ -1867,21 +1867,22 @@ function displayTotal($collection)
         }
     }
 
-    if (!$.isEmptyObject($collection.free['key-chain'].items) || !$.isEmptyObject($collection.free['key-chain'].items)) {
-    // if (typeof $collection.free['key-chain'].quantity != "undefined" || typeof $collection.free['wristbands'].quantity != "undefined" ) {
-        $('#summary-table-free').removeClass('hidden');
+    if (typeof $collection.free['key-chain'] != "undefined" || typeof $collection.free['wristbands'] != "undefined") {
+        if (!$.isEmptyObject($collection.free['key-chain'].items) || !$.isEmptyObject($collection.free['wristbands'].items)) {
+            $('#summary-table-free').removeClass('hidden');
 
-        if(typeof $collection.free['key-chain'] != "undefined") {
-            if ( parseFloat($collection.free['key-chain'].quantity) > 0 ) {
-                $('#summary-table-free #free-key-chain').removeClass('hidden');
-                $('#summary-table-free #free-key-chain .qty').html( $collection.free['key-chain'].quantity );
+            if(typeof $collection.free['key-chain'] != "undefined") {
+                if ( parseFloat($collection.free['key-chain'].quantity) > 0 ) {
+                    $('#summary-table-free #free-key-chain').removeClass('hidden');
+                    $('#summary-table-free #free-key-chain .qty').html( $collection.free['key-chain'].quantity );
+                }
             }
-        }
 
-        if(typeof $collection.free['wristbands'] != "undefined") {
-            if ( parseFloat($collection.free['wristbands'].quantity) > 0 ) {
-                $('#summary-table-free #free-wristband').removeClass('hidden');
-                $('#summary-table-free #free-wristband .qty').html( $collection.free['wristbands'].quantity );
+            if(typeof $collection.free['wristbands'] != "undefined") {
+                if ( parseFloat($collection.free['wristbands'].quantity) > 0 ) {
+                    $('#summary-table-free #free-wristband').removeClass('hidden');
+                    $('#summary-table-free #free-wristband .qty').html( $collection.free['wristbands'].quantity );
+                }
             }
         }
     }
@@ -3269,33 +3270,35 @@ function loadForm()
         } else {
             free = {};
         }
-        if(typeof free['key-chain'] != "undefined") {
-            $('#free-keychains').iCheck('check');
-            $('#dv-10-free-keychains').removeClass('hidden');
-            $('#dv-10-free-keychains .convert-container').removeClass('hidden');
-            $.each(free['key-chain']['items'], function(aKey, aValue) {
-                $.each(aValue, function(bKey, bValue) {
-                    if(typeof bValue['size'] != "undefined") {
-                        $.each(bValue['size'], function(cKey, cValue) {
-                            $("input[data-size='"+cKey+"'][data-style='"+aKey+"'][data-font-color='"+cValue['font']+"'][data-color='"+bValue['color'].split(',').join(',')+"'].freekc").val(cValue['qty']);
-                        });
-                    }
+        if(_cart.quantity > 100) {
+            if(typeof free['key-chain'] != "undefined") {
+                $('#free-keychains').iCheck('check');
+                $('#dv-10-free-keychains').removeClass('hidden');
+                $('#dv-10-free-keychains .convert-container').removeClass('hidden');
+                $.each(free['key-chain']['items'], function(aKey, aValue) {
+                    $.each(aValue, function(bKey, bValue) {
+                        if(typeof bValue['size'] != "undefined") {
+                            $.each(bValue['size'], function(cKey, cValue) {
+                                $("input[data-size='"+cKey+"'][data-style='"+aKey+"'][data-font-color='"+cValue['font']+"'][data-color='"+bValue['color'].split(',').join(',')+"'].freekc").val(cValue['qty']);
+                            });
+                        }
+                    });
                 });
-            });
-        }
-        if(typeof free['wristbands'] != "undefined") {
-            $('#free-wristbands').iCheck('check');
-            $('#dv-100-free-wristbands').removeClass('hidden');
-            $('#dv-100-free-wristbands .convert-container').removeClass('hidden');
-            $.each(free['wristbands']['items'], function(aKey, aValue) {
-                $.each(aValue, function(bKey, bValue) {
-                    if(typeof bValue['size'] != "undefined") {
-                        $.each(bValue['size'], function(cKey, cValue) {
-                            $("input[data-size='"+cKey+"'][data-style='"+aKey+"'][data-font-color='"+cValue['font']+"'][data-color='"+bValue['color'].split(',').join(',')+"'].freewb").val(cValue['qty']);
-                        });
-                    }
+            }
+            if(typeof free['wristbands'] != "undefined") {
+                $('#free-wristbands').iCheck('check');
+                $('#dv-100-free-wristbands').removeClass('hidden');
+                $('#dv-100-free-wristbands .convert-container').removeClass('hidden');
+                $.each(free['wristbands']['items'], function(aKey, aValue) {
+                    $.each(aValue, function(bKey, bValue) {
+                        if(typeof bValue['size'] != "undefined") {
+                            $.each(bValue['size'], function(cKey, cValue) {
+                                $("input[data-size='"+cKey+"'][data-style='"+aKey+"'][data-font-color='"+cValue['font']+"'][data-color='"+bValue['color'].split(',').join(',')+"'].freewb").val(cValue['qty']);
+                            });
+                        }
+                    });
                 });
-            });
+            }
         }
 
         if(typeof _cart.texts != "undefined") {
@@ -3430,7 +3433,6 @@ function loadForm()
                 });
             }
         }
-
 
         // Get proper total qty.
         $.ajax({
