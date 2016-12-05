@@ -1867,17 +1867,22 @@ function displayTotal($collection)
         }
     }
 
-    if ( parseFloat($collection.free['key-chain'].quantity) > 0 || parseFloat($collection.free['wristbands'].quantity) > 0 ) {
+    if (!$.isEmptyObject($collection.free['key-chain'].items) || !$.isEmptyObject($collection.free['key-chain'].items)) {
+    // if (typeof $collection.free['key-chain'].quantity != "undefined" || typeof $collection.free['wristbands'].quantity != "undefined" ) {
         $('#summary-table-free').removeClass('hidden');
 
         if(typeof $collection.free['key-chain'] != "undefined") {
-            $('#summary-table-free #free-key-chain').removeClass('hidden');
-            $('#summary-table-free #free-key-chain .qty').html( $collection.free['key-chain'].quantity );
+            if ( parseFloat($collection.free['key-chain'].quantity) > 0 ) {
+                $('#summary-table-free #free-key-chain').removeClass('hidden');
+                $('#summary-table-free #free-key-chain .qty').html( $collection.free['key-chain'].quantity );
+            }
         }
 
         if(typeof $collection.free['wristbands'] != "undefined") {
-            $('#summary-table-free #free-wristband').removeClass('hidden');
-            $('#summary-table-free #free-wristband .qty').html( $collection.free['wristbands'].quantity );
+            if ( parseFloat($collection.free['wristbands'].quantity) > 0 ) {
+                $('#summary-table-free #free-wristband').removeClass('hidden');
+                $('#summary-table-free #free-wristband .qty').html( $collection.free['wristbands'].quantity );
+            }
         }
     }
 
@@ -3226,21 +3231,194 @@ function loadForm()
                     $.each(bValue['size'], function(cKey, cValue) {
                         $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+aKey+"'] input[ref-size='"+cKey+"'][ref-style='"+aKey+"'][ref-title='"+bValue['title']+"'][ref-color='"+bValue['color'].split(',').join(', ')+"']").val(cValue['qty']);
                         items[aKey][bKey]['size'][cKey]['qty'] = parseFloat(items[aKey][bKey]['size'][cKey]['qty']);
+
+                        // loadCustomWristband(customStyle, customType, customColors.join(","), customImgTarget);
+                        // Get proper total qty
+console.log($("#.tab-content .tab-pane[data-color-style='"+aKey+"'] .main-color-content"));
+                        // $.ajax({
+                        // 	type: 'GET',
+                        // 	url: '/getTemplateCustomWristband?type='+aKey+'&style='+_cart.style,
+                        // 	data: { },
+                        // 	beforeSend: function() { },
+                        // 	success: function() { }
+                        // }).done(function(data) {
+                        //     // Do something when everything is done.
+                        //     $("#.tab-content .tab-pane[data-color-style='"+aKey+"'] .main-color-content").prepend(data);
+                        // });
                     });
                 }
-            })
+            });
         });
         // reset wristband previews.
         resetPreview();
         // Load free items.
         loadFree();
         // Load total amount.
-        loadTotal();
+        // loadTotal();
 
-        free = _cart.free;
-        texts = _cart.texts;
-        clips = _cart.clips;
-        addon = _cart.addon;
+        if(typeof _cart.free != "undefined") {
+            free = _cart.free;
+        } else {
+            free = {};
+        }
+        if(typeof free['key-chain'] != "undefined") {
+            $('#free-keychains').iCheck('check');
+            $('#dv-10-free-keychains').removeClass('hidden');
+            $('#dv-10-free-keychains .convert-container').removeClass('hidden');
+            $.each(free['key-chain']['items'], function(aKey, aValue) {
+                $.each(aValue, function(bKey, bValue) {
+                    if(typeof bValue['size'] != "undefined") {
+                        $.each(bValue['size'], function(cKey, cValue) {
+                            $("input[data-size='"+cKey+"'][data-style='"+aKey+"'][data-font-color='"+cValue['font']+"'][data-color='"+bValue['color'].split(',').join(',')+"'].freekc").val(cValue['qty']);
+                        });
+                    }
+                });
+            });
+        }
+        if(typeof free['wristbands'] != "undefined") {
+            $('#free-wristbands').iCheck('check');
+            $('#dv-100-free-wristbands').removeClass('hidden');
+            $('#dv-100-free-wristbands .convert-container').removeClass('hidden');
+            $.each(free['wristbands']['items'], function(aKey, aValue) {
+                $.each(aValue, function(bKey, bValue) {
+                    if(typeof bValue['size'] != "undefined") {
+                        $.each(bValue['size'], function(cKey, cValue) {
+                            $("input[data-size='"+cKey+"'][data-style='"+aKey+"'][data-font-color='"+cValue['font']+"'][data-color='"+bValue['color'].split(',').join(',')+"'].freewb").val(cValue['qty']);
+                        });
+                    }
+                });
+            });
+        }
+
+        if(typeof _cart.texts != "undefined") {
+            texts = _cart.texts;
+        } else {
+            texts = {};
+        }
+        if(typeof texts['cont'] != "undefined") {
+            $("input[type='radio'].wb-text-type[value='select-c']").iCheck('check'); // Check continuous radio button.
+            $('#wb_text_continue').val(texts['cont']['text']);
+        } else {
+            $("input[type='radio'].wb-text-type[value='select-fb']").iCheck('check'); // Check continuous radio button.
+            if(typeof texts['front'] != "undefined") {
+                $('#wb_text_front').val(texts['front']['text']);
+            }
+            if(typeof texts['back'] != "undefined") {
+                $('#wb_text_back').val(texts['back']['text']);
+            }
+        }
+        if(typeof texts['inside'] != "undefined") {
+            $('#wb_text_back').val(texts['inside']['text']);
+        }
+
+        if(typeof _cart.clips != "undefined") {
+            clips = _cart.clips;
+        } else {
+            clips = {};
+        }
+        if(typeof clips.logo != "undefined") {
+            if(typeof clips.logo['front-start'] != "undefined") {
+                image = clips.logo['front-start']['image'];
+                if(image.includes('uploads')) {
+                    image = $('#URLasset').val()+"assets/images/src/upload-icon.png";
+                }
+                $('#clipart-front-start').html("<img height='40' src='"+image+"'>");
+            }
+            if(typeof clips.logo['front-end'] != "undefined") {
+                image = clips.logo['front-end']['image'];
+                if(image.includes('uploads')) {
+                    image = $('#URLasset').val()+"assets/images/src/upload-icon.png";
+                }
+                $('#clipart-front-end').html("<img height='40' src='"+image+"'>");
+            }
+            if(typeof clips.logo['front-center'] != "undefined") {
+                image = clips.logo['front-center']['image'];
+                if(image.includes('uploads')) {
+                    image = $('#URLasset').val()+"assets/images/src/upload-icon.png";
+                }
+                $('#clipart-front-center').html("<img height='50' src='"+image+"'>");
+            }
+            if(typeof clips.logo['back-start'] != "undefined") {
+                image = clips.logo['back-start']['image'];
+                if(image.includes('uploads')) {
+                    image = $('#URLasset').val()+"assets/images/src/upload-icon.png";
+                }
+                $('#clipart-back-start').html("<img height='40' src='"+image+"'>");
+            }
+            if(typeof clips.logo['back-end'] != "undefined") {
+                image = clips.logo['back-end']['image'];
+                if(image.includes('uploads')) {
+                    image = $('#URLasset').val()+"assets/images/src/upload-icon.png";
+                }
+                $('#clipart-back-end').html("<img height='40' src='"+image+"'>");
+            }
+            if(typeof clips.logo['cont-start'] != "undefined") {
+                image = clips.logo['cont-start']['image'];
+                if(image.includes('uploads')) {
+                    image = $('#URLasset').val()+"assets/images/src/upload-icon.png";
+                }
+                $('#clipart-cont-start').html("<img height='40' src='"+image+"'>");
+            }
+            if(typeof clips.logo['cont-end'] != "undefined") {
+                image = clips.logo['cont-end']['image'];
+                if(image.includes('uploads')) {
+                    image = $('#URLasset').val()+"assets/images/src/upload-icon.png";
+                }
+                $('#clipart-cont-end').html("<img height='40' src='"+image+"'>");
+            }
+        }
+
+        if(typeof _cart.addon != "undefined") {
+            addon = _cart.addon;
+        } else {
+            addon = {};
+        }
+        if(typeof addon['3mm-thick'] != "undefined") {
+            $("input[type='checkbox'].add-ons[data-code='3mm-thick']").iCheck('check');
+        }
+        if(typeof addon['digital-proof'] != "undefined") {
+            $("input[type='checkbox'].add-ons[data-code='digital-proof']").iCheck('check');
+        }
+        if(typeof addon['eco-friendly'] != "undefined") {
+            $("input[type='checkbox'].add-ons[data-code='eco-friendly']").iCheck('check');
+        }
+        if(typeof addon['glitters'] != "undefined") {
+            $("input[type='checkbox'].add-ons[data-code='glitters']").iCheck('check');
+        }
+        if(typeof addon['individual'] != "undefined") {
+            $("input[type='checkbox'].add-ons[data-code='individual']").iCheck('check');
+        }
+        if(typeof addon['key-chain'] != "undefined") {
+            $("input[type='checkbox'].add-ons[data-code='key-chain']").iCheck('check');
+            $('#convert-keychain').removeClass('hidden');
+            if(addon['key-chain']['all'] == true || addon['key-chain']['all'] == "true") {
+                addon['key-chain']['all'] = true;
+                $('#convert-keychain-input-all').iCheck('check');
+                $('#convert-keychain-area-all-qty').html(addon['key-chain']['quantity']);
+                $('#convert-keychain-area-all').removeClass('hidden');
+                $('#convert-keychain-area-some').addClass('hidden');
+            } else {
+                addon['key-chain']['all'] = false;
+                $('#convert-keychain-input-some').iCheck('check');
+                $('#convert-keychain-area-some').removeClass('hidden');
+                $('#convert-keychain-area-all').addClass('hidden');
+                $.each(addon['key-chain']['items'], function(aKey, aValue) {
+                    $.each(aValue, function(bKey, bValue) {
+                        if(typeof bValue['size'] != "undefined") {
+                            $.each(bValue['size'], function(cKey, cValue) {
+                                $("input[data-size='"+cKey+"'][data-style='"+aKey+"'][data-font-color='"+cValue['font']+"'][data-color='"+bValue['color'].split(',').join(',')+"'].addonkc").val(cValue['qty']);
+                            });
+                        }
+                    });
+                });
+            }
+        }
+
+        $('#ProductionTime').val(_cart.time_production.days);
+        $('#ShippingTime').val(_cart.time_shipping.days);
+
+        // Load total amount.
+        loadTotal();
 
 }
 
