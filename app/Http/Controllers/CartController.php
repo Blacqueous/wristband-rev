@@ -38,17 +38,28 @@ class CartController extends Controller
  		return json_encode(true);
 	}
 
-	public function cartRemove(Request $request)
+	public function cartDelete(Request $request)
 	{
-        if(!Session::has('_cart')) {
-
-        }
+		// Check if cart session exists.
+        if(Session::has('_cart')) {
+			// Get the cart.
+			$items = Session::get('_cart');
+			// check if order exists in cart.
+			if(isset($items[$request->cart_index])) {
+				unset($items[$request->cart_index]); // Remove and save order.
+				Session::put('_cart', $items);
+				// Return success!
+		 		return json_encode(true);
+			}
+		}
+		// Something is wrong.
+		return json_encode(false);
 	}
 
 	public function cartClear(Request $request)
 	{
-        Session::forget('_cart');
-		return json_encode(true);
+        // Session::forget('_cart');
+		// return json_encode(true);
 	}
 
 }

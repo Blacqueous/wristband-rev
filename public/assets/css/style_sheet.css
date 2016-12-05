@@ -822,7 +822,7 @@ body, a, [input type="radio"] , [input type="checkbox"]{
 		background:url('img/discount.jpg') no-repeat;
 		height:400px;
 		padding: 75px 82px;
-	}	
+	}
 #coup-box > label{
 		text-shadow:2px 2px #000;
 	}
@@ -847,7 +847,7 @@ body, a, [input type="radio"] , [input type="checkbox"]{
 			color: #888;
 			text-align:center;
 		}
-		
+
 		#mask {
 		  position: absolute;
 		  left: 0;
@@ -888,7 +888,7 @@ body, a, [input type="radio"] , [input type="checkbox"]{
 		background-color: #fff;
 		padding: 10px;
 	}
-		
+
 		#popupfoot {
 		position: relative;
 		top: -166px;
@@ -1314,7 +1314,7 @@ body, a, [input type="radio"] , [input type="checkbox"]{
 	}
 
 	.navbar-brand>img {
-		width: 289px!important;
+		width: 255px!important;
 	}
 
 	.fonts-content li {

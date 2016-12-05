@@ -32,7 +32,7 @@
                     .button-wrapper + .tooltip > .tooltip-arrow { }
                 </style>
                 <a href="/cart" class="button-wrapper pull-right" data-toggle="tooltip" data-placement="left" title="VIEW CART">
-                    <span class="glyphicon glyphicon-shopping-cart"></span><span class="items label label-default">{{ (Session::has('_cart')) ? count(Session::get('_cart')) : "0" }}</span>
+                    <span class="fa fa-shopping-cart"></span><span class="items label label-default">{{ (Session::has('_cart')) ? count(Session::get('_cart')) : "0" }}</span>
                 </a>
 				<div class="clearfix"></div>
 			</div>
@@ -94,12 +94,12 @@
 
 		<!--.Banner Slideshow -->
 		 <?php
-			
+
 
 			if (Route::getCurrentRoute()->uri() == '/')
 			{
 				// You're on the root route
-			
+
 		?>
 
 			<div class="banner">
