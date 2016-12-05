@@ -1867,13 +1867,12 @@ body {
 }
 
 .button-wrapper:hover {
-    background-color: #04adb7;
+    /*background-color: #04adb7;*/
     /*border: 1px solid #fff;*/
-    color: #fff;
+    color: #000;
 }
 
 .button-wrapper:focus, .button-wrapper:active {
-    border: 1px solid #027880;
     color: #027880;
 }
 
