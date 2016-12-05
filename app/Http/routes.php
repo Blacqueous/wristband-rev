@@ -51,6 +51,8 @@ Route::get('/gallery', 'ViewController@pageProductGallery');
 
 Route::get('/price', 'ViewController@pagePrices');
 
+Route::get('/quote', 'ViewController@pageQuote');
+
 Route::get('/product-printed', function() {
 
 	$data = [];
@@ -242,3 +244,5 @@ Route::get('/cart/update/{index}', 'CartController@cartUpdate');
 Route::post('/cart/delete', 'CartController@cartDelete');
 
 Route::post('/cart/clear', 'CartController@cartClear');
+
+Route::post('/quote/send', 'ViewController@mailTest');
