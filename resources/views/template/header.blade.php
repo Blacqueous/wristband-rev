@@ -17,7 +17,7 @@
     <nav class="navbar navbar-inverse navbar-default">
 		<div class="container">
 			<div id="logo">
-				<a class="navbar-brand" href="/"><img src="assets/images/src/prom_logo.jpg"></a>
+				<a class="navbar-brand" href="/"><img src="{{ URL::asset('assets/images/src/prom_logo.jpg') }}"></a>
 			</div>
 			<div class="header-right-box">
     			<!-- <div id="google_trust" class="pull-right">
@@ -105,13 +105,13 @@
 			<div class="banner">
 				<div id="slideshow">
 					<div id="slider-images" style="display: block;">
-						<img src="assets/images/src/banner1.jpg">
+						<img src="{{ URL::asset('assets/images/src/banner1.jpg') }}">
 					</div>
 					<div id="slider-images" style="display: none;">
-						<img src="assets/images/src/banner3.jpg">
+						<img src="{{ URL::asset('assets/images/src/banner3.jpg') }}">
 					</div>
 					<div id="slider-images" style="display: none;">
-						<img src="assets/images/src/banner2.jpg">
+						<img src="{{ URL::asset('assets/images/src/banner2.jpg') }}">
 					</div>
 				</div>
 					<div class=""></div>

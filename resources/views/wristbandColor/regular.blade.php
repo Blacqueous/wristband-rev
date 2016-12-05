@@ -33,7 +33,7 @@
                 <div class="col-xs-12 col-sm-6 col-md-3 box-color-container">
                     <div class="col-xs-12 box-color">
                         <div class="col-xs-12 box-img-container">
-                            <img id="customRegularSolid{{ $str }}" class="previewColorModal wb-unveil" src="assets/images/placeholder.png" data-src="assets/images/src/custom.png" />
+                            <img id="customRegularSolid{{ $str }}" class="previewColorModal wb-unveil" src="{{ URL::asset('assets/images/placeholder.png') }}" data-src="{{ URL::asset('assets/images/src/custom.png') }}" />
                         </div>
                         <div class="col-xs-12 box-color-title">
                             <button class="btn-order custom-color-button" data-img-target="#customRegularSolid{{ $str }}" data-index="{{ $str }}" data-style="solid" data-max="1">Custom Color</button>
@@ -89,7 +89,7 @@
                 <div class="col-xs-12 col-sm-6 col-md-3 box-color-container">
                     <div class="col-xs-12 box-color">
                         <div class="col-xs-12 box-img-container">
-                            <img class="wb-unveil" src="assets/images/placeholder.png" data-src="{{ $value['image'] }}" />
+                            <img class="wb-unveil" src="{{ URL::asset('assets/images/placeholder.png') }}" data-src="{{ URL::asset($value['image']) }}" />
                         </div>
                         <div class="col-xs-12 box-color-title">
                             <label>{{ $value['name'] }}</label>
@@ -159,7 +159,7 @@
                 <div class="col-xs-12 col-sm-6 col-md-3 box-color-container">
                     <div class="col-xs-12 box-color">
                         <div class="col-xs-12 box-img-container">
-                            <img id="customRegularSegmented{{ $str }}" class="previewColorModal wb-unveil" src="assets/images/placeholder.png" data-src="assets/images/src/custom.png" />
+                            <img id="customRegularSegmented{{ $str }}" class="previewColorModal wb-unveil" src="{{ URL::asset('assets/images/placeholder.png') }}" data-src="{{ URL::asset('assets/images/src/custom.png') }}" />
                         </div>
                         <div class="col-xs-12 box-color-title">
                             <button class="btn-order custom-color-button" data-img-target="#customRegularSegmented{{ $str }}" data-index="{{ $str }}" data-style="segmented" data-max="6">Custom Color</button>
@@ -215,7 +215,7 @@
                 <div class="col-xs-12 col-sm-6 col-md-3 box-color-container">
                     <div class="col-xs-12 box-color">
                         <div class="col-xs-12 box-img-container">
-                            <img class="wb-unveil" src="assets/images/placeholder.png" data-src="{{ $value['image'] }}" />
+                            <img class="wb-unveil" src="{{ URL::asset('assets/images/placeholder.png') }}" data-src="{{ URL::asset($value['image']) }}" />
                         </div>
                         <div class="col-xs-12 box-color-title">
                             <label>{{ $value['name'] }}</label>
@@ -285,7 +285,7 @@
                 <div class="col-xs-12 col-sm-6 col-md-3 box-color-container">
                     <div class="col-xs-12 box-color">
                         <div class="col-xs-12 box-img-container">
-                            <img id="customRegularSwirl{{ $str }}" class="previewColorModal wb-unveil" src="assets/images/placeholder.png" data-src="assets/images/src/custom.png" />
+                            <img id="customRegularSwirl{{ $str }}" class="previewColorModal wb-unveil" src="{{ URL::asset('assets/images/placeholder.png') }}" data-src="{{ URL::asset('assets/images/src/custom.png') }}" />
                         </div>
                         <div class="col-xs-12 box-color-title">
                             <button class="btn-order custom-color-button" data-img-target="#customRegularSwirl{{ $str }}" data-index="{{ $str }}" data-style="swirl" data-max="4">Custom Color</button>
@@ -341,7 +341,7 @@
                 <div class="col-xs-12 col-sm-6 col-md-3 box-color-container">
                     <div class="col-xs-12 box-color">
                         <div class="col-xs-12 box-img-container">
-                            <img class="wb-unveil" src="assets/images/placeholder.png" data-src="{{ $value['image'] }}" />
+                            <img class="wb-unveil" src="{{ URL::asset('assets/images/placeholder.png') }}" data-src="{{ URL::asset($value['image']) }}" />
                         </div>
                         <div class="col-xs-12 box-color-title">
                             <label>{{ $value['name'] }}</label>
@@ -411,7 +411,7 @@
                 <div class="col-xs-12 col-sm-6 col-md-3 box-color-container">
                     <div class="col-xs-12 box-color">
                         <div class="col-xs-12 box-img-container">
-                            <img class="wb-unveil" src="assets/images/placeholder.png" data-src="{{ $value['image'] }}" />
+                            <img class="wb-unveil" src="{{ URL::asset('assets/images/placeholder.png') }}" data-src="{{ URL::asset($value['image']) }}" />
                         </div>
                         <div class="col-xs-12 box-color-title">
                             <label>{{ $value['name'] }}</label>

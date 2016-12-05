@@ -59,6 +59,8 @@ $(document).ready(function() {
         "hideMethod": "fadeOut"
     }
 
+    loadForm();
+
     // Change style actions.
     $('body').on('click', '.prod-style', function(e) {
         e.preventDefault();
@@ -3191,6 +3193,10 @@ function resetPreview()
 
     // Show again.
     $('#preview-pill').removeClass('hidden');
+}
+
+function loadForm() {
+    // console.log({{ $cart }});
 }
 
 String.prototype.capitalizeFirstLetter = function() {

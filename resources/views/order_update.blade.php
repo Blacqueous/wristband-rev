@@ -5,11 +5,11 @@
 
 @section('css')
 <!-- Order page custom stylesheet -->
-		<link href="css/order.css" rel="stylesheet" type="text/css">
+		<link href="{{ URL::asset('css/order.css') }}" rel="stylesheet" type="text/css">
 		<!-- Additional .css plugins -->
-		<link href="global/iCheck/skins/square/green.css" rel="stylesheet" type="text/css">
+		<link href="{{ URL::asset('global/iCheck/skins/square/green.css') }}" rel="stylesheet" type="text/css">
 		<!-- Toastr Notification plugin -->
-		<link href="global/toastr/build/toastr.css" rel="stylesheet" type="text/css">
+		<link href="{{ URL::asset('global/toastr/build/toastr.css') }}" rel="stylesheet" type="text/css">
 @endsection
 
 @section('js')
@@ -18,19 +18,19 @@
 			const price_json = JSON.parse('<?php echo(json_encode($prices)); ?>');
 			const addon_json = JSON.parse('<?php echo(json_encode($addons)); ?>');
 		</script>
-		<script src="js/order.update.js"></script>
+		<script src="{{ URL::asset('js/order.update.js') }}"></script>
 		<!-- Additional .js plugins -->
-		<script src="global/iCheck/icheck.min.js"></script>
-		<script src="global/unveil.js/jquery.unveil.js"></script>
-		<script src="global/jquery-visible/jquery.visible.min.js"></script>
+		<script src="{{ URL::asset('global/iCheck/icheck.min.js') }}"></script>
+		<script src="{{ URL::asset('global/unveil.js/jquery.unveil.js') }}"></script>
+		<script src="{{ URL::asset('global/jquery-visible/jquery.visible.min.js') }}"></script>
 		<!-- The jQuery UI widget factory, can be omitted if jQuery UI is already included -->
-		<script src="global/jquery-file-upload/js/vendor/jquery.ui.widget.js"></script>
+		<script src="{{ URL::asset('global/jquery-file-upload/js/vendor/jquery.ui.widget.js') }}"></script>
 		<!-- The Iframe Transport is required for browsers without support for XHR file uploads -->
-		<script src="global/jquery-file-upload/js/jquery.iframe-transport.js"></script>
+		<script src="{{ URL::asset('global/jquery-file-upload/js/jquery.iframe-transport.js') }}"></script>
 		<!-- The basic File Upload plugin -->
-		<script src="global/jquery-file-upload/js/jquery.fileupload.js"></script>
+		<script src="{{ URL::asset('global/jquery-file-upload/js/jquery.fileupload.js') }}"></script>
 		<!-- Toastr Notification plugin -->
-		<script src="global/toastr/build/toastr.min.js"></script>
+		<script src="{{ URL::asset('global/toastr/build/toastr.min.js') }}"></script>
 @endsection
 
 @section('content')
@@ -75,9 +75,9 @@
 						@foreach($styles as $key => $value)
 							<div id="wb_style_{{ $value['code'] }}" class="col-xs-6 col-md-3 prod prod-style js-style {{ ($value['code']==$style) ? 'active' : '' }}" style="margin-bottom:10px;">
 								<div class="zoom">
-									<a href="{{ $value['image'] }}" title="Printed Wristband"><img src="assets/images/src/zoom.png" class="galleryimg"></a>
+									<a href="{{ URL::asset($value['image']) }}" title="Printed Wristband"><img src="{{ URL::asset('assets/images/src/zoom.png') }}" class="galleryimg"></a>
 								</div>
-								<div class="box-thumb"><img src="{{ $value['image'] }}"></div>
+								<div class="box-thumb"><img src="{{ URL::asset($value['image']) }}"></div>
 								<input class="wrist-style wb-style" data-style="{{ $value['code'] }}" name="wb-style" type="radio" value="{{ $value['code'] }}" {{ ($value['code']==$style) ? 'checked="checked"' : '' }} />
 								<br/>
 								<label for="wb-style">
@@ -103,7 +103,7 @@
 				<div class="wsize-default">
 					@foreach($sizes as $key => $value)
 					<div id="wb_size_{{ $value['code'] }}" class="col-xs-6 col-md-2 prod prod-size js-size {{ ($value['code']=='0-50inch') ? 'active' : '' }}">
-						<div class="box-thumb"><img src="{{ $value['image'] }}"></div>
+						<div class="box-thumb"><img src="{{ URL::asset($value['image']) }}"></div>
 						<input class="wrist-size wb-size" data-size="{{ $value['code'] }}" name="wb-size" type="radio" value="{{ $value['code'] }}" data-name="{{ $value['name'] }}" {{ ($value['code']=='0-50inch') ? 'checked="checked"' : '' }} >
 						<br/>
 						<label for="wb-style">
@@ -351,7 +351,7 @@
 					<!--<button>Clear</button>-->
 					<h3 style="text-align: left;">Select Font Style</h3>
 					<button id="btn_font_style" class="btn-order pull-left" ref-font-style-code="arial-bold">Choose Font Style</button>
-					<div id="preview-textfont"><img src="assets/images/src/fonts/Arialold.png"></div>
+					<div id="preview-textfont"><img src="{{ URL::asset('assets/images/src/fonts/Arialold.png') }}"></div>
 					<div class="clearfix"></div>
 				</div>
 			</div>
@@ -372,46 +372,46 @@
 
 				<!-- End conversion wristbands -->
 				<div class="col-md-4 add-ons optional-add-ons 0-50-only 0-75-only">
-					<div class="box-thumb"><a href="assets/images/src/add-ons/3mm-thick.png" title="3mm Thick Option"><img src="assets/images/src/add-ons/3mm-thick.png" class="galleryimg"></a></div>
-					<div class="icon-img"><img src="assets/images/src/icon.png"/> <div class="icon-text" style="width:150px;">Available for 1/2 and 3/4 inch wristbands only.</div></div>
+					<div class="box-thumb"><a href="{{ URL::asset('assets/images/src/add-ons/3mm-thick.png') }}" title="3mm Thick Option"><img src="{{ URL::asset('assets/images/src/add-ons/3mm-thick.png') }}" class="galleryimg"></a></div>
+					<div class="icon-img"><img src="{{ URL::asset('assets/images/src/icon.png') }}"/> <div class="icon-text" style="width:150px;">Available for 1/2 and 3/4 inch wristbands only.</div></div>
 					<div class="add-ons-radio">
 						<input type="checkbox" name="addon[]" class="add-ons" data-code="3mm-thick"/>
 						<h2>3mm Thick Option</h2>
 					</div>
 				</div>
 				<div class="col-md-4 add-ons">
-					<div class="box-thumb"><a href="assets/images/src/add-ons/Digital-Proof.png" title="Digital Proof"><img src="assets/images/src/add-ons/Digital-Proof.png" class="galleryimg"></a></div>
-					<div class="icon-img"><img src="assets/images/src/icon.png"/> <div class="icon-text" style="width:150px;">We'll send you a proof for approval before production begins.</div></div>
+					<div class="box-thumb"><a href="{{ URL::asset('assets/images/src/add-ons/Digital-Proof.png') }}" title="Digital Proof"><img src="{{ URL::asset('assets/images/src/add-ons/Digital-Proof.png') }}" class="galleryimg"></a></div>
+					<div class="icon-img"><img src="{{ URL::asset('assets/images/src/icon.png') }}"/> <div class="icon-text" style="width:150px;">We'll send you a proof for approval before production begins.</div></div>
 					<div class="add-ons-radio">
 						<input type="checkbox" name="addon[]" class="add-ons" data-code="digital-proof"/>
 						<h2>Digital Proof</h2>
 					</div>
 				</div>
 				<div class="col-md-4 add-ons">
-					<div class="box-thumb"><a href="assets/images/src/add-ons/ecofriendly.png" title="Eco Friendly"><img src="assets/images/src/add-ons/ecofriendly.png" class="galleryimg"></a></div>
+					<div class="box-thumb"><a href="{{ URL::asset('assets/images/src/add-ons/ecofriendly.png') }}" title="Eco Friendly"><img src="{{ URL::asset('assets/images/src/add-ons/ecofriendly.png') }}" class="galleryimg"></a></div>
 					<div class="add-ons-radio">
 						<input type="checkbox" name="addon[]" class="add-ons" data-code="eco-friendly"/>
 						<h2>Eco Friendly</h2>
 					</div>
 				</div>
 				<div class="col-md-4 add-ons">
-					<div class="box-thumb"><a href="assets/images/src/add-ons/Glitters.png" title="Glitter"><img src="assets/images/src/add-ons/Glitters.png" class="galleryimg"></a></div>
+					<div class="box-thumb"><a href="{{ URL::asset('assets/images/src/add-ons/Glitters.png') }}" title="Glitter"><img src="{{ URL::asset('assets/images/src/add-ons/Glitters.png') }}" class="galleryimg"></a></div>
 					<div class="add-ons-radio">
 						<input type="checkbox" name="addon[]" class="add-ons" data-code="glitters"/>
 						<h2>Glitter</h2>
 					</div>
 				</div>
 				<div class="col-md-4 add-ons">
-					<div class="box-thumb"><a href="assets/images/src/add-ons/Individual-pack.png" title="Individually Pack"><img src="assets/images/src/add-ons/Individual-pack.png" class="galleryimg"></a></div>
-					<div class="icon-img"><img src="assets/images/src/icon.png"/> <div class="icon-text" style="width:200px;">Professionally sealed on biodegradable bags with clear back to see product inside.</div></div>
+					<div class="box-thumb"><a href="{{ URL::asset('assets/images/src/add-ons/Individual-pack.png') }}" title="Individually Pack"><img src="{{ URL::asset('assets/images/src/add-ons/Individual-pack.png') }}" class="galleryimg"></a></div>
+					<div class="icon-img"><img src="{{ URL::asset('assets/images/src/icon.png') }}"/> <div class="icon-text" style="width:200px;">Professionally sealed on biodegradable bags with clear back to see product inside.</div></div>
 					<div class="add-ons-radio">
 						<input type="checkbox" name="addon[]" class="add-ons" data-code="individual"/>
 						<h2>Individually Pack</h2>
 					</div>
 				</div>
 				<div class="col-md-4 add-ons optional-add-ons 0-50-only">
-					<div class="box-thumb"><a href="assets/images/src/add-ons/KeyChain.png" title="Keychain"><img src="assets/images/src/add-ons/KeyChain.png" class="galleryimg"></a></div>
-					<div class="icon-img"><img src="assets/images/src/icon.png"/> <div class="icon-text" style="width:132px;"> Available for 1/2 inch wristbands only.</div></div>
+					<div class="box-thumb"><a href="{{ URL::asset('assets/images/src/add-ons/KeyChain.png') }}" title="Keychain"><img src="{{ URL::asset('assets/images/src/add-ons/KeyChain.png') }}" class="galleryimg"></a></div>
+					<div class="icon-img"><img src="{{ URL::asset('assets/images/src/icon.png') }}"/> <div class="icon-text" style="width:132px;"> Available for 1/2 inch wristbands only.</div></div>
 					<div class="add-ons-radio">
 						<input type="checkbox" name="addon[]" class="add-ons" data-code="key-chain"/>
 						<h2>Keychain</h2>

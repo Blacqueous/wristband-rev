@@ -38,7 +38,7 @@
                     @foreach($list_colors as $key => $value)
                     <li class="custom-color-selected custom-color-list-{{ $value['color'] }}" ref="{{ $value['id'] }}" ref-color="{{ $value['color'] }}" ref-name="{{ $value['name'] }}">
                         <a>
-                            <img style="background-color:#{{ $value['color'] }};border:1px solid #D7D7D7;" src="assets/images/src/clr_bg.png">
+                            <img style="background-color:#{{ $value['color'] }};border:1px solid #D7D7D7;" src="{{ URL::asset('assets/images/src/clr_bg.png') }}">
                             <b>{{ $value['name'] }}</b>
                         </a>
                     </li>

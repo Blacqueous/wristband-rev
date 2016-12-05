@@ -8,30 +8,30 @@
 		<meta name="description" content="">
 		<meta name="author" content="">
 		<meta name="csrf-token" content="{{ csrf_token() }}">
-		<link rel="icon" href="../../favicon.ico">
+		<link rel="icon" href="{{ URL::asset('../../favicon.ico') }}">
 
 		<title>Promotional Wristbands @yield('title')</title>
 
 		<!-- Bootstrap core CSS -->
-		<link href="assets/css/bootstrap.min.css" rel="stylesheet">
+		<link href="{{ URL::asset('assets/css/bootstrap.min.css') }}" rel="stylesheet">
 
 		<!-- Font Awesome core CSS -->
-		<link href="global/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+		<link href="{{ URL::asset('global/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet">
 
 		<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-		<link href="assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
+		<link href="{{ URL::asset('assets/css/ie10-viewport-bug-workaround.css') }}" rel="stylesheet">
 
 		<!-- Custom styles for this template -->
-		<link href="assets/css/style_sheet.css" rel="stylesheet">
-		<link href="assets/css/order.css" rel="stylesheet">
-		<link href="assets/css/font_style.css" rel="stylesheet">
-		<link href="assets/css/magnific-popup.css" rel="stylesheet">
+		<link href="{{ URL::asset('assets/css/style_sheet.css') }}" rel="stylesheet">
+		<link href="{{ URL::asset('assets/css/order.css') }}" rel="stylesheet">
+		<link href="{{ URL::asset('assets/css/font_style.css') }}" rel="stylesheet">
+		<link href="{{ URL::asset('assets/css/magnific-popup.css') }}" rel="stylesheet">
 
 		<!-- Page custom added css styles. -->
         @section('css')
         @show
 
-		<script src="js/jquery-3.1.1.min.js"></script>
+		<script src="{{ URL::asset('js/jquery-3.1.1.min.js') }}"></script>
 
 		<!-- <link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet" type="text/css"> -->
 
@@ -86,22 +86,22 @@
         <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
 
         <!-- <script type="text/javascript" src="assets/docs/spectrum.js"></script> -->
-        <script type='text/javascript' src="assets/docs/toc.js"></script>
-        <script type="text/javascript" src="assets/js/jquery.countdown.js"></script>
-        <script type="text/javascript" src="assets/js/jquery.magnific-popup.min.js"></script>
+        <script type='text/javascript' src="{{ URL::asset('assets/docs/toc.js') }}"></script>
+        <script type="text/javascript" src="{{ URL::asset('assets/js/jquery.countdown.js') }}"></script>
+        <script type="text/javascript" src="{{ URL::asset('assets/js/jquery.magnific-popup.min.js') }}"></script>
 
-		<script src="global/bootstrap/js/bootstrap.min.js"></script>
+		<script src="{{ URL::asset('global/bootstrap/js/bootstrap.min.js') }}"></script>
 
-		<script src="js/angular.min.js"></script>
-        <script src="js/jquery.blink.js"></script>
+		<script src="{{ URL::asset('js/angular.min.js') }}"></script>
+        <script src="{{ URL::asset('js/jquery.blink.js') }}"></script>
 
         <!-- Javascript for wristband previews -->
         <!-- <script type="text/javascript" src="assets/js/canvg.js"></script>
         <script type="text/javascript" src="assets/js/stackblur.js"></script> -->
-        <script type="text/javascript" src="assets/js/preview.js"></script>
-        <script type="text/javascript" src="assets/js/preview_band.js"></script>
+        <script type="text/javascript" src="{{ URL::asset('assets/js/preview.js') }}"></script>
+        <script type="text/javascript" src="{{ URL::asset('assets/js/preview_band.js') }}"></script>
 
-        <script type="text/javascript" src="assets/js/promo-keychain-10.js"></script>
+        <script type="text/javascript" src="{{ URL::asset('assets/js/promo-keychain-10.js') }}"></script>
 
         <!-- <script src="assets/js/main-2.js"></script> -->
         <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->

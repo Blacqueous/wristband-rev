@@ -14,7 +14,7 @@
                     @foreach($list_cliparts as $key => $value)
                     <li class="clipart-selected clipart-list-{{ $value['code'] }}" ref-code="{{ $value['code'] }}" ref-image="{{ $value['image'] }}" ref-name="{{ $value['name'] }}">
                         <a ref="{{ $value['code'] }}">
-                            <img src="{{ $value['image'] }}" <?php echo ($value['code']=='none')?"style='width:80%;'":""; ?>/>
+                            <img src="{{ URL::asset($value['image']) }}" <?php echo ($value['code']=='none')?"style='width:80%;'":""; ?>/>
                         </a>
                         <b>{{ $value['name'] }}</b>
                     </li>
