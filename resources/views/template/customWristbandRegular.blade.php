@@ -2,7 +2,7 @@
     <button class="btn-close-custom-color" data-style="{{ $type }}" data-index="{{ $id }}">&times;</button>
     <div class="col-xs-12 box-color @if($withFont) with-font @endif">
         <div class="col-xs-12 box-img-container">
-            <img id="customRegular{{ ucwords($type) }}{{ $id }}" class="previewColorModal wb-unveil" src="assets/images/src/custom.png" data-src="assets/images/src/custom.png" />
+            <img id="customRegular{{ ucwords($type) }}{{ $id }}" class="previewColorModal wb-unveil" src="{{ URL::asset('assets/images/src/custom.png') }}" data-src="{{ URL::asset('assets/images/src/custom.png') }}" />
         </div>
         <div class="col-xs-12 box-color-title">
             <button class="btn-order custom-color-button" data-img-target="#customRegular{{ ucwords($type) }}{{ $id }}" data-index="{{ $id }}" data-style="{{ $type }}" data-max="1">Custom Color</button>

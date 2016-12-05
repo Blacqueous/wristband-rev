@@ -11,7 +11,7 @@
                 </div>
                 <ul class="font-style-list">
                     @foreach($list_fonts as $key => $value)
-                    <li class="font-style-selected font-style-list-{{ $value['code'] }}" ref-code="{{ $value['code'] }}" ref-name="{{ $value['name'] }}" ref-font="{{ $value['font'] }}"  ref-image="{{ $value['image'] }}">
+                    <li class="font-style-selected font-style-list-{{ $value['code'] }}" ref-code="{{ $value['code'] }}" ref-name="{{ $value['name'] }}" ref-font="{{ $value['font'] }}"  ref-image="{{ URL::asset($value['image']) }}">
                         <a ref="{{ $value['code'] }}">
                             <img src="{{ URL::asset($value['image']) }}" />
                         </a>

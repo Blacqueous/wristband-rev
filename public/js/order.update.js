@@ -1,10 +1,10 @@
 // Ajax
 var xhr;
-var free = {};
-var addon = {};
-var items = {};
-var clips = {};
-var texts = {};
+var free = _cart.free;
+var addon = _cart.addon;
+var items = _cart.items;
+var clips = _cart.clips;
+var texts = _cart.texts;
 var viewport = "lg";
 var fontElement;
 var clipElement
@@ -1056,7 +1056,7 @@ $(document).ready(function() {
     });
 
     $('#clipartup_front_start').fileupload({
-        url: "/upload",
+        url: "/upload/"+_index,
         dataType : 'json',
         maxNumberOfFiles : 1,
         formData: {
@@ -1105,7 +1105,7 @@ $(document).ready(function() {
                 // Display preview.
                 $('#clipart-front-start').attr('ref-clipart-code', 'upload');
                 $('#clipart-front-start').attr('ref-clipart-name', 'Upload');
-                $('#clipart-front-start').html("<img height='40' src='assets/images/src/upload-icon.png'>");
+                $('#clipart-front-start').html("<img height='40' src='"+$('#URLasset').val()+"assets/images/src/upload-icon.png'>");
                 // Load total amount.
                 loadTotal(false);
             } else {
@@ -1140,7 +1140,7 @@ $(document).ready(function() {
     });
 
     $('#clipartup_front_end').fileupload({
-        url: "/upload",
+        url: "/upload/"+_index,
         dataType : 'json',
         maxNumberOfFiles : 1,
         formData: {
@@ -1189,7 +1189,7 @@ $(document).ready(function() {
                 // Display preview.
                 $('#clipart-front-end').attr('ref-clipart-code', 'upload');
                 $('#clipart-front-end').attr('ref-clipart-name', 'Upload');
-                $('#clipart-front-end').html("<img height='40' src='assets/images/src/upload-icon.png'>");
+                $('#clipart-front-end').html("<img height='40' src='"+$('#URLasset').val()+"assets/images/src/upload-icon.png'>");
                 // Load total amount.
                 loadTotal(false);
             } else {
@@ -1224,7 +1224,7 @@ $(document).ready(function() {
     });
 
     $('#clipartup_front_center').fileupload({
-        url: "/upload",
+        url: "/upload/"+_index,
         dataType : 'json',
         maxNumberOfFiles : 1,
         formData: {
@@ -1273,7 +1273,7 @@ $(document).ready(function() {
                 // Display preview.
                 $('#clipart-front-center').attr('ref-clipart-code', 'upload');
                 $('#clipart-front-center').attr('ref-clipart-name', 'Upload');
-                $('#clipart-front-center').html("<img height='50' src='assets/images/src/upload-icon.png'>");
+                $('#clipart-front-center').html("<img height='50' src='"+$('#URLasset').val()+"assets/images/src/upload-icon.png'>");
                 // Load total amount.
                 loadTotal(false);
             } else {
@@ -1308,7 +1308,7 @@ $(document).ready(function() {
     });
 
     $('#clipartup_back_start').fileupload({
-        url: "/upload",
+        url: "/upload/"+_index,
         dataType : 'json',
         maxNumberOfFiles : 1,
         formData: {
@@ -1357,7 +1357,7 @@ $(document).ready(function() {
                 // Display preview.
                 $('#clipart-back-start').attr('ref-clipart-code', 'upload');
                 $('#clipart-back-start').attr('ref-clipart-name', 'Upload');
-                $('#clipart-back-start').html("<img height='40' src='assets/images/src/upload-icon.png'>");
+                $('#clipart-back-start').html("<img height='40' src='"+$('#URLasset').val()+"assets/images/src/upload-icon.png'>");
                 // Load total amount.
                 loadTotal(false);
             } else {
@@ -1392,7 +1392,7 @@ $(document).ready(function() {
     });
 
     $('#clipartup_back_end').fileupload({
-        url: "/upload",
+        url: "/upload/"+_index,
         dataType : 'json',
         maxNumberOfFiles : 1,
         formData: {
@@ -1441,7 +1441,7 @@ $(document).ready(function() {
                 // Display preview.
                 $('#clipart-back-end').attr('ref-clipart-code', 'upload');
                 $('#clipart-back-end').attr('ref-clipart-name', 'Upload');
-                $('#clipart-back-end').html("<img height='40' src='assets/images/src/upload-icon.png'>");
+                $('#clipart-back-end').html("<img height='40' src='"+$('#URLasset').val()+"assets/images/src/upload-icon.png'>");
                 // Load total amount.
                 loadTotal(false);
             } else {
@@ -1476,7 +1476,7 @@ $(document).ready(function() {
     });
 
     $('#clipartup_cont_start').fileupload({
-        url: "/upload",
+        url: "/upload/"+_index,
         dataType : 'json',
         maxNumberOfFiles : 1,
         formData: {
@@ -1525,7 +1525,7 @@ $(document).ready(function() {
                 // Display preview.
                 $('#clipart-cont-start').attr('ref-clipart-code', 'upload');
                 $('#clipart-cont-start').attr('ref-clipart-name', 'Upload');
-                $('#clipart-cont-start').html("<img height='40' src='assets/images/src/upload-icon.png'>");
+                $('#clipart-cont-start').html("<img height='40' src='"+$('#URLasset').val()+"assets/images/src/upload-icon.png'>");
                 // Load total amount.
                 loadTotal(false);
             } else {
@@ -1560,7 +1560,7 @@ $(document).ready(function() {
     });
 
     $('#clipartup_cont_end').fileupload({
-        url: "/upload",
+        url: "/upload/"+_index,
         dataType : 'json',
         maxNumberOfFiles : 1,
         formData: {
@@ -1609,7 +1609,7 @@ $(document).ready(function() {
                 // Display preview.
                 $('#clipart-cont-end').attr('ref-clipart-code', 'upload');
                 $('#clipart-cont-end').attr('ref-clipart-name', 'Upload');
-                $('#clipart-cont-end').html("<img height='40' src='assets/images/src/upload-icon.png'>");
+                $('#clipart-cont-end').html("<img height='40' src='"+$('#URLasset').val()+"assets/images/src/upload-icon.png'>");
                 // Load total amount.
                 loadTotal(false);
             } else {
@@ -1739,29 +1739,29 @@ function displayTotal($collection)
         if(typeof $collection.texts['front'] != "undefined") {
             $('#summary-table-text #text-front').removeClass('hidden');
             $('#summary-table-text #text-front .qty').html( $collection.quantity );
-            $('#summary-table-text #text-front .price').html( ($collection.texts['front'].price).formatMoney() );
-            $('#summary-table-text #text-front .total').html( ($collection.texts['front'].total).formatMoney() );
+            $('#summary-table-text #text-front .price').html( (parseFloat($collection.texts['front'].price)).formatMoney() );
+            $('#summary-table-text #text-front .total').html( (parseFloat($collection.texts['front'].total)).formatMoney() );
         }
 
         if(typeof $collection.texts['back'] != "undefined") {
             $('#summary-table-text #text-back').removeClass('hidden');
             $('#summary-table-text #text-back .qty').html( $collection.texts['back'].quantity );
-            $('#summary-table-text #text-back .price').html( ($collection.texts['back'].price).formatMoney() );
-            $('#summary-table-text #text-back .total').html( ($collection.texts['back'].total).formatMoney() );
+            $('#summary-table-text #text-back .price').html( (parseFloat($collection.texts['back'].price)).formatMoney() );
+            $('#summary-table-text #text-back .total').html( (parseFloat($collection.texts['back'].total)).formatMoney() );
         }
 
         if(typeof $collection.texts['continue'] != "undefined") {
             $('#summary-table-text #text-continuous').removeClass('hidden');
             $('#summary-table-text #text-continuous .qty').html( $collection.quantity );
-            $('#summary-table-text #text-continuous .price').html( ($collection.texts['continue'].price).formatMoney() );
-            $('#summary-table-text #text-continuous .total').html( ($collection.texts['continue'].total).formatMoney() );
+            $('#summary-table-text #text-continuous .price').html( (parseFloat($collection.texts['continue'].price)).formatMoney() );
+            $('#summary-table-text #text-continuous .total').html( (parseFloat($collection.texts['continue'].total)).formatMoney() );
         }
 
         if(typeof $collection.texts['inside'] != "undefined") {
             $('#summary-table-text #text-inside').removeClass('hidden');
             $('#summary-table-text #text-inside .qty').html( $collection.texts['inside'].quantity );
-            $('#summary-table-text #text-inside .price').html( ($collection.texts['inside'].price).formatMoney() );
-            $('#summary-table-text #text-inside .total').html( ($collection.texts['inside'].total).formatMoney() );
+            $('#summary-table-text #text-inside .price').html( (parseFloat($collection.texts['inside'].price)).formatMoney() );
+            $('#summary-table-text #text-inside .total').html( (parseFloat($collection.texts['inside'].total)).formatMoney() );
         }
     }
 
@@ -1772,50 +1772,50 @@ function displayTotal($collection)
             if(typeof $collection.clips.logo['front-start'] != "undefined") {
                 $('#summary-table-clipart #clipart-front-start').removeClass('hidden');
                 $('#summary-table-clipart #clipart-front-start .qty').html( $collection.clips.logo['front-start'].quantity );
-                $('#summary-table-clipart #clipart-front-start .price').html( ($collection.clips.logo['front-start'].price).formatMoney() );
-                $('#summary-table-clipart #clipart-front-start .total').html( ($collection.clips.logo['front-start'].total).formatMoney() );
+                $('#summary-table-clipart #clipart-front-start .price').html( (parseFloat($collection.clips.logo['front-start'].price)).formatMoney() );
+                $('#summary-table-clipart #clipart-front-start .total').html( (parseFloat($collection.clips.logo['front-start'].total)).formatMoney() );
             }
 
             if(typeof $collection.clips.logo['front-end'] != "undefined") {
                 $('#summary-table-clipart #clipart-front-end').removeClass('hidden');
                 $('#summary-table-clipart #clipart-front-end .qty').html( $collection.clips.logo['front-end'].quantity );
-                $('#summary-table-clipart #clipart-front-end .price').html( ($collection.clips.logo['front-end'].price).formatMoney() );
-                $('#summary-table-clipart #clipart-front-end .total').html( ($collection.clips.logo['front-end'].total).formatMoney() );
+                $('#summary-table-clipart #clipart-front-end .price').html( (parseFloat($collection.clips.logo['front-end'].price)).formatMoney() );
+                $('#summary-table-clipart #clipart-front-end .total').html( (parseFloat($collection.clips.logo['front-end'].total)).formatMoney() );
             }
 
             if(typeof $collection.clips.logo['back-start'] != "undefined") {
                 $('#summary-table-clipart #clipart-back-start').removeClass('hidden');
                 $('#summary-table-clipart #clipart-back-start .qty').html( $collection.clips.logo['back-start'].quantity );
-                $('#summary-table-clipart #clipart-back-start .price').html( ($collection.clips.logo['back-start'].price).formatMoney() );
-                $('#summary-table-clipart #clipart-back-start .total').html( ($collection.clips.logo['back-start'].total).formatMoney() );
+                $('#summary-table-clipart #clipart-back-start .price').html( (parseFloat($collection.clips.logo['back-start'].price)).formatMoney() );
+                $('#summary-table-clipart #clipart-back-start .total').html( (parseFloat($collection.clips.logo['back-start'].total)).formatMoney() );
             }
 
             if(typeof $collection.clips.logo['back-end'] != "undefined") {
                 $('#summary-table-clipart #clipart-back-end').removeClass('hidden');
                 $('#summary-table-clipart #clipart-back-end .qty').html( $collection.clips.logo['back-end'].quantity );
-                $('#summary-table-clipart #clipart-back-end .price').html( ($collection.clips.logo['back-end'].price).formatMoney() );
-                $('#summary-table-clipart #clipart-back-end .total').html( ($collection.clips.logo['back-end'].total).formatMoney() );
+                $('#summary-table-clipart #clipart-back-end .price').html( (parseFloat($collection.clips.logo['back-end'].price)).formatMoney() );
+                $('#summary-table-clipart #clipart-back-end .total').html( (parseFloat($collection.clips.logo['back-end'].total)).formatMoney() );
             }
 
             if(typeof $collection.clips.logo['cont-start'] != "undefined") {
                 $('#summary-table-clipart #clipart-cont-start').removeClass('hidden');
                 $('#summary-table-clipart #clipart-cont-start .qty').html( $collection.clips.logo['cont-start'].quantity );
-                $('#summary-table-clipart #clipart-cont-start .price').html( ($collection.clips.logo['cont-start'].price).formatMoney() );
-                $('#summary-table-clipart #clipart-cont-start .total').html( ($collection.clips.logo['cont-start'].total).formatMoney() );
+                $('#summary-table-clipart #clipart-cont-start .price').html( (parseFloat($collection.clips.logo['cont-start'].price)).formatMoney() );
+                $('#summary-table-clipart #clipart-cont-start .total').html( (parseFloat($collection.clips.logo['cont-start'].total)).formatMoney() );
             }
 
             if(typeof $collection.clips.logo['cont-end'] != "undefined") {
                 $('#summary-table-clipart #clipart-cont-end').removeClass('hidden');
                 $('#summary-table-clipart #clipart-cont-end .qty').html( $collection.clips.logo['cont-end'].quantity );
-                $('#summary-table-clipart #clipart-cont-end .price').html( ($collection.clips.logo['cont-end'].price).formatMoney() );
-                $('#summary-table-clipart #clipart-cont-end .total').html( ($collection.clips.logo['cont-end'].total).formatMoney() );
+                $('#summary-table-clipart #clipart-cont-end .price').html( (parseFloat($collection.clips.logo['cont-end'].price)).formatMoney() );
+                $('#summary-table-clipart #clipart-cont-end .total').html( (parseFloat($collection.clips.logo['cont-end'].total)).formatMoney() );
             }
 
             if(typeof $collection.clips.logo['front-center'] != "undefined") {
                 $('#summary-table-clipart #clipart-front-center').removeClass('hidden');
                 $('#summary-table-clipart #clipart-front-center .qty').html( $collection.clips.logo['front-center'].quantity );
-                $('#summary-table-clipart #clipart-front-center .price').html( ($collection.clips.logo['front-center'].price).formatMoney() );
-                $('#summary-table-clipart #clipart-front-center .total').html( ($collection.clips.logo['front-center'].total).formatMoney() );
+                $('#summary-table-clipart #clipart-front-center .price').html( (parseFloat($collection.clips.logo['front-center'].price)).formatMoney() );
+                $('#summary-table-clipart #clipart-front-center .total').html( (parseFloat($collection.clips.logo['front-center'].total)).formatMoney() );
             }
 
         }
@@ -1827,15 +1827,15 @@ function displayTotal($collection)
         if(typeof $collection.addon['3mm-thick'] != "undefined") {
             $('#summary-table-addon #addon-3mm-thick').removeClass('hidden');
             $('#summary-table-addon #addon-3mm-thick .qty').html( $collection.addon['3mm-thick'].quantity );
-            $('#summary-table-addon #addon-3mm-thick .price').html( ($collection.addon['3mm-thick'].price).formatMoney() );
-            $('#summary-table-addon #addon-3mm-thick .total').html( ($collection.addon['3mm-thick'].total).formatMoney() );
+            $('#summary-table-addon #addon-3mm-thick .price').html( (parseFloat($collection.addon['3mm-thick'].price)).formatMoney() );
+            $('#summary-table-addon #addon-3mm-thick .total').html( (parseFloat($collection.addon['3mm-thick'].total)).formatMoney() );
         }
 
         if(typeof $collection.addon['digital-proof'] != "undefined") {
             $('#summary-table-addon #addon-digital-proof').removeClass('hidden');
             $('#summary-table-addon #addon-digital-proof .qty').html( $collection.addon['digital-proof'].quantity );
-            $('#summary-table-addon #addon-digital-proof .price').html( ($collection.addon['digital-proof'].price).formatMoney() );
-            $('#summary-table-addon #addon-digital-proof .total').html( ($collection.addon['digital-proof'].total).formatMoney() );
+            $('#summary-table-addon #addon-digital-proof .price').html( (parseFloat($collection.addon['digital-proof'].price)).formatMoney() );
+            $('#summary-table-addon #addon-digital-proof .total').html( (parseFloat($collection.addon['digital-proof'].total)).formatMoney() );
         }
 
         if(typeof $collection.addon['eco-friendly'] != "undefined") {
@@ -1848,36 +1848,36 @@ function displayTotal($collection)
         if(typeof $collection.addon['glitters'] != "undefined") {
             $('#summary-table-addon #addon-glitters').removeClass('hidden');
             $('#summary-table-addon #addon-glitters .qty').html( $collection.addon['glitters'].quantity );
-            $('#summary-table-addon #addon-glitters .price').html( ($collection.addon['glitters'].price).formatMoney() );
-            $('#summary-table-addon #addon-glitters .total').html( ($collection.addon['glitters'].total).formatMoney() );
+            $('#summary-table-addon #addon-glitters .price').html( (parseFloat($collection.addon['glitters'].price)).formatMoney() );
+            $('#summary-table-addon #addon-glitters .total').html( (parseFloat($collection.addon['glitters'].total)).formatMoney() );
         }
 
         if(typeof $collection.addon['individual'] != "undefined") {
             $('#summary-table-addon #addon-individual').removeClass('hidden');
             $('#summary-table-addon #addon-individual .qty').html( $collection.addon['individual'].quantity );
-            $('#summary-table-addon #addon-individual .price').html( ($collection.addon['individual'].price).formatMoney() );
-            $('#summary-table-addon #addon-individual .total').html( ($collection.addon['individual'].total).formatMoney() );
+            $('#summary-table-addon #addon-individual .price').html( parseFloat($collection.addon['individual'].price).formatMoney() );
+            $('#summary-table-addon #addon-individual .total').html( parseFloat($collection.addon['individual'].total).formatMoney() );
         }
 
         if(typeof $collection.addon['key-chain'] != "undefined") {
             $('#summary-table-addon #addon-key-chain').removeClass('hidden');
             $('#summary-table-addon #addon-key-chain .qty').html( $collection.addon['key-chain'].quantity );
-            $('#summary-table-addon #addon-key-chain .price').html( ($collection.addon['key-chain'].price).formatMoney() );
-            $('#summary-table-addon #addon-key-chain .total').html( ($collection.addon['key-chain'].total).formatMoney() );
+            $('#summary-table-addon #addon-key-chain .price').html( parseFloat($collection.addon['key-chain'].price).formatMoney() );
+            $('#summary-table-addon #addon-key-chain .total').html( parseFloat($collection.addon['key-chain'].total).formatMoney() );
         }
     }
 
-    if (!$.isEmptyObject($collection.free)) {
+    if ( parseFloat($collection.free['key-chain'].quantity) > 0 || parseFloat($collection.free['wristbands'].quantity) > 0 ) {
         $('#summary-table-free').removeClass('hidden');
 
         if(typeof $collection.free['key-chain'] != "undefined") {
             $('#summary-table-free #free-key-chain').removeClass('hidden');
-            $('#summary-table-free #free-key-chain .qty').html( $collection.free['key-chain'] );
+            $('#summary-table-free #free-key-chain .qty').html( $collection.free['key-chain'].quantity );
         }
 
         if(typeof $collection.free['wristbands'] != "undefined") {
             $('#summary-table-free #free-wristband').removeClass('hidden');
-            $('#summary-table-free #free-wristband .qty').html( $collection.free['wristbands'] );
+            $('#summary-table-free #free-wristband .qty').html( $collection.free['wristbands'].quantity );
         }
     }
 
@@ -3195,8 +3195,53 @@ function resetPreview()
     $('#preview-pill').removeClass('hidden');
 }
 
-function loadForm() {
-    // console.log({{ $cart }});
+function loadForm()
+{
+    // For style :
+        $("input[type='radio'][data-style='"+_cart.style+"'].wrist-style").iCheck('check'); // Check style radio button.
+        $('.prod-style').removeClass('active'); // Clear existing active classes.
+        $("input[type='radio'][data-style='"+_cart.style+"'].wrist-style").closest('.prod-style').addClass('active'); // Add active class tio parent div.
+
+        // Load wristband sizes.
+        loadSizes();
+
+    // For size :
+        $("input[type='radio'][data-size='"+_cart.size+"'].wrist-size").iCheck('check'); // Check size radio button.
+        $('.prod-size').removeClass('active'); // Clear existing active classes.
+        $("input[type='radio'][data-size='"+_cart.size+"'].wrist-size").closest('.prod-size').addClass('active'); // Add active class tio parent div.
+
+        // Load wristband colors.
+        loadColors();
+        // Load wristband price list.
+        loadPrices();
+
+    // For quantity :
+        $('input[name="quantity[]').val("");
+        // Reset item Object.
+        items = _cart.items;
+        // Set fields
+        $.each(items, function(aKey, aValue) {
+            $.each(aValue, function(bKey, bValue) {
+                if(typeof bValue['size'] != "undefined") {
+                    $.each(bValue['size'], function(cKey, cValue) {
+                        $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+aKey+"'] input[ref-size='"+cKey+"'][ref-style='"+aKey+"'][ref-title='"+bValue['title']+"'][ref-color='"+bValue['color'].split(',').join(', ')+"']").val(cValue['qty']);
+                        items[aKey][bKey]['size'][cKey]['qty'] = parseFloat(items[aKey][bKey]['size'][cKey]['qty']);
+                    });
+                }
+            })
+        });
+        // reset wristband previews.
+        resetPreview();
+        // Load free items.
+        loadFree();
+        // Load total amount.
+        loadTotal();
+
+        free = _cart.free;
+        texts = _cart.texts;
+        clips = _cart.clips;
+        addon = _cart.addon;
+
 }
 
 String.prototype.capitalizeFirstLetter = function() {

@@ -12,7 +12,7 @@
                 </div>
                 <ul class="font-color-list">
                     @foreach($list_cliparts as $key => $value)
-                    <li class="clipart-selected clipart-list-{{ $value['code'] }}" ref-code="{{ $value['code'] }}" ref-image="{{ $value['image'] }}" ref-name="{{ $value['name'] }}">
+                    <li class="clipart-selected clipart-list-{{ $value['code'] }}" ref-code="{{ $value['code'] }}" ref-image="{{ URL::asset($value['image']) }}" ref-name="{{ $value['name'] }}">
                         <a ref="{{ $value['code'] }}">
                             <img src="{{ URL::asset($value['image']) }}" <?php echo ($value['code']=='none')?"style='width:80%;'":""; ?>/>
                         </a>

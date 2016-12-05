@@ -217,7 +217,7 @@
 
 		}
 
-		echo( "gd/img/preview/regular/swirl/" . $name . ".png" );
+		echo( "/gd/img/preview/regular/swirl/" . $name . ".png" );
 
 	}
 

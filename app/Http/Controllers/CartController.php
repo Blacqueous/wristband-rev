@@ -109,6 +109,7 @@ class CartController extends Controller
 				$data['addons'] = $price->getJSONAddOn();
 
 				$data['cart'] = $items[$request->index];
+				$data['index'] = $request->index;
 
 				return view('order_update', $data);
 			}

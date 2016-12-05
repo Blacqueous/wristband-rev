@@ -227,6 +227,8 @@ Route::get('/getTemplateCustomWristband', 'TemplateController@getCustomWristband
 
 Route::post('/upload', 'UploadController@uploadTemp');
 
+Route::post('/upload/{index}', 'UploadController@updateTemp');
+
 Route::get('/cart', 'CartController@index');
 
 Route::post('/cart/add', 'CartController@cartAdd');

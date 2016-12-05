@@ -17,6 +17,8 @@
 		<script type="text/javascript">
 			const price_json = JSON.parse('<?php echo(json_encode($prices)); ?>');
 			const addon_json = JSON.parse('<?php echo(json_encode($addons)); ?>');
+			const _cart = JSON.parse('<?php echo(json_encode($cart)); ?>');
+            const _index = '{{ $index }}';
 		</script>
 		<script src="{{ URL::asset('js/order.update.js') }}"></script>
 		<!-- Additional .js plugins -->
@@ -34,6 +36,8 @@
 @endsection
 
 @section('content')
+    <input id="URLasset" type="hidden" class="hidden" value="{{ URL::asset('') }}">
+
 	<div id="main-page-content">
 		<div class="container">
 
