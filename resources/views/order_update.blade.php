@@ -760,7 +760,7 @@
 						</div>
 					</div>
 					<div class="col-xs-12" style="padding-top:30px;">
-						<button id="submitOrder" class="btn btn-submit pull-right" type="button"><i class="fa fa-cart-plus" style="padding-right:5px;"></i> ADD TO CART</button>
+						<button id="submitOrder" class="btn btn-submit pull-right" type="button"><i class="fa fa-shopping-cart" style="padding-right:5px;"></i> UPDATE CART</button>
 					</div>
 					<div class="clearfix"></div>
 				</div>

@@ -989,7 +989,7 @@ $(document).ready(function() {
         // Get proper total qty
         $.ajax({
         	type: 'POST',
-        	url: '/cart/add',
+        	url: '/cart/update/'+_index,
             dataType: 'json',
         	data: {
                 data : data,
@@ -1002,7 +1002,7 @@ $(document).ready(function() {
         	success: function(data) {
                 // Display success message.
                 if(showMessage) {
-                    toastr.success('', '<h3>Order added to cart!</h3>');
+                    toastr.success('', '<h3>Cart updated successfully!</h3>');
                     showMessage = false;
                 }
                 // Reload this page.
@@ -1025,7 +1025,7 @@ $(document).ready(function() {
             if(data.status == true) {
                 // Display success message.
                 if(showMessage) {
-                    toastr.success('', '<h3>Order added to cart!</h3>');
+                    toastr.success('', '<h3>Cart updated successfully!</h3>');
                     showMessage = false;
                 }
                 // Reload this page.
@@ -3229,22 +3229,30 @@ function loadForm()
             $.each(aValue, function(bKey, bValue) {
                 if(typeof bValue['size'] != "undefined") {
                     $.each(bValue['size'], function(cKey, cValue) {
-                        $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+aKey+"'] input[ref-size='"+cKey+"'][ref-style='"+aKey+"'][ref-title='"+bValue['title']+"'][ref-color='"+bValue['color'].split(',').join(', ')+"']").val(cValue['qty']);
+                        $.ajax({
+                            type: 'GET',
+                            url: '/gd/band.php?style='+aKey+'&type='+_cart.style+'&color='+bValue['color'].split(',').join(','),
+                            data: { },
+                            beforeSend: function() { },
+                            success: function(link) { }
+                        }).done(function(link) {
+                            // Do something when everything is done.
+                            $.ajax({
+                            	type: 'GET',
+                            	url: '/getTemplateCustomWristband?type='+aKey+'&style='+_cart.style+'&image='+link+'&color='+bValue['color'].split(',').join(', '),
+                            	data: { },
+                            	beforeSend: function() { },
+                            	success: function() { }
+                            }).done(function(data) {
+                                // Do something when everything is done.
+                                $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+aKey+"'] .main-color-content").prepend(data);
+                                // Get proper total qty
+                                $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+aKey+"'] input[ref-size='"+cKey+"'][ref-style='"+aKey+"'][ref-color='"+bValue['color'].split(',').join(', ')+"']").val(cValue['qty']);
+                                items[aKey][bKey]['size'][cKey]['qty'] = parseFloat(items[aKey][bKey]['size'][cKey]['qty']);
+                            });
+                        });
+                        $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+aKey+"'] input[ref-size='"+cKey+"'][ref-style='"+aKey+"'][ref-color='"+bValue['color'].split(',').join(', ')+"']").val(cValue['qty']);
                         items[aKey][bKey]['size'][cKey]['qty'] = parseFloat(items[aKey][bKey]['size'][cKey]['qty']);
-
-                        // loadCustomWristband(customStyle, customType, customColors.join(","), customImgTarget);
-                        // Get proper total qty
-console.log($("#.tab-content .tab-pane[data-color-style='"+aKey+"'] .main-color-content"));
-                        // $.ajax({
-                        // 	type: 'GET',
-                        // 	url: '/getTemplateCustomWristband?type='+aKey+'&style='+_cart.style,
-                        // 	data: { },
-                        // 	beforeSend: function() { },
-                        // 	success: function() { }
-                        // }).done(function(data) {
-                        //     // Do something when everything is done.
-                        //     $("#.tab-content .tab-pane[data-color-style='"+aKey+"'] .main-color-content").prepend(data);
-                        // });
                     });
                 }
             });
@@ -3295,20 +3303,29 @@ console.log($("#.tab-content .tab-pane[data-color-style='"+aKey+"'] .main-color-
         } else {
             texts = {};
         }
+        $('.wb-text-outside').addClass('hidden');
+        $('#wb_text_outside_fb').removeClass('hidden');
+        if(typeof texts['front'] != "undefined") {
+            $("input[type='radio'].wb-text-type[value='select-fb']").iCheck('check'); // Check continuous radio button.
+            $('.fb-select').removeClass('hidden');
+            $('.c-select').addClass('hidden');
+            $('input#wb_text_front').val(texts['front']['text']);
+        }
+        if(typeof texts['back'] != "undefined") {
+            $("input[type='radio'].wb-text-type[value='select-fb']").iCheck('check'); // Check continuous radio button.
+            $('.fb-select').removeClass('hidden');
+            $('.c-select').addClass('hidden');
+            $('input#wb_text_back').val(texts['back']['text']);
+        }
         if(typeof texts['cont'] != "undefined") {
             $("input[type='radio'].wb-text-type[value='select-c']").iCheck('check'); // Check continuous radio button.
-            $('#wb_text_continue').val(texts['cont']['text']);
-        } else {
-            $("input[type='radio'].wb-text-type[value='select-fb']").iCheck('check'); // Check continuous radio button.
-            if(typeof texts['front'] != "undefined") {
-                $('#wb_text_front').val(texts['front']['text']);
-            }
-            if(typeof texts['back'] != "undefined") {
-                $('#wb_text_back').val(texts['back']['text']);
-            }
+            $('#wb_text_outside_c').removeClass('hidden');
+            $('.fb-select').addClass('hidden');
+            $('.c-select').removeClass('hidden');
+            $('input#wb_text_continue').val(texts['cont']['text']);
         }
         if(typeof texts['inside'] != "undefined") {
-            $('#wb_text_back').val(texts['inside']['text']);
+            $('input#wb_text_inside').val(texts['inside']['text']);
         }
 
         if(typeof _cart.clips != "undefined") {
@@ -3414,11 +3431,45 @@ console.log($("#.tab-content .tab-pane[data-color-style='"+aKey+"'] .main-color-
             }
         }
 
-        $('#ProductionTime').val(_cart.time_production.days);
-        $('#ShippingTime').val(_cart.time_shipping.days);
 
-        // Load total amount.
-        loadTotal();
+        // Get proper total qty.
+        $.ajax({
+            type: 'POST',
+            url: '/getPriceShipAndProd',
+            data: {
+                'style': _cart.style,
+                'size': _cart.size,
+                'quantity': _cart.quantity,
+                '_token': $('meta[name="csrf-token"]').attr('content')
+            },
+            beforeSend: function() { },
+            success: function(data) {}
+        }).done(function(data) {
+            //
+            var htmlProd, htmlShip = '';
+
+            // List all production price/day data
+            if(typeof data.production != "undefined") {
+                $.each(data.production, function(key, value) {
+                    htmlProd += "<option value='" + value.days + "' data-price='" + value.price + "'>Standard Production - " + value.days + " Days (+ $" + (value.price).formatMoney() + ")</option>";
+                });
+            }
+            $("#ProductionTime").html(htmlProd);
+
+            // List all shipping price/day data
+            if(typeof data.shipping != "undefined") {
+                $.each(data.shipping, function(key, value) {
+                    htmlShip += "<option value='" + value.days + "' data-price='" + value.price + "'>Standard Shipping - " + value.days + " Days (+ $" + (value.price).formatMoney() + ")</option>";
+                });
+            }
+            $("#ShippingTime").html(htmlShip);
+
+            $('#ProductionTime').val(_cart.time_production.days);
+            $('#ShippingTime').val(_cart.time_shipping.days);
+
+            // Load total amount.
+            loadTotal(false);
+        });
 
 }
 

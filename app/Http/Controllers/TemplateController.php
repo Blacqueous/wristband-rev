@@ -34,7 +34,9 @@ class TemplateController extends Controller
         $data = [
             'id' => str_random(20),
             'type' => $request->type,
-			'withFont' => $withFont
+			'withFont' => $withFont,
+			'image' => (isset($request->image)) ? $request->image : false,
+			'color' => (isset($request->color)) ? $request->color : false,
         ];
 
         return view('template.customWristbandRegular', $data);
