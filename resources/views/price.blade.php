@@ -8,9 +8,9 @@
 	td p {
 		margin: 12px 0;
 		border-bottom:1px solid #BFBFBF;
-		
+
 	}
-	
+
 	.table > tbody > tr > td, .table > tbody > tr > th, .table > tfoot > tr > td, .table > tfoot > tr > th, .table > thead > tr > td, .table > thead > tr > th{
 		border-top:none;
 	}
@@ -18,7 +18,7 @@
 @endsection
 
 @section('js')
-<script language="javascript"><!-- 
+<script language="javascript"><!--
 	$(document).ready(function() {
 		$('.popup-gallery').magnificPopup({
 			delegate: 'a',
@@ -38,29 +38,7 @@
 				}
 			}
 		});
-		
-		
-		if ($('#back-to-top').length) {
-		var scrollTrigger = 100, // px
-			backToTop = function () {
-				var scrollTop = $(window).scrollTop();
-				if (scrollTop > scrollTrigger) {
-					$('#back-to-top').addClass('show');
-				} else {
-					$('#back-to-top').removeClass('show');
-				}
-			};
-			backToTop();
-			$(window).on('scroll', function () {
-				backToTop();
-			});
-			$('#back-to-top').on('click', function (e) {
-				e.preventDefault();
-				$('html,body').animate({
-					scrollTop: 0
-				}, 700);
-			});
-		}
+
 	});
 	// -->
 	</script>
@@ -91,7 +69,7 @@
 				<li class="order-now-green"><a href="order">Order Now</a></li>
 			</ul>
 		   </div>
-		  
+
 			<div class="col-xs-99 float-left">
 				<div class="price-table table-responsive">
 				<table class="table" border="0" cellpadding="0" cellspacing="0" width="100%">
@@ -106,7 +84,7 @@
 							<th>1.5 Inch</th>
 							<th>2 Inch</th>
 						</tr>
-						
+
 					</td>
 					</tr>
 					<tr>
@@ -164,7 +142,7 @@
 							@foreach($prices['printed']['2000'] as $key => $value)
 								<td>{{ $value }}</td>
 							@endforeach
-					</tr>	
+					</tr>
 					<tr>
 						<td>
 							3000
@@ -172,7 +150,7 @@
 							@foreach($prices['printed']['3000'] as $key => $value)
 								<td>{{ $value }}</td>
 							@endforeach
-					</tr>		
+					</tr>
 					<tr>
 						<td>
 							5000
@@ -180,7 +158,7 @@
 							@foreach($prices['printed']['5000'] as $key => $value)
 								<td>{{ $value }}</td>
 							@endforeach
-					</tr>	
+					</tr>
 					<tr>
 						<td>
 							10000
@@ -204,7 +182,7 @@
 							@foreach($prices['printed']['50000'] as $key => $value)
 								<td>{{ $value }}</td>
 							@endforeach
-					</tr>	
+					</tr>
 					<tr>
 						<td>
 							100000
@@ -212,9 +190,9 @@
 							@foreach($prices['printed']['100000'] as $key => $value)
 								<td>{{ $value }}</td>
 							@endforeach
-					</tr>				
 					</tr>
-			</table>	
+					</tr>
+			</table>
 		   </div><!-- End Price Table --->
 		   </div>
 			<div class="clearfix"></div>
@@ -241,7 +219,7 @@
 				<li class="order-now-green"><a href="order">Order Now</a></li>
 			</ul>
 		   </div>
-		  
+
 			<div class="col-xs-99 float-left">
 				<div class="price-table table-responsive">
 				<table class="table" border="0" cellpadding="0" cellspacing="0" width="100%">
@@ -256,7 +234,7 @@
 							<th>1.5 Inch</th>
 							<th>2 Inch</th>
 						</tr>
-						
+
 					</td>
 					</tr>
 					<tr>
@@ -314,7 +292,7 @@
 							@foreach($prices['debossed']['2000'] as $key => $value)
 								<td>{{ $value }}</td>
 							@endforeach
-					</tr>	
+					</tr>
 					<tr>
 						<td>
 							3000
@@ -322,7 +300,7 @@
 							@foreach($prices['debossed']['3000'] as $key => $value)
 								<td>{{ $value }}</td>
 							@endforeach
-					</tr>		
+					</tr>
 					<tr>
 						<td>
 							5000
@@ -330,7 +308,7 @@
 							@foreach($prices['debossed']['5000'] as $key => $value)
 								<td>{{ $value }}</td>
 							@endforeach
-					</tr>	
+					</tr>
 					<tr>
 						<td>
 							10000
@@ -354,7 +332,7 @@
 							@foreach($prices['debossed']['50000'] as $key => $value)
 								<td>{{ $value }}</td>
 							@endforeach
-					</tr>	
+					</tr>
 					<tr>
 						<td>
 							100000
@@ -362,9 +340,9 @@
 							@foreach($prices['debossed']['100000'] as $key => $value)
 								<td>{{ $value }}</td>
 							@endforeach
-					</tr>				
 					</tr>
-			</table>	
+					</tr>
+			</table>
 		   </div><!-- End Price Table --->
 		   </div>
 			<div class="clearfix"></div>
@@ -391,7 +369,7 @@
 				<li class="order-now-green"><a href="order">Order Now</a></li>
 			</ul>
 		   </div>
-		  
+
 			<div class="col-xs-99 float-left">
 				<div class="price-table table-responsive">
 				<table class="table" border="0" cellpadding="0" cellspacing="0" width="100%">
@@ -406,7 +384,7 @@
 							<th>1.5 Inch</th>
 							<th>2 Inch</th>
 						</tr>
-						
+
 					</td>
 					</tr>
 					<tr>
@@ -464,7 +442,7 @@
 							@foreach($prices['ink-injected']['2000'] as $key => $value)
 								<td>{{ $value }}</td>
 							@endforeach
-					</tr>	
+					</tr>
 					<tr>
 						<td>
 							3000
@@ -472,7 +450,7 @@
 							@foreach($prices['ink-injected']['3000'] as $key => $value)
 								<td>{{ $value }}</td>
 							@endforeach
-					</tr>		
+					</tr>
 					<tr>
 						<td>
 							5000
@@ -480,7 +458,7 @@
 							@foreach($prices['ink-injected']['5000'] as $key => $value)
 								<td>{{ $value }}</td>
 							@endforeach
-					</tr>	
+					</tr>
 					<tr>
 						<td>
 							10000
@@ -504,7 +482,7 @@
 							@foreach($prices['ink-injected']['50000'] as $key => $value)
 								<td>{{ $value }}</td>
 							@endforeach
-					</tr>	
+					</tr>
 					<tr>
 						<td>
 							100000
@@ -512,9 +490,9 @@
 							@foreach($prices['ink-injected']['100000'] as $key => $value)
 								<td>{{ $value }}</td>
 							@endforeach
-					</tr>				
 					</tr>
-			</table>	
+					</tr>
+			</table>
 		   </div><!-- End Price Table --->
 		   </div>
 			<div class="clearfix"></div>
@@ -541,7 +519,7 @@
 				<li class="order-now-green"><a href="order">Order Now</a></li>
 			</ul>
 		   </div>
-		  
+
 			<div class="col-xs-99 float-left">
 				<div class="price-table table-responsive">
 				<table class="table" border="0" cellpadding="0" cellspacing="0" width="100%">
@@ -556,7 +534,7 @@
 							<th>1.5 Inch</th>
 							<th>2 Inch</th>
 						</tr>
-						
+
 					</td>
 					</tr>
 					<tr>
@@ -614,7 +592,7 @@
 							@foreach($prices['embossed']['2000'] as $key => $value)
 								<td>{{ $value }}</td>
 							@endforeach
-					</tr>	
+					</tr>
 					<tr>
 						<td>
 							3000
@@ -622,7 +600,7 @@
 							@foreach($prices['embossed']['3000'] as $key => $value)
 								<td>{{ $value }}</td>
 							@endforeach
-					</tr>		
+					</tr>
 					<tr>
 						<td>
 							5000
@@ -630,7 +608,7 @@
 							@foreach($prices['embossed']['5000'] as $key => $value)
 								<td>{{ $value }}</td>
 							@endforeach
-					</tr>	
+					</tr>
 					<tr>
 						<td>
 							10000
@@ -654,7 +632,7 @@
 							@foreach($prices['embossed']['50000'] as $key => $value)
 								<td>{{ $value }}</td>
 							@endforeach
-					</tr>	
+					</tr>
 					<tr>
 						<td>
 							100000
@@ -662,9 +640,9 @@
 							@foreach($prices['embossed']['100000'] as $key => $value)
 								<td>{{ $value }}</td>
 							@endforeach
-					</tr>				
 					</tr>
-			</table>	
+					</tr>
+			</table>
 		   </div><!-- End Price Table --->
 		   </div>
 			<div class="clearfix"></div>
@@ -691,7 +669,7 @@
 				<li class="order-now-green"><a href="order">Order Now</a></li>
 			</ul>
 		   </div>
-		  
+
 			<div class="col-xs-99 float-left">
 				<div class="price-table table-responsive">
 				<table class="table" border="0" cellpadding="0" cellspacing="0" width="100%">
@@ -702,7 +680,7 @@
 							<th>1/2 Inch</th>
 							<th>3/4 Inch</th>
 						</tr>
-						
+
 					</td>
 					</tr>
 					<tr>
@@ -710,11 +688,11 @@
 							20
 						</td>
 							@foreach($prices['dual-layer']['20'] as $key => $value)
-							
+
 							@if($key=='0-50inch')
 								<td>{{ $value }}</td>
 							@elseif($key=='0-75inch')
-								<td>{{ $value }}</td>	
+								<td>{{ $value }}</td>
 							@endif
 							@endforeach
 					</tr>
@@ -723,11 +701,11 @@
 							30
 						</td>
 							@foreach($prices['dual-layer']['30'] as $key => $value)
-							
+
 							@if($key=='0-50inch')
 								<td>{{ $value }}</td>
 							@elseif($key=='0-75inch')
-								<td>{{ $value }}</td>	
+								<td>{{ $value }}</td>
 							@endif
 							@endforeach
 					</tr>
@@ -736,11 +714,11 @@
 							100
 						</td>
 							@foreach($prices['dual-layer']['100'] as $key => $value)
-							
+
 							@if($key=='0-50inch')
 								<td>{{ $value }}</td>
 							@elseif($key=='0-75inch')
-								<td>{{ $value }}</td>	
+								<td>{{ $value }}</td>
 							@endif
 							@endforeach
 					</tr>
@@ -749,11 +727,11 @@
 							300
 						</td>
 							@foreach($prices['dual-layer']['300'] as $key => $value)
-							
+
 							@if($key=='0-50inch')
 								<td>{{ $value }}</td>
 							@elseif($key=='0-75inch')
-								<td>{{ $value }}</td>	
+								<td>{{ $value }}</td>
 							@endif
 							@endforeach
 					</tr>
@@ -762,11 +740,11 @@
 							500
 						</td>
 							@foreach($prices['dual-layer']['500'] as $key => $value)
-							
+
 							@if($key=='0-50inch')
 								<td>{{ $value }}</td>
 							@elseif($key=='0-75inch')
-								<td>{{ $value }}</td>	
+								<td>{{ $value }}</td>
 							@endif
 							@endforeach
 					</tr>
@@ -775,11 +753,11 @@
 							1000
 						</td>
 							@foreach($prices['dual-layer']['1000'] as $key => $value)
-							
+
 							@if($key=='0-50inch')
 								<td>{{ $value }}</td>
 							@elseif($key=='0-75inch')
-								<td>{{ $value }}</td>	
+								<td>{{ $value }}</td>
 							@endif
 							@endforeach
 					</tr>
@@ -788,50 +766,50 @@
 							2000
 						</td>
 							@foreach($prices['dual-layer']['2000'] as $key => $value)
-							
+
 							@if($key=='0-50inch')
 								<td>{{ $value }}</td>
 							@elseif($key=='0-75inch')
-								<td>{{ $value }}</td>	
+								<td>{{ $value }}</td>
 							@endif
 							@endforeach
-					</tr>	
+					</tr>
 					<tr>
 						<td>
 							3000
 						</td>
 							@foreach($prices['dual-layer']['3000'] as $key => $value)
-							
+
 							@if($key=='0-50inch')
 								<td>{{ $value }}</td>
 							@elseif($key=='0-75inch')
-								<td>{{ $value }}</td>	
+								<td>{{ $value }}</td>
 							@endif
 							@endforeach
-					</tr>		
+					</tr>
 					<tr>
 						<td>
 							5000
 						</td>
 							@foreach($prices['dual-layer']['5000'] as $key => $value)
-							
+
 							@if($key=='0-50inch')
 								<td>{{ $value }}</td>
 							@elseif($key=='0-75inch')
-								<td>{{ $value }}</td>	
+								<td>{{ $value }}</td>
 							@endif
 							@endforeach
-					</tr>	
+					</tr>
 					<tr>
 						<td>
 							10000
 						</td>
 							@foreach($prices['dual-layer']['10000'] as $key => $value)
-							
+
 							@if($key=='0-50inch')
 								<td>{{ $value }}</td>
 							@elseif($key=='0-75inch')
-								<td>{{ $value }}</td>	
+								<td>{{ $value }}</td>
 							@endif
 							@endforeach
 					</tr>
@@ -840,11 +818,11 @@
 							20000
 						</td>
 							@foreach($prices['dual-layer']['20000'] as $key => $value)
-							
+
 							@if($key=='0-50inch')
 								<td>{{ $value }}</td>
 							@elseif($key=='0-75inch')
-								<td>{{ $value }}</td>	
+								<td>{{ $value }}</td>
 							@endif
 							@endforeach
 					</tr>
@@ -853,29 +831,29 @@
 							50000
 						</td>
 							@foreach($prices['dual-layer']['50000'] as $key => $value)
-							
+
 							@if($key=='0-50inch')
 								<td>{{ $value }}</td>
 							@elseif($key=='0-75inch')
-								<td>{{ $value }}</td>	
+								<td>{{ $value }}</td>
 							@endif
 							@endforeach
-					</tr>	
+					</tr>
 					<tr>
 						<td>
 							100000
 						</td>
 							@foreach($prices['dual-layer']['100000'] as $key => $value)
-							
+
 							@if($key=='0-50inch')
 								<td>{{ $value }}</td>
 							@elseif($key=='0-75inch')
-								<td>{{ $value }}</td>	
+								<td>{{ $value }}</td>
 							@endif
 							@endforeach
-					</tr>				
 					</tr>
-			</table>	
+					</tr>
+			</table>
 		   </div><!-- End Price Table --->
 		   </div>
 			<div class="clearfix"></div>
@@ -902,7 +880,7 @@
 				<li class="order-now-green"><a href="order">Order Now</a></li>
 			</ul>
 		   </div>
-		  
+
 			<div class="col-xs-99 float-left">
 				<div class="price-table table-responsive">
 				<table class="table" border="0" cellpadding="0" cellspacing="0" width="100%">
@@ -917,7 +895,7 @@
 							<th>1.5 Inch</th>
 							<th>2 Inch</th>
 						</tr>
-						
+
 					</td>
 					</tr>
 					<tr>
@@ -975,7 +953,7 @@
 							@foreach($prices['embossed-printed']['2000'] as $key => $value)
 								<td>{{ $value }}</td>
 							@endforeach
-					</tr>	
+					</tr>
 					<tr>
 						<td>
 							3000
@@ -983,7 +961,7 @@
 							@foreach($prices['embossed-printed']['3000'] as $key => $value)
 								<td>{{ $value }}</td>
 							@endforeach
-					</tr>		
+					</tr>
 					<tr>
 						<td>
 							5000
@@ -991,7 +969,7 @@
 							@foreach($prices['embossed-printed']['5000'] as $key => $value)
 								<td>{{ $value }}</td>
 							@endforeach
-					</tr>	
+					</tr>
 					<tr>
 						<td>
 							10000
@@ -1015,7 +993,7 @@
 							@foreach($prices['embossed-printed']['50000'] as $key => $value)
 								<td>{{ $value }}</td>
 							@endforeach
-					</tr>	
+					</tr>
 					<tr>
 						<td>
 							100000
@@ -1023,9 +1001,9 @@
 							@foreach($prices['embossed-printed']['100000'] as $key => $value)
 								<td>{{ $value }}</td>
 							@endforeach
-					</tr>				
 					</tr>
-			</table>	
+					</tr>
+			</table>
 		   </div><!-- End Price Table --->
 		   </div>
 			<div class="clearfix"></div>
@@ -1052,7 +1030,7 @@
 				<li class="order-now-green"><a href="order">Order Now</a></li>
 			</ul>
 		   </div>
-		  
+
 			<div class="col-xs-99 float-left">
 				<div class="price-table table-responsive">
 				<table class="table" border="0" cellpadding="0" cellspacing="0" width="100%">
@@ -1064,7 +1042,7 @@
 							<th>3/4 Inch</th>
 							<th>1 Inch</th>
 						</tr>
-						
+
 					</td>
 					</tr>
 					<tr>
@@ -1075,9 +1053,9 @@
 							@if($key=='0-50inch')
 								<td>{{ $value }}</td>
 							@elseif($key=='0-75inch')
-								<td>{{ $value }}</td>	
+								<td>{{ $value }}</td>
 							@elseif($key=='1-00inch')
-								<td>{{ $value }}</td>	
+								<td>{{ $value }}</td>
 							@endif
 							@endforeach
 					</tr>
@@ -1089,9 +1067,9 @@
 								@if($key=='0-50inch')
 								<td>{{ $value }}</td>
 							@elseif($key=='0-75inch')
-								<td>{{ $value }}</td>	
+								<td>{{ $value }}</td>
 							@elseif($key=='1-00inch')
-								<td>{{ $value }}</td>	
+								<td>{{ $value }}</td>
 							@endif
 							@endforeach
 					</tr>
@@ -1103,9 +1081,9 @@
 								@if($key=='0-50inch')
 								<td>{{ $value }}</td>
 							@elseif($key=='0-75inch')
-								<td>{{ $value }}</td>	
+								<td>{{ $value }}</td>
 							@elseif($key=='1-00inch')
-								<td>{{ $value }}</td>	
+								<td>{{ $value }}</td>
 							@endif
 							@endforeach
 					</tr>
@@ -1117,9 +1095,9 @@
 							@if($key=='0-50inch')
 								<td>{{ $value }}</td>
 							@elseif($key=='0-75inch')
-								<td>{{ $value }}</td>	
+								<td>{{ $value }}</td>
 							@elseif($key=='1-00inch')
-								<td>{{ $value }}</td>	
+								<td>{{ $value }}</td>
 							@endif
 							@endforeach
 					</tr>
@@ -1131,9 +1109,9 @@
 							@if($key=='0-50inch')
 								<td>{{ $value }}</td>
 							@elseif($key=='0-75inch')
-								<td>{{ $value }}</td>	
+								<td>{{ $value }}</td>
 							@elseif($key=='1-00inch')
-								<td>{{ $value }}</td>	
+								<td>{{ $value }}</td>
 							@endif
 							@endforeach
 					</tr>
@@ -1145,9 +1123,9 @@
 								@if($key=='0-50inch')
 								<td>{{ $value }}</td>
 							@elseif($key=='0-75inch')
-								<td>{{ $value }}</td>	
+								<td>{{ $value }}</td>
 							@elseif($key=='1-00inch')
-								<td>{{ $value }}</td>	
+								<td>{{ $value }}</td>
 							@endif
 							@endforeach
 					</tr>
@@ -1159,12 +1137,12 @@
 								@if($key=='0-50inch')
 								<td>{{ $value }}</td>
 							@elseif($key=='0-75inch')
-								<td>{{ $value }}</td>	
+								<td>{{ $value }}</td>
 							@elseif($key=='1-00inch')
-								<td>{{ $value }}</td>	
+								<td>{{ $value }}</td>
 							@endif
 							@endforeach
-					</tr>	
+					</tr>
 					<tr>
 						<td>
 							3000
@@ -1173,12 +1151,12 @@
 							@if($key=='0-50inch')
 								<td>{{ $value }}</td>
 							@elseif($key=='0-75inch')
-								<td>{{ $value }}</td>	
+								<td>{{ $value }}</td>
 							@elseif($key=='1-00inch')
-								<td>{{ $value }}</td>	
+								<td>{{ $value }}</td>
 							@endif
 							@endforeach
-					</tr>		
+					</tr>
 					<tr>
 						<td>
 							5000
@@ -1187,12 +1165,12 @@
 							@if($key=='0-50inch')
 								<td>{{ $value }}</td>
 							@elseif($key=='0-75inch')
-								<td>{{ $value }}</td>	
+								<td>{{ $value }}</td>
 							@elseif($key=='1-00inch')
-								<td>{{ $value }}</td>	
+								<td>{{ $value }}</td>
 							@endif
 							@endforeach
-					</tr>	
+					</tr>
 					<tr>
 						<td>
 							10000
@@ -1201,9 +1179,9 @@
 							@if($key=='0-50inch')
 								<td>{{ $value }}</td>
 							@elseif($key=='0-75inch')
-								<td>{{ $value }}</td>	
+								<td>{{ $value }}</td>
 							@elseif($key=='1-00inch')
-								<td>{{ $value }}</td>	
+								<td>{{ $value }}</td>
 							@endif
 							@endforeach
 					</tr>
@@ -1215,9 +1193,9 @@
 							@if($key=='0-50inch')
 								<td>{{ $value }}</td>
 							@elseif($key=='0-75inch')
-								<td>{{ $value }}</td>	
+								<td>{{ $value }}</td>
 							@elseif($key=='1-00inch')
-								<td>{{ $value }}</td>	
+								<td>{{ $value }}</td>
 							@endif
 							@endforeach
 					</tr>
@@ -1229,12 +1207,12 @@
 							@if($key=='0-50inch')
 								<td>{{ $value }}</td>
 							@elseif($key=='0-75inch')
-								<td>{{ $value }}</td>	
+								<td>{{ $value }}</td>
 							@elseif($key=='1-00inch')
-								<td>{{ $value }}</td>	
+								<td>{{ $value }}</td>
 							@endif
 							@endforeach
-					</tr>	
+					</tr>
 					<tr>
 						<td>
 							100000
@@ -1243,14 +1221,14 @@
 							@if($key=='0-50inch')
 								<td>{{ $value }}</td>
 							@elseif($key=='0-75inch')
-								<td>{{ $value }}</td>	
+								<td>{{ $value }}</td>
 							@elseif($key=='1-00inch')
-								<td>{{ $value }}</td>	
+								<td>{{ $value }}</td>
 							@endif
 							@endforeach
-					</tr>				
 					</tr>
-			</table>	
+					</tr>
+			</table>
 		   </div><!-- End Price Table --->
 		   </div>
 			<div class="clearfix"></div>
@@ -1277,7 +1255,7 @@
 				<li class="order-now-green"><a href="order">Order Now</a></li>
 			</ul>
 		   </div>
-		  
+
 			<div class="col-xs-99 float-left">
 				<div class="price-table table-responsive">
 				<table class="table" border="0" cellpadding="0" cellspacing="0" width="100%">
@@ -1292,7 +1270,7 @@
 							<th>1.5 Inch</th>
 							<th>2 Inch</th>
 						</tr>
-						
+
 					</td>
 					</tr>
 					<tr>
@@ -1350,7 +1328,7 @@
 							@foreach($prices['blank']['2000'] as $key => $value)
 								<td>{{ $value }}</td>
 							@endforeach
-					</tr>	
+					</tr>
 					<tr>
 						<td>
 							3000
@@ -1358,7 +1336,7 @@
 							@foreach($prices['blank']['3000'] as $key => $value)
 								<td>{{ $value }}</td>
 							@endforeach
-					</tr>		
+					</tr>
 					<tr>
 						<td>
 							5000
@@ -1366,7 +1344,7 @@
 							@foreach($prices['blank']['5000'] as $key => $value)
 								<td>{{ $value }}</td>
 							@endforeach
-					</tr>	
+					</tr>
 					<tr>
 						<td>
 							10000
@@ -1390,7 +1368,7 @@
 							@foreach($prices['blank']['50000'] as $key => $value)
 								<td>{{ $value }}</td>
 							@endforeach
-					</tr>	
+					</tr>
 					<tr>
 						<td>
 							100000
@@ -1398,15 +1376,13 @@
 							@foreach($prices['blank']['100000'] as $key => $value)
 								<td>{{ $value }}</td>
 							@endforeach
-					</tr>				
 					</tr>
-			</table>	
+					</tr>
+			</table>
 		   </div><!-- End Price Table --->
 		   </div>
 			<div class="clearfix"></div>
 	   </div> <!--- End -->
-	
-		<a href="#" id="back-to-top" title="Back to top"><span style="fnot-weight:bold;">&#8593;</span></a>
 	</div>
 	<!-- End Container -->
 </div>
