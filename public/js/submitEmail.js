@@ -338,6 +338,7 @@ $(document).ready(function() {
             loadFree();
             // Load total amount.
             loadTotal();
+
         } else {
             // $(this).val("");
         }
@@ -977,159 +978,84 @@ $(document).ready(function() {
         loadTotal();
     });
 
-    // Submit to cart
-   /* $('body').on('click', '#submitOrder', function(e) {
-
-        var data = getTotal();
-        var showMessage = true;
-
-        // Get proper total qty
-        $.ajax({
-        	type: 'POST',
-        	url: '/cart/add',
-            dataType: 'json',
-        	data: {
-                data : data,
-                '_token': $('meta[name="csrf-token"]').attr('content')
-            },
-        	beforeSend: function() {
-                $('#submitOrder').prop('disabled', true);
-                $('#submitOrder').addClass('disabled');
-            },
-        	success: function(data) {
-                // Display success message.
-                if(showMessage) {
-                    toastr.success('', '<h3>Order added to cart!</h3>');
-                    showMessage = false;
-                }
-                // Reload this page.
-                
-            },
-            error: function(XMLHttpRequest, textStatus, errorThrown) {
-                // Display error message.
-                if(showMessage) {
-                    toastr.error('', '<h3>Ooops! Something went wrong.</h3>');
-                    showMessage = false;
-                }
-                // Re-enable submit button
-                $('#submitOrder').prop('disabled', false);
-                $('#submitOrder').removeClass('disabled');
-            }
-        }).done(function(data) {
-            if(data.status == true) {
-                // Display success message.
-                if(showMessage) {
-                    toastr.success('', '<h3>Order added to cart!</h3>');
-                    showMessage = false;
-                }
-                }
-                // Reload this page.
-                
-            } else {
-                // Display error message.
-                if(showMessage) {
-                    toastr.error('', '<h3>Ooops! Something went wrong.</h3>');
-                    showMessage = false;
-                }
-                // Re-enable submit button
-                $('#submitOrder').prop('disabled', false);
-                $('#submitOrder').removeClass('disabled');
-            }
-        }).fail(function(xhr, status, error) {
-            // Display error message.
-            if(showMessage) {
-                toastr.error('', '<h3>Ooops! Something went wrong.</h3>');
-                showMessage = false;
-            }
-            // Re-enable submit button
-            $('#submitOrder').prop('disabled', false);
-            $('#submitOrder').removeClass('disabled');
-        });
-
-    });
-	*/
-	
-	// Submit to quote
+    // Submit to quote
     $('body').on('click', '#submitQuote', function(e) {
-         
+
        // e.preventDefault();
-		//e.stopPropagation();
-	
-		// Fill submit type
-		$("#submit_order_type").val($(this).attr("data-submit-type"));
-		// Clear fields
-		$("#submit_order_email").val("");
-		$("#submit_order_fullname").val("").focus();
-		// Make sure fields are enabled
-		$("#submit_order_fullname, #submit_order_email").prop("disabled", false);
-		// Display buttons
-		$("#modal-confirm-submit .confirm-footer-buttons").show();
-		$("#modal-confirm-submit .confirm-footer-loader").hide();
-		// Display confirmation popup modal
-		$("#modal-confirm-submit").modal("show");
+        //e.stopPropagation();
+
+        // Fill submit type
+        $("#submit_order_type").val($(this).attr("data-submit-type"));
+        // Clear fields
+        $("#submit_order_email").val("");
+        $("#submit_order_fullname").val("").focus();
+        // Make sure fields are enabled
+        $("#submit_order_fullname, #submit_order_email").prop("disabled", false);
+        // Display buttons
+        $("#modal-confirm-submit .confirm-footer-buttons").show();
+        $("#modal-confirm-submit .confirm-footer-loader").hide();
+        // Display confirmation popup modal
+        $("#modal-confirm-submit").modal("show");
 
     });
-	
-	// Actually submit email quote
-	$("body").on("click", "#submitCnfEmail", function(e) {
-		
-		e.preventDefault();
-		e.stopPropagation();
+
+
+    // Actually submit email quote
+    $("body").on("click", "#submitCnfEmail", function(e) {
+        e.preventDefault();
+        e.stopPropagation();
 
         // Check if all fields has value
-		if($("#submit_order_fullname").val().length > 0 && $("#submit_order_email").val().length > 0) {
+        if($("#submit_order_fullname").val().length > 0 && $("#submit_order_email").val().length > 0) {
+            // Get order data
+            var collectionData = getTotal();
+            var showMessage = true;
+            // $form_data.append('data', JSON.stringify(collectionData));
+            var name = $("#submit_order_fullname").val();
+            var mail = $("#submit_order_email").val();
 
-			// Get order data
-					
-			var collectionData = getTotal();
-			var showMessage = true;
-			// $form_data.append('data', JSON.stringify(collectionData));
-			var name = $("#submit_order_fullname").val();
-			var mail = $("#submit_order_email").val();
+            $.ajax({
+                type: 'POST',
+                url: '/quote/send',
+                dataType: 'json',
+                data: {
+                    data : collectionData,
+                    email: {'name':name,'mail':mail},
+                    status: true,
+                    '_token': $('meta[name="csrf-token"]').attr('content')
+                },
+                beforeSend: function() {
+                    $("#submit_order_fullname, #submit_order_email").prop("disabled", true);
+                    $("#modal-confirm-submit .confirm-footer-buttons").hide();
+                    $("#modal-confirm-submit .confirm-footer-loader").show();
+                },
+                success: function(data) {
+                        // Hide confirmation popup modal
+                        $("#modal-confirm-submit").modal("hide");
+                        //Default triggers
+                        showPopupMessage("Success", data.message);
+                        $('html,body').scrollTop(0);
+                }
+            });
+        } else { // If no,
+            // Show error message
+            showPopupMessage("Error", "Kindly fill-up all fields.");
+            // Make sure fields are enabled
+            $("#submit_order_fullname, #submit_order_email").prop("disabled", false);
+            // Display buttons
+            $("#modal-confirm-submit .confirm-footer-buttons").show();
+            $("#modal-confirm-submit .confirm-footer-loader").hide();
+            return false;
+        }
+    });
 
-			$.ajax({
-				type: 'POST',
-				url: '/quote/send',
-				dataType: 'json',
-				data: {
-					data : collectionData,
-					email: {'name':name,'mail':mail},
-					status: true,
-					'_token': $('meta[name="csrf-token"]').attr('content')
-				},
-				beforeSend: function() {
-					$("#submit_order_fullname, #submit_order_email").prop("disabled", true);
-					$("#modal-confirm-submit .confirm-footer-buttons").hide();
-					$("#modal-confirm-submit .confirm-footer-loader").show();
-				},
-				success: function(data) {
-						// Hide confirmation popup modal
-						$("#modal-confirm-submit").modal("hide");
-						//Default triggers
-						showPopupMessage("Success", data.message);
-						$('html,body').scrollTop(0);
-				}
-			});
-			
-		} else { // If no,
-			// Show error message
-			showPopupMessage("Error", "Kindly fill-up all fields.");
-			// Make sure fields are enabled
-			$("#submit_order_fullname, #submit_order_email").prop("disabled", false);
-			// Display buttons
-			$("#modal-confirm-submit .confirm-footer-buttons").show();
-			$("#modal-confirm-submit .confirm-footer-loader").hide();
-			return false;
-		}
-	});
+    // popup message
+    function showPopupMessage(_title, _content) {
+        $("#modal-message-title").html(_title);
+        $("#modal-message-content").html(_content);
+        $("#modal-message").modal("show");
+    }
 
-	// popup message
-	function showPopupMessage(_title, _content) {
-		$("#modal-message-title").html(_title);
-		$("#modal-message-content").html(_content);
-		$("#modal-message").modal("show");
-	}
-	
     $('#clipartup_front_start').fileupload({
         url: "/upload",
         dataType : 'json',
@@ -2036,7 +1962,7 @@ function getTotal()
         'style': $style,
         'size': $size,
         'items': items,
-        'free': free,
+        'free': {},
         'addon': addon,
         'price': 0,
         'quantity': 0,
@@ -2115,14 +2041,36 @@ function getTotal()
         if(styleKey == 'key-chain') {
             if($collection['addon'][styleKey]['all']) {
                 $collection['addon'][styleKey]['quantity'] = $collection.quantity;
+                $collection['addon'][styleKey]['items'] = {};
             } else {
                 total = 0;
+                addon_items = {};
                 // Compute total key in items.
                 $.each($(".addonkc"), function(key, element) {
                     element = $(element);
-                    total += (element.val().trim() == "") ? 0 : parseInt(element.val().trim());
+                    addon_qty = (element.val().trim() == "") ? 0 : parseInt(element.val().trim());
+                    total += addon_qty;
+                    if(addon_qty > 0) {
+                        if(typeof addon_items[element.attr('data-style')] == "undefined")
+                        addon_items[element.attr('data-style')] = {};
+                        if(typeof addon_items[element.attr('data-style')][element.attr('data-index')] == "undefined")
+                            addon_items[element.attr('data-style')][element.attr('data-index')] = {
+                                color: items[element.attr('data-style')][element.attr('data-index')]['color'],
+                                size: {},
+                                style: items[element.attr('data-style')][element.attr('data-index')]['style'],
+                                title: items[element.attr('data-style')][element.attr('data-index')]['title'],
+                                type: items[element.attr('data-style')][element.attr('data-index')]['type']
+                            };
+                        addon_items[element.attr('data-style')][element.attr('data-index')]['size'][element.attr('data-size')] = {
+                            font: items[element.attr('data-style')][element.attr('data-index')]['size'][element.attr('data-size')]['font'],
+                            font_name: items[element.attr('data-style')][element.attr('data-index')]['size'][element.attr('data-size')]['font_name'],
+                            qty: addon_qty,
+                            size: items[element.attr('data-style')][element.attr('data-index')]['size'][element.attr('data-size')]['size']
+                        };
+                    }
                 });
                 $collection['addon'][styleKey]['quantity'] = total;
+                $collection['addon'][styleKey]['items'] = addon_items;
             }
         } else {
             $collection['addon'][styleKey]['quantity'] = $collection.quantity;
@@ -2145,6 +2093,43 @@ function getTotal()
         });
         $collection['addon'][styleKey]['total'] = ( $collection['addon'][styleKey]['price'] * $collection['addon'][styleKey]['quantity'] );
     });
+
+    // If has addon key-chain, check if some selected
+    if(typeof $collection['addon']['key-chain'] != "undefined") {
+        if($collection['addon']['key-chain']['all']) {
+            $collection['addon']['key-chain']['items'] = {};
+        } else {
+            // Add-on keychains
+            var addonKCtotal = 0;
+            var addonKCitems = {};
+            // Compute total key in items.
+            $.each($(".addonkc"), function(key, element) {
+                element = $(element);
+                addonKCqty = (element.val().trim() == "") ? 0 : parseInt(element.val().trim())
+                addonKCtotal += addonKCqty;
+                if(addonKCqty > 0) {
+                    if(typeof addonKCitems[element.attr('data-style')] == "undefined")
+                    addonKCitems[element.attr('data-style')] = {};
+                    if(typeof addonKCitems[element.attr('data-style')][element.attr('data-index')] == "undefined")
+                        addonKCitems[element.attr('data-style')][element.attr('data-index')] = {
+                            color: items[element.attr('data-style')][element.attr('data-index')]['color'],
+                            size: {},
+                            style: items[element.attr('data-style')][element.attr('data-index')]['style'],
+                            title: items[element.attr('data-style')][element.attr('data-index')]['title'],
+                            type: items[element.attr('data-style')][element.attr('data-index')]['type']
+                        };
+                    addonKCitems[element.attr('data-style')][element.attr('data-index')]['size'][element.attr('data-size')] = {
+                        font: items[element.attr('data-style')][element.attr('data-index')]['size'][element.attr('data-size')]['font'],
+                        font_name: items[element.attr('data-style')][element.attr('data-index')]['size'][element.attr('data-size')]['font_name'],
+                        qty: addonKCqty,
+                        size: items[element.attr('data-style')][element.attr('data-index')]['size'][element.attr('data-size')]['size']
+                    };
+                }
+            });
+            // Set value for addon
+            $collection['addon']['key-chain']['items'] = addonKCitems;
+        }
+    }
 
     // Loop through all cliparts
     $.each($collection['clips'], function(styleKey, styleVal) {
@@ -2199,6 +2184,66 @@ function getTotal()
         });
         $collection['texts'][styleKey]['total'] = ( $collection['texts'][styleKey]['price'] * $collection.quantity );
     });
+
+    // Free keychains
+    var freeKCtotal = 0;
+    var freeKCitems = {};
+    // Compute total key in items.
+    $.each($(".freekc"), function(key, element) {
+        element = $(element);
+        freeKCqty = (element.val().trim() == "") ? 0 : parseInt(element.val().trim())
+        freeKCtotal += freeKCqty;
+        if(freeKCqty > 0) {
+            if(typeof freeKCitems[element.attr('data-style')] == "undefined")
+            freeKCitems[element.attr('data-style')] = {};
+            if(typeof freeKCitems[element.attr('data-style')][element.attr('data-index')] == "undefined")
+                freeKCitems[element.attr('data-style')][element.attr('data-index')] = {
+                    color: items[element.attr('data-style')][element.attr('data-index')]['color'],
+                    size: {},
+                    style: items[element.attr('data-style')][element.attr('data-index')]['style'],
+                    title: items[element.attr('data-style')][element.attr('data-index')]['title'],
+                    type: items[element.attr('data-style')][element.attr('data-index')]['type']
+                };
+            freeKCitems[element.attr('data-style')][element.attr('data-index')]['size'][element.attr('data-size')] = {
+                font: items[element.attr('data-style')][element.attr('data-index')]['size'][element.attr('data-size')]['font'],
+                font_name: items[element.attr('data-style')][element.attr('data-index')]['size'][element.attr('data-size')]['font_name'],
+                qty: freeKCqty,
+                size: items[element.attr('data-style')][element.attr('data-index')]['size'][element.attr('data-size')]['size']
+            };
+        }
+    });
+    // Set value for free
+    $collection.free['key-chain'] = { 'items': freeKCitems, 'quantity': freeKCtotal };
+
+    // Free wristbands
+    var freeWBtotal = 0;
+    var freeWBitems = {};
+    // Compute total key in items.
+    $.each($(".freewb"), function(key, element) {
+        element = $(element);
+        freeWBqty = (element.val().trim() == "") ? 0 : parseInt(element.val().trim())
+        if(freeWBqty > 0) {
+            freeWBtotal += freeWBqty;
+            if(typeof freeWBitems[element.attr('data-style')] == "undefined")
+            freeWBitems[element.attr('data-style')] = {};
+            if(typeof freeWBitems[element.attr('data-style')][element.attr('data-index')] == "undefined")
+            freeWBitems[element.attr('data-style')][element.attr('data-index')] = {
+                color: items[element.attr('data-style')][element.attr('data-index')]['color'],
+                size: {},
+                style: items[element.attr('data-style')][element.attr('data-index')]['style'],
+                title: items[element.attr('data-style')][element.attr('data-index')]['title'],
+                type: items[element.attr('data-style')][element.attr('data-index')]['type']
+            };
+            freeWBitems[element.attr('data-style')][element.attr('data-index')]['size'][element.attr('data-size')] = {
+                font: items[element.attr('data-style')][element.attr('data-index')]['size'][element.attr('data-size')]['font'],
+                font_name: items[element.attr('data-style')][element.attr('data-index')]['size'][element.attr('data-size')]['font_name'],
+                qty: freeWBqty,
+                size: items[element.attr('data-style')][element.attr('data-index')]['size'][element.attr('data-size')]['size']
+            };
+        }
+    });
+    // Set value for free
+    $collection.free['wristbands'] = { 'items': freeWBitems, 'quantity': freeWBtotal };
 
 	// Get selected production settings
     var elementProd = $("#ProductionTime option:selected");
@@ -2448,7 +2493,7 @@ function loadFree()
                     html_wb += '<div class="col-xs-4 fwb-text-content">'+itemValue.title.toUpperCase()+'</div>';
                     html_wb += '<div class="col-xs-4 fwb-text-content">'+getSizeTitle(sizeKey).toUpperCase()+'</div>';
                 html_wb += '</div>';
-                html_wb += '<div class="align-right col-md-6 col-sm-12"><h4 class="fwb-text col-xs-12 hidden-md hidden-lg text-center fwb-text-hidden-header">INPUT QUANTITY</h4><input type="number" class="freewb col-xs-12" id="freewb-'+itemValue.style+'-'+sizeKey+'-'+itemValue.color.split(",").join("-")+'" name="'+itemValue.style+'-'+sizeKey+'-'+itemValue.color.split(",").join("-")+'-fwb" data-style="'+itemValue.style+'" data-color="'+itemValue.color+'" data-font-color="'+sizeValue.font+'" data-name="'+itemValue.title+'" data-size="'+sizeKey+'" placeholder="0" data-maxlength="3" /></div>';
+                html_wb += '<div class="align-right col-md-6 col-sm-12"><h4 class="fwb-text col-xs-12 hidden-md hidden-lg text-center fwb-text-hidden-header">INPUT QUANTITY</h4><input type="number" class="freewb col-xs-12" id="freewb-'+itemValue.style+'-'+sizeKey+'-'+itemValue.color.split(",").join("-")+'" name="'+itemValue.style+'-'+sizeKey+'-'+itemValue.color.split(",").join("-")+'-fwb" data-style="'+itemValue.style+'" data-color="'+itemValue.color+'" data-font-color="'+sizeValue.font+'" data-name="'+itemValue.title+'" data-size="'+sizeKey+'" data-index="'+itemKey+'" placeholder="0" data-maxlength="3" /></div>';
                 html_wb += '<div class="clearfix"></div>';
                 html_wb += '</li>';
                 // For free keychains
@@ -2458,7 +2503,7 @@ function loadFree()
                     html_kc += '<div class="col-xs-4 fwb-text-content">'+itemValue.title.toUpperCase()+'</div>';
                     html_kc += '<div class="col-xs-4 fwb-text-content">'+getSizeTitle(sizeKey).toUpperCase()+'</div>';
                 html_kc += '</div>';
-                html_kc += '<div class="align-right col-md-6 col-sm-12"><h4 class="fwb-text col-xs-12 hidden-md hidden-lg text-center fwb-text-hidden-header">INPUT QUANTITY</h4><input type="number" class="freekc col-xs-12" id="freekc-'+itemValue.style+'-'+sizeKey+'-'+itemValue.color.split(",").join("-")+'" name="'+itemValue.style+'-'+sizeKey+'-'+itemValue.color.split(",").join("-")+'-fwb" data-style="'+itemValue.style+'" data-color="'+itemValue.color+'" data-font-color="'+sizeValue.font+'" data-name="'+itemValue.title+'" data-size="'+sizeKey+'" placeholder="0" data-maxlength="3" /></div>';
+                html_kc += '<div class="align-right col-md-6 col-sm-12"><h4 class="fwb-text col-xs-12 hidden-md hidden-lg text-center fwb-text-hidden-header">INPUT QUANTITY</h4><input type="number" class="freekc col-xs-12" id="freekc-'+itemValue.style+'-'+sizeKey+'-'+itemValue.color.split(",").join("-")+'" name="'+itemValue.style+'-'+sizeKey+'-'+itemValue.color.split(",").join("-")+'-fwb" data-style="'+itemValue.style+'" data-color="'+itemValue.color+'" data-font-color="'+sizeValue.font+'" data-name="'+itemValue.title+'" data-size="'+sizeKey+'" data-index="'+itemKey+'" placeholder="0" data-maxlength="3" /></div>';
                 html_kc += '<div class="clearfix"></div>';
                 html_kc += '</li>';
                 // For free wristbands
@@ -2468,7 +2513,7 @@ function loadFree()
                     html += '<div class="col-xs-4 fwb-text-content">'+itemValue.title.toUpperCase()+'</div>';
                     html += '<div class="col-xs-4 fwb-text-content">'+getSizeTitle(sizeKey).toUpperCase()+'</div>';
                 html += '</div>';
-                html += '<div class="align-right col-md-6 col-sm-12"><h4 class="fwb-text col-xs-12 hidden-md hidden-lg text-center fwb-text-hidden-header">INPUT QUANTITY</h4><input type="number" class="addonkc col-xs-12" id="freewb-'+itemValue.style+'-'+sizeKey+'-'+itemValue.color.split(",").join("-")+'" name="'+itemValue.style+'-'+sizeKey+'-'+itemValue.color.split(",").join("-")+'-fwb" data-style="'+itemValue.style+'" data-color="'+itemValue.color+'" data-font-color="'+sizeValue.font+'" data-name="'+itemValue.title+'" data-size="'+sizeKey+'" placeholder="0" data-maxlength="3" /></div>';
+                html += '<div class="align-right col-md-6 col-sm-12"><h4 class="fwb-text col-xs-12 hidden-md hidden-lg text-center fwb-text-hidden-header">INPUT QUANTITY</h4><input type="number" class="addonkc col-xs-12" id="freewb-'+itemValue.style+'-'+sizeKey+'-'+itemValue.color.split(",").join("-")+'" name="'+itemValue.style+'-'+sizeKey+'-'+itemValue.color.split(",").join("-")+'-fwb" data-style="'+itemValue.style+'" data-color="'+itemValue.color+'" data-font-color="'+sizeValue.font+'" data-name="'+itemValue.title+'" data-size="'+sizeKey+'" data-index="'+itemKey+'" placeholder="0" data-maxlength="3" /></div>';
                 html += '<div class="clearfix"></div>';
                 html += '</li>';
             });

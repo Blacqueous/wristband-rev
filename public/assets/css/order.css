@@ -639,7 +639,7 @@ div#order-summary {
 }
 
 .summary-table .summary-table-group {
-    padding-bottom: 3px;
+    padding-bottom: 5px;
     float: left;
     width: 100%;
 }
