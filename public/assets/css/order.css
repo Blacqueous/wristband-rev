@@ -1963,3 +1963,16 @@ body {
     border: 1px solid #008c94;
     margin: 0px;
 }
+
+#back-to-top {
+    border: 10px solid rgba(255,255,255,.15);
+    border-bottom: 0px;
+}
+
+#back-to-top span {
+    font-weight: bold;
+    left: 5px;
+    position: absolute;
+    right: 5px;
+    top: -5px;
+}
