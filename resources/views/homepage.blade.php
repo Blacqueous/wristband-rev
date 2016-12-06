@@ -45,6 +45,12 @@
                 $(this).hide();
                 $('.window').hide();
                 });
+				
+				//if mask is clicked
+                $('.agree').click(function () {
+                  $('#mask').hide();
+                  $('.window').hide();
+                });
 
 
                 $('#emf-container').css('background-color','none');
