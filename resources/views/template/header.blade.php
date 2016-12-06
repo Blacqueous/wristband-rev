@@ -23,17 +23,17 @@
 		gts.push(["google_base_offer_id", "ITEM_GOOGLE_SHOPPING_ID"]);
 		gts.push(["google_base_subaccount_id", "ITEM_GOOGLE_SHOPPING_ACCOUNT_ID"]);
 
-			(function() {
-				var gts = document.createElement("script");
-				gts.type = "text/javascript";
-				gts.async = true;
-				gts.src = "https://www.googlecommerce.com/trustedstores/api/js";
-				var s = document.getElementsByTagName("script")[0];
-				s.parentNode.insertBefore(gts, s);
-			})();
+		(function() {
+			var gts = document.createElement("script");
+			gts.type = "text/javascript";
+			gts.async = true;
+			gts.src = "https://www.googlecommerce.com/trustedstores/api/js";
+			var s = document.getElementsByTagName("script")[0];
+			s.parentNode.insertBefore(gts, s);
+		})();
 	</script>
 	<!-- END: Google Trusted Stores -->
-	
+
 @endsection
 <header>
     <nav class="navbar navbar-inverse navbar-default">
