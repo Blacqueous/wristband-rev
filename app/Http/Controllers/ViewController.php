@@ -135,14 +135,23 @@ class ViewController extends Controller
 	
 	public function mailTest(Request $request)
 	{
-		//return json_encode(false);
+	
 		$data = $request->data;
+		$emailItems = $request->email;
+		$email = $emailItems['mail'];
+		$name = $emailItems['name'];
+		$emailData = array('name'=>$name, 'email'=> $email, 'items'=> $data);
+		$emails = [$email,'sales@promotionalwristband.com'];
 		
-		Mail::send('welcome',$data, function ($m) use ($request) {
-            $m->from('sales@promotionalwristband.com', 'Your Application');
-            $m->to('sales@promotionalwristband.com', 'Promotional Wristband')->subject('Your Reminder!');
-         });
+		/*;
+		return json_encode($list);exit;
+		*/
 
-		return view('welcome', $request);
+		Mail::send('mailtemp',$emailData, function ($message) use ($emails) {
+            $message->from('sales@promotionalwristband.com', 'Request Quote');
+            $message->to($emails, 'Promotional Wristband')->subject('Request a Quote');
+         });
+		
+		return view('/mailtemp', $emailData)->with('message', 'Your message has been sent. Thank You!');;
 	}
 }

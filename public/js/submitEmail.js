@@ -1084,8 +1084,8 @@ $(document).ready(function() {
 			var collectionData = getTotal();
 			var showMessage = true;
 			// $form_data.append('data', JSON.stringify(collectionData));
-			var name = ('name', $("#submit_order_fullname").val());
-			var mail = ('mail', $("#submit_order_email").val());
+			var name = $("#submit_order_fullname").val();
+			var mail = $("#submit_order_email").val();
 
 			$.ajax({
 				type: 'POST',
@@ -1094,6 +1094,7 @@ $(document).ready(function() {
 				data: {
 					data : collectionData,
 					email: {'name':name,'mail':mail},
+					status: true,
 					'_token': $('meta[name="csrf-token"]').attr('content')
 				},
 				beforeSend: function() {
@@ -1101,25 +1102,13 @@ $(document).ready(function() {
 					$("#modal-confirm-submit .confirm-footer-buttons").hide();
 					$("#modal-confirm-submit .confirm-footer-loader").show();
 				},
-				success: function(data) {},
-				}).done(function(data) {
-					if(data.status === true) {
+				success: function(data) {
 						// Hide confirmation popup modal
 						$("#modal-confirm-submit").modal("hide");
 						//Default triggers
 						showPopupMessage("Success", data.message);
 						$('html,body').scrollTop(0);
-						// Reset order page
-						resetOrderPage();
-					} else {
-						showPopupMessage("Error", data.message);
-					}
-
-				// Make sure fields are enabled
-				$("#submit_order_fullname, #submit_order_email").prop("disabled", false);
-				// Display buttons
-				$("#modal-confirm-submit .confirm-footer-buttons").show();
-				$("#modal-confirm-submit .confirm-footer-loader").hide();
+				}
 			});
 			
 		} else { // If no,
