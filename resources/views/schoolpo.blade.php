@@ -374,6 +374,7 @@
 							</div>
 						</div>
 						<br/>
+						<div class="clearfix"></div>
 						<div id="wb_text_inside" class="wb-text-inside i-input">
 							<div class="col-sm-12">
 								<h4>

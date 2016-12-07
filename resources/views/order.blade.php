@@ -277,10 +277,12 @@
 									<button type="button" class="btn btn-order clipartin col-xs-6" ref-code="none" ref-target="#clipart-cont-end"><i class="fa fa-folder-open"></i> Browse</button>
 									<button type="button" class="btn btn-order btn-file clipartup col-xs-6"><i class="fa fa-upload"></i> Upload<input id="clipartup_cont_end" class="clipart-fileupload" type="file" accept="image/*" ref-target="#clipart-cont-end"></button>
 								</div>
+								
 								<a href="javascript:void(0)" id="rm_clip_cont_end" class="text-danger clipart-remove" ref-target="#clipart-cont-end">Remove</a>
 							</div>
 						</div>
 						<br/>
+						<div class="clearfix"></div>
 						<div id="wb_text_inside" class="wb-text-inside i-input">
 							<div class="col-sm-12">
 								<h4>
