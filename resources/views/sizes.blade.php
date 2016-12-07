@@ -45,6 +45,7 @@
       	<h1>Sizes</h1>
 		<div class="sizes-content">
 			<ul>
+			<?php //var_dump($sizes);exit;?>
 				@foreach($sizes as $key => $value)
 				   <li ><img src="{{ $value['image'] }}"></li>
 				@endforeach

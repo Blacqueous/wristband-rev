@@ -26,7 +26,8 @@ class SizeChart {
 			// generate and save .json file.
 			Storage::put('json/wristband/sizechart/list.json', json_encode($this->sizechart()));
 		}
-
+		 $datasamp = json_decode(Storage::get('json/wristband/sizechart/list.json'), true);
+	
 		// return data from .json file.
 		return json_decode(Storage::get('json/wristband/sizechart/list.json'), true);
 	}
@@ -34,35 +35,39 @@ class SizeChart {
     private static function sizechart()
     { 
         return [
-            [
-                'code' => "1-2Inch",
-                'image' => "assets/images/src/sizes/1-2InchWristband.png",
-                'name' => "1-2 Inch"
-            ],
-            [
-                'code' => "1-4Inch",
+			[
+                'code' => "11-4Inch",
                 'image' => "assets/images/src/sizes/1-4InchWristband.png",
-                'name' => "1-4 Inch"
+                'name' => "11-4 Inch"
             ],
             [
-                'code' => "1Inch",
-                'image' => "assets/images/src/sizes/1InchWristband.png",
-                'name' => "1 Inch"
+                'code' => "12-2Inch",
+                'image' => "assets/images/src/sizes/1-2InchWristband.png",
+                'name' => "12-2 Inch"
             ],
-			 [
-                'code' => "2Inch",
-                'image' => "assets/images/src/sizes/2InchWristband.png",
-                'name' => "2 Inch"
-            ],
+			 
             [
-                'code' => "3-4Inch",
+                'code' => "13-4Inch",
                 'image' => "assets/images/src/sizes/3-4InchWristband.png",
-                'name' => "3-4 Inch"
+                'name' => "13-1 Inch"
             ],
+			
             [
-                'code' => "11-2Inch",
+                'code' => "14Inch",
+                'image' => "assets/images/src/sizes/1InchWristband.png",
+                'name' => "14 Inch"
+            ],
+			
+            [
+                'code' => "15-2Inch",
                 'image' => "assets/images/src/sizes/11-2InchWristband.png",
-                'name' => "1 1/2 Inch"
+                'name' => "15 1/2 Inch"
+            ],
+			
+			[
+                'code' => "22Inch",
+                'image' => "assets/images/src/sizes/2InchWristband.png",
+                'name' => "22 Inch"
             ]
         ];
     }
