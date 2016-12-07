@@ -1040,9 +1040,16 @@ body, a, [input type="radio"] , [input type="checkbox"]{
 	.navbar-brand>img{
 	  width: 346px!important;
   }
-  .col-xs-3.col-sm-2.offerpv{
-	  font-size:20px !important;
+  
+  .col-xs-3.col-sm-2.offerpv {
+    font-size: 21px !important;
+    padding: 12px;
   }
+  
+  .band .preview-text {
+    color: #000000;
+    font-size: 10px!important;
+	}
 
   .nav.nav-pills {
     width: 96%!important;
@@ -1147,13 +1154,17 @@ body, a, [input type="radio"] , [input type="checkbox"]{
 		height: 10px!important;*/
 	}
 
-	span.start-fc{
-		left:7px!important;
+	span.start-fc {
+		left: -14px!important;
+	}
+	
+	span.start-fc img, span.end-fc  img, span.back-mc img, span.backend-mc img{
+		height: 18px!important;
 	}
 
 	span.end-fc {
-		left: 113px!important;
-	}
+     left: 117px!important;
+    }
 
 	span.back-mc {
 		left: 14px!important;
@@ -1168,11 +1179,11 @@ body, a, [input type="radio"] , [input type="checkbox"]{
 	}
 
 	span.backend-mc {
-		left: 124px!important;
+		left: 119px!important;
 	}
 
 	.clip-sec {
-		width: 50%!important;
+		width: 100%!important;
 	}
 
 	label {
@@ -1351,7 +1362,7 @@ body, a, [input type="radio"] , [input type="checkbox"]{
 	}
 
 	.clip-sec {
-    width: 44%!important;
+    width: 100%!important;
 	}
 
 	span.start-fc{
