@@ -134,6 +134,38 @@ class ViewController extends Controller
 	}
 	
 	
+	public function pageSchoolPO()
+	{
+		$data = [];
+
+		$styles = new Styles();
+		$data['styles'] = $styles->getStyles();
+
+		$style = isset($request->style) && isset($data['styles'][$request->style]) ? $request->style : 'printed';
+		$data['style'] = $style;
+
+		$sizes = new Sizes();
+		$data['sizes'] = $sizes->getSizes();
+
+		$colors = new Colors();
+		$data['colors'] = $colors->getColors();
+
+		$list_color = new ColorsList();
+		$data['list_colors'] = $list_color->getColors();
+
+		$list_clipart = new ClipartList();
+		$data['list_cliparts'] = $list_clipart->getCliparts();
+
+		$list_font = new FontList();
+		$data['list_fonts'] = $list_font->getFonts();
+
+		$price = new Prices();
+		$data['prices'] = $price->getJSONPrice();
+		$data['addons'] = $price->getJSONAddOn();
+
+        return view('schoolpo', $data);
+	}
+	
 	public function pageDigitalDesign()
 	{
 		$data = [];

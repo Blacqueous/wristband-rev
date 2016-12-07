@@ -145,7 +145,7 @@
 			<div class="timer-area">
 			<span class="text-banner">Order 100 wristbands or more & Get 100 Free Wristbands and 10 Keychains!  Time remaining: </span>
 			<span id="countdown2"></span>
-			<span id="order-now"><a href="order.php">Order Now</a></span>
+			<span id="order-now"><a href="/order">Order Now</a></span>
 			</div>
     </div>
 </header>
