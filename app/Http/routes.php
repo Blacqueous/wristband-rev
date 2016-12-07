@@ -53,6 +53,10 @@ Route::get('/price', 'ViewController@pagePrices');
 
 Route::get('/quote', 'ViewController@pageQuote');
 
+Route::get('/schoolpo', 'ViewController@pageSchoolPO');
+
+Route::get('/digitaldesign', 'ViewController@pageDigitalDesign');
+
 Route::get('/product-printed', function() {
 
 	$data = [];
@@ -213,6 +217,10 @@ Route::get('/sample', function () {
     return view('sample');
 });
 
+Route::get('/message', function () {
+    return view('message');
+});
+
 Route::get('/order', 'OrderController@index');
 
 Route::get('/wb/colorsS', 'OrderController@getWristbandColor');
@@ -248,3 +256,7 @@ Route::post('/cart/delete', 'CartController@cartDelete');
 Route::post('/cart/clear', 'CartController@cartClear');
 
 Route::post('/quote/send', 'ViewController@mailTest');
+
+Route::post('/schoolpo/send', 'ViewController@mailTestSchoolpo');
+
+Route::post('/digitaldesign/send', 'ViewController@mailTestDigital');

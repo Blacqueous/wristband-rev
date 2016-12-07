@@ -40,6 +40,11 @@ $(document).ready(function() {
         radioClass: 'iradio_square-green',
         increaseArea: '20%' // optional
     });
+	
+	// click terms
+	$('.terms-popup').click(function() {
+		$('#terms-conditions-popup').modal('show');
+	});
 
     toastr.options = {
         "closeButton": false,
@@ -1021,7 +1026,6 @@ $(document).ready(function() {
                 data: {
                     data : collectionData,
                     email: {'name':name,'mail':mail},
-                    status: true,
                     '_token': $('meta[name="csrf-token"]').attr('content')
                 },
                 beforeSend: function() {
@@ -1029,14 +1033,13 @@ $(document).ready(function() {
                     $("#modal-confirm-submit .confirm-footer-buttons").hide();
                     $("#modal-confirm-submit .confirm-footer-loader").show();
                 },
-                success: function(data) {
-                        // Hide confirmation popup modal
-                        $("#modal-confirm-submit").modal("hide");
-                        //Default triggers
-                        showPopupMessage("Success", data.message);
-                        $('html,body').scrollTop(0);
-                }
+                success: function(data) {},
             });
+			
+			$("#modal-confirm-submit .confirm-footer-loader").hide();
+			$("#modal-confirm-submit").hide();
+			showPopupMessageEmail("Success","Your Message has been sent. Thank you for contacting us");
+			
         } else { // If no,
             // Show error message
             showPopupMessage("Error", "Kindly fill-up all fields.");
@@ -1048,14 +1051,120 @@ $(document).ready(function() {
             return false;
         }
     });
+	
+	// Actually submit email quote
+    $("body").on("click", "#submitCnfEmailPO", function(e) {
+        e.preventDefault();
+        e.stopPropagation();
 
+        // Check if all fields has value
+        if($("#submit_order_fullname").val().length > 0 && $("#submit_order_email").val().length > 0) {
+            // Get order data
+            var collectionData = getTotal();
+            var showMessage = true;
+            // $form_data.append('data', JSON.stringify(collectionData));
+            var name = $("#submit_order_fullname").val();
+            var mail = $("#submit_order_email").val();
+
+            $.ajax({
+                type: 'POST',
+                url: '/schoolpo/send',
+                dataType: 'json',
+                data: {
+                    data : collectionData,
+                    email: {'name':name,'mail':mail},
+                    '_token': $('meta[name="csrf-token"]').attr('content')
+                },
+                beforeSend: function() {
+                    $("#submit_order_fullname, #submit_order_email").prop("disabled", true);
+                    $("#modal-confirm-submit .confirm-footer-buttons").hide();
+                    $("#modal-confirm-submit .confirm-footer-loader").show();
+                },
+                success: function(data) {},
+            });
+			
+			$("#modal-confirm-submit .confirm-footer-loader").hide();
+			$("#modal-confirm-submit").hide();
+			showPopupMessageEmail("Success","Your Message has been sent. Thank you for contacting us");
+			
+        } else { // If no,
+            // Show error message
+            showPopupMessageEmail("Error", "Kindly fill-up all fields.");
+            // Make sure fields are enabled
+            $("#submit_order_fullname, #submit_order_email").prop("disabled", false);
+            // Display buttons
+            $("#modal-confirm-submit .confirm-footer-buttons").show();
+            $("#modal-confirm-submit .confirm-footer-loader").hide();
+            return false;
+        }
+    });
+
+	// Actually submit email quote
+    $("body").on("click", "#submitCnfEmailDigital", function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        // Check if all fields has value
+        if($("#submit_order_fullname").val().length > 0 && $("#submit_order_email").val().length > 0) {
+            // Get order data
+            var collectionData = getTotal();
+            var showMessage = true;
+            // $form_data.append('data', JSON.stringify(collectionData));
+            var name = $("#submit_order_fullname").val();
+            var mail = $("#submit_order_email").val();
+
+            $.ajax({
+                type: 'POST',
+                url: '/digitaldesign/send',
+                dataType: 'json',
+                data: {
+                    data : collectionData,
+                    email: {'name':name,'mail':mail},
+                    '_token': $('meta[name="csrf-token"]').attr('content')
+                },
+                beforeSend: function() {
+                    $("#submit_order_fullname, #submit_order_email").prop("disabled", true);
+                    $("#modal-confirm-submit .confirm-footer-buttons").hide();
+                    $("#modal-confirm-submit .confirm-footer-loader").show();
+                },
+                success: function(data) {},
+            });
+			
+			$("#modal-confirm-submit .confirm-footer-loader").hide();
+			$("#modal-confirm-submit").hide();
+			showPopupMessageEmail("Success","Your Message has been sent. Thank you for contacting us");
+			
+        } else { // If no,
+            // Show error message
+            showPopupMessageEmail("Error", "Kindly fill-up all fields.");
+            // Make sure fields are enabled
+            $("#submit_order_fullname, #submit_order_email").prop("disabled", false);
+            // Display buttons
+            $("#modal-confirm-submit .confirm-footer-buttons").show();
+            $("#modal-confirm-submit .confirm-footer-loader").hide();
+            return false;
+        }
+    });
+	
     // popup message
     function showPopupMessage(_title, _content) {
         $("#modal-message-title").html(_title);
         $("#modal-message-content").html(_content);
         $("#modal-message").modal("show");
     }
+	
+	 // popup message
+    function showPopupMessageEmail(_title, _content) {
+        $("#modal-message-title").html(_title);
+        $("#modal-message-content").html(_content);
+        $("#modal-message-email").modal("show");
+    }
 
+	$(".close-buttonmail-modal").on("click", function(e) {
+		$("#modal-confirm-submit .confirm-footer-loader").hide();
+		location.reload();
+	});
+	
     $('#clipartup_front_start').fileupload({
         url: "/upload",
         dataType : 'json',

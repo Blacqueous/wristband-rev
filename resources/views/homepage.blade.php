@@ -106,10 +106,10 @@
                 <a href="/quote"><img src="assets/images/src/Get_A_Quote.jpg"></a>
             </div>
             <div class="col-md-4">
-                <a href="/school_po"><img src="assets/images/src/PO.jpg"></a>
+                <a href="/schoolpo"><img src="assets/images/src/PO.jpg"></a>
             </div>
             <div class="col-md-4">
-                <a href="/digital_design"><img src="assets/images/src/Digital_Design.jpg"></a>
+                <a href="/digitaldesign"><img src="assets/images/src/Digital_Design.jpg"></a>
             </div>
             <div class="col-md-4">
                 <a href="#"><img src="assets/images/src/Rush_Shipping.jpg"></a>

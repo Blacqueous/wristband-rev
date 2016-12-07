@@ -133,6 +133,40 @@ class ViewController extends Controller
         return view('quote', $data);
 	}
 	
+	
+	public function pageDigitalDesign()
+	{
+		$data = [];
+
+		$styles = new Styles();
+		$data['styles'] = $styles->getStyles();
+
+		$style = isset($request->style) && isset($data['styles'][$request->style]) ? $request->style : 'printed';
+		$data['style'] = $style;
+
+		$sizes = new Sizes();
+		$data['sizes'] = $sizes->getSizes();
+
+		$colors = new Colors();
+		$data['colors'] = $colors->getColors();
+
+		$list_color = new ColorsList();
+		$data['list_colors'] = $list_color->getColors();
+
+		$list_clipart = new ClipartList();
+		$data['list_cliparts'] = $list_clipart->getCliparts();
+
+		$list_font = new FontList();
+		$data['list_fonts'] = $list_font->getFonts();
+
+		$price = new Prices();
+		$data['prices'] = $price->getJSONPrice();
+		$data['addons'] = $price->getJSONAddOn();
+
+        return view('digitaldesign', $data);
+	}
+	
+	
 	public function mailTest(Request $request)
 	{
 	
@@ -152,6 +186,50 @@ class ViewController extends Controller
             $message->to($emails, 'Promotional Wristband')->subject('Request a Quote');
          });
 		
-		return view('/mailtemp', $emailData)->with('message', 'Your message has been sent. Thank You!');;
+		return view('/mailtemp', $data)->json(array('status'=> 'true'), 200);
+	}
+	
+	public function mailTestSchoolpo(Request $request)
+	{
+	
+		$data = $request->data;
+		$emailItems = $request->email;
+		$email = $emailItems['mail'];
+		$name = $emailItems['name'];
+		$emailData = array('name'=>$name, 'email'=> $email, 'items'=> $data);
+		$emails = [$email,'sales@promotionalwristband.com'];
+		
+		/*;
+		return json_encode($list);exit;
+		*/
+
+		Mail::send('schoolpotemp',$emailData, function ($message) use ($emails) {
+            $message->from('sales@promotionalwristband.com', 'School PO Request');
+            $message->to($emails, 'Promotional Wristband')->subject('School PO Request');
+         });
+		
+		return view('/schoolpotemp', $emailData);
+	}
+	
+	public function mailTestDigital(Request $request)
+	{
+	
+		$data = $request->data;
+		$emailItems = $request->email;
+		$email = $emailItems['mail'];
+		$name = $emailItems['name'];
+		$emailData = array('name'=>$name, 'email'=> $email, 'items'=> $data);
+		$emails = [$email,'sales@promotionalwristband.com'];
+		
+		/*;
+		return json_encode($list);exit;
+		*/
+
+		Mail::send('digitaltemp',$emailData, function ($message) use ($emails) {
+            $message->from('sales@promotionalwristband.com', 'Digital Design Request');
+            $message->to($emails, 'Promotional Wristband')->subject('Digital Design Request');
+         });
+		
+		return view('/digitaltemp', $emailData);
 	}
 }
