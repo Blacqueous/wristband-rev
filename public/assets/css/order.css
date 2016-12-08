@@ -654,6 +654,7 @@ div#order-summary {
 
 .summary-total {
     border-top: 1px solid #FFFFFF;
+    margin-top: 15px;
 }
 
 .summary-total h1 {

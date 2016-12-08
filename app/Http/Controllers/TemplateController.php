@@ -32,7 +32,7 @@ class TemplateController extends Controller
 	            break;
 	    }
         $data = [
-            'id' => str_random(20),
+            'id' => (isset($request->id)) ? $request->id  : str_random(20),
             'type' => $request->type,
 			'withFont' => $withFont,
 			'image' => (isset($request->image)) ? $request->image : false,
