@@ -906,6 +906,15 @@ body, a, [input type="radio"] , [input type="checkbox"]{
 		margin-right:4px;
 
 	}
+	
+.container.school_po_content p {
+    line-height: 44px;
+    color: #2f2f2f;
+}
+
+#price_header {
+    color: #00896e;
+}
 /****
 **
 **** MEDIA QUERIES
