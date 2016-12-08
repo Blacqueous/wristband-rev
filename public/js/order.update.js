@@ -670,7 +670,8 @@ $(document).ready(function() {
                         total += (element.val().trim() == "") ? 0 : parseInt(element.val().trim());
                     });
                     free['key-chain'] = total;
-                $('#modal-10-free-keychains').modal('show');
+                // $('#modal-10-free-keychains').modal('show');
+                toastr.error('', '<h5>Total quantity must not be over 10 pieces.</h5>');
             } else {
                 // Set value for free
                 free['key-chain'] = total;
@@ -713,7 +714,8 @@ $(document).ready(function() {
                         total += (element.val().trim() == "") ? 0 : parseInt(element.val().trim());
                     });
                     free['wristbands'] = total;
-                $('#modal-100-free-wristbands').modal('show');
+                // $('#modal-100-free-wristbands').modal('show');
+                toastr.error('', '<h5>Total quantity must not be over 100 pieces.</h5>');
             } else {
                 // Set value for free
                 free['wristbands'] = total;
@@ -976,6 +978,8 @@ $(document).ready(function() {
 
         // reset wristband previews.
         resetPreview();
+        // Load free items.
+        loadFree();
         // Load total amount.
         loadTotal();
     });
@@ -3230,82 +3234,74 @@ function loadForm()
         $('input[name="quantity[]').val("");
         // Reset item Object.
         items = _cart.items;
+        itemKeys = [];
         // Set fields
         $.each(items, function(aKey, aValue) {
             $.each(aValue, function(bKey, bValue) {
+
+                // if($.inArray(bKey, itemKeys)) {
+                //     itemKeys.push(bKey);
+                // }
+
                 if(typeof bValue['size'] != "undefined") {
-                    $.each(bValue['size'], function(cKey, cValue) {
-                        // Fix titles
-                        wbTitle = (bValue['title']).toLowerCase();
-                        // Update keys
-                        $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+aKey+"'] input[ref-style='"+aKey+"'][ref-color='"+bValue['color'].split(',').join(', ')+"']").attr('ref-index', bKey);
-                        items[aKey][bKey]['size'][cKey]['qty'] = parseFloat(items[aKey][bKey]['size'][cKey]['qty']);
+                    // Fix titles
+                    wbTitle = (bValue['title']).toLowerCase();
+                    // If item is customized,
+                    if(wbTitle.includes('custom')) {
+                        // Set possible image value
+                        _img = $('#URLasset').val() + 'gd/img/custom/regular/' + aKey + '/' + bValue['color'].split(',').join('-') + '.png';
+                        if((_cart.style).toLowerCase() == 'figured')
+                            _img = $('#URLasset').val() + 'gd/img/custom/figured/' + aKey + '/' + bValue['color'].split(',').join('-') + '.png';
+                        // Get template
+                        $.ajax({
+                            type: 'GET',
+                            url: '/getTemplateCustomWristband?id=' + bKey + '&type=' + aKey + '&style=' + _cart.style + '&image=' + _img + '&color=' + bValue['color'].split(',').join(', '),
+                            data: {
+                                items: JSON.stringify(bValue['size'])
+                            },
+                            beforeSend: function() { },
+                            success: function() { }
+                        }).done(function(data) {
+                            // Do something when everything is done.
+                            $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+aKey+"'] .main-color-content").prepend(data);
 
-                        if(wbTitle.includes('custom')) {
-
-                            if($(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+aKey+"'] input[ref-size='"+cKey+"'][ref-style='"+aKey+"'][ref-index='"+bKey+"'][ref-color='"+bValue['color'].split(',').join(', ')+"']").length > 0) {
-                                // Get proper total qty
-                                var newVal1 = $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+aKey+"'] input[ref-size='"+cKey+"'][ref-style='"+aKey+"'][ref-index='"+bKey+"'][ref-color='"+bValue['color'].split(',').join(', ')+"']").val();
-                                    newVal1 = (newVal1 != "") ? parseFloat(newVal1) : 0;
-                                    newVal = newVal1 + parseFloat(cValue['qty']);
-                                $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+aKey+"'] input[ref-size='"+cKey+"'][ref-style='"+aKey+"'][ref-index='"+bKey+"'][ref-color='"+bValue['color'].split(',').join(', ')+"']").val(newVal);
-                                // Update font-color
-                                $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+aKey+"'] input[ref-size='"+cKey+"'][ref-style='"+aKey+"'][ref-index='"+bKey+"'][ref-color='"+bValue['color'].split(',').join(', ')+"']").closest('.box-color-qty').find('.fntin').attr('ref-font-name',cValue['font-name']);
-                                $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+aKey+"'] input[ref-size='"+cKey+"'][ref-style='"+aKey+"'][ref-index='"+bKey+"'][ref-color='"+bValue['color'].split(',').join(', ')+"']").closest('.box-color-qty').find('.fntin').attr('ref-font-color',cValue['font']);
-                                $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+aKey+"'] input[ref-size='"+cKey+"'][ref-style='"+aKey+"'][ref-index='"+bKey+"'][ref-color='"+bValue['color'].split(',').join(', ')+"']").closest('.box-color-qty').find('.fntin').css({'background-color':'#'+cValue['font']});
-                            } else {
-                                $.ajax({
-                                    type: 'GET',
-                                    url: '/gd/band.php?style='+aKey+'&type='+_cart.style+'&color='+bValue['color'].split(',').join(','),
-                                    data: { },
-                                    beforeSend: function() { },
-                                    success: function(link) { }
-                                }).done(function(link) {
-                                    // Do something when everything is done.
-                                    $.ajax({
-                                        type: 'GET',
-                                        url: '/getTemplateCustomWristband?id='+bKey+'&type='+aKey+'&style='+_cart.style+'&image='+link+'&color='+bValue['color'].split(',').join(', '),
-                                        data: { },
-                                        beforeSend: function() { },
-                                        success: function() { }
-                                    }).done(function(data) {
-                                        // Do something when everything is done.
-                                        $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+aKey+"'] .main-color-content").prepend(data);
-                                        // Get proper total qty
-                                        // $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+aKey+"'] input[ref-size='"+cKey+"'][ref-style='"+aKey+"'][ref-index='"+bKey+"'][ref-color='"+bValue['color'].split(',').join(', ')+"']").val(cValue['qty']);
-                                        var newVal1 = $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+aKey+"'] input[ref-size='"+cKey+"'][ref-style='"+aKey+"'][ref-index='"+bKey+"'][ref-color='"+bValue['color'].split(',').join(', ')+"']").val();
-                                            newVal1 = (newVal1 != "") ? parseFloat(newVal1) : 0;
-                                            newVal = newVal1 + parseFloat(cValue['qty']);
-                                        $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+aKey+"'] input[ref-size='"+cKey+"'][ref-style='"+aKey+"'][ref-index='"+bKey+"'][ref-color='"+bValue['color'].split(',').join(', ')+"']").val(newVal);
-                                        // Update font-color
-                                        $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+aKey+"'] input[ref-size='"+cKey+"'][ref-style='"+aKey+"'][ref-index='"+bKey+"'][ref-color='"+bValue['color'].split(',').join(', ')+"']").closest('.box-color-qty').find('.fntin').attr('ref-font-name',cValue['font-name']);
-                                        $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+aKey+"'] input[ref-size='"+cKey+"'][ref-style='"+aKey+"'][ref-index='"+bKey+"'][ref-color='"+bValue['color'].split(',').join(', ')+"']").closest('.box-color-qty').find('.fntin').attr('ref-font-color',cValue['font']);
-                                        $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+aKey+"'] input[ref-size='"+cKey+"'][ref-style='"+aKey+"'][ref-index='"+bKey+"'][ref-color='"+bValue['color'].split(',').join(', ')+"']").closest('.box-color-qty').find('.fntin').css({'background-color':'#'+cValue['font']});
-                                        // If field is at view more.
-                                        if(cKey == "xs" || cKey == "xl") {
-                                            $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+aKey+"'] input[ref-size='"+cKey+"'][ref-style='"+aKey+"'][ref-index='"+bKey+"'][ref-color='"+bValue['color'].split(',').join(', ')+"']").closest('.box-color').find('.view-more').removeClass('collapsed');
-                                            $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+aKey+"'] input[ref-size='"+cKey+"'][ref-style='"+aKey+"'][ref-index='"+bKey+"'][ref-color='"+bValue['color'].split(',').join(', ')+"']").closest('.box-color').find('.view-more').attr('aria-expanded', 'true');
-                                            $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+aKey+"'] input[ref-size='"+cKey+"'][ref-style='"+aKey+"'][ref-index='"+bKey+"'][ref-color='"+bValue['color'].split(',').join(', ')+"']").closest('.show-content').addClass('in');
-                                            $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+aKey+"'] input[ref-size='"+cKey+"'][ref-style='"+aKey+"'][ref-index='"+bKey+"'][ref-color='"+bValue['color'].split(',').join(', ')+"']").closest('.show-content').removeAttr("style");
-                                        }
-                                    });
-                                });
-                            }
-
-                            // $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+aKey+"'] input[ref-size='"+cKey+"'][ref-style='"+aKey+"'][ref-color='"+bValue['color'].split(',').join(', ')+"']").val(cValue['qty']);
-                            // items[aKey][bKey]['size'][cKey]['qty'] = parseFloat(items[aKey][bKey]['size'][cKey]['qty']);
-                        } else {
-                            // Get proper total qty
-                            // $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+aKey+"'] input[ref-size='"+cKey+"'][ref-style='"+aKey+"'][ref-index='"+bKey+"'][ref-color='"+bValue['color'].split(',').join(', ')+"']").val(cValue['qty']);
-                            var newVal1 = $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+aKey+"'] input[ref-size='"+cKey+"'][ref-style='"+aKey+"'][ref-index='"+bKey+"'][ref-color='"+bValue['color'].split(',').join(', ')+"']").val();
+                            $.each(bValue['size'], function(cKey, cValue) {
+                                // Check if view more section must open.
+                                if(cKey == "xs" || cKey == "xl") {
+                                    $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+aKey+"'] input[ref-size='"+cKey+"'][ref-style='"+aKey+"'][ref-index='"+bKey+"'][ref-color='"+bValue['color'].split(',').join(', ')+"']").closest('.box-color').find('.view-more').removeClass('collapsed');
+                                    $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+aKey+"'] input[ref-size='"+cKey+"'][ref-style='"+aKey+"'][ref-index='"+bKey+"'][ref-color='"+bValue['color'].split(',').join(', ')+"']").closest('.box-color').find('.view-more').attr('aria-expanded', 'true');
+                                    $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+aKey+"'] input[ref-size='"+cKey+"'][ref-style='"+aKey+"'][ref-index='"+bKey+"'][ref-color='"+bValue['color'].split(',').join(', ')+"']").closest('.show-content').addClass('in');
+                                    $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+aKey+"'] input[ref-size='"+cKey+"'][ref-style='"+aKey+"'][ref-index='"+bKey+"'][ref-color='"+bValue['color'].split(',').join(', ')+"']").closest('.show-content').removeAttr("style");
+                                }
+                            });
+                        });
+                    } else {  // If normal...
+                        // Go through all item sizes.
+                        $.each(bValue['size'], function(cKey, cValue) {
+                            // Update field indeces.
+                            $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='" + aKey + "'] input[ref-style='" + aKey + "'][ref-color='" + bValue['color'].split(',').join(', ') + "']").attr('ref-index', bKey);
+                            // Update field quantity.
+                            var newVal1 = $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='" + aKey + "'] input[ref-size='" + cKey + "'][ref-style='" + aKey + "'][ref-index='" + bKey + "'][ref-color='" + bValue['color'].split(',').join(', ') + "']").val();
                                 newVal1 = (newVal1 != "") ? parseFloat(newVal1) : 0;
                                 newVal = newVal1 + parseFloat(cValue['qty']);
                             $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+aKey+"'] input[ref-size='"+cKey+"'][ref-style='"+aKey+"'][ref-index='"+bKey+"'][ref-color='"+bValue['color'].split(',').join(', ')+"']").val(newVal);
-                            // Update font-color
-                            $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+aKey+"'] input[ref-size='"+cKey+"'][ref-style='"+aKey+"'][ref-index='"+bKey+"'][ref-color='"+bValue['color'].split(',').join(', ')+"']").closest('.box-color-qty').find('.fntin').attr('ref-font-name',cValue['font-name']);
-                            $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+aKey+"'] input[ref-size='"+cKey+"'][ref-style='"+aKey+"'][ref-index='"+bKey+"'][ref-color='"+bValue['color'].split(',').join(', ')+"']").closest('.box-color-qty').find('.fntin').attr('ref-font-color',cValue['font']);
-                            $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+aKey+"'] input[ref-size='"+cKey+"'][ref-style='"+aKey+"'][ref-index='"+bKey+"'][ref-color='"+bValue['color'].split(',').join(', ')+"']").closest('.box-color-qty').find('.fntin').css({'background-color':'#'+cValue['font']});
-                        }
+                            // Update font color.
+                            $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+aKey+"'] input[ref-size='"+cKey+"'][ref-style='"+aKey+"'][ref-index='"+bKey+"'][ref-color='"+bValue['color'].split(',').join(', ')+"']").closest('.box-color-qty').find('.fntin').attr('ref-font-name', cValue['font-name']);
+                            $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+aKey+"'] input[ref-size='"+cKey+"'][ref-style='"+aKey+"'][ref-index='"+bKey+"'][ref-color='"+bValue['color'].split(',').join(', ')+"']").closest('.box-color-qty').find('.fntin').attr('ref-font-color', cValue['font']);
+                            $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+aKey+"'] input[ref-size='"+cKey+"'][ref-style='"+aKey+"'][ref-index='"+bKey+"'][ref-color='"+bValue['color'].split(',').join(', ')+"']").closest('.box-color-qty').find('.fntin').css({'background-color': '#' + cValue['font']});
+                            // Check if view more section must open.
+                            if(cKey == "xs" || cKey == "xl") {
+                                $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+aKey+"'] input[ref-size='"+cKey+"'][ref-style='"+aKey+"'][ref-index='"+bKey+"'][ref-color='"+bValue['color'].split(',').join(', ')+"']").closest('.box-color').find('.view-more').removeClass('collapsed');
+                                $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+aKey+"'] input[ref-size='"+cKey+"'][ref-style='"+aKey+"'][ref-index='"+bKey+"'][ref-color='"+bValue['color'].split(',').join(', ')+"']").closest('.box-color').find('.view-more').attr('aria-expanded', 'true');
+                                $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+aKey+"'] input[ref-size='"+cKey+"'][ref-style='"+aKey+"'][ref-index='"+bKey+"'][ref-color='"+bValue['color'].split(',').join(', ')+"']").closest('.show-content').addClass('in');
+                                $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+aKey+"'] input[ref-size='"+cKey+"'][ref-style='"+aKey+"'][ref-index='"+bKey+"'][ref-color='"+bValue['color'].split(',').join(', ')+"']").closest('.show-content').removeAttr("style");
+                            }
+                        });
+                    }
+                    // Item array update! Important
+                    $.each(bValue['size'], function(cKey, cValue) {
+                        // Parse item quantities
+                        items[aKey][bKey]['size'][cKey]['qty'] = parseFloat(items[aKey][bKey]['size'][cKey]['qty']);
                     });
                 }
             });
@@ -3316,7 +3312,6 @@ function loadForm()
         loadFree();
         // Load total amount.
         // loadTotal();
-
         if(typeof _cart.free != "undefined") {
             free = _cart.free;
         } else {
