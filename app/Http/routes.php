@@ -61,8 +61,6 @@ Route::get('/schoolpo', 'ViewController@pageSchoolPO');
 
 Route::get('/digitaldesign', 'ViewController@pageDigitalDesign');
 
-
-
 Route::get('/product-printed', function() {
 
 	$data = [];
@@ -260,6 +258,10 @@ Route::post('/cart/update/{index}', 'CartController@cartUpdateStart');
 Route::post('/cart/delete', 'CartController@cartDelete');
 
 Route::post('/cart/clear', 'CartController@cartClear');
+
+Route::post('/cart/submit', 'CartController@cartSubmit');
+
+Route::get('/submit/success', 'ViewController@submitSuccess');
 
 Route::post('/quote/send', 'ViewController@mailTest');
 

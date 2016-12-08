@@ -42,12 +42,12 @@ $(document).ready(function() {
     });
 
     toastr.options = {
-        "closeButton": false,
+        "closeButton": true,
         "debug": false,
-        "newestOnTop": false,
+        "newestOnTop": true,
         "progressBar": false,
-        "positionClass": "toast-bottom-right",
-        "preventDuplicates": false,
+        "positionClass": "toast-bottom-center",
+        "preventDuplicates": true,
         "onclick": null,
         "showDuration": "300",
         "hideDuration": "1000",

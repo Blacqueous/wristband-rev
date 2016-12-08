@@ -40,19 +40,19 @@ $(document).ready(function() {
         radioClass: 'iradio_square-green',
         increaseArea: '20%' // optional
     });
-	
+
 	// click terms
 	$('.terms-popup').click(function() {
 		$('#terms-conditions-popup').modal('show');
 	});
 
     toastr.options = {
-        "closeButton": false,
+        "closeButton": true,
         "debug": false,
-        "newestOnTop": false,
+        "newestOnTop": true,
         "progressBar": false,
-        "positionClass": "toast-bottom-right",
-        "preventDuplicates": false,
+        "positionClass": "toast-bottom-center",
+        "preventDuplicates": true,
         "onclick": null,
         "showDuration": "300",
         "hideDuration": "1000",
@@ -1035,11 +1035,11 @@ $(document).ready(function() {
                 },
                 success: function(data) {},
             });
-			
+
 			$("#modal-confirm-submit .confirm-footer-loader").hide();
 			$("#modal-confirm-submit").hide();
 			showPopupMessageEmail("Success","Your Message has been sent. Thank you for contacting us");
-			
+
         } else { // If no,
             // Show error message
             showPopupMessage("Error", "Kindly fill-up all fields.");
@@ -1051,7 +1051,7 @@ $(document).ready(function() {
             return false;
         }
     });
-	
+
 	// Actually submit email quote
     $("body").on("click", "#submitCnfEmailPO", function(e) {
         e.preventDefault();
@@ -1082,11 +1082,11 @@ $(document).ready(function() {
                 },
                 success: function(data) {},
             });
-			
+
 			$("#modal-confirm-submit .confirm-footer-loader").hide();
 			$("#modal-confirm-submit").hide();
 			showPopupMessageEmail("Success","Your Message has been sent. Thank you for contacting us");
-			
+
         } else { // If no,
             // Show error message
             showPopupMessageEmail("Error", "Kindly fill-up all fields.");
@@ -1129,11 +1129,11 @@ $(document).ready(function() {
                 },
                 success: function(data) {},
             });
-			
+
 			$("#modal-confirm-submit .confirm-footer-loader").hide();
 			$("#modal-confirm-submit").hide();
 			showPopupMessageEmail("Success","Your Message has been sent. Thank you for contacting us");
-			
+
         } else { // If no,
             // Show error message
             showPopupMessageEmail("Error", "Kindly fill-up all fields.");
@@ -1145,14 +1145,14 @@ $(document).ready(function() {
             return false;
         }
     });
-	
+
     // popup message
     function showPopupMessage(_title, _content) {
         $("#modal-message-title").html(_title);
         $("#modal-message-content").html(_content);
         $("#modal-message").modal("show");
     }
-	
+
 	 // popup message
     function showPopupMessageEmail(_title, _content) {
         $("#modal-message-title").html(_title);
@@ -1164,7 +1164,7 @@ $(document).ready(function() {
 		$("#modal-confirm-submit .confirm-footer-loader").hide();
 		location.reload();
 	});
-	
+
     $('#clipartup_front_start').fileupload({
         url: "/upload",
         dataType : 'json',

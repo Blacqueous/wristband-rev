@@ -26,7 +26,7 @@ class CartController extends Controller
 		$data = [
 			'items' => (Session::has('_cart')) ? Session::get('_cart') : []
 		];
-		// do something
+		// Do something...
 		return view('cart', $data);
     }
 
@@ -115,7 +115,7 @@ class CartController extends Controller
 			}
 		}
 
-		return redirect('/order');
+		return redirect('/cart')->with('cart_message', 'Cart does not exist.');
 	}
 
 	public function cartUpdateStart(Request $request)
@@ -134,6 +134,20 @@ class CartController extends Controller
 		}
 		// Something is wrong.
 		return json_encode(false);
+	}
+
+	public function cartSubmit(Request $request)
+	{
+		// // If ever something went wrong...
+		// return json_encode(false);
+
+		// Set data.
+		Session::flash('order_items', Session::get('_cart'));
+		Session::flash('order_status', 'success');
+		// Forget cart items.
+		Session::forget('_cart');
+		// redirect to success page
+		return json_encode(true);
 	}
 
 }

@@ -11,64 +11,13 @@
 @section('js')
 <!-- Toastr Notification plugin -->
     <script src="global/toastr/build/toastr.min.js"></script>
-
-    <script type="text/javascript">
-        $(document).ready(function(e) {
-
-            toastr.options = {
-                "closeButton": false,
-                "debug": false,
-                "newestOnTop": false,
-                "progressBar": false,
-                "positionClass": "toast-bottom-right",
-                "preventDuplicates": false,
-                "onclick": null,
-                "showDuration": "300",
-                "hideDuration": "1000",
-                "timeOut": "5000",
-                "extendedTimeOut": "1000",
-                "showEasing": "swing",
-                "hideEasing": "linear",
-                "showMethod": "fadeIn",
-                "hideMethod": "fadeOut"
-            }
-
-            // Update cart event.
-            $('body').on('click', '.cartUpdate', function(e) {
-                window.location.replace("/cart/update/"+$(this).attr('data-cart-token'));
-            });
-
-            // Delete cart event.
-            $('body').on('click', '.cartDelete', function(e) {
-                $.ajax({
-                	type: 'POST',
-                    dataType: 'json',
-                	url: '/cart/delete',
-                	data: {
-                        cart_index: $(this).attr('data-cart-token'),
-                        _token: $('meta[name="csrf-token"]').attr('content')
-                    },
-                	beforeSend: function() { },
-                	success: function(link) { }
-                }).done(function(data) {
-                    // Do something when everything is done.
-                    if(data) {
-                        toastr.success('Order removed from cart.');
-                    } else {
-                        toastr.error('Something went wrong. Please try again.');
-                    }
-                    // // Reload this page.
-                    setTimeout(function(){ // wait for 2 secs.
-                        location.reload(); // then reload the page.
-                    }, 2000);
-                });
-            });
-
-        });
-    </script>
+    <!-- Cart page js file -->
+    <script src="js/cart.js"></script>
 @endsection
 
 @section('content')
+
+    <input id="cartMessage" class="hidden" type="hidden" value="{{ Session::get('cart_message') }}">
 
     <div class="container">
         <div class="row">
@@ -485,8 +434,8 @@
                     <div class="clearfix"></div>
                 </div>
 
-                <div class="cart-submit-options col-xs-12">
-                    <button class="btn btn-submit btn-submit-lg pull-right">SUBMIT ORDER</button>
+                <div class="cart-submit-options col-xs-12 text-center">
+                    <button id="submitOrder" class="btn btn-submit btn-submit-lg"><i class="fa fa-send" style="padding-right:5px;"></i> SUBMIT ORDER</button>
                 </div>
             <?php else : ?>
                 <div class="container">

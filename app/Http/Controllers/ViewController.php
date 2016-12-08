@@ -22,7 +22,7 @@ use Storage;
 
 class ViewController extends Controller
 {
-	
+
 	public function pageFonts()
 	{
 		$font = new FontList();
@@ -33,8 +33,8 @@ class ViewController extends Controller
 
         return view('fonts', $data);
 	}
-	
-	
+
+
 	public function pageClipartList()
 	{
 		$cliparts = new ClipartList();
@@ -45,8 +45,8 @@ class ViewController extends Controller
 
         return view('cliparts', $data);
 	}
-	
-	
+
+
 	public function pageColorList()
 	{
 		$colorsList = new ColorsList();
@@ -57,10 +57,10 @@ class ViewController extends Controller
 
         return view('colors', $data);
 	}
-	
+
 	public function pageSizeChart()
 	{
-		
+
 		$sizechart = new SizeChart();
 		$sizechart = $sizechart->getSizeChart();
 		$data = [
@@ -69,10 +69,10 @@ class ViewController extends Controller
 
         return view('sizes', $data);
 	}
-	
+
 	public function pageProductGallery()
 	{
-		
+
 		$gallery = new ProductGallery();
 		$gallery = $gallery->getProductGallery();
 		$data = [
@@ -81,26 +81,26 @@ class ViewController extends Controller
 
         return view('gallery', $data);
 	}
-	
+
 	public function pagePrices()
 	{
 		$data = [];
 		$styles = new Styles();
 		$data['style'] = $styles->getStyles();
-		
-		
+
+
 		$style = isset($request->style) && isset($data['styles'][$request->style]) ? $request->style : 'printed';
 		$data['style'] = $style;
-		
+
 		$sizes = new Sizes();
 		$data['sizes'] = $sizes->getSizes();
-		
+
 		$price = new Prices();
 		$data['prices'] = $price->getJSONPrices();
-		
+
         return view('price', $data);
 	}
-	
+
 	public function pageQuote()
 	{
 		$data = [];
@@ -132,8 +132,8 @@ class ViewController extends Controller
 
         return view('quote', $data);
 	}
-	
-	
+
+
 	public function pageSchoolPO()
 	{
 		$data = [];
@@ -165,7 +165,7 @@ class ViewController extends Controller
 
         return view('schoolpo', $data);
 	}
-	
+
 	public function pageDigitalDesign()
 	{
 		$data = [];
@@ -197,18 +197,18 @@ class ViewController extends Controller
 
         return view('digitaldesign', $data);
 	}
-	
-	
+
+
 	public function mailTest(Request $request)
 	{
-	
+
 		$data = $request->data;
 		$emailItems = $request->email;
 		$email = $emailItems['mail'];
 		$name = $emailItems['name'];
 		$emailData = array('name'=>$name, 'email'=> $email, 'items'=> $data);
 		$emails = [$email,'sales@promotionalwristband.com'];
-		
+
 		/*;
 		return json_encode($list);exit;
 		*/
@@ -217,20 +217,20 @@ class ViewController extends Controller
             $message->from('sales@promotionalwristband.com', 'Request Quote');
             $message->to($emails, 'Promotional Wristband')->subject('Request a Quote');
          });
-		
+
 		return view('/mailtemp', $data)->json(array('status'=> 'true'), 200);
 	}
-	
+
 	public function mailTestSchoolpo(Request $request)
 	{
-	
+
 		$data = $request->data;
 		$emailItems = $request->email;
 		$email = $emailItems['mail'];
 		$name = $emailItems['name'];
 		$emailData = array('name'=>$name, 'email'=> $email, 'items'=> $data);
 		$emails = [$email,'sales@promotionalwristband.com'];
-		
+
 		/*;
 		return json_encode($list);exit;
 		*/
@@ -239,20 +239,20 @@ class ViewController extends Controller
             $message->from('sales@promotionalwristband.com', 'School PO Request');
             $message->to($emails, 'Promotional Wristband')->subject('School PO Request');
          });
-		
+
 		return view('/schoolpotemp', $emailData);
 	}
-	
+
 	public function mailTestDigital(Request $request)
 	{
-	
+
 		$data = $request->data;
 		$emailItems = $request->email;
 		$email = $emailItems['mail'];
 		$name = $emailItems['name'];
 		$emailData = array('name'=>$name, 'email'=> $email, 'items'=> $data);
 		$emails = [$email,'sales@promotionalwristband.com'];
-		
+
 		/*;
 		return json_encode($list);exit;
 		*/
@@ -261,7 +261,22 @@ class ViewController extends Controller
             $message->from('sales@promotionalwristband.com', 'Digital Design Request');
             $message->to($emails, 'Promotional Wristband')->subject('Digital Design Request');
          });
-		
+
 		return view('/digitaltemp', $emailData);
 	}
+
+	public function submitSuccess(Request $request)
+	{
+		if(Session::has('order_status')) {
+			if(Session::get('order_status') == true) {
+				$data = [
+					'items' => Session::get('order_items')
+				];
+				return view('order_success', $data);
+			}
+		}
+
+		return redirect('/');
+	}
+
 }
