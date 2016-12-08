@@ -141,7 +141,10 @@ class CartController extends Controller
 		// // If ever something went wrong...
 		// return json_encode(false);
 
-		// Set data.
+		$cart_list = Session::get('_cart');
+		// Do stuff here.
+
+		// Set for success page.
 		Session::flash('order_items', Session::get('_cart'));
 		Session::flash('order_status', 'success');
 		// Forget cart items.
