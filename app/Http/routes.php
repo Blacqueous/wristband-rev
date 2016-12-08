@@ -31,6 +31,10 @@ Route::get('/faq', function () {
     return view('faq');
 });
 
+Route::get('/validation', function () {
+    return view('validation');
+});
+
 Route::get('/return-policy', function () {
     return view('return-policy');
 });
@@ -56,6 +60,8 @@ Route::get('/quote', 'ViewController@pageQuote');
 Route::get('/schoolpo', 'ViewController@pageSchoolPO');
 
 Route::get('/digitaldesign', 'ViewController@pageDigitalDesign');
+
+
 
 Route::get('/product-printed', function() {
 
