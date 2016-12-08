@@ -47,7 +47,7 @@ $(document).ready(function() {
         "newestOnTop": true,
         "progressBar": false,
         "positionClass": "toast-bottom-center",
-        "preventDuplicates": true,
+        "preventDuplicates": false,
         "onclick": null,
         "showDuration": "300",
         "hideDuration": "1000",
@@ -1645,6 +1645,14 @@ $(document).ready(function() {
             }
             toastr.error('', 'Upload Failed. Kindly Try Again.');
         }
+    });
+
+    $('body').on('click', '#saveFreeKC', function(e) {
+        toastr.info('', 'Free keychains are saved.');
+    });
+
+    $('body').on('click', '#saveFreeWB', function(e) {
+        toastr.info('', 'Free wristbands are saved.');
     });
 
 });

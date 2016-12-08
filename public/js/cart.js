@@ -8,7 +8,7 @@ $(document).ready(function(e) {
         "newestOnTop": true,
         "progressBar": false,
         "positionClass": "toast-bottom-center",
-        "preventDuplicates": true,
+        "preventDuplicates": false,
         "onclick": null,
         "showDuration": "300",
         "hideDuration": "1000",

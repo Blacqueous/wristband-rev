@@ -1753,6 +1753,14 @@ $(document).ready(function() {
         }
     });
 
+    $('body').on('click', '#saveFreeKC', function(e) {
+        toastr.info('', 'Free keychains are saved.');
+    });
+
+    $('body').on('click', '#saveFreeWB', function(e) {
+        toastr.info('', 'Free wristbands are saved.');
+    });
+
 });
 
 function changeWristbandColors()

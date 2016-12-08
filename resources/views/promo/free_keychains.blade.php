@@ -34,7 +34,7 @@
 					</div>
 				</div>
 				<div class="submit">
-					<button class="done-button-fwb btn-lg" type="button">
+					<button id="saveFreeKC" class="done-button-fwb btn-lg" type="button">
 						Done
 					</button>
 				</div>
@@ -98,7 +98,7 @@
 					</div>
 				</div>
 				<div class="submit">
-					<button class="done-button-fwb-b btn-lg" type="button">
+					<button id="saveFreeWB" class="done-button-fwb-b btn-lg" type="button">
 						Done
 					</button>
 				</div>
