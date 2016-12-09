@@ -1547,3 +1547,15 @@ body, a, [input type="radio"] , [input type="checkbox"]{
 	color: #FFBA23;
 	border-color: #FFBA23;
 }
+
+
+.validation_content {
+    font-size: 24px;
+    padding: 60px 30px;
+    margin: 10px auto;
+    background-color: #fff;
+    color: #008733;
+    /* clear: both; */
+    width: 100%;
+    text-align: center;
+}
