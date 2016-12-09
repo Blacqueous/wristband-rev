@@ -60,9 +60,11 @@
                     </div>
                     <br/>
                     <div class="row">
-						We already received your Digital Design Request. It is now being verified and under approval.
+						We received your request to get a Digital Design for your silicone wristbands.
 						<br/>
+						You will received another email to email with the design of the details we capture online. 
 						<br/>
+						<b>Order Quotation:</b><br/>
 						Below is the exact price computation for this order based on the details we captured online.
 					</div>
                     <br/>

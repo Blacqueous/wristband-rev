@@ -218,7 +218,7 @@ class ViewController extends Controller
             $message->to($emails, 'Promotional Wristband')->subject('Request a Quote');
          });
 
-		return view('/mailtemp', $data)->json(array('status'=> 'true'), 200);
+		return view('/mailtemp', $emailData);
 	}
 
 	public function mailTestSchoolpo(Request $request)

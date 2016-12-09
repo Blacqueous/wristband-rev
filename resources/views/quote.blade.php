@@ -814,6 +814,6 @@
 	@include('modal.selectClipart')
 	@include('modal.selectFont')
 	@include('modal.customWristbandColor')
-	@include('modal.alertMessage')
+	@include('modal.emailMessage')
 
 @endsection
