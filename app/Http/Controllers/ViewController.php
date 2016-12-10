@@ -272,7 +272,9 @@ class ViewController extends Controller
 				$data = [
 					'items' => Session::get('order_items')
 				];
-				return view('checkout', $data);
+				print_r($data);
+				die;
+				// return view('checkout', $data);
 			}
 		}
 
