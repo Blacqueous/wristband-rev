@@ -63,6 +63,7 @@
 @endsection
 
 @section('content')
+<?php print_r($items);die;?>
 <div class="container">
     <div class="row summary-title text-center">
         <h1>Order submitted successfully!</h1>
