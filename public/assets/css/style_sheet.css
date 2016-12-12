@@ -818,11 +818,12 @@ body, a, [input type="radio"] , [input type="checkbox"]{
 	overflow:auto;
 }
 
-#coup-box{
-		background:url('img/discount.jpg') no-repeat;
-		height:400px;
-		padding: 75px 82px;
-	}
+#coup-box {
+    background: url(img/discount.jpg) no-repeat;
+    height: 400px;
+    padding: 104px 112px;
+}
+
 #coup-box > label{
 		text-shadow:2px 2px #000;
 	}
@@ -915,6 +916,21 @@ body, a, [input type="radio"] , [input type="checkbox"]{
 #price_header {
     color: #00896e;
 }
+
+.images-clips  .col-md-4 {
+    padding-left: 3px;
+}
+
+
+.promotion {
+    background-color: #0372bf;
+    color: #fff;
+    height: 50px;
+    line-height: 43px;
+    padding: 2px 0;
+    text-align: center;
+}
+
 /****
 **
 **** MEDIA QUERIES
