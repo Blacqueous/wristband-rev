@@ -75,7 +75,7 @@
         	<div id="boxes">
 			  <div id="dialog" class="window">
 				
-				<div id="popupfoot"> <a href="#" class="close-button agree">No we don't need to save money now</a></div>
+				
 			  </div>
 			  <div id="mask"></div>
 		</div>
@@ -386,7 +386,9 @@
 					<input name="embed" value="forms" type="hidden" /><input  value="Submit" type="submit" />
 					</td></tr></table></form>
 				</div>
+				
 			</div>
+			<div id="popupfoot"> <a href="#" class="close-button agree">No we don't need to save money now</a></div>
 		</div>
 	</div>
 <!-- End container -->
