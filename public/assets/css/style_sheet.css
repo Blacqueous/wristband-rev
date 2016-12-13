@@ -834,7 +834,7 @@ input.form-control {
 
 
 
-table {
+#coup-box table {
     table-layout: fixed;
 }
 
@@ -1081,6 +1081,7 @@ table {
 }
 
 @media screen and (max-width: 420px){
+
 	.navbar-brand>img{
 	  width: 346px!important;
   }
@@ -1335,9 +1336,31 @@ table {
 	input.form-control {
 		width: 117px!Important;
 	}
+	
+	div {
+	  box-sizing: border-box!important;
+	  }
+	  
+	  #main{
+		   width: 100%!important;
+		   height: 100%%!important;
+		   box-sizing:border-box!important;
+		  
+	  }
 }
 
 @media screen and (max-width: 350px){
+	
+	#main{
+		   width: 100%!important;
+		   height: 100%%!important;
+		  
+	  }
+	  
+	div {
+	  box-sizing: border-box!important;
+	  }
+
 	.navbar-brand>img{
 	  width: 346px!important;
   }
