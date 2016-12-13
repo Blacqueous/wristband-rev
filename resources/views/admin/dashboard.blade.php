@@ -6,13 +6,36 @@
 @section('css')
 <style>
             .admin-navbar {
-                position: absolute;
+                /*position: absolute;
                 top: 0px;
                 right: 25px;
-                padding: 0 25px;
+                padding: 0 25px;*/
             }
             .nav-pills>li.active>a, .nav-pills>li.active>a:focus, .nav-pills>li.active>a:hover {
                 border-radius: 5px 5px 0 0;
+            }
+            .tabs-danger {
+                background-color: #d9534f !important;
+                border: 1px solid #ddd !important;
+                border-radius: 5px 5px 0 0 !important;
+                color: #fff !important;
+            }
+            .tabs-danger:hover {
+                background-color: #c9302c !important;
+            }
+            .tabs-right {
+                position: absolute !important;
+                right: 0px;
+            }
+            .tabs-right a {
+                margin-left: 2px !important;
+                margin-right: 0px !important;
+            }
+            .nav-tabs {
+                position: relative;
+            }
+            .nav-tabs li.active:hover a {
+                background-color: #286090;
             }
         </style>
 @endsection
@@ -39,15 +62,15 @@
     <?php $user = Auth::guard('admin')->user(); ?>
     <div class="container">
         <div class="row">
-            <div class="admin-navbar">
+            <div class="pull-right text-right admin-navbar hidden-xs">
                 <h1><i class="fa fa-user-circle"></i> {{ $user->name }}</h1>
-                <a class="btn btn-danger pull-right" href="{{ URL::to('admin/logout') }}">Logout</a>
             </div>
             <h1>Admin Controls</h1>
             <ul class="nav nav-pills nav-tabs">
                 <li class="active"><a data-toggle="tab" href="#tabprice">Price Upload</a></li>
                 <li><a data-toggle="tab" href="#clearimages">Clear Temp Images</a></li>
                 <li><a data-toggle="tab" href="#reset">Reset</a></li>
+                <li class="tabs-right"><a class="tabs-danger" href="{{ URL::to('admin/logout') }}">Logout</a></li>
             </ul>
             <div class="col-xs-12">
                 <div class="tab-content">
