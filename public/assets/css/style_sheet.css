@@ -8,6 +8,7 @@ body {
     font-family: 'Varela Round', sans-serif!important;
 }
 
+
 a {
  color: #079ca5;
 }
@@ -821,7 +822,20 @@ body, a, [input type="radio"] , [input type="checkbox"]{
 #coup-box {
     background: url(img/discount.jpg) no-repeat;
     height: 400px;
+	width: 100%;
     padding: 104px 112px;
+	background-size: 100% auto;
+}
+
+
+input.form-control {
+  width: auto;
+}
+
+
+
+table {
+    table-layout: fixed;
 }
 
 #coup-box > label{
@@ -929,6 +943,11 @@ body, a, [input type="radio"] , [input type="checkbox"]{
     line-height: 43px;
     padding: 2px 0;
     text-align: center;
+}
+
+.map-form{
+	width:650px;
+	margin:0 auto
 }
 
 /****
@@ -1302,6 +1321,20 @@ body, a, [input type="radio"] , [input type="checkbox"]{
 	.clip-color-list li{
 		height:50px!Important;
 	}
+	
+	.map-form{
+		width:420px;
+		margin:0 auto
+	}
+	
+	
+	#coup-box{
+		padding: 30px 54px!important;
+	}
+	
+	input.form-control {
+		width: 117px!Important;
+	}
 }
 
 @media screen and (max-width: 350px){
@@ -1575,3 +1608,4 @@ body, a, [input type="radio"] , [input type="checkbox"]{
     width: 100%;
     text-align: center;
 }
+

@@ -147,9 +147,12 @@ button.toast-close-button {
 }
 #toast-container.toast-top-center > div,
 #toast-container.toast-bottom-center > div {
-  width: 300px;
+  width: 500px;
   margin-left: auto;
   margin-right: auto;
+  text-align:center;
+  height:100px;
+  padding-top:40px;
 }
 #toast-container.toast-top-full-width > div,
 #toast-container.toast-bottom-full-width > div {
@@ -161,7 +164,7 @@ button.toast-close-button {
   background-color: #030303;
 }
 .toast-success {
-  background-color: #51A351;
+  background-color: #2CD52C;
 }
 .toast-error {
   background-color: #BD362F;

@@ -37,8 +37,7 @@
 @endsection
 <header>
 	<div id="promotion" class="promotion">
-			<span><img width="80" height="auto" src="http://promotionalwristband.com/public/assets/images/src/COUPON-CODE-1.png" alt="Special Offer"></span>&nbsp;
-			<span>Use PROMO10 for 10% OFF your order SITEWIDE</span>
+			<span>Use SAVE10 for 10% OFF your order SITEWIDE</span>
 		</div>
     <nav class="navbar navbar-inverse navbar-default">
 		<div class="container">

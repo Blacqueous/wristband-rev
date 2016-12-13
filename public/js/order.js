@@ -1647,6 +1647,7 @@ $(document).ready(function() {
 
     $('body').on('click', '#saveFreeWB', function(e) {
         toastr.info('', 'Free wristbands are saved.');
+		$('#saveFreeWB').hide();
     });
 
 });
