@@ -36,9 +36,11 @@
 
 @endsection
 <header>
+<?php if (url()->current() == "http://promotionalwristband.com/order"){ ?>
 	<div id="promotion" class="promotion">
 			<span>Use SAVE10 for 10% OFF your order SITEWIDE</span>
 		</div>
+<?php } ?>
     <nav class="navbar navbar-inverse navbar-default">
 		<div class="container">
 			<div id="logo">
