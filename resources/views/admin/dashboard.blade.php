@@ -1,7 +1,7 @@
 
 @extends('template.admin')
 
-@section('title', '')
+@section('title', 'Dashboard')
 
 @section('css')
 <style>
@@ -10,6 +10,10 @@
                 top: 0px;
                 right: 25px;
                 padding: 0 25px;*/
+            }
+            .admin-navbar h2 {
+                margin-top: 25px;
+                color: #ddd;
             }
             .nav-pills>li.active>a, .nav-pills>li.active>a:focus, .nav-pills>li.active>a:hover {
                 border-radius: 5px 5px 0 0;
@@ -37,6 +41,9 @@
             .nav-tabs li.active:hover a {
                 background-color: #286090;
             }
+            .nav-pills>li+li {
+                margin-left: 0px !important;
+            }
         </style>
 @endsection
 
@@ -63,14 +70,14 @@
     <div class="container">
         <div class="row">
             <div class="pull-right text-right admin-navbar hidden-xs">
-                <h1><i class="fa fa-user-circle"></i> {{ $user->name }}</h1>
+                <h2><i class="fa fa-user-circle"></i> {{ $user->name }}</h2>
             </div>
             <h1>Admin Controls</h1>
-            <ul class="nav nav-pills nav-tabs">
+            <ul class="nav nav-pills nav-tabs nav-justified">
                 <li class="active"><a data-toggle="tab" href="#tabprice">Price Upload</a></li>
                 <li><a data-toggle="tab" href="#clearimages">Clear Temp Images</a></li>
                 <li><a data-toggle="tab" href="#reset">Reset</a></li>
-                <li class="tabs-right"><a class="tabs-danger" href="{{ URL::to('admin/logout') }}">Logout</a></li>
+                <li><a class="tabs-danger" href="{{ URL::to('admin/logout') }}">Logout</a></li>
             </ul>
             <div class="col-xs-12">
                 <div class="tab-content">
