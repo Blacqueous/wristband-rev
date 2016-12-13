@@ -19,7 +19,7 @@
 
 			// Declare image variables
 			list( $r_0, $g_0, $b_0 ) = sscanf( $hex_0, "#%02x%02x%02x" );
-			$img_0 = array(	'file'	 => 'img\band\fig-base.png',
+			$img_0 = array(	'file'	 => 'img/band/fig-base.png',
 							'colorR' => $r_0,
 							'colorG' => $g_0,
 							'colorB' => $b_0 );
@@ -41,7 +41,7 @@
 
 			// For image shadow effect >>>>>
 			// Declare image variables
-			$img_shadow = imagecreatefrompng( 'img\band\shadow.png' );
+			$img_shadow = imagecreatefrompng( 'img/band/shadow.png' );
 
 			// Let's make image background transparent
 			imagefill( $img_shadow, 0, 0, IMG_COLOR_TRANSPARENT );
@@ -71,7 +71,7 @@
 
 				// Declare image variables
 				list( $r_1, $g_1, $b_1 ) = sscanf( $hex_1, "#%02x%02x%02x" );
-				$img_1 = array(	'file'	 => 'img\band\fig-swirl-color-1.png',
+				$img_1 = array(	'file'	 => 'img/band/fig-swirl-color-1.png',
 								'colorR' => $r_1,
 								'colorG' => $g_1,
 								'colorB' => $b_1 );
@@ -114,7 +114,7 @@
 
 				// Declare image variables
 				list( $r_2, $g_2, $b_2 ) = sscanf( $hex_2, "#%02x%02x%02x" );
-				$img_2 = array(	'file'	 => 'img\band\fig-swirl-color-2.png',
+				$img_2 = array(	'file'	 => 'img/band/fig-swirl-color-2.png',
 								'colorR' => $r_2,
 								'colorG' => $g_2,
 								'colorB' => $b_2 );
@@ -156,7 +156,7 @@
 
 				// Declare image variables
 				list( $r_3, $g_3, $b_3 ) = sscanf( $hex_3, "#%02x%02x%02x" );
-				$img_3 = array(	'file'	 => 'img\band\fig-swirl-color-3.png',
+				$img_3 = array(	'file'	 => 'img/band/fig-swirl-color-3.png',
 								'colorR' => $r_3,
 								'colorG' => $g_3,
 								'colorB' => $b_3 );
@@ -192,7 +192,7 @@
 
 			// For inner image shaded effect >>>>>
 			// Declare image variables
-			$img_shade = imagecreatefrompng( 'img\band\dual-shade.png' );
+			$img_shade = imagecreatefrompng( 'img/band/dual-shade.png' );
 
 			// Let's make image background transparent
 			imagefill( $img_shade, 0, 0, IMG_COLOR_TRANSPARENT );
@@ -205,7 +205,7 @@
 
 			// For image shaded effect >>>>>
 			// Declare image variables
-			$img_shade = imagecreatefrompng( 'img\band\fig-shade.png' );
+			$img_shade = imagecreatefrompng( 'img/band/fig-shade.png' );
 
 			// Let's make image background transparent
 			imagefill( $img_shade, 0, 0, IMG_COLOR_TRANSPARENT );

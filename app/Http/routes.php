@@ -11,10 +11,6 @@
 |
 */
 
-use App\Models\Prices;
-use App\Wristbands\Classes\Styles;
-use App\Wristbands\Classes\Sizes;
-
 Route::get('/', function () {
     return view('homepage');
 });
@@ -61,165 +57,19 @@ Route::get('/schoolpo', 'ViewController@pageSchoolPO');
 
 Route::get('/digitaldesign', 'ViewController@pageDigitalDesign');
 
-Route::get('/product-printed', function() {
-
-	$data = [];
-	$styles = new Styles();
-	$data['style'] = $styles->getStyles();
-
-	$style = isset($request->style) && isset($data['styles'][$request->style]) ? $request->style : 'printed';
-	$data['style'] = $style;
-
-	$sizes = new Sizes();
-	$data['sizes'] = $sizes->getSizes();
-
-	$price = new Prices();
-	$data['prices'] = $price->getJSONPrices();
-
-	return view('product-printed', $data);
-
+Route::get('/product', function () {
+    return redirect('/');
 });
 
-Route::get('/product-debossed', function() {
-
-	$data = [];
-	$styles = new Styles();
-	$data['style'] = $styles->getStyles();
-
-	$style = isset($request->style) && isset($data['styles'][$request->style]) ? $request->style : 'printed';
-	$data['style'] = $style;
-
-	$sizes = new Sizes();
-	$data['sizes'] = $sizes->getSizes();
-
-	$price = new Prices();
-	$data['prices'] = $price->getJSONPrices();
-
-	return view('product-debossed', $data);
-
-});
-
-Route::get('/product-ink-injected', function() {
-
-	$data = [];
-	$styles = new Styles();
-	$data['style'] = $styles->getStyles();
-
-	$style = isset($request->style) && isset($data['styles'][$request->style]) ? $request->style : 'printed';
-	$data['style'] = $style;
-
-	$sizes = new Sizes();
-	$data['sizes'] = $sizes->getSizes();
-
-	$price = new Prices();
-	$data['prices'] = $price->getJSONPrices();
-
-	return view('product-ink-injected', $data);
-
-});
-
-Route::get('/product-embossed', function() {
-
-	$data = [];
-	$styles = new Styles();
-	$data['style'] = $styles->getStyles();
-
-	$style = isset($request->style) && isset($data['styles'][$request->style]) ? $request->style : 'printed';
-	$data['style'] = $style;
-
-	$sizes = new Sizes();
-	$data['sizes'] = $sizes->getSizes();
-
-	$price = new Prices();
-	$data['prices'] = $price->getJSONPrices();
-
-	return view('product-embossed', $data);
-
-});
-
-Route::get('/product-figured', function() {
-
-	$data = [];
-	$styles = new Styles();
-	$data['style'] = $styles->getStyles();
-
-	$style = isset($request->style) && isset($data['styles'][$request->style]) ? $request->style : 'printed';
-	$data['style'] = $style;
-
-	$sizes = new Sizes();
-	$data['sizes'] = $sizes->getSizes();
-
-	$price = new Prices();
-	$data['prices'] = $price->getJSONPrices();
-
-	return view('product-figured', $data);
-
-});
-
-Route::get('/product-embossed-printed', function() {
-
-	$data = [];
-	$styles = new Styles();
-	$data['style'] = $styles->getStyles();
-
-	$style = isset($request->style) && isset($data['styles'][$request->style]) ? $request->style : 'printed';
-	$data['style'] = $style;
-
-	$sizes = new Sizes();
-	$data['sizes'] = $sizes->getSizes();
-
-	$price = new Prices();
-	$data['prices'] = $price->getJSONPrices();
-
-	return view('product-embossed-printed', $data);
-
-});
-
-Route::get('/product-dual-layer', function() {
-
-	$data = [];
-	$styles = new Styles();
-	$data['style'] = $styles->getStyles();
-
-	$style = isset($request->style) && isset($data['styles'][$request->style]) ? $request->style : 'printed';
-	$data['style'] = $style;
-
-	$sizes = new Sizes();
-	$data['sizes'] = $sizes->getSizes();
-
-	$price = new Prices();
-	$data['prices'] = $price->getJSONPrices();
-
-	return view('product-dual-layer', $data);
-
-});
-
-Route::get('/product-blank', function() {
-
-	$data = [];
-	$styles = new Styles();
-	$data['style'] = $styles->getStyles();
-
-	$style = isset($request->style) && isset($data['styles'][$request->style]) ? $request->style : 'printed';
-	$data['style'] = $style;
-
-	$sizes = new Sizes();
-	$data['sizes'] = $sizes->getSizes();
-
-	$price = new Prices();
-	$data['prices'] = $price->getJSONPrices();
-
-	return view('product-blank', $data);
-
-});
+Route::get('/product/{style}', 'ViewController@viewProduct');
 
 Route::get('/contact', function () {
     return view('contact');
 });
 
-Route::get('/sample', function () {
-    return view('sample');
-});
+// Route::get('/sample', function () {
+//     return view('sample');
+// });
 
 Route::get('/message', function () {
     return view('message');
@@ -268,3 +118,14 @@ Route::post('/quote/send', 'ViewController@mailTest');
 Route::post('/schoolpo/send', 'ViewController@mailTestSchoolpo');
 
 Route::post('/digitaldesign/send', 'ViewController@mailTestDigital');
+
+//Login Routes...
+Route::get('/admin/login', 'AuthAdmin\AuthController@showLoginForm');
+Route::post('/admin/login', 'AuthAdmin\AuthController@login');
+Route::get('/admin/logout', 'AuthAdmin\AuthController@logout');
+
+// Registration Routes...
+Route::get('admin/register', 'AuthAdmin\AuthController@showRegistrationForm');
+Route::post('admin/register', 'AuthAdmin\AuthController@register');
+
+Route::get('/admin', 'AdminController@index');

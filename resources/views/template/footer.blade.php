@@ -3,23 +3,23 @@
     <div class="container">
         <div id="footer-link-main">
             <ul class="footer-menu-item menu">
-                <li><a href="/">Home</a></li>
-                <li><a href="order">Order Now</a></li>
-                <li><a href="price">Prices</a></li>
-                <li><a href="product-printed">Products</a></li>
-                <li><a href="fonts">Wristband Options</a></li>
-                <li><a href="gallery">Photo Gallery</a></li>
-                <li><a href="contact">Contact Us</a></li>
+                <li><a href="{{ URL::to('/') }}">Home</a></li>
+                <li><a href="{{ URL::to('/order') }}">Order Now</a></li>
+                <li><a href="{{ URL::to('/price') }}">Prices</a></li>
+                <li><a href="{{ URL::to('/product/printed') }}">Products</a></li>
+                <li><a href="{{ URL::to('/fonts') }}">Wristband Options</a></li>
+                <li><a href="{{ URL::to('/gallery') }}">Photo Gallery</a></li>
+                <li><a href="{{ URL::to('/contact') }}">Contact Us</a></li>
                 <div class="clearfix"></div>
             </ul>
         </div>
         <div id="footer-link-secondary">
             <ul id="menu-footer-secondary">
-                <li><a href="about">About Us</a></li>
-                <li><a href="privacy">Privacy</a></li>
-                <li><a href="return-policy">Return Policy</a></li>
-                <li><a href="faq">FAQ</a></li>
-                <li><a href="terms-and-conditions">Terms and Conditions</a></li>
+                <li><a href="{{ URL::to('/about') }}">About Us</a></li>
+                <li><a href="{{ URL::to('/privacy') }}">Privacy</a></li>
+                <li><a href="{{ URL::to('/return-policy') }}">Return Policy</a></li>
+                <li><a href="{{ URL::to('/faq') }}">FAQ</a></li>
+                <li><a href="{{ URL::to('/terms-and-conditions') }}">Terms and Conditions</a></li>
             </ul>
         </div>
         <div id="footer-text">

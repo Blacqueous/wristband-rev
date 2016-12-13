@@ -19,7 +19,7 @@
 
 			// Declare image variables
 			list( $r_0, $g_0, $b_0 ) = sscanf( $hex_0, "#%02x%02x%02x" );
-			$img_0 = array(	'file'	 => 'img\band\base.png',
+			$img_0 = array(	'file'	 => 'img/band/base.png',
 							'colorR' => $r_0,
 							'colorG' => $g_0,
 							'colorB' => $b_0 );
@@ -41,7 +41,7 @@
 
 			// For image shadow effect >>>>>
 			// Declare image variables
-			$img_shadow = imagecreatefrompng( 'img\band\shadow.png' );
+			$img_shadow = imagecreatefrompng( 'img/band/shadow.png' );
 
 			// Let's make image background transparent
 			imagefill( $img_shadow, 0, 0, IMG_COLOR_TRANSPARENT );
@@ -71,7 +71,7 @@
 
 				// Declare image variables
 				list( $r_1, $g_1, $b_1 ) = sscanf( $hex_1, "#%02x%02x%02x" );
-				$img_1 = array(	'file'	 => 'img\band\dual.png',
+				$img_1 = array(	'file'	 => 'img/band/dual.png',
 								'colorR' => $r_1,
 								'colorG' => $g_1,
 								'colorB' => $b_1 );
@@ -105,7 +105,7 @@
 
     			// For inner image shaded effect >>>>>
     			// Declare image variables
-    			$img_shade = imagecreatefrompng( 'img\band\dual-shade.png' );
+    			$img_shade = imagecreatefrompng( 'img/band/dual-shade.png' );
 
     			// Let's make image background transparent
     			imagefill( $img_shade, 0, 0, IMG_COLOR_TRANSPARENT );
@@ -119,7 +119,7 @@
 
 			// For image shaded effect >>>>>
 			// Declare image variables
-			$img_shade = imagecreatefrompng( 'img\band\shade.png' );
+			$img_shade = imagecreatefrompng( 'img/band/shade.png' );
 
 			// Let's make image background transparent
 			imagefill( $img_shade, 0, 0, IMG_COLOR_TRANSPARENT );
