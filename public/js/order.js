@@ -1643,6 +1643,7 @@ $(document).ready(function() {
 
     $('body').on('click', '#saveFreeKC', function(e) {
         toastr.info('', 'Free keychains are saved.');
+		$('#saveFreeKC').hide();
     });
 
     $('body').on('click', '#saveFreeWB', function(e) {
