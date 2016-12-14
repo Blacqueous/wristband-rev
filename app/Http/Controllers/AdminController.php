@@ -31,9 +31,18 @@ class AdminController extends Controller
 
     public function uploadPricesWB(Request $request)
     {
-        $files_in_directory = scandir('uploads/seed');
-        // $items_count = count($files_in_directory);
-        var_dump($files_in_directory);
+        $scan_result = scandir('uploads/seed');
+        $count = 0;
+        $file = "";
+        foreach($scan_result as $key => $value) {
+            if(!in_array($value, array('.', '..'))) {
+                if($count===0)
+                    $file = $value;
+                $count++;
+            }
+        }
+        var_dump($count);
+        var_dump($value);
         die;
         // var_dump(File::exists('uploads/seed/wb_prices.xlsx'));
         die;
@@ -43,6 +52,10 @@ class AdminController extends Controller
         if($files) {
             // Check if excel file exists.
             if(isset($files[0])) {
+                // Clear folder
+                if(File::exists('uploads/seed')) {
+                    File::cleanDirectory('uploads/seed');
+                }
                 // Create image name.
                 $filename = 'wb_prices' . '.' . $files[0]->getClientOriginalExtension();
                 $destinationPath = 'uploads/seed/';
