@@ -119,13 +119,28 @@ Route::post('/schoolpo/send', 'ViewController@mailTestSchoolpo');
 
 Route::post('/digitaldesign/send', 'ViewController@mailTestDigital');
 
-//Login Routes...
+// Admin Login Routes...
 Route::get('/admin/login', 'AuthAdmin\AuthController@showLoginForm');
+
 Route::post('/admin/login', 'AuthAdmin\AuthController@login');
+
 Route::get('/admin/logout', 'AuthAdmin\AuthController@logout');
 
-// Registration Routes...
+// Admin Registration Routes...
 Route::get('admin/register', 'AuthAdmin\AuthController@showRegistrationForm');
+
 Route::post('admin/register', 'AuthAdmin\AuthController@register');
 
-Route::get('/admin', 'AdminController@index');
+// Admin Pages...
+Route::group(['middleware' => 'admin'], function () {
+    // Admin dashboard
+    Route::get('/admin', 'AdminController@index');
+    // Admin pages
+    Route::get('/admin/prices', 'AdminController@managePrices');
+    Route::post('/admin/prices/uploadWB', 'AdminController@uploadPricesWB');
+    Route::post('/admin/prices/updateWB', 'AdminController@updatePricesWB');
+    Route::post('/admin/prices/uploadAO', 'AdminController@uploadPricesAO');
+    Route::post('/admin/prices/updateAO', 'AdminController@updatePricesAO');
+    Route::get('/admin/images', 'AdminController@manageImages');
+    Route::get('/admin/reset', 'AdminController@resetJSON');
+});
