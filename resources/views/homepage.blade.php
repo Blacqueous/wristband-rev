@@ -367,26 +367,36 @@
     </div>
 	<div style="background-color:#fff;padding:10px 0;text-align:center">
 	    <div class="container map-form">
-		   <h1>Claim your coupon code</h1>
+		   <h1 style="color:#FE8A16;">Subscribe to our Newsletter</h1>
 			<div id="coup-box">
 				<div class="frame-box">
-					<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /><form id="emf-form" target="_self" enctype="multipart/form-data" method="post" action="http://www.emailmeform.com/builder/form/qvRh20DO854wLsb684ba0f">
+				  <p style="padding-top:10px;padding-bottom:10px;color:#5A5A5A;">Subscribe now to receive promotions and special offers.</p>
+					<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+					<form id="emf-form" target="_self" enctype="multipart/form-data" method="post" action="http://www.emailmeform.com/builder/form/qvRh20DO854wLsb684ba0f">
 					<table style="text-align:left;" cellpadding="2" cellspacing="0" border="0" bgcolor="transparent">
-					<tr>
-					<td style="" colspan="2">
-					<div style="height:80px;"></div>
-					</td>
-					</tr>
-					<tr valign="top" ><td id="td_element_label_0" style="" align="left">
-					</td><td width="35%" id="td_element_field_0" style=""><input id="element_0" name="element_0" placeholder="Enter Full Name" value="" size="20" class="validate[required] form-control" type="text" /><div style="padding-bottom:8px;color:#ffffff;"><small><font face="Arial"></font></small></div>
-					</td>
-					<td id="td_element_label_1" style="" align="left">
-					</td><td width="35%" id="td_element_field_1" style=""><input placeholder="Enter Email" id="element_1" name="element_1" class="validate[required,custom[email]] form-control" value="" size="20" type="text" /><div style="padding-bottom:8px;color:#ffffff;"><small><font face="Arial"></font></small></div>
-					</td>
-					<td td width="30%" colspan="2" align="auto">
-					<input name="element_counts" value="2" type="hidden" />
-					<input name="embed" value="forms" class="form-control" type="hidden" /><input  value="Submit" type="submit" />
-					</td></tr></table></form>
+						<tr>
+							<td style="" colspan="2">
+							</td>
+						</tr>
+						<tr valign="top" >
+							<td id="td_element_label_0" style="" align="left"></td>
+							<td width="35%" id="td_element_field_0" style=""><input id="element_0" name="element_0" placeholder="Enter Full Name" value="" size="20" class="validate[required] form-control" type="text" /><div style="padding-bottom:8px;color:#ffffff;"><small><font face="Arial"></font></small></div>
+							</td>
+						</tr>
+						<tr valign="top">
+							<td id="td_element_label_1" style="" align="left"></td>
+							<td width="35%" id="td_element_field_1" style=""><input placeholder="Enter Email" id="element_1" name="element_1" class="validate[required,custom[email]] form-control" value="" size="20" type="text" /><div style="padding-bottom:8px;color:#ffffff;"><small><font face="Arial"></font></small></div>
+							</td>
+						</tr>
+						<tr valign="top">
+							<td id="td_element_label_0" style="" align="left"></td>
+							<td td width="30%" colspan="2" align="left">
+							<input name="element_counts" value="2" type="hidden" />
+							<input name="embed" value="forms" class="form-control" type="hidden" /><input  value="Submit" type="submit" />
+							</td>
+						</tr>
+					</table>
+					</form>
 				</div>
 				
 			</div>

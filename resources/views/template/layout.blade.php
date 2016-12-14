@@ -10,7 +10,7 @@
 		<meta name="csrf-token" content="{{ csrf_token() }}">
 		<link rel="icon" href="{{ URL::asset('../../favicon.ico') }}">
 
-		<title>Promotional Wristbands @yield('title')</title>
+		<title>Custom Silicone Wristbands | Promotional Wristbands @yield('title')</title>
 
 		<!-- Bootstrap core CSS -->
 		<link href="{{ URL::asset('assets/css/bootstrap.min.css') }}" rel="stylesheet">
