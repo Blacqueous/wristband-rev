@@ -8,9 +8,9 @@
 	td p {
 		margin: 12px 0;
 		border-bottom:1px solid #BFBFBF;
-		
+
 	}
-	
+
 	.table > tbody > tr > td, .table > tbody > tr > th, .table > tfoot > tr > td, .table > tfoot > tr > th, .table > thead > tr > td, .table > thead > tr > th{
 		border-top:none;
 	}
@@ -18,7 +18,7 @@
 @endsection
 
 @section('js')
-<script language="javascript"><!-- 
+<script language="javascript"><!--
 	$(document).ready(function() {
 		$('.popup-gallery').magnificPopup({
 			delegate: 'a',
@@ -53,11 +53,11 @@
 			<p>A cheap way of introducing a message wherein it will be silkscreen printed on your wristbands using a permanent ink technology machine. This type of wristband is the most economical way of showing your message or even your own design. There are different color of wristbands and text colors to choose from.</p>
 			<div class="popup-gallery">
 				<div class="col-md-8">
-				<a href="assets/images/src/Printed.png" title="Printed"><img src="assets/images/src/Printed.png" class="galleryimg" ></a>
+				<a href="{{ URL::asset('assets/images/src/Printed.png') }}" title="Printed"><img src="{{ URL::asset('assets/images/src/Printed.png') }}" class="galleryimg" ></a>
 				</div>
 			</div>
 				<div class="clearfix"  style="margin-bottom:20px;"></div>
-			
+
 			<div class="col-md-10">
 				<div class="size_options">
 				<table class="table" border="0" cellpadding="0" cellspacing="0" width="100%">
@@ -72,7 +72,7 @@
 							<th>1.5 Inch</th>
 							<th>2 Inch</th>
 						</tr>
-						
+
 					</td>
 					</tr>
 					<tr>
@@ -130,7 +130,7 @@
 							@foreach($prices['printed']['2000'] as $key => $value)
 								<td>{{ $value }}</td>
 							@endforeach
-					</tr>	
+					</tr>
 					<tr>
 						<td>
 							3000
@@ -138,7 +138,7 @@
 							@foreach($prices['printed']['3000'] as $key => $value)
 								<td>{{ $value }}</td>
 							@endforeach
-					</tr>		
+					</tr>
 					<tr>
 						<td>
 							5000
@@ -146,7 +146,7 @@
 							@foreach($prices['printed']['5000'] as $key => $value)
 								<td>{{ $value }}</td>
 							@endforeach
-					</tr>	
+					</tr>
 					<tr>
 						<td>
 							10000
@@ -170,7 +170,7 @@
 							@foreach($prices['printed']['50000'] as $key => $value)
 								<td>{{ $value }}</td>
 							@endforeach
-					</tr>	
+					</tr>
 					<tr>
 						<td>
 							100000
@@ -178,16 +178,16 @@
 							@foreach($prices['printed']['100000'] as $key => $value)
 								<td>{{ $value }}</td>
 							@endforeach
-					</tr>	
+					</tr>
 						</tr>
-			</table>	
+			</table>
 				</div>
 			</div>
 				<div class="clearfix"></div>
 		</div>
-		<div class="half_sm" style="width: 32%; margin: 5% 0px 1% 5%;"> 
+		<div class="half_sm" style="width: 32%; margin: 5% 0px 1% 5%;">
 			<div class="addl_options">
-				<h4>Message Options</h4> 
+				<h4>Message Options</h4>
 				<p>Back Message<br>
 				Inside Message<br>
 				Multiple Wristband Color <br>

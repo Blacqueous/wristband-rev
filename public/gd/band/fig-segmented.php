@@ -22,7 +22,7 @@
 
 				// Declare image variables
 				list( $r_0, $g_0, $b_0 ) = sscanf( $hex_0, "#%02x%02x%02x" );
-				$img_0 = array(	'file'	 => 'img\band\fig-base.png',
+				$img_0 = array(	'file'	 => 'img/band/fig-base.png',
 								'colorR' => $r_0,
 								'colorG' => $g_0,
 								'colorB' => $b_0 );
@@ -44,7 +44,7 @@
 
 				// For image shadow effect >>>>>
 				// Declare image variables
-				$img_shadow = imagecreatefrompng( 'img\band\shadow.png' );
+				$img_shadow = imagecreatefrompng( 'img/band/shadow.png' );
 
 				// Let's make image background transparent
 				imagefill( $img_shadow, 0, 0, IMG_COLOR_TRANSPARENT );
@@ -73,7 +73,7 @@
 
 				// Declare image variables
 				list( $r_0, $g_0, $b_0 ) = sscanf( $hex_0, "#%02x%02x%02x" );
-				$img_0 = array(	'file'	 => 'img\band\fig-segmented-color-2.0.png',
+				$img_0 = array(	'file'	 => 'img/band/fig-segmented-color-2.0.png',
 								'colorR' => $r_0,
 								'colorG' => $g_0,
 								'colorB' => $b_0 );
@@ -95,7 +95,7 @@
 
 				// For image shadow effect >>>>>
 				// Declare image variables
-				$img_shadow = imagecreatefrompng( 'img\band\shadow.png' );
+				$img_shadow = imagecreatefrompng( 'img/band/shadow.png' );
 
 				// Let's make image background transparent
 				imagefill( $img_shadow, 0, 0, IMG_COLOR_TRANSPARENT );
@@ -121,7 +121,7 @@
 
 				// Declare image variables
 				list( $r_1, $g_1, $b_1 ) = sscanf( $hex_1, "#%02x%02x%02x" );
-				$img_1 = array(	'file'	 => 'img\band\fig-segmented-color-2.1.png',
+				$img_1 = array(	'file'	 => 'img/band/fig-segmented-color-2.1.png',
 								'colorR' => $r_1,
 								'colorG' => $g_1,
 								'colorB' => $b_1 );
@@ -161,7 +161,7 @@
 
 				// Declare image variables
 				list( $r_0, $g_0, $b_0 ) = sscanf( $hex_0, "#%02x%02x%02x" );
-				$img_0 = array(	'file'	 => 'img\band\fig-segmented-color-3.0.png',
+				$img_0 = array(	'file'	 => 'img/band/fig-segmented-color-3.0.png',
 								'colorR' => $r_0,
 								'colorG' => $g_0,
 								'colorB' => $b_0 );
@@ -183,7 +183,7 @@
 
 				// For image shadow effect >>>>>
 				// Declare image variables
-				$img_shadow = imagecreatefrompng( 'img\band\shadow.png' );
+				$img_shadow = imagecreatefrompng( 'img/band/shadow.png' );
 
 				// Let's make image background transparent
 				imagefill( $img_shadow, 0, 0, IMG_COLOR_TRANSPARENT );
@@ -209,7 +209,7 @@
 
 				// Declare image variables
 				list( $r_1, $g_1, $b_1 ) = sscanf( $hex_1, "#%02x%02x%02x" );
-				$img_1 = array(	'file'	 => 'img\band\fig-segmented-color-3.1.png',
+				$img_1 = array(	'file'	 => 'img/band/fig-segmented-color-3.1.png',
 								'colorR' => $r_1,
 								'colorG' => $g_1,
 								'colorB' => $b_1 );
@@ -247,7 +247,7 @@
 
 				// Declare image variables
 				list( $r_2, $g_2, $b_2 ) = sscanf( $hex_2, "#%02x%02x%02x" );
-				$img_2 = array(	'file'	 => 'img\band\fig-segmented-color-3.2.png',
+				$img_2 = array(	'file'	 => 'img/band/fig-segmented-color-3.2.png',
 								'colorR' => $r_2,
 								'colorG' => $g_2,
 								'colorB' => $b_2 );
@@ -287,7 +287,7 @@
 
 				// Declare image variables
 				list( $r_0, $g_0, $b_0 ) = sscanf( $hex_0, "#%02x%02x%02x" );
-				$img_0 = array(	'file'	 => 'img\band\fig-segmented-color-4.0.png',
+				$img_0 = array(	'file'	 => 'img/band/fig-segmented-color-4.0.png',
 								'colorR' => $r_0,
 								'colorG' => $g_0,
 								'colorB' => $b_0 );
@@ -309,7 +309,7 @@
 
 				// For image shadow effect >>>>>
 				// Declare image variables
-				$img_shadow = imagecreatefrompng( 'img\band\shadow.png' );
+				$img_shadow = imagecreatefrompng( 'img/band/shadow.png' );
 
 				// Let's make image background transparent
 				imagefill( $img_shadow, 0, 0, IMG_COLOR_TRANSPARENT );
@@ -335,7 +335,7 @@
 
 				// Declare image variables
 				list( $r_1, $g_1, $b_1 ) = sscanf( $hex_1, "#%02x%02x%02x" );
-				$img_1 = array(	'file'	 => 'img\band\fig-segmented-color-4.1.png',
+				$img_1 = array(	'file'	 => 'img/band/fig-segmented-color-4.1.png',
 								'colorR' => $r_1,
 								'colorG' => $g_1,
 								'colorB' => $b_1 );
@@ -373,7 +373,7 @@
 
 				// Declare image variables
 				list( $r_2, $g_2, $b_2 ) = sscanf( $hex_2, "#%02x%02x%02x" );
-				$img_2 = array(	'file'	 => 'img\band\fig-segmented-color-4.2.png',
+				$img_2 = array(	'file'	 => 'img/band/fig-segmented-color-4.2.png',
 								'colorR' => $r_2,
 								'colorG' => $g_2,
 								'colorB' => $b_2 );
@@ -411,7 +411,7 @@
 
 				// Declare image variables
 				list( $r_3, $g_3, $b_3 ) = sscanf( $hex_3, "#%02x%02x%02x" );
-				$img_3 = array(	'file'	 => 'img\band\fig-segmented-color-4.3.png',
+				$img_3 = array(	'file'	 => 'img/band/fig-segmented-color-4.3.png',
 								'colorR' => $r_3,
 								'colorG' => $g_3,
 								'colorB' => $b_3 );
@@ -451,7 +451,7 @@
 
 				// Declare image variables
 				list( $r_0, $g_0, $b_0 ) = sscanf( $hex_0, "#%02x%02x%02x" );
-				$img_0 = array(	'file'	 => 'img\band\fig-segmented-color-5.0.png',
+				$img_0 = array(	'file'	 => 'img/band/fig-segmented-color-5.0.png',
 								'colorR' => $r_0,
 								'colorG' => $g_0,
 								'colorB' => $b_0 );
@@ -473,7 +473,7 @@
 
 				// For image shadow effect >>>>>
 				// Declare image variables
-				$img_shadow = imagecreatefrompng( 'img\band\shadow.png' );
+				$img_shadow = imagecreatefrompng( 'img/band/shadow.png' );
 
 				// Let's make image background transparent
 				imagefill( $img_shadow, 0, 0, IMG_COLOR_TRANSPARENT );
@@ -499,7 +499,7 @@
 
 				// Declare image variables
 				list( $r_1, $g_1, $b_1 ) = sscanf( $hex_1, "#%02x%02x%02x" );
-				$img_1 = array(	'file'	 => 'img\band\fig-segmented-color-5.1.png',
+				$img_1 = array(	'file'	 => 'img/band/fig-segmented-color-5.1.png',
 								'colorR' => $r_1,
 								'colorG' => $g_1,
 								'colorB' => $b_1 );
@@ -537,7 +537,7 @@
 
 				// Declare image variables
 				list( $r_2, $g_2, $b_2 ) = sscanf( $hex_2, "#%02x%02x%02x" );
-				$img_2 = array(	'file'	 => 'img\band\fig-segmented-color-5.2.png',
+				$img_2 = array(	'file'	 => 'img/band/fig-segmented-color-5.2.png',
 								'colorR' => $r_2,
 								'colorG' => $g_2,
 								'colorB' => $b_2 );
@@ -575,7 +575,7 @@
 
 				// Declare image variables
 				list( $r_3, $g_3, $b_3 ) = sscanf( $hex_3, "#%02x%02x%02x" );
-				$img_3 = array(	'file'	 => 'img\band\fig-segmented-color-5.3.png',
+				$img_3 = array(	'file'	 => 'img/band/fig-segmented-color-5.3.png',
 								'colorR' => $r_3,
 								'colorG' => $g_3,
 								'colorB' => $b_3 );
@@ -613,7 +613,7 @@
 
 				// Declare image variables
 				list( $r_4, $g_4, $b_4 ) = sscanf( $hex_4, "#%02x%02x%02x" );
-				$img_4 = array(	'file'	 => 'img\band\fig-segmented-color-5.4.png',
+				$img_4 = array(	'file'	 => 'img/band/fig-segmented-color-5.4.png',
 								'colorR' => $r_4,
 								'colorG' => $g_4,
 								'colorB' => $b_4 );
@@ -653,7 +653,7 @@
 
 				// Declare image variables
 				list( $r_0, $g_0, $b_0 ) = sscanf( $hex_0, "#%02x%02x%02x" );
-				$img_0 = array(	'file'	 => 'img\band\fig-segmented-color-6.0.png',
+				$img_0 = array(	'file'	 => 'img/band/fig-segmented-color-6.0.png',
 								'colorR' => $r_0,
 								'colorG' => $g_0,
 								'colorB' => $b_0 );
@@ -675,7 +675,7 @@
 
 				// For image shadow effect >>>>>
 				// Declare image variables
-				$img_shadow = imagecreatefrompng( 'img\band\shadow.png' );
+				$img_shadow = imagecreatefrompng( 'img/band/shadow.png' );
 
 				// Let's make image background transparent
 				imagefill( $img_shadow, 0, 0, IMG_COLOR_TRANSPARENT );
@@ -701,7 +701,7 @@
 
 				// Declare image variables
 				list( $r_1, $g_1, $b_1 ) = sscanf( $hex_1, "#%02x%02x%02x" );
-				$img_1 = array(	'file'	 => 'img\band\fig-segmented-color-6.1.png',
+				$img_1 = array(	'file'	 => 'img/band/fig-segmented-color-6.1.png',
 								'colorR' => $r_1,
 								'colorG' => $g_1,
 								'colorB' => $b_1 );
@@ -739,7 +739,7 @@
 
 				// Declare image variables
 				list( $r_2, $g_2, $b_2 ) = sscanf( $hex_2, "#%02x%02x%02x" );
-				$img_2 = array(	'file'	 => 'img\band\fig-segmented-color-6.2.png',
+				$img_2 = array(	'file'	 => 'img/band/fig-segmented-color-6.2.png',
 								'colorR' => $r_2,
 								'colorG' => $g_2,
 								'colorB' => $b_2 );
@@ -777,7 +777,7 @@
 
 				// Declare image variables
 				list( $r_3, $g_3, $b_3 ) = sscanf( $hex_3, "#%02x%02x%02x" );
-				$img_3 = array(	'file'	 => 'img\band\fig-segmented-color-6.3.png',
+				$img_3 = array(	'file'	 => 'img/band/fig-segmented-color-6.3.png',
 								'colorR' => $r_3,
 								'colorG' => $g_3,
 								'colorB' => $b_3 );
@@ -815,7 +815,7 @@
 
 				// Declare image variables
 				list( $r_4, $g_4, $b_4 ) = sscanf( $hex_4, "#%02x%02x%02x" );
-				$img_4 = array(	'file'	 => 'img\band\fig-segmented-color-6.4.png',
+				$img_4 = array(	'file'	 => 'img/band/fig-segmented-color-6.4.png',
 								'colorR' => $r_4,
 								'colorG' => $g_4,
 								'colorB' => $b_4 );
@@ -853,7 +853,7 @@
 
 				// Declare image variables
 				list( $r_5, $g_5, $b_5 ) = sscanf( $hex_5, "#%02x%02x%02x" );
-				$img_5 = array(	'file'	 => 'img\band\fig-segmented-color-6.5.png',
+				$img_5 = array(	'file'	 => 'img/band/fig-segmented-color-6.5.png',
 								'colorR' => $r_5,
 								'colorG' => $g_5,
 								'colorB' => $b_5 );
@@ -890,7 +890,7 @@
 
 			// For image shaded effect >>>>>
 			// Declare image variables
-			$img_shade = imagecreatefrompng( 'img\band\fig-shade.png' );
+			$img_shade = imagecreatefrompng( 'img/band/fig-shade.png' );
 
 			// Let's make image background transparent
 			imagefill( $img_shade, 0, 0, IMG_COLOR_TRANSPARENT );

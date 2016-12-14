@@ -88,7 +88,6 @@ class ViewController extends Controller
 		$styles = new Styles();
 		$data['style'] = $styles->getStyles();
 
-
 		$style = isset($request->style) && isset($data['styles'][$request->style]) ? $request->style : 'printed';
 		$data['style'] = $style;
 
@@ -201,17 +200,12 @@ class ViewController extends Controller
 
 	public function mailTest(Request $request)
 	{
-
 		$data = $request->data;
 		$emailItems = $request->email;
 		$email = $emailItems['mail'];
 		$name = $emailItems['name'];
 		$emailData = array('name'=>$name, 'email'=> $email, 'items'=> $data);
 		$emails = [$email,'sales@promotionalwristband.com'];
-
-		/*;
-		return json_encode($list);exit;
-		*/
 
 		Mail::send('mailtemp',$emailData, function ($message) use ($emails) {
             $message->from('sales@promotionalwristband.com', 'Request Quote');
@@ -223,17 +217,12 @@ class ViewController extends Controller
 
 	public function mailTestSchoolpo(Request $request)
 	{
-
 		$data = $request->data;
 		$emailItems = $request->email;
 		$email = $emailItems['mail'];
 		$name = $emailItems['name'];
 		$emailData = array('name'=>$name, 'email'=> $email, 'items'=> $data);
 		$emails = [$email,'sales@promotionalwristband.com'];
-
-		/*;
-		return json_encode($list);exit;
-		*/
 
 		Mail::send('schoolpotemp',$emailData, function ($message) use ($emails) {
             $message->from('sales@promotionalwristband.com', 'School PO Request');
@@ -245,17 +234,12 @@ class ViewController extends Controller
 
 	public function mailTestDigital(Request $request)
 	{
-
 		$data = $request->data;
 		$emailItems = $request->email;
 		$email = $emailItems['mail'];
 		$name = $emailItems['name'];
 		$emailData = array('name'=>$name, 'email'=> $email, 'items'=> $data);
 		$emails = [$email,'sales@promotionalwristband.com'];
-
-		/*;
-		return json_encode($list);exit;
-		*/
 
 		Mail::send('digitaltemp',$emailData, function ($message) use ($emails) {
             $message->from('sales@promotionalwristband.com', 'Digital Design Request');
@@ -272,12 +256,67 @@ class ViewController extends Controller
 				$data = [
 					'items' => Session::get('order_items')
 				];
-				
+
 				return view('checkout', $data);
 			}
 		}
 
 		return redirect('/');
+	}
+
+	public function viewProduct(Request $request)
+	{
+		$data = [];
+		$styles = new Styles();
+		$data['styles'] = $styles->getStyles();
+
+		if(!isset($data['styles'][$request->style])) { return redirect('/'); }
+		$data['style'] = isset($request->style) ? $request->style : 'printed';
+
+		$sizes = new Sizes();
+		$data['sizes'] = $sizes->getSizes();
+
+		$price = new Prices();
+		$data['prices'] = $price->getJSONPrices();
+
+		switch ($request->style) {
+			case 'printed':
+				return view('product-printed', $data);
+				break;
+
+			case 'debossed':
+				return view('product-debossed', $data);
+				break;
+
+			case 'ink-injected':
+				return view('product-ink-injected', $data);
+				break;
+
+			case 'embossed':
+				return view('product-embossed', $data);
+				break;
+
+			case 'figured':
+				return view('product-figured', $data);
+				break;
+
+			case 'embossed-printed':
+				return view('product-embossed-printed', $data);
+				break;
+
+			case 'dual-layer':
+				return view('product-dual-layer', $data);
+				break;
+
+			case 'blank':
+				return view('product-blank', $data);
+				break;
+
+			default:
+				return view('product-printed', $data);
+				break;
+		}
+
 	}
 
 }

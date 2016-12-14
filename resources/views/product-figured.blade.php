@@ -8,9 +8,9 @@
 	td p {
 		margin: 12px 0;
 		border-bottom:1px solid #BFBFBF;
-		
+
 	}
-	
+
 	.table > tbody > tr > td, .table > tbody > tr > th, .table > tfoot > tr > td, .table > tfoot > tr > th, .table > thead > tr > td, .table > thead > tr > th{
 		border-top:none;
 	}
@@ -18,7 +18,7 @@
 @endsection
 
 @section('js')
-<script language="javascript"><!-- 
+<script language="javascript"><!--
 	$(document).ready(function() {
 		$('.popup-gallery').magnificPopup({
 			delegate: 'a',
@@ -53,11 +53,11 @@
 			<p>A type of wristband known for its unique feature, the figured wristbands will let you highlight your school, company, or organizational logo or even clipart by placing it in the circle portion found in the middle of the wristband.</p>
 			<div class="popup-gallery">
 				<div class="col-md-8">
-				<a href="assets/images/src/Figured.png" title="Figured"><img src="assets/images/src/Figured.png" class="galleryimg" ></a>
+				<a href="{{ URL::asset('assets/images/src/Figured.png') }}" title="Figured"><img src="{{ URL::asset('assets/images/src/Figured.png') }}" class="galleryimg" ></a>
 				</div>
 			</div>
 				<div class="clearfix"  style="margin-bottom:20px;"></div>
-			
+
 			<div class="col-md-10">
 				<div class="size_options">
 				<table class="table" border="0" cellpadding="0" cellspacing="0" width="100%">
@@ -69,7 +69,7 @@
 							<th>3/4 Inch</th>
 							<th>1 Inch</th>
 						</tr>
-						
+
 					</td>
 					</tr>
 					<tr>
@@ -81,9 +81,9 @@
 							@if($key=='0-50inch')
 								<td>{{ $value }}</td>
 							@elseif($key=='0-75inch')
-								<td>{{ $value }}</td>	
+								<td>{{ $value }}</td>
 							@elseif($key=='1-00inch')
-								<td>{{ $value }}</td>	
+								<td>{{ $value }}</td>
 							@endif
 							@endforeach
 					</tr>
@@ -95,9 +95,9 @@
 								@if($key=='0-50inch')
 								<td>{{ $value }}</td>
 							@elseif($key=='0-75inch')
-								<td>{{ $value }}</td>	
+								<td>{{ $value }}</td>
 							@elseif($key=='1-00inch')
-								<td>{{ $value }}</td>	
+								<td>{{ $value }}</td>
 							@endif
 							@endforeach
 					</tr>
@@ -109,9 +109,9 @@
 								@if($key=='0-50inch')
 								<td>{{ $value }}</td>
 							@elseif($key=='0-75inch')
-								<td>{{ $value }}</td>	
+								<td>{{ $value }}</td>
 							@elseif($key=='1-00inch')
-								<td>{{ $value }}</td>	
+								<td>{{ $value }}</td>
 							@endif
 							@endforeach
 					</tr>
@@ -123,9 +123,9 @@
 							@if($key=='0-50inch')
 								<td>{{ $value }}</td>
 							@elseif($key=='0-75inch')
-								<td>{{ $value }}</td>	
+								<td>{{ $value }}</td>
 							@elseif($key=='1-00inch')
-								<td>{{ $value }}</td>	
+								<td>{{ $value }}</td>
 							@endif
 							@endforeach
 					</tr>
@@ -137,9 +137,9 @@
 							@if($key=='0-50inch')
 								<td>{{ $value }}</td>
 							@elseif($key=='0-75inch')
-								<td>{{ $value }}</td>	
+								<td>{{ $value }}</td>
 							@elseif($key=='1-00inch')
-								<td>{{ $value }}</td>	
+								<td>{{ $value }}</td>
 							@endif
 							@endforeach
 					</tr>
@@ -151,9 +151,9 @@
 								@if($key=='0-50inch')
 								<td>{{ $value }}</td>
 							@elseif($key=='0-75inch')
-								<td>{{ $value }}</td>	
+								<td>{{ $value }}</td>
 							@elseif($key=='1-00inch')
-								<td>{{ $value }}</td>	
+								<td>{{ $value }}</td>
 							@endif
 							@endforeach
 					</tr>
@@ -165,12 +165,12 @@
 								@if($key=='0-50inch')
 								<td>{{ $value }}</td>
 							@elseif($key=='0-75inch')
-								<td>{{ $value }}</td>	
+								<td>{{ $value }}</td>
 							@elseif($key=='1-00inch')
-								<td>{{ $value }}</td>	
+								<td>{{ $value }}</td>
 							@endif
 							@endforeach
-					</tr>	
+					</tr>
 					<tr>
 						<td>
 							3000
@@ -179,12 +179,12 @@
 							@if($key=='0-50inch')
 								<td>{{ $value }}</td>
 							@elseif($key=='0-75inch')
-								<td>{{ $value }}</td>	
+								<td>{{ $value }}</td>
 							@elseif($key=='1-00inch')
-								<td>{{ $value }}</td>	
+								<td>{{ $value }}</td>
 							@endif
 							@endforeach
-					</tr>		
+					</tr>
 					<tr>
 						<td>
 							5000
@@ -193,12 +193,12 @@
 							@if($key=='0-50inch')
 								<td>{{ $value }}</td>
 							@elseif($key=='0-75inch')
-								<td>{{ $value }}</td>	
+								<td>{{ $value }}</td>
 							@elseif($key=='1-00inch')
-								<td>{{ $value }}</td>	
+								<td>{{ $value }}</td>
 							@endif
 							@endforeach
-					</tr>	
+					</tr>
 					<tr>
 						<td>
 							10000
@@ -207,9 +207,9 @@
 							@if($key=='0-50inch')
 								<td>{{ $value }}</td>
 							@elseif($key=='0-75inch')
-								<td>{{ $value }}</td>	
+								<td>{{ $value }}</td>
 							@elseif($key=='1-00inch')
-								<td>{{ $value }}</td>	
+								<td>{{ $value }}</td>
 							@endif
 							@endforeach
 					</tr>
@@ -221,9 +221,9 @@
 							@if($key=='0-50inch')
 								<td>{{ $value }}</td>
 							@elseif($key=='0-75inch')
-								<td>{{ $value }}</td>	
+								<td>{{ $value }}</td>
 							@elseif($key=='1-00inch')
-								<td>{{ $value }}</td>	
+								<td>{{ $value }}</td>
 							@endif
 							@endforeach
 					</tr>
@@ -235,12 +235,12 @@
 							@if($key=='0-50inch')
 								<td>{{ $value }}</td>
 							@elseif($key=='0-75inch')
-								<td>{{ $value }}</td>	
+								<td>{{ $value }}</td>
 							@elseif($key=='1-00inch')
-								<td>{{ $value }}</td>	
+								<td>{{ $value }}</td>
 							@endif
 							@endforeach
-					</tr>	
+					</tr>
 					<tr>
 						<td>
 							100000
@@ -249,21 +249,21 @@
 							@if($key=='0-50inch')
 								<td>{{ $value }}</td>
 							@elseif($key=='0-75inch')
-								<td>{{ $value }}</td>	
+								<td>{{ $value }}</td>
 							@elseif($key=='1-00inch')
-								<td>{{ $value }}</td>	
+								<td>{{ $value }}</td>
 							@endif
 							@endforeach
-					</tr>			
 					</tr>
-			</table>	
+					</tr>
+			</table>
 				</div>
 			</div>
 				<div class="clearfix"></div>
 		</div>
-		<div class="half_sm" style="width: 32%; margin: 5% 0px 1% 5%;"> 
+		<div class="half_sm" style="width: 32%; margin: 5% 0px 1% 5%;">
 			<div class="addl_options">
-				<h4>Message Options</h4> 
+				<h4>Message Options</h4>
 				<p>Back Message<br>
 				Inside Message<br>
 				Multiple Wristband Color <br>
