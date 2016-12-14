@@ -820,13 +820,24 @@ body, a, [input type="radio"] , [input type="checkbox"]{
 }
 
 #coup-box {
-    background: url(img/discount.jpg) no-repeat;
-    height: 400px;
-	width: 100%;
-    padding: 104px 112px;
-	background-size: 100% auto;
+    /* background: url(img/discount.jpg) no-repeat; 
+    height: 400px;*/
+    width: 100%;
+    padding: 22px 112px;
+    background-size: 100% auto;
+	border:1px solid #D3D3D3;
+	border-radius:6px;
+	margin-bottom: 40px;
 }
 
+
+#coup-box input[type="submit"]{
+	background-color: #00A573;
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+}
 
 input.form-control {
   width: auto;
@@ -842,15 +853,15 @@ input.form-control {
 		text-shadow:2px 2px #000;
 	}
 
-	.frame-box{
+.frame-box{
 		/*background-color: rgb(0, 0, 0);
 		 RGBa with 0.6 opacity */
 	   /* background-color: rgba(0, 0, 0, 0.6);
 		border: 1px solid black;
 		/*filter: alpha(opacity=70);*/
-		height:236px;
-		margin-left:-24px
-	}
+	height: 200px;
+    margin-left: -24px;
+}
 		#emf_advertisement{
 			display:none;
 		}
@@ -949,6 +960,8 @@ input.form-control {
 	width:650px;
 	margin:0 auto
 }
+
+
 
 /****
 **
@@ -1207,7 +1220,7 @@ input.form-control {
 		left: -14px!important;
 	}
 	
-	span.start-fc img, span.end-fc  img, span.back-mc img, span.backend-mc img, span.start-cc img, span.end-cc img{
+	span.start-fc img, span.end-fc  img, span.back-mc img, span.backend-mc img, span.start-cc img, span.end-cc, span.fig-fc img{
 		height: 18px!important;
 	}
 
@@ -1239,9 +1252,6 @@ input.form-control {
 		font-size:12px!important;
 	}
 
-	span.fig-fc {
-		left: 146px!important;
-	}
 
 	#preview-pane #front-view, #preview-pane #back-view, #inside-view, #continue-view{
 		font-size:8px!important;
@@ -1323,9 +1333,9 @@ input.form-control {
 		height:50px!Important;
 	}
 	
-	.map-form{
-		width:420px;
-		margin:0 auto
+	.map-form {
+		width: 405px;
+		margin: 0 auto;
 	}
 	
 	
@@ -1347,6 +1357,25 @@ input.form-control {
 		   box-sizing:border-box!important;
 		  
 	  }
+	  
+	 .modal-dialog {
+		position: relative;
+		width: 46%!important;
+	    margin:  10px;
+	}
+	
+	.modal-content{
+		width: 388px!important
+	}
+	
+	.col-xs-offset-4{
+	     margin-left: 0!important; 
+	}
+	
+	.wb-text-preview. span.fig-fc{
+		margin-left:1px;
+	}
+
 }
 
 @media screen and (max-width: 350px){
