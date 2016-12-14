@@ -31,31 +31,14 @@ class AdminController extends Controller
 
     public function uploadPricesWB(Request $request)
     {
-        $scan_result = scandir('uploads/seed');
-        $count = 0;
-        $file = "";
-        foreach($scan_result as $key => $value) {
-            if(!in_array($value, array('.', '..'))) {
-                if($count===0)
-                    $file = $value;
-                $count++;
-            }
-        }
-        var_dump($count);
-        var_dump($value);
-        die;
-        // var_dump(File::exists('uploads/seed/wb_prices.xlsx'));
-        die;
         // First, get files.
         $files = Input::file('files');
         // Check if file exists.
         if($files) {
             // Check if excel file exists.
             if(isset($files[0])) {
-                // Clear folder
-                if(File::exists('uploads/seed')) {
-                    File::cleanDirectory('uploads/seed');
-                }
+                // Clear files with `wb_prices` name in folder path.
+                $this->deletePricesWB($request);
                 // Create image name.
                 $filename = 'wb_prices' . '.' . $files[0]->getClientOriginalExtension();
                 $destinationPath = 'uploads/seed/';
@@ -63,16 +46,40 @@ class AdminController extends Controller
                 $uploadSuccess = $files[0]->move($destinationPath, $filename);
                 // Check if successful.
                 if($uploadSuccess) {
+                    // Process databse seeding.
+                    $this->updatePricesWB($request);
+                    // Success!
                     return json_encode([ 'status' => true ]);
                 }
             }
         }
-        return json_encode([ 'status' => false ]);
+        return json_encode([ 'status' => false ]); // Ugh! Nope! Problem...
+    }
+
+    public function deletePricesWB(Request $request)
+    {
+        // Check if file directory exists.
+        if(File::exists('uploads/seed')) {
+            // Scan directory.
+            $scan_result = scandir('uploads/seed');
+            // Loop through all fetched files.
+            foreach($scan_result as $key => $value) {
+                // Only get files
+                if(!in_array($value, array('.', '..'))) {
+                    // If file's name has `wb_prices`.
+                    if(strpos($value, 'wb_prices') !== false) {
+                        // Delete file.
+                        File::delete('uploads/seed/' . $value);
+                    }
+                }
+            }
+        }
     }
 
     public function updatePricesWB(Request $request)
     {
-        //
+        // $seed = new SeedPrices();
+        // var_dump($seed->updateWrist());
     }
 
     public function uploadPricesAO()
@@ -90,11 +97,11 @@ class AdminController extends Controller
                 $uploadSuccess = $files[0]->move($destinationPath, $filename);
                 // Check if successful.
                 if($uploadSuccess) {
-                    return json_encode([ 'status' => true ]);
+                    return json_encode([ 'status' => true ]); // Success!
                 }
             }
         }
-        return json_encode([ 'status' => false ]);
+        return json_encode([ 'status' => false ]); // Ugh! Nope!
     }
 
     public function manageImages()
