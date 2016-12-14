@@ -122,6 +122,10 @@
                                         @if(isset($items['items']))
                                             <div id="summary-table-wristbands" class="summary-table-group">
                                                 <div class="col-xs-9">
+													@foreach($items['items']['solid'] as $key => $value)
+													<p>Color: <?php echo $value['title']; ?></p>
+													@endforeach
+													<p>Quantity: {{ $items['quantity'] }}</p>
                                                     <i class="fa fa-circle-o-notch"></i>Wristbands ({{ $items['quantity'] }} x ${{ number_format($items['price'], 2) }} each)
                                                 </div>
                                                 <div class="col-xs-3 text-right">
@@ -132,6 +136,10 @@
                                             @if(isset($items['items']['segmented']))
                                             <div id="summary-table-segmented" class="summary-table-group">
                                                 <div class="col-xs-9">
+													@foreach($items['items']['segmented'] as $key => $value)
+													<p>Color: <?php echo $value['title']; ?></p>
+													@endforeach
+													<p>Quantity: {{ $items['quantity'] }}</p>
                                                     <i class="fa fa-life-ring"></i>Segmented Wristbands (<span class="value">{{ $items['items']['segmented']['quantity'] }} x ${{ number_format($items['items']['segmented']['price_addon'], 2) }} each</span>)
                                                 </div>
                                                 <div class="col-xs-3 text-right">
@@ -143,6 +151,10 @@
                                             @if(isset($items['items']['swirl']))
                                             <div id="summary-table-swirl" class="summary-table-group">
                                                 <div class="col-xs-9">
+													@foreach($items['items']['swirl'] as $key => $value)
+													<p>Color: <?php echo $value['title']; ?></p>
+													@endforeach
+													<p>Quantity: {{ $items['quantity'] }}</p>
                                                     <i class="fa fa-life-ring"></i>Swirl Wristbands (<span class="value">{{ $items['items']['swirl']['quantity'] }} x ${{ number_format($items['items']['swirl']['price_addon'], 2) }} each</span>)
                                                 </div>
                                                 <div class="col-xs-3 text-right">
@@ -154,6 +166,10 @@
                                             @if(isset($items['items']['glow']))
                                             <div id="summary-table-glow" class="summary-table-group">
                                                 <div class="col-xs-9">
+													@foreach($items['items']['glow'] as $key => $value)
+													<p>Color: <?php echo $value['title']; ?></p>
+													@endforeach
+													<p>Quantity: {{ $items['quantity'] }}</p>
                                                     <i class="fa fa-life-ring"></i>Glow Wristbands (<span class="value">{{ $items['items']['glow']['quantity'] }} x ${{ number_format($items['items']['glow']['price_addon'], 2) }} each</span>)
                                                 </div>
                                                 <div class="col-xs-3 text-right">
@@ -166,6 +182,7 @@
                                         @if(isset($items['time_production']))
                                         <div id="summary-table-production" class="summary-table-group">
                                             <div class="col-xs-9">
+												<p>Production Time: </p>
                                                 <i class="fa fa-dropbox"></i>Production (<span class="value">{{ $items['time_production']['days'] }} Days</span>)
                                             </div>
                                             <div class="col-xs-3 text-right">
@@ -177,6 +194,7 @@
                                         @if(isset($items['time_shipping']))
                                         <div id="summary-table-shipping" class="summary-table-group">
                                             <div class="col-xs-9">
+												<p>Shipping Time: </p>
                                                 <i class="fa fa-truck"></i>Shipping (<span class="value">{{ $items['time_shipping']['days'] }} Days</span>)
                                             </div>
                                             <div class="col-xs-3 text-right">
@@ -195,6 +213,7 @@
                                         @if(isset($items['texts']['front']))
                                         <div id="text-front" class="summary-table-group">
                                             <div class="col-xs-9 padding-left-25">
+												<p>Front Text: {{ $items['texts']['front']['text']}}</p>
                                                 <i class="fa fa-angle-right"></i>Front ({{ $items['texts']['front']['quantity'] }} x ${{ number_format($items['texts']['front']['price'], 2) }} each)
                                             </div>
                                             <div class="col-xs-3 text-right">
@@ -206,6 +225,7 @@
                                         @if(isset($items['texts']['back']))
                                         <div id="text-back" class="summary-table-group">
                                             <div class="col-xs-9 padding-left-25">
+												<p>Back Text: {{ $items['texts']['back']['text']}}</p>
                                                 <i class="fa fa-angle-right"></i>Back ({{ $items['texts']['back']['quantity'] }} x ${{ number_format($items['texts']['back']['price'], 2) }} each)
                                             </div>
                                             <div class="col-xs-3 text-right">
@@ -214,19 +234,9 @@
                                             <div class="clearfix"></div>
                                         </div>
                                         @endif
-                                        @if(isset($items['texts']['continue']))
-                                        <div id="text-continuous" class="summary-table-group">
-                                            <div class="col-xs-9 padding-left-25">
-                                                <i class="fa fa-angle-right"></i>Continuous ({{ $items['texts']['continue']['quantity'] }} x ${{ number_format($items['texts']['continue']['price'], 2) }} each)
-                                            </div>
-                                            <div class="col-xs-3 text-right">
-                                                ${{ number_format($items['texts']['continue']['total'], 2) }}
-                                            </div>
-                                            <div class="clearfix"></div>
-                                        </div>
-                                        @endif
                                         @if(isset($items['texts']['inside']))
                                         <div id="text-inside" class="summary-table-group">
+											<p>Inside Text: {{ $items['texts']['inside']['text']}}</p>
                                             <div class="col-xs-9 padding-left-25">
                                                 <i class="fa fa-angle-right"></i>Inside ({{ $items['texts']['inside']['quantity'] }} x ${{ number_format($items['texts']['inside']['price'], 2) }} each)
                                             </div>
@@ -236,8 +246,28 @@
                                             <div class="clearfix"></div>
                                         </div>
                                         @endif
+										@if(isset($items['texts']['continue']))
+                                        <div id="text-continuous" class="summary-table-group">
+                                            <div class="col-xs-9 padding-left-25">
+												<p>Continuous Text: {{ $items['texts']['continue']['text']}}</p>
+                                                <i class="fa fa-angle-right"></i>Continuous ({{ $items['texts']['continue']['quantity'] }} x ${{ number_format($items['texts']['continue']['price'], 2) }} each)
+                                            </div>
+                                            <div class="col-xs-3 text-right">
+                                                ${{ number_format($items['texts']['continue']['total'], 2) }}
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+                                        @endif
                                     </div>
                                     @endif
+									@if(isset($items['fonts']))
+										<div id="text-continuous" class="summary-table-group">
+                                            <div class="col-xs-9 padding-left-25">
+												<p>Font-Style: {{ $items['fonts']}}</p> 
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+									@endif
                                     @if(isset($items['clips']))
                                     <div class="row" style="padding-top:10px;">
                                         <div class="col-xs-12" style="padding-bottom:5px;">
@@ -249,6 +279,7 @@
                                                 @if(isset($items['clips']['logo']['front-start']))
                                                 <div id="clipart-front-start" class="summary-table-group">
                                                     <div class="col-xs-9 padding-left-25">
+														<p>Front (Start Clipart): {{ $items['clips']['logo']['front-start']['image']}}</p>
                                                         <i class="fa fa-angle-right"></i>Front (Start) ({{ $items['clips']['logo']['front-start']['quantity'] }} x ${{ number_format($items['clips']['logo']['front-start']['price'], 2) }} each)
                                                     </div>
                                                     <div class="col-xs-3 text-right">
@@ -260,6 +291,7 @@
                                                 @if(isset($items['clips']['logo']['front-end']))
                                                 <div id="clipart-front-end" class="summary-table-group">
                                                     <div class="col-xs-9 padding-left-25">
+														<p>Front (End Clipart): {{ $items['clips']['logo']['front-end']['image']}}</p>
                                                         <i class="fa fa-angle-right"></i>Front (End) ({{ $items['clips']['logo']['front-end']['quantity'] }} x ${{ number_format($items['clips']['logo']['front-end']['price'], 2) }} each)
                                                     </div>
                                                     <div class="col-xs-3 text-right">
@@ -271,6 +303,7 @@
                                                 @if(isset($items['clips']['logo']['back-start']))
                                                 <div id="clipart-back-start" class="summary-table-group">
                                                     <div class="col-xs-9 padding-left-25">
+														<p>Back (Start Clipart): {{ $items['clips']['logo']['back-start']['image']}}</p>
                                                         <i class="fa fa-angle-right"></i>Back (Start) ({{ $items['clips']['logo']['back-start']['quantity'] }} x ${{ number_format($items['clips']['logo']['back-start']['price'], 2) }} each)
                                                     </div>
                                                     <div class="col-xs-3 text-right">
@@ -282,6 +315,7 @@
                                                 @if(isset($items['clips']['logo']['back-end']))
                                                 <div id="clipart-back-end" class="summary-table-group">
                                                     <div class="col-xs-9 padding-left-25">
+														<p>Back (End Clipart): {{ $items['clips']['logo']['back-end']['image']}}</p>
                                                         <i class="fa fa-angle-right"></i>Back (End) ({{ $items['clips']['logo']['back-end']['quantity'] }} x ${{ number_format($items['clips']['logo']['back-end']['price'], 2) }} each)
                                                     </div>
                                                     <div class="col-xs-3 text-right">
@@ -293,6 +327,7 @@
                                                 @if(isset($items['clips']['logo']['cont-start']))
                                                 <div id="clipart-cont-start" class="summary-table-group">
                                                     <div class="col-xs-9 padding-left-25">
+														<p>Continuous (Start Clipart): {{ $items['clips']['logo']['cont-start']['image']}}</p>
                                                         <i class="fa fa-angle-right"></i>Continuous (Start) ({{ $items['clips']['logo']['cont-start']['quantity'] }} x ${{ number_format($items['clips']['logo']['cont-start']['price'], 2) }} each)
                                                     </div>
                                                     <div class="col-xs-3 text-right">
@@ -304,6 +339,7 @@
                                                 @if(isset($items['clips']['logo']['cont-end']))
                                                 <div id="clipart-cont-end" class="summary-table-group">
                                                     <div class="col-xs-9 padding-left-25">
+														<p>Continuous (End Clipart): {{ $items['clips']['logo']['cont-end']['image']}}</p>
                                                         <i class="fa fa-angle-right"></i>Continuous (End) ({{ $items['clips']['logo']['cont-end']['quantity'] }} x ${{ number_format($items['clips']['logo']['cont-end']['price'], 2) }} each)
                                                     </div>
                                                     <div class="col-xs-3 text-right">
@@ -315,6 +351,7 @@
                                                 @if(isset($items['clips']['logo']['front-center']))
                                                 <div id="clipart-front-center" class="summary-table-group">
                                                     <div class="col-xs-9 padding-left-25">
+														<p>Figured (Center Clipart): {{ $items['clips']['logo']['front-center']['image']}}</p>
                                                         <i class="fa fa-angle-right"></i>Center ({{ $items['clips']['logo']['front-center']['quantity'] }} x ${{ number_format($items['clips']['logo']['front-center']['price'], 2) }} each)
                                                     </div>
                                                     <div class="col-xs-3 text-right">
