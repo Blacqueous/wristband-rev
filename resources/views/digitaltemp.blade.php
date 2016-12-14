@@ -122,8 +122,13 @@
                                         @if(isset($items['items']))
                                             <div id="summary-table-wristbands" class="summary-table-group">
                                                 <div class="col-xs-9">
+													
+													<p>Color: 
 													@foreach($items['items']['solid'] as $key => $value)
-													<p>Color: <?php echo $value['title']; ?></p>
+														 @if(isset($value['title']))
+														 {{ $items['items']['solid'][$key]['title'] }}
+														@endif
+													
 													@endforeach
 													<p>Quantity: {{ $items['quantity'] }}</p>
                                                     <i class="fa fa-circle-o-notch"></i>Wristbands ({{ $items['quantity'] }} x ${{ number_format($items['price'], 2) }} each)
@@ -136,9 +141,14 @@
                                             @if(isset($items['items']['segmented']))
                                             <div id="summary-table-segmented" class="summary-table-group">
                                                 <div class="col-xs-9">
+													<p>Color: 
 													@foreach($items['items']['segmented'] as $key => $value)
-													<p>Color: <?php echo $value['title']; ?></p>
+														 @if(isset($value['title']))
+														 {{ $items['items']['segmented'][$key]['title'] }}
+														@endif
+													
 													@endforeach
+													<p>
 													<p>Quantity: {{ $items['quantity'] }}</p>
                                                     <i class="fa fa-life-ring"></i>Segmented Wristbands (<span class="value">{{ $items['items']['segmented']['quantity'] }} x ${{ number_format($items['items']['segmented']['price_addon'], 2) }} each</span>)
                                                 </div>
@@ -151,9 +161,14 @@
                                             @if(isset($items['items']['swirl']))
                                             <div id="summary-table-swirl" class="summary-table-group">
                                                 <div class="col-xs-9">
+													<p>Color: 
 													@foreach($items['items']['swirl'] as $key => $value)
-													<p>Color: <?php echo $value['title']; ?></p>
+														 @if(isset($value['title']))
+														 {{ $items['items']['swirl'][$key]['title'] }}
+														@endif
+													
 													@endforeach
+													<p>
 													<p>Quantity: {{ $items['quantity'] }}</p>
                                                     <i class="fa fa-life-ring"></i>Swirl Wristbands (<span class="value">{{ $items['items']['swirl']['quantity'] }} x ${{ number_format($items['items']['swirl']['price_addon'], 2) }} each</span>)
                                                 </div>
@@ -166,9 +181,14 @@
                                             @if(isset($items['items']['glow']))
                                             <div id="summary-table-glow" class="summary-table-group">
                                                 <div class="col-xs-9">
+													<p>Color: 
 													@foreach($items['items']['glow'] as $key => $value)
-													<p>Color: <?php echo $value['title']; ?></p>
+														 @if(isset($value['title']))
+														 {{ $items['items']['glow'][$key]['title'] }}
+														@endif
+													
 													@endforeach
+													<p>
 													<p>Quantity: {{ $items['quantity'] }}</p>
                                                     <i class="fa fa-life-ring"></i>Glow Wristbands (<span class="value">{{ $items['items']['glow']['quantity'] }} x ${{ number_format($items['items']['glow']['price_addon'], 2) }} each</span>)
                                                 </div>
