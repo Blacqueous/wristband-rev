@@ -62,9 +62,14 @@ return [
             'bucket' => 'your-bucket',
         ],
 
-        'uploads' => [
+        'upload-csv-price-wristband' => [
             'driver' => 'local',
-            'root' => storage_path('/uploads'),
+            'root' => storage_path('/uploads/csv/price/wristband'),
+        ],
+
+        'upload-csv-price-addon' => [
+            'driver' => 'local',
+            'root' => storage_path('/uploads/csv/price/addon'),
         ],
 
     ],

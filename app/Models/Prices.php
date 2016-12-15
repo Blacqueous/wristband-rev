@@ -39,6 +39,20 @@ class Prices extends Model {
                 ->get();
     }
 
+    public function insertPrice($data=null)
+    {
+        // Check if has data.
+        if(!$data) { return false; }
+
+        try{
+            // Exceute insert.
+            DB::table($this->table_wrist)->insert($data);
+            return true;
+        } catch (\Exception $e) {
+            return false;
+        }
+    }
+
 	public function resetJSONPrice()
 	{
         // price array container.

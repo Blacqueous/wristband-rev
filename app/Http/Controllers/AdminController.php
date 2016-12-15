@@ -4,18 +4,27 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use App\Models\AddOns;
+use App\Models\Prices;
+use App\Models\TimeProduction;
+use App\Models\TimeShipping;
+use Excel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
 use Session;
-use File;
+use Storage;
 
 class AdminController extends Controller
 {
+    protected $storagePriceWristband;
+    protected $storagePriceAddon;
 
     public function __construct()
     {
         $this->middleware('admin');
+        $this->storagePriceWristband = Storage::disk('upload-csv-price-wristband');
+        $this->storagePriceAddon = Storage::disk('upload-csv-price-addon');
     }
 
     public function index()
@@ -40,10 +49,9 @@ class AdminController extends Controller
                 // Clear files with `wb_prices` name in folder path.
                 $this->deletePricesWB($request);
                 // Create image name.
-                $filename = 'wb_prices' . '.' . $files[0]->getClientOriginalExtension();
-                $destinationPath = 'uploads/seed/';
+                $filename = 'prices' . '.' . $files[0]->getClientOriginalExtension();
                 // Process image transport.
-                $uploadSuccess = $files[0]->move($destinationPath, $filename);
+                $uploadSuccess = $this->storagePriceWristband->put($filename, $files[0]);
                 // Check if successful.
                 if($uploadSuccess) {
                     // Process databse seeding.
@@ -58,28 +66,67 @@ class AdminController extends Controller
 
     public function deletePricesWB(Request $request)
     {
-        // Check if file directory exists.
-        if(File::exists('uploads/seed')) {
-            // Scan directory.
-            $scan_result = scandir('uploads/seed');
-            // Loop through all fetched files.
-            foreach($scan_result as $key => $value) {
-                // Only get files
-                if(!in_array($value, array('.', '..'))) {
-                    // If file's name has `wb_prices`.
-                    if(strpos($value, 'wb_prices') !== false) {
-                        // Delete file.
-                        File::delete('uploads/seed/' . $value);
-                    }
-                }
+        // Get files
+        $files = $this->storagePriceWristband->allFiles('/');
+        // Check if directory has files.
+        if(count($files) > 0) {
+            // Clear all files in this Storage.
+            $this->storagePriceWristband->delete($files);
+        }
+        // Next are the created directories...
+        // Get directories
+        $dir = $this->storagePriceWristband->allDirectories('/');
+        // Check if has existing directories.
+        if(count($dir) > 0) {
+            // Loop through directories.
+            foreach ($dir as $key => $value) {
+                // Remove directory.
+                $this->storagePriceWristband->deleteDirectory($value);
             }
         }
     }
 
     public function updatePricesWB(Request $request)
     {
-        // $seed = new SeedPrices();
-        // var_dump($seed->updateWrist());
+        // Get files
+        $files = $this->storagePriceWristband->allFiles('/');
+        $csv = [];
+        // Check if has files
+        if(count($files) > 0) {
+            $file = $this->storagePriceWristband->get($files[0]);
+            try {
+                Excel::load($file, function ($reader) {
+                    foreach ($reader->toArray() as $sheet) {
+                        $sheet_rows = [];
+                        foreach ($sheet as $row) {
+                            print_r($sheetKey);
+                            die;
+                            if($row['style'] !== null || $row['size'] !== null ) {
+                                foreach ($row as $key => $value) {
+                                    if(is_int($key)) {
+                                        $sheet_rows[] = [
+                                            'style_id' => $row['style'],
+                                            'size_id' => $row['size'],
+                                            'qty' => $key,
+                                            'price' => $value
+                                        ];
+                                    }
+                                }
+                            }
+                        }
+                        print_r($sheet_rows);
+                        die;
+                    }
+                });
+            } catch (\Exception $e) {
+                return false;
+            }
+        }
+        // if(count($files) > 0) {
+        //     $prices = new Prices();
+        //     return $prices->insertPrice($data);
+        // }
+        // return true;
     }
 
     public function uploadPricesAO()
