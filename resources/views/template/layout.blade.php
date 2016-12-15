@@ -5,9 +5,17 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-		<meta name="description" content="">
-		<meta name="author" content="">
-		<meta name="csrf-token" content="{{ csrf_token() }}">
+		<meta name="description" content="Customize now and get 200 free Promotional Wristband, call us on (toll free) 1-800-989-0440.Promotional Wristband is the leading supplier of silicone wristband and Silicone bracelets worldwide. Our rubber wristband are made from 100% silicone and very high quality">
+		<meta name="keywords" content="silicone bracelets, rubber bracelets, wristbands, silicone wristband, rubber wristbands, rubber band bracelets, custom wristbands, custom silicone bracelets, silicone bands, custom rubber bracelets, custom silicone wristbands, wrist bands, customized wristbands, cheap silicone wristbands, events wristbands, awareness wristbands, personalized wristbands, custom wristbands, wholesale wristbands, cause wristbands, fundraising, 1 inch wristbands, 1 inch bracelets, 1 inch rubber bracelets "><meta name="robots" content="NOODP, NOYDIR"/>
+		<meta name="robots" content="all, index, follow"/>
+		<meta name="googlebot" content="index, follow, archive"/>
+		<meta name="Slurp" content="index, follow, archive"/>
+		<meta name="web_author" content="editorial staff of GetWristband"/>
+		<meta name="rating" content="General"/>
+		<meta name="geo.region" content="US-NJ"/>
+		<meta name="geo.placename" content="Elizabeth"/>
+		<meta name="geo.position" content="40.663857;-74.223181"/>
+		<meta name="ICBM" content="40.663857, -74.223181"/>
 		<link rel="icon" href="{{ URL::asset('../../favicon.ico') }}">
 
 		<title>Custom Silicone Wristbands | Promotional Wristbands @yield('title')</title>
