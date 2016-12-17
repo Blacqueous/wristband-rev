@@ -11,7 +11,6 @@ use App\Models\Styles;
 use App\Models\TimeProduction;
 use App\Models\TimeShipping;
 use Excel;
-use File;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
@@ -93,8 +92,8 @@ class AdminController extends Controller
 
     public function reprocessPricesWB(Request $request)
     {
-        $status = $this->updatePricesWBData($request);
-        // return json_encode([ 'status' => false ]);
+        // $status = $this->updatePricesWBData($request);
+        return json_encode([ 'status' => $status ]);
     }
 
     public function deletePricesWB(Request $request)
@@ -122,23 +121,13 @@ class AdminController extends Controller
     public function updatePricesWBData(Request $request)
     {
         // Get files
-        $files = $this->storagePriceWristband->allFiles();
+        $files = $this->storagePriceWristband->allFiles('/');
         $csv = [];
-
         // Check if has files
-        // if(count($files) > 0) {
+        if(count($files) > 0) {
             $file = $this->storagePriceWristband->get($files[0]);
-            // $a = File::get($file);
-            $media = array(
-                // 'name' => $file->getClientOriginalName(),
-                // 'location' => $dest,
-                // 'mime' => $file->getMimeType(),
-                'size' => $file->getSize()
-            );
-var_dump($media);
-die;
-            // try {
-                \Excel::load($file, function ($reader) {
+            try {
+                Excel::load($file, function ($reader) {
                     $csv = [];
                     $sizes = Sizes::getArrayByCode();
                     $styles = Styles::getArrayByCode();
@@ -164,11 +153,10 @@ die;
                         return true;
                     }
                 });
-                echo "lol";
-        //     } catch (\Exception $e) {
-        //         return false;
-        //     }
-        // }
+            } catch (\Exception $e) {
+                return false;
+            }
+        }
         return false;
     }
 
