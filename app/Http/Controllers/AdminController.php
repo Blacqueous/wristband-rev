@@ -6,9 +6,12 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Models\AddOns;
 use App\Models\Prices;
+use App\Models\Sizes;
+use App\Models\Styles;
 use App\Models\TimeProduction;
 use App\Models\TimeShipping;
 use Excel;
+use File;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
@@ -38,7 +41,7 @@ class AdminController extends Controller
         return view('admin.manage_prices');
     }
 
-    public function uploadPricesWB(Request $request)
+    public function updatePricesWB(Request $request)
     {
         // First, get files.
         $files = Input::file('files');
@@ -55,13 +58,43 @@ class AdminController extends Controller
                 // Check if successful.
                 if($uploadSuccess) {
                     // Process databse seeding.
-                    $this->updatePricesWB($request);
+                    $this->updatePricesWBData($request);
                     // Success!
                     return json_encode([ 'status' => true ]);
                 }
             }
         }
         return json_encode([ 'status' => false ]); // Ugh! Nope! Problem...
+    }
+
+    public function reuploadPricesWB(Request $request)
+    {
+        // First, get files.
+        $files = Input::file('files');
+        // Check if file exists.
+        if($files) {
+            // Check if excel file exists.
+            if(isset($files[0])) {
+                // Clear files with `wb_prices` name in folder path.
+                $this->deletePricesWB($request);
+                // Create image name.
+                $filename = 'prices' . '.' . $files[0]->getClientOriginalExtension();
+                // Process image transport.
+                $uploadSuccess = $this->storagePriceWristband->put($filename, $files[0]);
+                // Check if successful.
+                if($uploadSuccess) {
+                    // Success!
+                    return json_encode([ 'status' => true ]);
+                }
+            }
+        }
+        return json_encode([ 'status' => false ]); // Ugh! Nope! Problem...
+    }
+
+    public function reprocessPricesWB(Request $request)
+    {
+        $status = $this->updatePricesWBData($request);
+        // return json_encode([ 'status' => false ]);
     }
 
     public function deletePricesWB(Request $request)
@@ -86,27 +119,37 @@ class AdminController extends Controller
         }
     }
 
-    public function updatePricesWB(Request $request)
+    public function updatePricesWBData(Request $request)
     {
         // Get files
-        $files = $this->storagePriceWristband->allFiles('/');
+        $files = $this->storagePriceWristband->allFiles();
         $csv = [];
+
         // Check if has files
-        if(count($files) > 0) {
+        // if(count($files) > 0) {
             $file = $this->storagePriceWristband->get($files[0]);
-            try {
-                Excel::load($file, function ($reader) {
+            // $a = File::get($file);
+            $media = array(
+                // 'name' => $file->getClientOriginalName(),
+                // 'location' => $dest,
+                // 'mime' => $file->getMimeType(),
+                'size' => $file->getSize()
+            );
+var_dump($media);
+die;
+            // try {
+                \Excel::load($file, function ($reader) {
+                    $csv = [];
+                    $sizes = Sizes::getArrayByCode();
+                    $styles = Styles::getArrayByCode();
                     foreach ($reader->toArray() as $sheet) {
-                        $sheet_rows = [];
-                        foreach ($sheet as $row) {
-                            print_r($sheetKey);
-                            die;
+                        foreach ($sheet as $rowKey => $row) {
                             if($row['style'] !== null || $row['size'] !== null ) {
                                 foreach ($row as $key => $value) {
                                     if(is_int($key)) {
-                                        $sheet_rows[] = [
-                                            'style_id' => $row['style'],
-                                            'size_id' => $row['size'],
+                                        $csv[] = [
+                                            'style_id' => $styles[$row['style']],
+                                            'size_id' => $sizes[$row['size']],
                                             'qty' => $key,
                                             'price' => $value
                                         ];
@@ -114,19 +157,19 @@ class AdminController extends Controller
                                 }
                             }
                         }
-                        print_r($sheet_rows);
-                        die;
+                    }
+                    if(count($csv) > 0) {
+                        Prices::truncatePrice();
+                        Prices::insertPrice($csv);
+                        return true;
                     }
                 });
-            } catch (\Exception $e) {
-                return false;
-            }
-        }
-        // if(count($files) > 0) {
-        //     $prices = new Prices();
-        //     return $prices->insertPrice($data);
+                echo "lol";
+        //     } catch (\Exception $e) {
+        //         return false;
+        //     }
         // }
-        // return true;
+        return false;
     }
 
     public function uploadPricesAO()

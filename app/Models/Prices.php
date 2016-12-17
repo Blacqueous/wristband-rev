@@ -39,18 +39,25 @@ class Prices extends Model {
                 ->get();
     }
 
-    public function insertPrice($data=null)
+    public static function insertPrice($data=null)
     {
         // Check if has data.
         if(!$data) { return false; }
 
         try{
             // Exceute insert.
-            DB::table($this->table_wrist)->insert($data);
+            $_this = new self;
+            DB::table($_this->table_wrist)->insert($data);
             return true;
         } catch (\Exception $e) {
             return false;
         }
+    }
+
+    public static function truncatePrice()
+    {
+        $_this = new self;
+        DB::table($_this->table_wrist)->truncate();
     }
 
 	public function resetJSONPrice()
@@ -87,7 +94,6 @@ class Prices extends Model {
 		// return data from .json file.
 		return json_decode(Storage::get('json/wristband/prices_size.json'), true);
 	}
-
 
 	public function getJSONPrice()
 	{
@@ -126,6 +132,26 @@ class Prices extends Model {
                 ->select(DB::raw('add_ons.code AS `code`, price_add_ons.qty AS `qty`, price_add_ons.price AS `price`'))
                 ->join('add_ons', 'price_add_ons.add_on_id', '=', 'add_ons.id')
                 ->get();
+    }
+
+    public function insertAddOn($data=null)
+    {
+        // Check if has data.
+        if(!$data) { return false; }
+
+        try{
+            // Exceute insert.
+            DB::table($this->table_addon)->insert($data);
+            return true;
+        } catch (\Exception $e) {
+            return false;
+        }
+    }
+
+    public static function truncateAddOn()
+    {
+        $_this = new self;
+        DB::table($_this->table_addon)->truncate();
     }
 
 	public function resetJSONAddOn()

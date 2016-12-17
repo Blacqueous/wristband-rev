@@ -137,8 +137,9 @@ Route::group(['middleware' => 'admin'], function () {
     Route::get('/admin', 'AdminController@index');
     // Admin pages
     Route::get('/admin/prices', 'AdminController@managePrices');
-    Route::post('/admin/prices/uploadWB', 'AdminController@uploadPricesWB');
     Route::post('/admin/prices/updateWB', 'AdminController@updatePricesWB');
+    Route::post('/admin/prices/reuploadWB', 'AdminController@reuploadPricesWB');
+    Route::post('/admin/prices/reprocessWB', 'AdminController@reprocessPricesWB');
     Route::post('/admin/prices/uploadAO', 'AdminController@uploadPricesAO');
     Route::post('/admin/prices/updateAO', 'AdminController@updatePricesAO');
     Route::get('/admin/images', 'AdminController@manageImages');
