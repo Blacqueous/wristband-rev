@@ -138,10 +138,13 @@ Route::group(['middleware' => 'admin'], function () {
     // Admin pages
     Route::get('/admin/prices', 'AdminController@managePrices');
     Route::post('/admin/prices/updateWB', 'AdminController@updatePricesWB');
+    Route::get('/admin/prices/downloadWB', 'AdminController@downloadPricesWB');
     Route::post('/admin/prices/reuploadWB', 'AdminController@reuploadPricesWB');
     Route::post('/admin/prices/reprocessWB', 'AdminController@reprocessPricesWB');
-    Route::post('/admin/prices/uploadAO', 'AdminController@uploadPricesAO');
     Route::post('/admin/prices/updateAO', 'AdminController@updatePricesAO');
+    Route::get('/admin/prices/downloadAO', 'AdminController@downloadPricesAO');
+    Route::post('/admin/prices/reuploadAO', 'AdminController@reuploadPricesAO');
+    Route::post('/admin/prices/reprocessAO', 'AdminController@reprocessPricesAO');
     Route::get('/admin/images', 'AdminController@manageImages');
     Route::get('/admin/reset', 'AdminController@resetJSON');
 });

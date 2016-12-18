@@ -400,6 +400,7 @@
 
 		<script src="{{ URL::asset('js/jquery-3.1.1.min.js') }}"></script>
 		<script src="{{ URL::asset('global/bootstrap/js/bootstrap.min.js') }}"></script>
+		<script src="{{ URL::asset('global/bootstrap-confirmation/bootstrap-confirmation.min.js') }}"></script>
 
 		<!-- Toastr Notification plugin -->
 		<script src="{{ URL::asset('global/toastr/build/toastr.min.js') }}"></script>

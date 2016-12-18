@@ -16,6 +16,7 @@
 		<meta name="geo.placename" content="Elizabeth"/>
 		<meta name="geo.position" content="40.663857;-74.223181"/>
 		<meta name="ICBM" content="40.663857, -74.223181"/>
+		<meta name="csrf-token" content="{{ csrf_token() }}">
 		<link rel="icon" href="{{ URL::asset('../../favicon.ico') }}">
 
 		<title>Custom Silicone Wristbands | Promotional Wristbands @yield('title')</title>
