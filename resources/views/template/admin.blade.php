@@ -69,7 +69,7 @@
 		}
 
 		#sidebar-wrapper::-webkit-scrollbar {
-		  display: none;
+			display: none;
 		}
 
 		#wrapper.toggled #sidebar-wrapper {
@@ -122,32 +122,31 @@
 
 		}
 		.sidebar-nav li:first-child a {
-		    color: #fff;
-		    background-color: #1a1a1a;
+		    background-color: rgba(0, 0, 0, 0.2);
 		}
-		.sidebar-nav li:nth-child(2):before {
-		    background-color: #009688;
+		.sidebar-nav li:nth-child(2):before, .sidebar-nav li:nth-child(2).active {
+		    background-color: #1abc9c;
 		}
-		.sidebar-nav li:nth-child(3):before {
-		    background-color: #2196F3;
+		.sidebar-nav li:nth-child(3):before, .sidebar-nav li:nth-child(3).active {
+			background-color: #3498db;
 		}
-		.sidebar-nav li:nth-child(4):before {
-		    background-color: #314190;
+		.sidebar-nav li:nth-child(4):before, .sidebar-nav li:nth-child(4).active {
+			background-color: #9b59b6;
 		}
-		.sidebar-nav li:nth-child(5):before {
-		    background-color: #279636;
+		.sidebar-nav li:nth-child(5):before, .sidebar-nav li:nth-child(5).active {
+			background-color: #e67e22;
 		}
-		.sidebar-nav li:nth-child(6):before {
-		    background-color: #7d5d81;
+		.sidebar-nav li:nth-child(6):before, .sidebar-nav li:nth-child(6).active {
+			background-color: #1abc9c;
 		}
-		.sidebar-nav li:nth-child(7):before {
-		    background-color: #ead24c;
+		.sidebar-nav li:nth-child(7):before, .sidebar-nav li:nth-child(7).active {
+			background-color: #3498db;
 		}
-		.sidebar-nav li:nth-child(8):before {
-		    background-color: #2d2366;
+		.sidebar-nav li:nth-child(8):before, .sidebar-nav li:nth-child(8).active {
+			background-color: #9b59b6;
 		}
-		.sidebar-nav li:nth-child(9):before {
-		    background-color: #35acdf;
+		.sidebar-nav li:nth-child(9):before, .sidebar-nav li:nth-child(9).active {
+			background-color: #e67e22;
 		}
 		.sidebar-nav li:hover:before,
 		.sidebar-nav li.open:hover:before {
@@ -161,7 +160,7 @@
 
 		.sidebar-nav li a {
 		    display: block;
-		    color: #ddd;
+		    color: #fff;
 		    text-decoration: none;
 		    padding: 10px 15px 10px 30px;
 		}
@@ -178,7 +177,7 @@
 		}
 
 		.sidebar-nav > .sidebar-brand {
-		    height: 65px;
+		    min-height: 60px;
 		    font-size: 20px;
 		    line-height: 44px;
 		}
@@ -355,19 +354,20 @@
 							Wristband Admin
 						</a>
 					</li>
-					<li>
+					<li @if($type == 1) class="active" @endif>
 						<a href="{{ URL::to('/admin/prices') }}">
 							<i class="fa fa-money"></i> Manage Prices
 						</a>
 					</li>
-					<li>
+					<li @if($type == 2) class="active" @endif>
 						<a href="{{ URL::to('/admin/images') }}">
 							<i class="fa fa-file-image-o"></i> Manage Images
 						</a>
 					</li>
-					<li class="nav-reset">
+					<li @if($type == 3) class="active" @endif>
+					<!-- <li class="nav-reset"> -->
 						<a href="{{ URL::to('/admin/reset') }}">
-							<i class="fa fa-refresh"></i> Reset JSON
+							<i class="fa fa-retweet"></i> Reset JSON
 						</a>
 					</li>
 					<li class="nav-logout">
@@ -400,6 +400,7 @@
 
 		<script src="{{ URL::asset('js/jquery-3.1.1.min.js') }}"></script>
 		<script src="{{ URL::asset('global/bootstrap/js/bootstrap.min.js') }}"></script>
+		<script src="{{ URL::asset('global/bootstrap-confirmation/bootstrap-confirmation.min.js') }}"></script>
 
 		<!-- Toastr Notification plugin -->
 		<script src="{{ URL::asset('global/toastr/build/toastr.min.js') }}"></script>
