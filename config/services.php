@@ -35,4 +35,15 @@ return [
         'secret' => env('STRIPE_SECRET'),
     ],
 
+    'filepath' => [
+        'prices' => [
+            'wristband' => [
+                'path' => 'uploads/prices/wristband/',
+            ],
+            'addon' => [
+                'path' => 'uploads/prices/addon/',
+            ]
+        ],
+    ],
+
 ];

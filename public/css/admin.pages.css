@@ -1,0 +1,94 @@
+h1 {
+    text-shadow: 1px 1px 0 #ffffff, 3px 3px 0 rgba(0,0,0,0.1);
+}
+.btn-danger {
+    background-color: #f44336;
+    border-color: #da2e21;
+    text-shadow: 0.5px 0.5px 0 #f44336, 1.5px 1.5px 0 rgba(0,0,0,0.15);
+}
+.btn-danger:hover {
+    background-color: #da2e21;
+    border-color: #c11c0f;
+    text-shadow: 0.5px 0.5px 0 #da2e21, 1.5px 1.5px 0 rgba(0,0,0,0.15);
+}
+.btn-default {
+    text-shadow: 0.5px 0.5px 0 #ffffff, 1.5px 1.5px 0 rgba(0,0,0,0.15);
+}
+.btn-default:hover {
+    text-shadow: 0.5px 0.5px 0 #e6e6e6, 1.5px 1.5px 0 rgba(0,0,0,0.15);
+}
+.btn-info {
+    text-shadow: 0.5px 0.5px 0 #5bc0de, 1.5px 1.5px 0 rgba(0,0,0,0.15);
+}
+.btn-info:hover {
+    text-shadow: 0.5px 0.5px 0 #31b0d5, 1.5px 1.5px 0 rgba(0,0,0,0.15);
+}
+.btn-primary {
+    text-shadow: 0.5px 0.5px 0 #337ab7, 1.5px 1.5px 0 rgba(0,0,0,0.15);
+}
+.btn-primary:hover {
+    text-shadow: 0.5px 0.5px 0 #286090, 1.5px 1.5px 0 rgba(0,0,0,0.15);
+}
+.btn-warning {
+    background-color: #ffc107;
+    border-color: #e6ae04;
+    text-shadow: 0.5px 0.5px 0 #ffc107, 1.5px 1.5px 0 rgba(0,0,0,0.15);
+}
+.btn-warning:hover {
+    background-color: #e6ae04;
+    border-color: #ec971f;
+    text-shadow: 0.5px 0.5px 0 #e6ae04, 1.5px 1.5px 0 rgba(0,0,0,0.15);
+}
+.btn-blue {
+    color: #fff;
+    background-color: #2196f3;
+    border-color: #1689e4;
+    text-shadow: 0.5px 0.5px 0 #2196F3, 1.5px 1.5px 0 rgba(0,0,0,0.15);
+}
+.btn-blue:hover {
+    color: #fff;
+    background-color: #1689e4;
+    border-color: #0d73c3;
+    text-shadow: 0.5px 0.5px 0 #1689e4, 1.5px 1.5px 0 rgba(0,0,0,0.15);
+}
+.btn-teal {
+    color: #fff;
+    background-color: #00bcd4;
+    border-color: #03a6bb;
+    text-shadow: 0.5px 0.5px 0 #00bcd4, 1.5px 1.5px 0 rgba(0,0,0,0.15);
+}
+.btn-teal:hover {
+    color: #fff;
+    background-color: #01a2b7;
+    border-color: #0A8898;
+    text-shadow: 0.5px 0.5px 0 #01a2b7, 1.5px 1.5px 0 rgba(0,0,0,0.15);
+}
+.btn-purple {
+    color: #fff;
+    background-color: #ff2f76;
+    border-color: #e91E63;
+    text-shadow: 0.5px 0.5px 0 #ff2f76, 1.5px 1.5px 0 rgba(0,0,0,0.15);
+}
+.btn-purple:hover {
+    color: #fff;
+    background-color: #e91e63;
+    border-color: #ca0447;
+    text-shadow: 0.5px 0.5px 0 #e91e63, 1.5px 1.5px 0 rgba(0,0,0,0.15);
+}
+.btn-file {
+    position: relative;
+    overflow: hidden;
+}
+.btn-file input[type=file] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 100%;
+    min-height: 100%;
+    filter: alpha(opacity=0);
+    opacity: 0;
+    outline: none;
+    background: white;
+    cursor: inherit;
+    display: block;
+}

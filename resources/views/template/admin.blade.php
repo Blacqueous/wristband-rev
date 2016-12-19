@@ -354,17 +354,17 @@
 							Wristband Admin
 						</a>
 					</li>
-					<li @if($type == 1) class="active" @endif>
+					<li @if($menu == 1) class="active" @endif>
 						<a href="{{ URL::to('/admin/prices') }}">
 							<i class="fa fa-money"></i> Manage Prices
 						</a>
 					</li>
-					<li @if($type == 2) class="active" @endif>
+					<li @if($menu == 2) class="active" @endif>
 						<a href="{{ URL::to('/admin/images') }}">
 							<i class="fa fa-file-image-o"></i> Manage Images
 						</a>
 					</li>
-					<li @if($type == 3) class="active" @endif>
+					<li @if($menu == 3) class="active" @endif>
 					<!-- <li class="nav-reset"> -->
 						<a href="{{ URL::to('/admin/reset') }}">
 							<i class="fa fa-retweet"></i> Reset JSON
@@ -387,7 +387,7 @@
 				</button>
 				<div class="container">
 					<div class="row">
-						<div class="col-lg-8 col-lg-offset-2">
+						<div class="col-lg-8 col-lg-offset-2 text-center">
 							@section('content')
 							@show
 						</div>

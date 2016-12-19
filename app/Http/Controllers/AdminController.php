@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Models\AddOns;
@@ -10,6 +11,14 @@ use App\Models\Sizes;
 use App\Models\Styles;
 use App\Models\TimeProduction;
 use App\Models\TimeShipping;
+use App\Wristbands\Classes\ClipartList;
+use App\Wristbands\Classes\Colors;
+use App\Wristbands\Classes\ColorsList;
+use App\Wristbands\Classes\FontList;
+use App\Wristbands\Classes\Styles as jsonStyles;
+use App\Wristbands\Classes\Sizes as jsonSizes;
+use App\Wristbands\Classes\SizeChart;
+use App\Wristbands\Classes\ProductGallery;
 use Excel;
 use File;
 use Illuminate\Http\Request;
@@ -21,9 +30,15 @@ use Storage;
 
 class AdminController extends Controller
 {
+
+    protected $pathWB;
+    protected $pathAO;
+
     public function __construct()
     {
         $this->middleware('admin');
+        $this->pathWB = App::make('config')->get('services.filepath.prices.wristband.path');
+        $this->pathAO = App::make('config')->get('services.filepath.prices.addon.path');
     }
 
     public function index()
@@ -36,6 +51,18 @@ class AdminController extends Controller
         return view('admin.manage_prices');
     }
 
+    public function manageImages()
+    {
+        return view('admin.manage_images');
+    }
+
+    public function resetJSON()
+    {
+        return view('admin.manage_reset_json');
+    }
+
+    // Wristband Prices --------------------------------------------------------
+
     public function updatePricesWB(Request $request)
     {
         // First, get files.
@@ -45,16 +72,15 @@ class AdminController extends Controller
             // Check if excel file exists.
             if(isset($files[0])) {
                 // Clear folder
-                if(File::exists('uploads/prices/wristband')) {
-                    File::cleanDirectory('uploads/prices/wristband');
+                if(File::exists($this->pathWB)) {
+                    File::cleanDirectory($this->pathWB);
                 }
                 // Clean directory first.
                 $this->deletePricesWB($request);
                 // Create image name.
                 $filename = 'price' . '.' . $files[0]->getClientOriginalExtension();
-                $destinationPath = 'uploads/prices/wristband/';
                 // Process image transport.
-                $uploadSuccess = $files[0]->move($destinationPath, $filename);
+                $uploadSuccess = $files[0]->move($this->pathWB, $filename);
                 // Check if successful.
                 if($uploadSuccess) {
                     // Process database seeding.
@@ -100,9 +126,8 @@ class AdminController extends Controller
                 $this->deletePricesWB($request);
                 // Create image name.
                 $filename = 'price' . '.' . $files[0]->getClientOriginalExtension();
-                $destinationPath = 'uploads/prices/wristband/';
                 // Process image transport.
-                $uploadSuccess = $files[0]->move($destinationPath, $filename);
+                $uploadSuccess = $files[0]->move($this->pathWB, $filename);
                 // Check if successful.
                 if($uploadSuccess) {
                     // Upload successful.
@@ -124,9 +149,9 @@ class AdminController extends Controller
     public function deletePricesWB(Request $request)
     {
         // Check if folder exists.
-        if(File::exists('uploads/prices/wristband')) {
+        if(File::exists($this->pathWB)) {
             // Clean the folder.
-            File::cleanDirectory('uploads/prices/wristband');
+            File::cleanDirectory($this->pathWB);
         }
     }
 
@@ -136,18 +161,18 @@ class AdminController extends Controller
         $files = [];
         // Get files
         do{
-            $files = File::allFiles('uploads/prices/wristband/');
+            $files = File::allFiles($this->pathWB);
             $count++;
         } while ($count < 50 && count($files) < 0);
-
-        $csv = [];
         // Check if has files
         if(count($files) > 0) {
-            // $file = File::get($files[0]->getPathname());
             try {
                 Excel::load($files[0]->getPathname(), function ($reader) {
+                    // Create array to contain new price data.
                     $csv = [];
+                    // Get available  sizes.
                     $sizes = Sizes::getArrayByCode();
+                    // Get available styles.
                     $styles = Styles::getArrayByCode();
                     foreach ($reader->toArray() as $sheet) {
                         if(!isset($sheet['style_code']) || !isset($sheet['size_code'])) {
@@ -193,7 +218,9 @@ class AdminController extends Controller
         return false;
     }
 
-    public function uploadPricesAO()
+    // Addon Prices ------------------------------------------------------------
+
+    public function updatePricesAO(Request $request)
     {
         // First, get files.
         $files = Input::file('files');
@@ -201,35 +228,186 @@ class AdminController extends Controller
         if($files) {
             // Check if excel file exists.
             if(isset($files[0])) {
+                // Clear folder
+                if(File::exists($this->pathAO)) {
+                    File::cleanDirectory($this->pathAO);
+                }
+                // Clean directory first.
+                $this->deletePricesAO($request);
                 // Create image name.
-                $filename = 'ao_prices' . '.' . $files[0]->getClientOriginalExtension();
-                $destinationPath = 'uploads/seed/';
+                $filename = 'price' . '.' . $files[0]->getClientOriginalExtension();
                 // Process image transport.
-                $uploadSuccess = $files[0]->move($destinationPath, $filename);
+                $uploadSuccess = $files[0]->move($this->pathAO, $filename);
                 // Check if successful.
                 if($uploadSuccess) {
-                    return json_encode([ 'status' => true ]); // Success!
+                    // Process database seeding.
+                    $update_status = $this->updatePricesAOData($request);
+                    // Release upload status.
+                    return json_encode([ 'status' => $update_status ]);
                 }
             }
         }
         return json_encode([ 'status' => false ]); // Ugh! Nope!
     }
 
-    public function downloadPricesAO()
+    public function downloadPricesAO(Request $request)
     {
-        echo "lol";
-        die;
-        // return "lol";
+        switch ($request->ext) {
+            case 'csv': // Return .csv format file
+                return Response::download('format/prices/addon.csv', 'price_addons.csv');
+                break;
+
+            case 'xls': // Return .xls format file
+                return Response::download('format/prices/addon.xls', 'price_addons.xls');
+                break;
+
+            case 'xlsxx': // Return .xlsx format file
+                return Response::download('format/prices/addon.xlsx', 'price_addons.xlsx');
+                break;
+
+            default: // Return .csv as default format file
+                return Response::download('format/prices/addon.csv', 'price_addons.csv');
+                break;
+        }
     }
 
-    public function manageImages()
+    public function reuploadPricesAO(Request $request)
     {
-        return view('admin.dashboard');
+        // First, get files.
+        $files = Input::file('files');
+        // Check if file exists.
+        if($files) {
+            // Check if excel file exists.
+            if(isset($files[0])) {
+                // Clean directory first.
+                $this->deletePricesAO($request);
+                // Create image name.
+                $filename = 'price' . '.' . $files[0]->getClientOriginalExtension();
+                // Process image transport.
+                $uploadSuccess = $files[0]->move($this->pathAO, $filename);
+                // Check if successful.
+                if($uploadSuccess) {
+                    // Upload successful.
+                    return json_encode([ 'status' => true ]);
+                }
+            }
+        }
+        return json_encode([ 'status' => false ]);// Ugh! Nope! Problem...
     }
 
-    public function resetJSON()
+    public function reprocessPricesAO(Request $request)
     {
-        return view('admin.dashboard');
+        // Reprocess database seeding.
+        $update_status = $this->updatePricesAOData($request);
+        // Release upload status.
+        return json_encode([ 'status' => $update_status ]);
+    }
+
+    public function deletePricesAO(Request $request)
+    {
+        // Check if folder exists.
+        if(File::exists($this->pathAO)) {
+            // Clean the folder.
+            File::cleanDirectory($this->pathAO);
+        }
+    }
+
+    public function updatePricesAOData(Request $request)
+    {
+        $count = 0;
+        $files = [];
+        // Get files
+        do{
+            $files = File::allFiles($this->pathAO);
+            $count++;
+        } while ($count < 50 && count($files) < 0);
+        // Check if has files
+        if(count($files) > 0) {
+            try {
+                Excel::load($files[0]->getPathname(), function ($reader) {
+                    // Create array to contain new price data.
+                    $csv = [];
+                    // Get available addons.
+                    $add_ons = AddOns::getArrayByCode();
+                    foreach ($reader->toArray() as $sheet) {
+                        if(!isset($sheet['code'])) {
+                            foreach ($sheet as $rowKey => $row) {
+                                if($row['style_code'] !== null || $row['size_code'] !== null ) {
+                                    foreach ($row as $key => $value) {
+                                        if(is_int($key)) {
+                                            $csv[] = [
+                                                'add_on_id' => $add_ons[$row['code']],
+                                                'qty' => $key,
+                                                'price' => $value
+                                            ];
+                                        }
+                                    }
+                                }
+                            }
+                        } else {
+                            if($sheet['code'] !== null) {
+                                foreach ($sheet as $key => $value) {
+                                    if(is_int($key)) {
+                                        $csv[] = [
+                                            'add_on_id' => $add_ons[$sheet['code']],
+                                            'qty' => $key,
+                                            'price' => $value
+                                        ];
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    if(count($csv) > 0) {
+                        Prices::truncateAddOn();
+                        Prices::insertAddOn($csv);
+                    }
+                });
+            } catch (\Exception $e) {
+                return false;
+            }
+            return true;
+        }
+        return false;
+    }
+
+    public function processResetJSON(Request $request)
+    {
+        try {
+
+    		$price = new Prices();
+            $price->resetAll();
+
+            $sizes = new jsonSizes();
+            $sizes->reset();
+
+    		$styles = new jsonStyles();
+            $styles->reset();
+
+            $list_clipart = new ClipartList();
+            $list_clipart->reset();
+
+    		$colors = new Colors();
+            $colors->reset();
+
+    		$list_color = new ColorsList();
+            $list_color->reset();
+
+    		$list_font = new FontList();
+            $list_font->reset();
+
+            $gallery = new ProductGallery();
+            $gallery->reset();
+
+            $sizechart = new SizeChart();
+            $sizechart->reset();
+
+            return json_encode([ 'status' => true ]); // Success!
+        } catch(\Exception $ex) {
+            // Hah! Something went wrong!
+            return json_encode([ 'status' => false ]);
+        }
+        return json_encode([ 'status' => false ]); // Ugh! Nope!
     }
 
 }

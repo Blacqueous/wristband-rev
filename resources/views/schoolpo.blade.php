@@ -287,7 +287,7 @@
 									<h5 style="margin-top:0px;">Front Start Clipart</h5>
 									<div class="btn-group col-xs-12">
 										<button type="button" class="btn btn-order clipartin col-xs-6" ref-code="none" ref-target="#clipart-front-start"><i class="fa fa-folder-open"></i> Browse</button>
-										<button type="button" class="btn btn-order btn-file clipartup col-xs-6"><i class="fa fa-upload"></i> Upload<input id="clipartup_front_start" class="clipart-fileupload" type="file" accept="image/*" ref-target="#clipart-front-start"></button>
+										<label type="button" class="btn btn-order btn-file clipartup col-xs-6"><i class="fa fa-upload"></i> Upload<input id="clipartup_front_start" class="clipart-fileupload" type="file" accept="image/*" ref-target="#clipart-front-start"></label>
 									</div>
 									<a href="javascript:void(0)" id="rm_clip_front_start" class="text-danger clipart-remove" ref-target="#clipart-front-start">Remove</a>
 								</div>
@@ -296,7 +296,7 @@
 									<h5 style="margin-top:0px;">Front End Clipart</h5>
 									<div class="btn-group col-xs-12">
 										<button type="button" class="btn btn-order clipartin col-xs-6" ref-code="none" ref-target="#clipart-front-end"><i class="fa fa-folder-open"></i> Browse</button>
-										<button type="button" class="btn btn-order btn-file clipartup col-xs-6"><i class="fa fa-upload"></i> Upload<input id="clipartup_front_end" class="clipart-fileupload" type="file" accept="image/*" ref-target="#clipart-front-end"></button>
+										<label type="button" class="btn btn-order btn-file clipartup col-xs-6"><i class="fa fa-upload"></i> Upload<input id="clipartup_front_end" class="clipart-fileupload" type="file" accept="image/*" ref-target="#clipart-front-end"></label>
 									</div>
 									<a href="javascript:void(0)" id="rm_clip_front_end" class="text-danger clipart-remove" ref-target="#clipart-front-end">Remove</a>
 								</div>
@@ -315,7 +315,7 @@
 									<h5 style="margin-top:0px;">Back Start Clipart</h5>
 									<div class="btn-group col-xs-12">
 										<button type="button" class="btn btn-order clipartin col-xs-6" ref-code="none" ref-target="#clipart-back-start"><i class="fa fa-folder-open"></i> Browse</button>
-										<button type="button" class="btn btn-order btn-file clipartup col-xs-6"><i class="fa fa-upload"></i> Upload<input id="clipartup_back_start" class="clipart-fileupload" type="file" accept="image/*" ref-target="#clipart-back-start"></button>
+										<label type="button" class="btn btn-order btn-file clipartup col-xs-6"><i class="fa fa-upload"></i> Upload<input id="clipartup_back_start" class="clipart-fileupload" type="file" accept="image/*" ref-target="#clipart-back-start"></label>
 									</div>
 									<a href="javascript:void(0)" id="rm_clip_back_start" class="text-danger clipart-remove" ref-target="#clipart-back-start">Remove</a>
 								</div>
@@ -324,7 +324,7 @@
 									<h5 style="margin-top:0px;">Back End Clipart</h5>
 									<div class="btn-group col-xs-12">
 										<button type="button" class="btn btn-order clipartin col-xs-6" ref-code="none" ref-target="#clipart-back-end"><i class="fa fa-folder-open"></i> Browse</button>
-										<button type="button" class="btn btn-order btn-file clipartup col-xs-6"><i class="fa fa-upload"></i> Upload<input id="clipartup_back_end" class="clipart-fileupload" type="file" accept="image/*" ref-target="#clipart-back-end"></button>
+										<label type="button" class="btn btn-order btn-file clipartup col-xs-6"><i class="fa fa-upload"></i> Upload<input id="clipartup_back_end" class="clipart-fileupload" type="file" accept="image/*" ref-target="#clipart-back-end"></label>
 									</div>
 									<a href="javascript:void(0)" id="rm_clip_back_end" class="text-danger clipart-remove" ref-target="#clipart-back-end">Remove</a>
 								</div>
@@ -335,7 +335,7 @@
 								<h5 style="margin-top:0px;">Figured Center Clipart</h5>
 								<div class="btn-group col-xs-12">
 									<button type="button" class="btn btn-order clipartin col-xs-6" ref-code="none" ref-target="#clipart-front-center"><i class="fa fa-folder-open"></i> Browse</button>
-									<button type="button" class="btn btn-order btn-file clipartup col-xs-6"><i class="fa fa-upload"></i> Upload<input id="clipartup_front_center" class="clipart-fileupload" type="file" accept="image/*" ref-target="#clipart-front-center"></button>
+									<label type="button" class="btn btn-order btn-file clipartup col-xs-6"><i class="fa fa-upload"></i> Upload<input id="clipartup_front_center" class="clipart-fileupload" type="file" accept="image/*" ref-target="#clipart-front-center"></label>
 								</div>
 								<a href="javascript:void(0)" id="rm_clip_front_center" class="text-danger clipart-remove" ref-target="#clipart-front-center">Remove</a>
 							</div>
@@ -356,7 +356,7 @@
 								<h5 style="margin-top:0px;">Start Clipart</h5>
 								<div class="btn-group col-xs-12">
 									<button type="button" class="btn btn-order clipartin col-xs-6" ref-code="none" ref-target="#clipart-cont-start"><i class="fa fa-folder-open"></i> Browse</button>
-									<button type="button" class="btn btn-order btn-file clipartup col-xs-6"><i class="fa fa-upload"></i> Upload<input id="clipartup_cont_start" class="clipart-fileupload" type="file" accept="image/*" ref-target="#clipart-cont-start"></button>
+									<label type="button" class="btn btn-order btn-file clipartup col-xs-6"><i class="fa fa-upload"></i> Upload<input id="clipartup_cont_start" class="clipart-fileupload" type="file" accept="image/*" ref-target="#clipart-cont-start"></label>
 								</div>
 								<a href="javascript:void(0)" id="rm_clip_cont_start" class="text-danger clipart-remove" ref-target="#clipart-cont-start">Remove</a>
 							</div>
@@ -366,7 +366,7 @@
 								<h5 style="margin-top:0px;">End Clipart</h5>
 								<div class="btn-group col-xs-12">
 									<button type="button" class="btn btn-order clipartin col-xs-6" ref-code="none" ref-target="#clipart-cont-end"><i class="fa fa-folder-open"></i> Browse</button>
-									<button type="button" class="btn btn-order btn-file clipartup col-xs-6"><i class="fa fa-upload"></i> Upload<input id="clipartup_cont_end" class="clipart-fileupload" type="file" accept="image/*" ref-target="#clipart-cont-end"></button>
+									<label type="button" class="btn btn-order btn-file clipartup col-xs-6"><i class="fa fa-upload"></i> Upload<input id="clipartup_cont_end" class="clipart-fileupload" type="file" accept="image/*" ref-target="#clipart-cont-end"></label>
 								</div>
 								<a href="javascript:void(0)" id="rm_clip_cont_end" class="text-danger clipart-remove" ref-target="#clipart-cont-end">Remove</a>
 							</div>

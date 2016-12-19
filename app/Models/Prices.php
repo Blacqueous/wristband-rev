@@ -17,6 +17,7 @@ class Prices extends Model {
     {
         $this->resetJSONPrice();
         $this->resetJSONAddOn();
+        $this->resetJSONPrices();
     }
 
     // Wristband Prices
@@ -73,6 +74,21 @@ class Prices extends Model {
 		}
 		// generate and save .json file.
 		Storage::put('json/wristband/prices.json', json_encode($prices));
+	}
+
+	public function resetJSONPrices()
+	{
+        // price array container.
+        $prices = [];
+        // get results.
+        $priceList = $this->getPriceCodeAndName();
+        if($priceList) {
+            foreach($priceList as $key => $value) {
+                $prices[strtolower($value->style_code)][$value->qty][$value->size_code] = $value->price;
+            }
+        }
+        // generate and save .json file.
+        Storage::put('json/wristband/prices_size.json', json_encode($prices));
 	}
 
 	public function getJSONPrices()
@@ -134,14 +150,15 @@ class Prices extends Model {
                 ->get();
     }
 
-    public function insertAddOn($data=null)
+    public static function insertAddOn($data=null)
     {
         // Check if has data.
         if(!$data) { return false; }
 
         try{
             // Exceute insert.
-            DB::table($this->table_addon)->insert($data);
+            $_this = new self;
+            DB::table($_this->table_addon)->insert($data);
             return true;
         } catch (\Exception $e) {
             return false;

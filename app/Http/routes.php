@@ -147,4 +147,5 @@ Route::group(['middleware' => 'admin'], function () {
     Route::post('/admin/prices/reprocessAO', 'AdminController@reprocessPricesAO');
     Route::get('/admin/images', 'AdminController@manageImages');
     Route::get('/admin/reset', 'AdminController@resetJSON');
+    Route::post('/admin/reset', 'AdminController@processResetJSON');
 });

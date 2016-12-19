@@ -1,5 +1,5 @@
 
-@extends('template.admin', ['type' => 1])
+@extends('template.admin', ['type' => 1, 'menu' => 1])
 
 @section('title', 'Dashboard')
 
