@@ -12,11 +12,15 @@
 */
 
 Route::get('/', function () {
-    return view('homepage');
+   return redirect()->to('/custom-wristband')->with('message', Lang::get('...'));
 });
 
 Route::get('/about', function () {
     return view('about');
+});
+
+Route::get('/custom-wristband', function () {
+    return view('homepage');
 });
 
 Route::get('/privacy', function () {
