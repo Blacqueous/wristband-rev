@@ -28,10 +28,8 @@ class UploadController extends Controller
                 // Create image name.
                 $filename = $request->name . '.' . $files[0]->getClientOriginalExtension();
                 // Set destination path by date for easier cleanup.
-                $y = date('Y');
-                $m = date('m');
-                $d = date('d');
-                $destinationPath = 'uploads/temp/'.$y.'/'.$m.'/'.$d.'/'.Session::getId();
+                $temp_folder_date = date('Ymd');
+                $destinationPath = 'uploads/temp/' . $temp_folder_date . '/' . Session::getId();
                 // Process image transport.
                 $uploadSuccess = $files[0]->move($destinationPath, $filename);
                 // Check if successful.
@@ -55,10 +53,8 @@ class UploadController extends Controller
                 // Create image name.
                 $filename = $request->name . '.' . $files[0]->getClientOriginalExtension();
                 // Set destination path by date for easier cleanup.
-                $y = date('Y');
-                $m = date('m');
-                $d = date('d');
-                $destinationPath = 'uploads/temp/'.$y.'/'.$m.'/'.$d.'/'.$request->index;
+                $temp_folder_date = date('Ymd');
+                $destinationPath = 'uploads/temp/' . $temp_folder_date . '/' . Session::getId();
                 // Process image transport.
                 $uploadSuccess = $files[0]->move($destinationPath, $filename);
                 // Check if successful.

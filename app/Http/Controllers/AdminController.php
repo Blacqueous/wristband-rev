@@ -33,12 +33,17 @@ class AdminController extends Controller
 
     protected $pathWB;
     protected $pathAO;
+    protected $pathImageTemp;
+    protected $pathImageOrder;
 
     public function __construct()
     {
         $this->middleware('admin');
+
         $this->pathWB = App::make('config')->get('services.filepath.prices.wristband.path');
         $this->pathAO = App::make('config')->get('services.filepath.prices.addon.path');
+        $this->pathImageTemp = App::make('config')->get('services.filepath.images.temp.path');
+        $this->pathImageOrder = App::make('config')->get('services.filepath.images.order.path');
     }
 
     public function index()
@@ -53,12 +58,37 @@ class AdminController extends Controller
 
     public function manageImages()
     {
-        return view('admin.manage_images');
+        $size = 0;
+        $data = [
+            'size' => 0
+        ];
+        foreach(File::allFiles($this->pathImageTemp) as $key => $value) {
+            if(!strpos($value, date('Ymd'))) {
+                $size += File::size($value->getPathName());
+            }
+        }
+        $data['size'] = $this->formatBytes($size);
+
+        return view('admin.manage_images', $data);
+    }
+
+    public function formatBytes($bytes, $precision = 2) {
+        $units = array('B', 'KB', 'MB', 'GB', 'TB');
+
+        $bytes = max($bytes, 0);
+        $pow = floor(($bytes ? log($bytes) : 0) / log(1024));
+        $pow = min($pow, count($units) - 1);
+
+        // Uncomment one of the following alternatives
+        $bytes /= pow(1024, $pow);
+        // $bytes /= (1 << (10 * $pow));
+
+        return round($bytes, $precision) . ' ' . $units[$pow];
     }
 
     public function resetJSON()
     {
-        return view('admin.manage_reset_json');
+        return view('admin.manage_reset_cache');
     }
 
     // Wristband Prices --------------------------------------------------------
@@ -71,10 +101,6 @@ class AdminController extends Controller
         if($files) {
             // Check if excel file exists.
             if(isset($files[0])) {
-                // Clear folder
-                if(File::exists($this->pathWB)) {
-                    File::cleanDirectory($this->pathWB);
-                }
                 // Clean directory first.
                 $this->deletePricesWB($request);
                 // Create image name.
@@ -228,10 +254,6 @@ class AdminController extends Controller
         if($files) {
             // Check if excel file exists.
             if(isset($files[0])) {
-                // Clear folder
-                if(File::exists($this->pathAO)) {
-                    File::cleanDirectory($this->pathAO);
-                }
                 // Clean directory first.
                 $this->deletePricesAO($request);
                 // Create image name.
@@ -408,6 +430,27 @@ class AdminController extends Controller
             return json_encode([ 'status' => false ]);
         }
         return json_encode([ 'status' => false ]); // Ugh! Nope!
+    }
+
+    public function clearTempImages(Request $request)
+    {
+        try {
+            // Check if folder exists.
+            if(File::exists($this->pathImageTemp)) {
+                // Clean the folder.
+                $dirs = File::directories($this->pathImageTemp);
+                foreach($dirs as $key => $value) {
+                    if($value != $this->pathImageTemp . '\\' .  date('Ymd')) {
+                        File::deleteDirectory($value);
+                    }
+                }
+                return json_encode([ 'status' => true ]); // Success!
+            }
+        } catch(\Exception $ex) {
+            // Hah! Something went wrong!
+            return json_encode([ 'status' => false ]);
+        }
+        return json_encode([ 'status' => false ]); // WRONG!!!
     }
 
 }

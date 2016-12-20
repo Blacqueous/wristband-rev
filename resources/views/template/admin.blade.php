@@ -367,7 +367,7 @@
 					<li @if($menu == 3) class="active" @endif>
 					<!-- <li class="nav-reset"> -->
 						<a href="{{ URL::to('/admin/reset') }}">
-							<i class="fa fa-retweet"></i> Reset JSON
+							<i class="fa fa-retweet"></i> Reset Cache
 						</a>
 					</li>
 					<li class="nav-logout">

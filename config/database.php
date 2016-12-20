@@ -58,7 +58,7 @@ return [
             'port' => '3306',
             'database' => 'wristband',
             'username' => 'root',
-            'password' => 'mysql',
+            'password' => 'root',
             'charset' => 'utf8',
             'collation' => 'utf8_unicode_ci',
             'prefix' => '',

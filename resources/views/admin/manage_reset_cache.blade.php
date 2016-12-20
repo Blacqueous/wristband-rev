@@ -69,8 +69,7 @@
 @endsection
 
 @section('content')
-    <h1>Reset JSON Cache</h1>
+    <h1>Reset Cache</h1>
     <br/>
-    <!-- <button id="resetJSON" type="button" class="btn btn-danger btn-lg"><i class="fa fa-trash-o"></i> Process Reset</button> -->
     <a id="resetJSON" href="javascript:;" class="btn btn-danger" data-toggle="confirmation" data-placement="bottom" data-trigger="hover"><i class="fa fa-rotate-left"></i> Process Reset</a>
 @endsection

@@ -13,10 +13,12 @@ use App\Wristbands\Classes\ColorsList;
 use App\Wristbands\Classes\FontList;
 use App\Wristbands\Classes\Styles;
 use App\Wristbands\Classes\Sizes;
+use File;
 use Illuminate\Http\Request;
 use Mail;
 use Session;
 use Storage;
+use URL;
 
 class CartController extends Controller
 {
@@ -143,8 +145,36 @@ class CartController extends Controller
 
 		$cart_list = Session::get('_cart');
 
+		foreach ($cart_list as $key => $list) {
+			if(isset($list['clips'])) {
+				if(isset($list['clips']['logo'])) {
+					foreach ($list['clips']['logo'] as $logoName => $logo) {
+						$temp_path = $logo['image'];
+
+		                $temp_folder_date = date('Ymd');
+		                $dest_path = 'uploads/order/images/' . $temp_folder_date . '/' . $key;
+
+						if(!File::exists($dest_path)) {
+							File::makeDirectory($dest_path, $mode = 0777, true, true);
+						}
+
+						$file_path = substr($temp_path, strpos($temp_path, 'uploads/temp/'));
+
+		                // Process image transport.
+						$ext = File::extension($file_path);
+						$name = File::name($file_path);
+						$filename = $name . '.' . $ext;
+
+						File::copy($file_path, $dest_path.'/'.$filename);
+
+						$cart_list[$key]['clips']['logo'][$logoName]['image'] = URL::asset('').$dest_path.'/'.$filename;
+					}
+				}
+			}
+		}
+
 		// Set for success page.
-		Session::flash('order_items', Session::get('_cart'));
+		Session::flash('order_items', $cart_list);
 		Session::flash('order_status', 'success');
 		// Forget cart items.
 		Session::forget('_cart');

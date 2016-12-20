@@ -44,6 +44,14 @@ return [
                 'path' => 'uploads/prices/addon/',
             ]
         ],
+        'images' => [
+            'temp' => [
+                'path' => 'uploads/temp/',
+            ],
+            'order' => [
+                'path' => 'uploads/temp/images/',
+            ]
+        ],
     ],
 
 ];
