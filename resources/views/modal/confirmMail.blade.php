@@ -35,7 +35,7 @@
             <div class="modal-footer">
                 <div class="confirm-footer-buttons">
                     <button type="button" class="btn btn-default modal-close" data-dismiss="modal">CANCEL</button>
-                    <button type='submit' class="btn btn-submit" id="submitCnfEmail">CONTINUE</button>
+					<button type='submit' class="btn btn-submit" id="submitCnfEmail">SUBMIT</button>
                 </div>
                 <div class="confirm-footer-loader" style="color:#325277;display:none;font-size:20px;padding:16px 22px;text-transform:uppercase;">
                     <span>SUBMITTING...</span>

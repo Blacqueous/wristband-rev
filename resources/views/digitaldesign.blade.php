@@ -757,7 +757,7 @@
 						</div>
 					</div>
 					<div class="col-xs-12" style="padding-top:30px;">
-						<button id="submitQuote" class="btn btn-submit pull-right" type="button">Send Quote</button>
+						<button id="submitQuote" class="btn btn-submit pull-right" type="button">Get Design</button>
 					</div>
 					<div class="clearfix"></div>
 				</div>
@@ -798,7 +798,7 @@
 						<div class="modal-footer">
 							<div class="confirm-footer-buttons">
 								<button type="button" class="btn btn-default modal-close" data-dismiss="modal">CANCEL</button>
-								<button type='submit' class="btn btn-submit" id="submitCnfEmailDigital">CONTINUE</button>
+								<button type='submit' class="btn btn-submit" id="submitCnfEmailDigital">SUBMIT</button>
 							</div>
 							<div class="confirm-footer-loader" style="color:#325277;display:none;font-size:20px;padding:16px 22px;text-transform:uppercase;">
 								<span>SUBMITTING...</span>
