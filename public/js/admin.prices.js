@@ -267,4 +267,40 @@ $(document).ready(function(e) {
         rootSelector: '[data-toggle=confirmation]',
     });
 
+    // -------------------------------------------------------------
+
+    $('[data-toggle=confirmation-min]').confirmation({
+        title: 'Download Format',
+        content: 'Choose a file extension:',
+        onConfirm: function() {
+            // alert('You choosed ' + extension);
+            window.location.href = $(this).attr('href') + '?ext=' + extension;
+        },
+        onCancel: function() { },
+        buttons: [
+            {
+                class: 'btn btn-default',
+                label: '.xls',
+                onClick: function() {
+                    extension = 'xls';
+                }
+            },
+            {
+                class: 'btn btn-default',
+                label: '.xlsx',
+                onClick: function() {
+                    extension = 'xlsxx';
+                }
+            },
+            {
+                class: 'btn btn-danger',
+                icon: 'glyphicon glyphicon-remove',
+                cancel: true
+            }
+        ],
+        popout: true,
+        singleton: true,
+        rootSelector: '[data-toggle=confirmation-min]',
+    });
+
 });

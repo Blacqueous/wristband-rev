@@ -34,15 +34,22 @@
     <button id="reprocessPriceAO" type="button" class="btn btn-teal"><i class="fa fa-retweet"></i> Reprocess</button>
     <a id="downloadPriceAO" href="{{ URL::to('admin/prices/downloadAO') }}" class="btn btn-default" data-toggle="confirmation" data-placement="top" data-trigger="hover"><i class="fa fa-download"></i> Download Format</a>
     <br/><br/>
-    <h3 style="width:auto;">Shipping Prices</h3>
-    <label class="btn btn-teal btn-file"><i class="fa fa-gears"></i> Upload & Process<input id="uploadPriceSP" type="file" class="btn" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"></label>
-    <label class="btn btn-teal btn-file"><i class="fa fa-star"></i> Reupload<input id="reuploadPriceSP" type="file" class="btn" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"></label>
-    <button id="reprocessPriceSP" type="button" class="btn btn-teal"><i class="fa fa-retweet"></i> Reprocess</button>
-    <a id="downloadPriceSP" href="{{ URL::to('admin/prices/downloadSP') }}" class="btn btn-default" data-toggle="confirmation" data-placement="top" data-trigger="hover"><i class="fa fa-download"></i> Download Format</a>
+    <h3 style="width:auto;">Shipping Prices (Domestic)</h3>
+    <label class="btn btn-teal btn-file"><i class="fa fa-gears"></i> Upload & Process<input id="uploadPriceSPD" type="file" class="btn" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"></label>
+    <label class="btn btn-teal btn-file"><i class="fa fa-star"></i> Reupload<input id="reuploadPriceSPD" type="file" class="btn" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"></label>
+    <button id="reprocessPriceSPD" type="button" class="btn btn-teal"><i class="fa fa-retweet"></i> Reprocess</button>
+    <a id="downloadPriceSPD" href="{{ URL::to('admin/prices/downloadSPD') }}" class="btn btn-default" data-toggle="confirmation-min" data-placement="top" data-trigger="hover"><i class="fa fa-download"></i> Download Format</a>
+    <br/><br/>
+    <h3 style="width:auto;">Shipping Prices (International)</h3>
+    <label class="btn btn-teal btn-file"><i class="fa fa-gears"></i> Upload & Process<input id="uploadPriceSPI" type="file" class="btn" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"></label>
+    <label class="btn btn-teal btn-file"><i class="fa fa-star"></i> Reupload<input id="reuploadPriceSPI" type="file" class="btn" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"></label>
+    <button id="reprocessPriceSPI" type="button" class="btn btn-teal"><i class="fa fa-retweet"></i> Reprocess</button>
+    <a id="downloadPriceSPI" href="{{ URL::to('admin/prices/downloadSPI') }}" class="btn btn-default" data-toggle="confirmation-min" data-placement="top" data-trigger="hover"><i class="fa fa-download"></i> Download Format</a>
     <br/><br/>
     <h3 style="width:auto;">Production Prices</h3>
     <label class="btn btn-teal btn-file"><i class="fa fa-gears"></i> Upload & Process<input id="uploadPricePD" type="file" class="btn" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"></label>
     <label class="btn btn-teal btn-file"><i class="fa fa-star"></i> Reupload<input id="reuploadPricePD" type="file" class="btn" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"></label>
     <button id="reprocessPricePD" type="button" class="btn btn-teal"><i class="fa fa-retweet"></i> Reprocess</button>
-    <a id="downloadPricePD" href="{{ URL::to('admin/prices/downloadPD') }}" class="btn btn-default" data-toggle="confirmation" data-placement="top" data-trigger="hover"><i class="fa fa-download"></i> Download Format</a>
+    <a id="downloadPricePD" href="{{ URL::to('admin/prices/downloadPD') }}" class="btn btn-default" data-toggle="confirmation-min" data-placement="top" data-trigger="hover"><i class="fa fa-download"></i> Download Format</a>
+    <br /><br /><br /><br /><br />
 @endsection

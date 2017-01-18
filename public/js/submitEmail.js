@@ -2938,7 +2938,11 @@ function loadTotal(loadProdShip)
                 // List all shipping price/day data
                 if(typeof data.shipping != "undefined") {
                     $.each(data.shipping, function(key, value) {
-                        htmlShip += "<option value='" + value.days + "' data-price='" + value.price + "'>Standard Shipping - " + value.days + " Days (+ $" + (value.price).formatMoney() + ")</option>";
+                        if(!value.type) {
+                            htmlShip += "<option value='" + value.days + "' data-price='" + value.price + "'>Standard Shipping - " + value.days + " Days (+ $" + (value.price).formatMoney() + ")</option>";
+                        } else {
+                            htmlShip += "<option value='" + value.days + "' data-price='" + value.price + "'>International Shipping - " + value.days + " Days (+ $" + (value.price).formatMoney() + ")</option>";
+                        }
                     });
                 }
                 $("#ShippingTime").html(htmlShip);

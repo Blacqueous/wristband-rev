@@ -26,7 +26,7 @@ class TimeShipping extends Model {
             return false;
 
         // get and return query.
-        return DB::select( DB::raw("SELECT `pd`.`qty` AS qty, `pd`.`price` AS price, `pd`.`days` AS days
+        return DB::select( DB::raw("SELECT `pd`.`qty` AS qty, `pd`.`price` AS price, `pd`.`days` AS days, `pd`.`type` AS type
                                     FROM $this->table AS `pd`
                                     JOIN wristband_style AS `wst` ON `wst`.id = `pd`.style_id
                                     JOIN wristband_size AS `wsz` ON `wsz`.id = `pd`.size_id
