@@ -33,6 +33,9 @@ class AdminController extends Controller
 
     protected $pathWB;
     protected $pathAO;
+    protected $pathSPD;
+    protected $pathSPI;
+    protected $pathPD;
     protected $pathImageTemp;
     protected $pathImageOrder;
 
@@ -42,6 +45,9 @@ class AdminController extends Controller
 
         $this->pathWB = App::make('config')->get('services.filepath.prices.wristband.path');
         $this->pathAO = App::make('config')->get('services.filepath.prices.addon.path');
+        $this->pathSPD = App::make('config')->get('services.filepath.prices.shipping_domestic.path');
+        $this->pathSPI = App::make('config')->get('services.filepath.prices.shipping_international.path');
+        $this->pathPD = App::make('config')->get('services.filepath.prices.production.path');
         $this->pathImageTemp = App::make('config')->get('services.filepath.images.temp.path');
         $this->pathImageOrder = App::make('config')->get('services.filepath.images.order.path');
     }
@@ -72,7 +78,8 @@ class AdminController extends Controller
         return view('admin.manage_images', $data);
     }
 
-    public function formatBytes($bytes, $precision = 2) {
+    public function formatBytes($bytes, $precision = 2)
+    {
         $units = array('B', 'KB', 'MB', 'GB', 'TB');
 
         $bytes = max($bytes, 0);
@@ -89,6 +96,66 @@ class AdminController extends Controller
     public function resetJSON()
     {
         return view('admin.manage_reset_cache');
+    }
+
+    public function processResetJSON(Request $request)
+    {
+        try {
+
+    		$price = new Prices();
+            $price->resetAll();
+
+            $sizes = new jsonSizes();
+            $sizes->reset();
+
+    		$styles = new jsonStyles();
+            $styles->reset();
+
+            $list_clipart = new ClipartList();
+            $list_clipart->reset();
+
+    		$colors = new Colors();
+            $colors->reset();
+
+    		$list_color = new ColorsList();
+            $list_color->reset();
+
+    		$list_font = new FontList();
+            $list_font->reset();
+
+            $gallery = new ProductGallery();
+            $gallery->reset();
+
+            $sizechart = new SizeChart();
+            $sizechart->reset();
+
+            return json_encode([ 'status' => true ]); // Success!
+        } catch(\Exception $ex) {
+            // Hah! Something went wrong!
+            return json_encode([ 'status' => false ]);
+        }
+        return json_encode([ 'status' => false ]); // Ugh! Nope!
+    }
+
+    public function clearTempImages(Request $request)
+    {
+        try {
+            // Check if folder exists.
+            if(File::exists($this->pathImageTemp)) {
+                // Clean the folder.
+                $dirs = File::directories($this->pathImageTemp);
+                foreach($dirs as $key => $value) {
+                    if($value != $this->pathImageTemp . '\\' .  date('Ymd')) {
+                        File::deleteDirectory($value);
+                    }
+                }
+                return json_encode([ 'status' => true ]); // Success!
+            }
+        } catch(\Exception $ex) {
+            // Hah! Something went wrong!
+            return json_encode([ 'status' => false ]);
+        }
+        return json_encode([ 'status' => false ]); // WRONG!!!
     }
 
     // Wristband Prices --------------------------------------------------------
@@ -393,64 +460,149 @@ class AdminController extends Controller
         return false;
     }
 
-    public function processResetJSON(Request $request)
+    // Shipping Prices ---------------------------------------------------------
+
+    public function updatePricesSPD(Request $request)
     {
-        try {
-
-    		$price = new Prices();
-            $price->resetAll();
-
-            $sizes = new jsonSizes();
-            $sizes->reset();
-
-    		$styles = new jsonStyles();
-            $styles->reset();
-
-            $list_clipart = new ClipartList();
-            $list_clipart->reset();
-
-    		$colors = new Colors();
-            $colors->reset();
-
-    		$list_color = new ColorsList();
-            $list_color->reset();
-
-    		$list_font = new FontList();
-            $list_font->reset();
-
-            $gallery = new ProductGallery();
-            $gallery->reset();
-
-            $sizechart = new SizeChart();
-            $sizechart->reset();
-
-            return json_encode([ 'status' => true ]); // Success!
-        } catch(\Exception $ex) {
-            // Hah! Something went wrong!
-            return json_encode([ 'status' => false ]);
+        // First, get files.
+        $files = Input::file('files');
+        // Check if file exists.
+        if($files) {
+            // Check if excel file exists.
+            if(isset($files[0])) {
+                // Clean directory first.
+                $this->deletePricesSPD($request);
+                // Create image name.
+                $filename = 'price' . '.' . $files[0]->getClientOriginalExtension();
+                // Process image transport.
+                $uploadSuccess = $files[0]->move($this->pathSPD, $filename);
+                // Check if successful.
+                if($uploadSuccess) {
+                    // Process database seeding.
+                    $update_status = $this->updatePricesSPDData($request);
+                    // Release upload status.
+                    return json_encode([ 'status' => $update_status ]);
+                }
+            }
         }
         return json_encode([ 'status' => false ]); // Ugh! Nope!
     }
 
-    public function clearTempImages(Request $request)
+    public function downloadPricesSPD(Request $request)
     {
-        try {
-            // Check if folder exists.
-            if(File::exists($this->pathImageTemp)) {
-                // Clean the folder.
-                $dirs = File::directories($this->pathImageTemp);
-                foreach($dirs as $key => $value) {
-                    if($value != $this->pathImageTemp . '\\' .  date('Ymd')) {
-                        File::deleteDirectory($value);
-                    }
-                }
-                return json_encode([ 'status' => true ]); // Success!
-            }
-        } catch(\Exception $ex) {
-            // Hah! Something went wrong!
-            return json_encode([ 'status' => false ]);
+        switch ($request->ext) {
+            case 'xls': // Return .xls format file
+                return Response::download('format/prices/price_shipping_domestic.xls', 'price_shipping_domestic.xls');
+                break;
+
+            case 'xlsxx': // Return .xlsx format file
+                return Response::download('format/prices/price_shipping_domestic.xlsx', 'price_shipping_domestic.xlsx');
+                break;
+
+            default: // Return .csv as default format file
+                return Response::download('format/prices/price_shipping_domestic.csv', 'price_shipping_domestic.xls');
+                break;
         }
-        return json_encode([ 'status' => false ]); // WRONG!!!
+    }
+
+    public function reuploadPricesSPD(Request $request)
+    {
+        // First, get files.
+        $files = Input::file('files');
+        // Check if file exists.
+        if($files) {
+            // Check if excel file exists.
+            if(isset($files[0])) {
+                // Clean directory first.
+                $this->deletePricesSPD($request);
+                // Create image name.
+                $filename = 'price' . '.' . $files[0]->getClientOriginalExtension();
+                // Process image transport.
+                $uploadSuccess = $files[0]->move($this->pathSPD, $filename);
+                // Check if successful.
+                if($uploadSuccess) {
+                    // Upload successful.
+                    return json_encode([ 'status' => true ]);
+                }
+            }
+        }
+        return json_encode([ 'status' => false ]);// Ugh! Nope! Problem...
+    }
+
+    public function reprocessPricesSPD(Request $request)
+    {
+        // Reprocess database seeding.
+        $update_status = $this->updatePricesSPDData($request);
+        // Release upload status.
+        return json_encode([ 'status' => $update_status ]);
+    }
+
+    public function deletePricesSPD(Request $request)
+    {
+        // Check if folder exists.
+        if(File::exists($this->pathSPD)) {
+            // Clean the folder.
+            File::cleanDirectory($this->pathSPD);
+        }
+    }
+
+    public function updatePricesSPDData(Request $request)
+    {
+        $count = 0;
+        $files = [];
+        // Get files
+        do{
+            $files = File::allFiles($this->pathSPD);
+            $count++;
+        } while ($count < 50 && count($files) < 0);
+        // Check if has files
+        if(count($files) > 0) {
+            try {
+                Excel::load($files[0]->getPathname(), function ($reader) {
+                    // Create array to contain new price data.
+                    $csv = [];
+                    // Get available  sizes.
+                    $sizes = Sizes::getArrayByCode();
+                    // Get available styles.
+                    $styles = Styles::getArrayByCode();
+                    foreach ($reader->toArray() as $sheet) {
+                        foreach ($sheet as $rowKey => $row) {
+                            if($row['style_code'] !== null || $row['size_code'] !== null ) {
+                                foreach ($row as $key => $value) {
+                                    if($this->contains('_days', $key)) {
+                                        if(is_int($value) || is_float($value)) {
+                                            $csv[] = [
+                                                'style_id' => $styles[$row['style_code']],
+                                                'size_id' => $sizes[$row['size_code']],
+                                                'qty' => $row['quantity'],
+                                                'price' => $value,
+                                                'days' => str_replace('_days', '', $key),
+                                                'type' => 0,
+                                            ];
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    if(count($csv) > 0) {
+                        TimeShipping::truncateShipping();
+                        TimeShipping::insertShipping($csv);
+                    }
+                });
+            } catch (\Exception $e) {
+                return false;
+            }
+            return true;
+        }
+        return false;
+    }
+
+    // Miscellaneous -----------------------------------------------------------
+
+    public function contains($needle, $haystack)
+    {
+        return strpos($haystack, $needle) !== false;
     }
 
 }

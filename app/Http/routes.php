@@ -141,18 +141,27 @@ Route::group(['middleware' => 'admin'], function () {
     Route::get('/admin', 'AdminController@index');
     // Admin pages
     Route::get('/admin/prices', 'AdminController@managePrices');
+    Route::get('/admin/images', 'AdminController@manageImages');
+    Route::post('/admin/images/clear', 'AdminController@clearTempImages');
+    Route::get('/admin/reset', 'AdminController@resetJSON');
+    Route::post('/admin/reset', 'AdminController@processResetJSON');
+    //
     Route::post('/admin/prices/uploadWB', 'AdminController@uploadPricesWB');
     Route::post('/admin/prices/updateWB', 'AdminController@updatePricesWB');
 	Route::get('/admin/prices/downloadWB', 'AdminController@downloadPricesWB');
     Route::post('/admin/prices/reuploadWB', 'AdminController@reuploadPricesWB');
     Route::post('/admin/prices/reprocessWB', 'AdminController@reprocessPricesWB');
+    //
     Route::post('/admin/prices/uploadAO', 'AdminController@uploadPricesAO');
     Route::post('/admin/prices/updateAO', 'AdminController@updatePricesAO');
 	Route::get('/admin/prices/downloadAO', 'AdminController@downloadPricesAO');
     Route::post('/admin/prices/reuploadAO', 'AdminController@reuploadPricesAO');
     Route::post('/admin/prices/reprocessAO', 'AdminController@reprocessPricesAO');
-    Route::get('/admin/images', 'AdminController@manageImages');
-    Route::post('/admin/images/clear', 'AdminController@clearTempImages');
-    Route::get('/admin/reset', 'AdminController@resetJSON');
-    Route::post('/admin/reset', 'AdminController@processResetJSON');
+    //
+    Route::post('/admin/prices/uploadSPD', 'AdminController@uploadPricesSPD');
+    Route::post('/admin/prices/updateSPD', 'AdminController@updatePricesSPD');
+	Route::get('/admin/prices/downloadSPD', 'AdminController@downloadPricesSPD');
+    Route::post('/admin/prices/reuploadSPD', 'AdminController@reuploadPricesSPD');
+    Route::post('/admin/prices/reprocessSPD', 'AdminController@reprocessPricesSPD');
+
 });

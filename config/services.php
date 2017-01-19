@@ -42,6 +42,15 @@ return [
             ],
             'addon' => [
                 'path' => 'uploads/prices/addon/',
+            ],
+            'shipping_domestic' => [
+                'path' => 'uploads/prices/shipping_domestic/',
+            ],
+            'shipping_international' => [
+                'path' => 'uploads/prices/shipping_international/',
+            ],
+            'production' => [
+                'path' => 'uploads/prices/production/',
             ]
         ],
         'images' => [

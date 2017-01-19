@@ -43,6 +43,26 @@ class TimeShipping extends Model {
                         );
     }
 
+    public static function insertShipping($data=null)
+    {
+        // Check if has data.
+        if(!$data) { return false; }
+
+        try{
+            // Exceute insert.
+            $_this = new self;
+            DB::table($_this->table)->insert($data);
+            return true;
+        } catch (\Exception $e) {
+            return false;
+        }
+    }
+
+    public static function truncateShipping()
+    {
+        $_this = new self;
+        DB::table($_this->table)->truncate();
+    }
 
 
 
