@@ -163,5 +163,17 @@ Route::group(['middleware' => 'admin'], function () {
 	Route::get('/admin/prices/downloadSPD', 'AdminController@downloadPricesSPD');
     Route::post('/admin/prices/reuploadSPD', 'AdminController@reuploadPricesSPD');
     Route::post('/admin/prices/reprocessSPD', 'AdminController@reprocessPricesSPD');
+    //
+    Route::post('/admin/prices/uploadSPI', 'AdminController@uploadPricesSPI');
+    Route::post('/admin/prices/updateSPI', 'AdminController@updatePricesSPI');
+	Route::get('/admin/prices/downloadSPI', 'AdminController@downloadPricesSPI');
+    Route::post('/admin/prices/reuploadSPI', 'AdminController@reuploadPricesSPI');
+    Route::post('/admin/prices/reprocessSPI', 'AdminController@reprocessPricesSPI');
+    //
+    Route::post('/admin/prices/uploadPD', 'AdminController@uploadPricesPD');
+    Route::post('/admin/prices/updatePD', 'AdminController@updatePricesPD');
+	Route::get('/admin/prices/downloadPD', 'AdminController@downloadPricesPD');
+    Route::post('/admin/prices/reuploadPD', 'AdminController@reuploadPricesPD');
+    Route::post('/admin/prices/reprocessPD', 'AdminController@reprocessPricesPD');
 
 });

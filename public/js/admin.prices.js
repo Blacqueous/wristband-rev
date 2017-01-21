@@ -339,6 +339,232 @@ $(document).ready(function(e) {
 
     // -------------------------------------------------------------
 
+    // Event : upload wristbands international shipping
+    $('#uploadPriceSPI').fileupload({
+        url: "/admin/prices/updateSPI",
+
+        dataType : 'json',
+        maxNumberOfFiles : 1,
+        formData: {
+            _token: $('meta[name="csrf-token"]').attr('content')
+        },
+        add : function(e, data) {
+            var hasError = false;
+            var acceptFileTypes = ['application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'text/csv'];
+            if(data.originalFiles[0]['type'].length && $.inArray((data.originalFiles[0]['type']).trim(), acceptFileTypes)<0) {
+                hasError = true;
+                toastr.error('Invalid format.', 'Ooops!');
+            }
+            if(hasError) {
+                return false;
+            } else {
+                data.submit();
+            }
+        },
+        start: function (e) {
+            $('.btn').prop('disabled', true);
+            toastr.info('Wait a while, we\'re updating.', 'Processing...');
+        },
+        done: function (e, data) {
+            if(data.result.status) {
+                toastr.success('Upload & process successful.', 'Congrats!');
+            } else {
+                toastr.error('Upload failed. Try again.', 'Ooops!');
+            }
+            $('.btn').prop('disabled', false);
+        },
+        fail: function (e, data) {
+            toastr.error('Upload failed. Try again.', 'Ooops!');
+            $('.btn').prop('disabled', false);
+        }
+    });
+
+    $('#reuploadPriceSPI').fileupload({
+        url: "/admin/prices/reuploadSPI",
+        dataType : 'json',
+        maxNumberOfFiles : 1,
+        formData: {
+            _token: $('meta[name="csrf-token"]').attr('content')
+        },
+        add : function(e, data) {
+            var hasError = false;
+            var acceptFileTypes = ['application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'text/csv'];
+            if(data.originalFiles[0]['type'].length && $.inArray((data.originalFiles[0]['type']).trim(), acceptFileTypes)<0) {
+                hasError = true;
+                toastr.error('Invalid format.', 'Ooops!');
+            }
+            if(hasError) {
+                return false;
+            } else {
+                data.submit();
+            }
+        },
+        start: function (e) {
+            $('.btn').prop('disabled', true);
+            $('.btn').addClass('disabled');
+            toastr.info('Wait a while, we\'re reuploading.', 'Processing...');
+        },
+        done: function (e, data) {
+            if(data.result.status) {
+                toastr.success('Reupload successful.', 'Congrats!');
+            } else {
+                toastr.error('Reupload failed. Try again.', 'Ooops!');
+            }
+            $('.btn').prop('disabled', false);
+            $('.btn').removeClass('disabled');
+        },
+        fail: function (e, data) {
+            toastr.error('Reupload failed. Try again.', 'Ooops!');
+            $('.btn').prop('disabled', false);
+            $('.btn').removeClass('disabled');
+        }
+    });
+
+    $('body').on('click', '#reprocessPriceSPI', function(e) {
+        $.ajax({
+            type: 'POST',
+            url: '/admin/prices/reprocessSPI',
+            data: {
+                _token: $('meta[name="csrf-token"]').attr('content')
+            },
+            beforeSend: function() {
+                $('.btn').prop('disabled', true);
+                $('.btn').addClass('disabled');
+                toastr.info('Wait a while, we\'re reprocessing.', 'Processing...');
+            },
+            success: function() { },
+            error: function() {
+                toastr.error('Reprocess failed. Try again.', 'Ooops!');
+                $('.btn').prop('disabled', false);
+                $('.btn').removeClass('disabled');
+            },
+        }).done(function(data) {
+            data = $.parseJSON(data);
+            if(data.status) {
+                toastr.success('Reprocess successful.', 'Congrats!');
+            } else {
+                toastr.error('Reprocess failed. Try again.', 'Ooops!');
+            }
+            $('.btn').prop('disabled', false);
+            $('.btn').removeClass('disabled');
+        });
+    });
+
+    // -------------------------------------------------------------
+
+    // Event : upload wristbands production
+    $('#uploadPricePD').fileupload({
+        url: "/admin/prices/updatePD",
+
+        dataType : 'json',
+        maxNumberOfFiles : 1,
+        formData: {
+            _token: $('meta[name="csrf-token"]').attr('content')
+        },
+        add : function(e, data) {
+            var hasError = false;
+            var acceptFileTypes = ['application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'text/csv'];
+            if(data.originalFiles[0]['type'].length && $.inArray((data.originalFiles[0]['type']).trim(), acceptFileTypes)<0) {
+                hasError = true;
+                toastr.error('Invalid format.', 'Ooops!');
+            }
+            if(hasError) {
+                return false;
+            } else {
+                data.submit();
+            }
+        },
+        start: function (e) {
+            $('.btn').prop('disabled', true);
+            toastr.info('Wait a while, we\'re updating.', 'Processing...');
+        },
+        done: function (e, data) {
+            if(data.result.status) {
+                toastr.success('Upload & process successful.', 'Congrats!');
+            } else {
+                toastr.error('Upload failed. Try again.', 'Ooops!');
+            }
+            $('.btn').prop('disabled', false);
+        },
+        fail: function (e, data) {
+            toastr.error('Upload failed. Try again.', 'Ooops!');
+            $('.btn').prop('disabled', false);
+        }
+    });
+
+    $('#reuploadPricePD').fileupload({
+        url: "/admin/prices/reuploadPD",
+        dataType : 'json',
+        maxNumberOfFiles : 1,
+        formData: {
+            _token: $('meta[name="csrf-token"]').attr('content')
+        },
+        add : function(e, data) {
+            var hasError = false;
+            var acceptFileTypes = ['application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'text/csv'];
+            if(data.originalFiles[0]['type'].length && $.inArray((data.originalFiles[0]['type']).trim(), acceptFileTypes)<0) {
+                hasError = true;
+                toastr.error('Invalid format.', 'Ooops!');
+            }
+            if(hasError) {
+                return false;
+            } else {
+                data.submit();
+            }
+        },
+        start: function (e) {
+            $('.btn').prop('disabled', true);
+            $('.btn').addClass('disabled');
+            toastr.info('Wait a while, we\'re reuploading.', 'Processing...');
+        },
+        done: function (e, data) {
+            if(data.result.status) {
+                toastr.success('Reupload successful.', 'Congrats!');
+            } else {
+                toastr.error('Reupload failed. Try again.', 'Ooops!');
+            }
+            $('.btn').prop('disabled', false);
+            $('.btn').removeClass('disabled');
+        },
+        fail: function (e, data) {
+            toastr.error('Reupload failed. Try again.', 'Ooops!');
+            $('.btn').prop('disabled', false);
+            $('.btn').removeClass('disabled');
+        }
+    });
+
+    $('body').on('click', '#reprocessPricePD', function(e) {
+        $.ajax({
+            type: 'POST',
+            url: '/admin/prices/reprocessPD',
+            data: {
+                _token: $('meta[name="csrf-token"]').attr('content')
+            },
+            beforeSend: function() {
+                $('.btn').prop('disabled', true);
+                $('.btn').addClass('disabled');
+                toastr.info('Wait a while, we\'re reprocessing.', 'Processing...');
+            },
+            success: function() { },
+            error: function() {
+                toastr.error('Reprocess failed. Try again.', 'Ooops!');
+                $('.btn').prop('disabled', false);
+                $('.btn').removeClass('disabled');
+            },
+        }).done(function(data) {
+            data = $.parseJSON(data);
+            if(data.status) {
+                toastr.success('Reprocess successful.', 'Congrats!');
+            } else {
+                toastr.error('Reprocess failed. Try again.', 'Ooops!');
+            }
+            $('.btn').prop('disabled', false);
+            $('.btn').removeClass('disabled');
+        });
+    });
+
+    // -------------------------------------------------------------
+
     $('[data-toggle=confirmation]').confirmation({
         title: 'Download Format',
         content: 'Choose a file extension:',

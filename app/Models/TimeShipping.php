@@ -64,6 +64,16 @@ class TimeShipping extends Model {
         DB::table($_this->table)->truncate();
     }
 
+    public static function deleteShippingDomestic()
+    {
+        $_this = new self;
+        DB::table($_this->table)->where('type', '=', 0)->delete();
+    }
 
+    public static function deleteShippingInternational()
+    {
+        $_this = new self;
+        DB::table($_this->table)->where('type', '=', 1)->delete();
+    }
 
 }

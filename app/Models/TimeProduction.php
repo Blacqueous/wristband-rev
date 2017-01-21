@@ -43,7 +43,25 @@ class TimeProduction extends Model {
                         );
     }
 
+    public static function insertProduction($data=null)
+    {
+        // Check if has data.
+        if(!$data) { return false; }
 
+        try{
+            // Execute insert.
+            $_this = new self;
+            DB::table($_this->table)->insert($data);
+            return true;
+        } catch (\Exception $e) {
+            return false;
+        }
+    }
 
+    public static function truncateProduction()
+    {
+        $_this = new self;
+        DB::table($_this->table)->truncate();
+    }
 
 }

@@ -460,7 +460,7 @@ class AdminController extends Controller
         return false;
     }
 
-    // Shipping Prices ---------------------------------------------------------
+    // Shipping Prices (Domestic) ----------------------------------------------
 
     public function updatePricesSPD(Request $request)
     {
@@ -500,7 +500,7 @@ class AdminController extends Controller
                 break;
 
             default: // Return .csv as default format file
-                return Response::download('format/prices/price_shipping_domestic.csv', 'price_shipping_domestic.xls');
+                return Response::download('format/prices/price_shipping_domestic.xls', 'price_shipping_domestic.xls');
                 break;
         }
     }
@@ -586,8 +586,283 @@ class AdminController extends Controller
                         }
                     }
                     if(count($csv) > 0) {
-                        TimeShipping::truncateShipping();
+                        TimeShipping::deleteShippingDomestic();
                         TimeShipping::insertShipping($csv);
+                    }
+                });
+            } catch (\Exception $e) {
+                return false;
+            }
+            return true;
+        }
+        return false;
+    }
+
+    // Shipping Prices (International) -----------------------------------------
+
+    public function updatePricesSPI(Request $request)
+    {
+        // First, get files.
+        $files = Input::file('files');
+        // Check if file exists.
+        if($files) {
+            // Check if excel file exists.
+            if(isset($files[0])) {
+                // Clean directory first.
+                $this->deletePricesSPI($request);
+                // Create image name.
+                $filename = 'price' . '.' . $files[0]->getClientOriginalExtension();
+                // Process image transport.
+                $uploadSuccess = $files[0]->move($this->pathSPI, $filename);
+                // Check if successful.
+                if($uploadSuccess) {
+                    // Process database seeding.
+                    $update_status = $this->updatePricesSPIData($request);
+                    // Release upload status.
+                    return json_encode([ 'status' => $update_status ]);
+                }
+            }
+        }
+        return json_encode([ 'status' => false ]); // Ugh! Nope!
+    }
+
+    public function downloadPricesSPI(Request $request)
+    {
+        switch ($request->ext) {
+            case 'xls': // Return .xls format file
+                return Response::download('format/prices/price_shipping_international.xls', 'price_shipping_international.xls');
+                break;
+
+            case 'xlsxx': // Return .xlsx format file
+                return Response::download('format/prices/price_shipping_international.xlsx', 'price_shipping_international.xlsx');
+                break;
+
+            default: // Return .csv as default format file
+                return Response::download('format/prices/price_shipping_international.xls', 'price_shipping_international.xls');
+                break;
+        }
+    }
+
+    public function reuploadPricesSPI(Request $request)
+    {
+        // First, get files.
+        $files = Input::file('files');
+        // Check if file exists.
+        if($files) {
+            // Check if excel file exists.
+            if(isset($files[0])) {
+                // Clean directory first.
+                $this->deletePricesSPI($request);
+                // Create image name.
+                $filename = 'price' . '.' . $files[0]->getClientOriginalExtension();
+                // Process image transport.
+                $uploadSuccess = $files[0]->move($this->pathSPI, $filename);
+                // Check if successful.
+                if($uploadSuccess) {
+                    // Upload successful.
+                    return json_encode([ 'status' => true ]);
+                }
+            }
+        }
+        return json_encode([ 'status' => false ]);// Ugh! Nope! Problem...
+    }
+
+    public function reprocessPricesSPI(Request $request)
+    {
+        // Reprocess database seeding.
+        $update_status = $this->updatePricesSPIData($request);
+        // Release upload status.
+        return json_encode([ 'status' => $update_status ]);
+    }
+
+    public function deletePricesSPI(Request $request)
+    {
+        // Check if folder exists.
+        if(File::exists($this->pathSPI)) {
+            // Clean the folder.
+            File::cleanDirectory($this->pathSPI);
+        }
+    }
+
+    public function updatePricesSPIData(Request $request)
+    {
+        $count = 0;
+        $files = [];
+        // Get files
+        do{
+            $files = File::allFiles($this->pathSPI);
+            $count++;
+        } while ($count < 50 && count($files) < 0);
+        // Check if has files
+        if(count($files) > 0) {
+            try {
+                Excel::load($files[0]->getPathname(), function ($reader) {
+                    // Create array to contain new price data.
+                    $csv = [];
+                    // Get available  sizes.
+                    $sizes = Sizes::getArrayByCode();
+                    // Get available styles.
+                    $styles = Styles::getArrayByCode();
+                    foreach ($reader->toArray() as $sheet) {
+                        foreach ($sheet as $rowKey => $row) {
+                            if($row['style_code'] !== null || $row['size_code'] !== null ) {
+                                foreach ($row as $key => $value) {
+                                    if($this->contains('_days', $key)) {
+                                        if(is_int($value) || is_float($value)) {
+                                            $csv[] = [
+                                                'style_id' => $styles[$row['style_code']],
+                                                'size_id' => $sizes[$row['size_code']],
+                                                'qty' => $row['quantity'],
+                                                'price' => $value,
+                                                'days' => str_replace('_days', '', $key),
+                                                'type' => 1,
+                                            ];
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    if(count($csv) > 0) {
+                        TimeShipping::deleteShippingInternational();
+                        TimeShipping::insertShipping($csv);
+                    }
+                });
+            } catch (\Exception $e) {
+                return false;
+            }
+            return true;
+        }
+        return false;
+    }
+
+    // Production Prices -------------------------------------------------------
+
+    public function updatePricesPD(Request $request)
+    {
+        // First, get files.
+        $files = Input::file('files');
+        // Check if file exists.
+        if($files) {
+            // Check if excel file exists.
+            if(isset($files[0])) {
+                // Clean directory first.
+                $this->deletePricesPD($request);
+                // Create image name.
+                $filename = 'price' . '.' . $files[0]->getClientOriginalExtension();
+                // Process image transport.
+                $uploadSuccess = $files[0]->move($this->pathPD, $filename);
+                // Check if successful.
+                if($uploadSuccess) {
+                    // Process database seeding.
+                    $update_status = $this->updatePricesPDData($request);
+                    // Release upload status.
+                    return json_encode([ 'status' => $update_status ]);
+                }
+            }
+        }
+        return json_encode([ 'status' => false ]); // Ugh! Nope!
+    }
+
+    public function downloadPricesPD(Request $request)
+    {
+        switch ($request->ext) {
+            case 'xls': // Return .xls format file
+                return Response::download('format/prices/price_production.xls', 'price_production.xls');
+                break;
+
+            case 'xlsxx': // Return .xlsx format file
+                return Response::download('format/prices/price_production.xlsx', 'price_production.xlsx');
+                break;
+
+            default: // Return .csv as default format file
+                return Response::download('format/prices/price_production.xls', 'price_production.xls');
+                break;
+        }
+    }
+
+    public function reuploadPricesPD(Request $request)
+    {
+        // First, get files.
+        $files = Input::file('files');
+        // Check if file exists.
+        if($files) {
+            // Check if excel file exists.
+            if(isset($files[0])) {
+                // Clean directory first.
+                $this->deletePricesPD($request);
+                // Create image name.
+                $filename = 'price' . '.' . $files[0]->getClientOriginalExtension();
+                // Process image transport.
+                $uploadSuccess = $files[0]->move($this->pathPD, $filename);
+                // Check if successful.
+                if($uploadSuccess) {
+                    // Upload successful.
+                    return json_encode([ 'status' => true ]);
+                }
+            }
+        }
+        return json_encode([ 'status' => false ]);// Ugh! Nope! Problem...
+    }
+
+    public function reprocessPricesPD(Request $request)
+    {
+        // Reprocess database seeding.
+        $update_status = $this->updatePricesPDData($request);
+        // Release upload status.
+        return json_encode([ 'status' => $update_status ]);
+    }
+
+    public function deletePricesPD(Request $request)
+    {
+        // Check if folder exists.
+        if(File::exists($this->pathPD)) {
+            // Clean the folder.
+            File::cleanDirectory($this->pathPD);
+        }
+    }
+
+    public function updatePricesPDData(Request $request)
+    {
+        $count = 0;
+        $files = [];
+        // Get files
+        do{
+            $files = File::allFiles($this->pathPD);
+            $count++;
+        } while ($count < 50 && count($files) < 0);
+        // Check if has files
+        if(count($files) > 0) {
+            try {
+                Excel::load($files[0]->getPathname(), function ($reader) {
+                    // Create array to contain new price data.
+                    $csv = [];
+                    // Get available  sizes.
+                    $sizes = Sizes::getArrayByCode();
+                    // Get available styles.
+                    $styles = Styles::getArrayByCode();
+                    foreach ($reader->toArray() as $sheet) {
+                        foreach ($sheet as $rowKey => $row) {
+                            if($row['style_code'] !== null || $row['size_code'] !== null ) {
+                                foreach ($row as $key => $value) {
+                                    if($this->contains('_days', $key)) {
+                                        if(is_int($value) || is_float($value)) {
+                                            $csv[] = [
+                                                'style_id' => $styles[$row['style_code']],
+                                                'size_id' => $sizes[$row['size_code']],
+                                                'qty' => $row['quantity'],
+                                                'price' => $value,
+                                                'days' => str_replace('_days', '', $key),
+                                            ];
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    if(count($csv) > 0) {
+                        TimeProduction::truncateProduction();
+                        TimeProduction::insertProduction($csv);
                     }
                 });
             } catch (\Exception $e) {
