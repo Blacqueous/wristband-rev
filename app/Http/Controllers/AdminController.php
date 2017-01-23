@@ -571,14 +571,16 @@ class AdminController extends Controller
                                 foreach ($row as $key => $value) {
                                     if($this->contains('_days', $key)) {
                                         if(is_int($value) || is_float($value)) {
-                                            $csv[] = [
-                                                'style_id' => $styles[$row['style_code']],
-                                                'size_id' => $sizes[$row['size_code']],
-                                                'qty' => $row['quantity'],
-                                                'price' => $value,
-                                                'days' => str_replace('_days', '', $key),
-                                                'type' => 0,
-                                            ];
+                                            if($value > 0) {
+                                                $csv[] = [
+                                                    'style_id' => $styles[$row['style_code']],
+                                                    'size_id' => $sizes[$row['size_code']],
+                                                    'qty' => $row['quantity'],
+                                                    'price' => $value,
+                                                    'days' => str_replace('_days', '', $key),
+                                                    'type' => 0,
+                                                ];
+                                            }
                                         }
                                     }
                                 }
@@ -709,14 +711,16 @@ class AdminController extends Controller
                                 foreach ($row as $key => $value) {
                                     if($this->contains('_days', $key)) {
                                         if(is_int($value) || is_float($value)) {
-                                            $csv[] = [
-                                                'style_id' => $styles[$row['style_code']],
-                                                'size_id' => $sizes[$row['size_code']],
-                                                'qty' => $row['quantity'],
-                                                'price' => $value,
-                                                'days' => str_replace('_days', '', $key),
-                                                'type' => 1,
-                                            ];
+                                            if($value > 0) {
+                                                $csv[] = [
+                                                    'style_id' => $styles[$row['style_code']],
+                                                    'size_id' => $sizes[$row['size_code']],
+                                                    'qty' => $row['quantity'],
+                                                    'price' => $value,
+                                                    'days' => str_replace('_days', '', $key),
+                                                    'type' => 1,
+                                                ];
+                                            }
                                         }
                                     }
                                 }
@@ -847,13 +851,15 @@ class AdminController extends Controller
                                 foreach ($row as $key => $value) {
                                     if($this->contains('_days', $key)) {
                                         if(is_int($value) || is_float($value)) {
-                                            $csv[] = [
-                                                'style_id' => $styles[$row['style_code']],
-                                                'size_id' => $sizes[$row['size_code']],
-                                                'qty' => $row['quantity'],
-                                                'price' => $value,
-                                                'days' => str_replace('_days', '', $key),
-                                            ];
+                                            if($value > 0) {
+                                                $csv[] = [
+                                                    'style_id' => $styles[$row['style_code']],
+                                                    'size_id' => $sizes[$row['size_code']],
+                                                    'qty' => $row['quantity'],
+                                                    'price' => $value,
+                                                    'days' => str_replace('_days', '', $key),
+                                                ];
+                                            }
                                         }
                                     }
                                 }
