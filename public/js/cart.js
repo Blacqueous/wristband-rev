@@ -72,15 +72,15 @@ $(document).ready(function(e) {
                 $('#submitOrder').addClass('disabled');
             },
             success: function(data) {
-                // Display success message.
-                if(showMessage) {
-                    toastr.success('', '<h5>Your order has been submitted successfully!</h5>');
-                    showMessage = false;
-                }
-                // Goto success page.
-                setTimeout(function(){ // wait for 2 secs.
-                    window.location.replace("/submit/success");
-                }, 2000);
+                // // Display success message.
+                // if(showMessage) {
+                //     toastr.success('', '<h5>Your order has been submitted successfully!</h5>');
+                //     showMessage = false;
+                // }
+                // // Goto success page.
+                // setTimeout(function(){ // wait for 2 secs.
+                //     window.location.replace("/submit/success");
+                // }, 2000);
             },
             error: function(XMLHttpRequest, textStatus, errorThrown) {
                 // Display error message.

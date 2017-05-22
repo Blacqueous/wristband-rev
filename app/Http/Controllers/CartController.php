@@ -140,9 +140,6 @@ class CartController extends Controller
 
 	public function cartSubmit(Request $request)
 	{
-		// // If ever something went wrong...
-		// return json_encode(false);
-
 		$cart_list = Session::get('_cart');
 
 		foreach ($cart_list as $key => $list) {
@@ -180,6 +177,20 @@ class CartController extends Controller
 		Session::forget('_cart');
 		// redirect to success page
 		return json_encode(true);
+	}
+
+	public function checkout(Request $request)
+	{
+		$data = [
+			'items' => (Session::has('_cart')) ? Session::get('_cart') : []
+		];
+		// Do something...
+		return view('checkout', $data);
+	}
+
+	public function checkoutSubmit(Request $request)
+	{
+		// 
 	}
 
 }

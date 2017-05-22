@@ -15,33 +15,19 @@ Route::get('/', function () {
    return redirect()->to('/custom-wristband')->with('message', Lang::get('...'));
 });
 
-Route::get('/about', function () {
-    return view('about');
-});
+Route::get('/about', function () { return view('about'); });
 
-Route::get('/custom-wristband', function () {
-    return view('homepage');
-});
+Route::get('/custom-wristband', function () { return view('homepage'); });
 
-Route::get('/privacy', function () {
-    return view('privacy');
-});
+Route::get('/privacy', function () { return view('privacy'); });
 
-Route::get('/faq', function () {
-    return view('faq');
-});
+Route::get('/faq', function () { return view('faq'); });
 
-Route::get('/validation', function () {
-    return view('validation');
-});
+Route::get('/validation', function () { return view('validation'); });
 
-Route::get('/return-policy', function () {
-    return view('return-policy');
-});
+Route::get('/return-policy', function () { return view('return-policy'); });
 
-Route::get('/terms-and-conditions', function () {
-    return view('terms-and-conditions');
-});
+Route::get('/terms-and-conditions', function () { return view('terms-and-conditions'); });
 
 Route::get('/fonts', 'ViewController@pageFonts');
 
@@ -61,31 +47,19 @@ Route::get('/schoolpo', 'ViewController@pageSchoolPO');
 
 Route::get('/digitaldesign', 'ViewController@pageDigitalDesign');
 
-Route::get('/product', function () {
-    return redirect('/');
-});
+Route::get('/product', function () { return redirect('/'); });
 
 Route::get('/product/{style}', 'ViewController@viewProduct');
 
-Route::get('/contact', function () {
-    return view('contact');
-});
+Route::get('/contact', function () { return view('contact'); });
 
-// Route::get('/sample', function () {
-//     return view('sample');
-// });
-
-Route::get('/message', function () {
-    return view('message');
-});
+Route::get('/message', function () { return view('message'); });
 
 Route::get('/order', 'OrderController@index');
 
 Route::get('/wb/colorsS', 'OrderController@getWristbandColor');
 
 Route::match(['get', 'post'], '/wb/colorsSS', 'OrderController@getWristbandColorsByStyleSize');
-
-//Route::get('/preview', 'PreviewController@makePreview');
 
 Route::get('/mailTest', 'OrderController@mailTest');
 
@@ -101,9 +75,7 @@ Route::get('/cart', 'CartController@index');
 
 Route::post('/cart/add', 'CartController@cartAdd');
 
-Route::get('/cart/update', function () {
-    return redirect('/order');
-});
+Route::get('/cart/update', function () { return redirect('/order'); });
 
 Route::get('/cart/update/{index}', 'CartController@cartUpdate');
 
@@ -114,6 +86,10 @@ Route::post('/cart/delete', 'CartController@cartDelete');
 Route::post('/cart/clear', 'CartController@cartClear');
 
 Route::post('/cart/submit', 'CartController@cartSubmit');
+
+Route::get('/checkout', 'CartController@checkout');
+
+Route::post('/checkout/submit', 'CartController@checkoutSubmit');
 
 Route::get('/submit/success', 'ViewController@submitSuccess');
 
@@ -137,39 +113,38 @@ Route::post('admin/register', 'AuthAdmin\AuthController@register');
 
 // Admin Pages...
 Route::group(['middleware' => 'admin'], function () {
+
     // Admin dashboard
     Route::get('/admin', 'AdminController@index');
+
     // Admin pages
     Route::get('/admin/prices', 'AdminController@managePrices');
     Route::get('/admin/images', 'AdminController@manageImages');
     Route::post('/admin/images/clear', 'AdminController@clearTempImages');
     Route::get('/admin/reset', 'AdminController@resetJSON');
     Route::post('/admin/reset', 'AdminController@processResetJSON');
-    //
+
+    // Admin price related actions
     Route::post('/admin/prices/uploadWB', 'AdminController@uploadPricesWB');
     Route::post('/admin/prices/updateWB', 'AdminController@updatePricesWB');
 	Route::get('/admin/prices/downloadWB', 'AdminController@downloadPricesWB');
     Route::post('/admin/prices/reuploadWB', 'AdminController@reuploadPricesWB');
     Route::post('/admin/prices/reprocessWB', 'AdminController@reprocessPricesWB');
-    //
     Route::post('/admin/prices/uploadAO', 'AdminController@uploadPricesAO');
     Route::post('/admin/prices/updateAO', 'AdminController@updatePricesAO');
 	Route::get('/admin/prices/downloadAO', 'AdminController@downloadPricesAO');
     Route::post('/admin/prices/reuploadAO', 'AdminController@reuploadPricesAO');
     Route::post('/admin/prices/reprocessAO', 'AdminController@reprocessPricesAO');
-    //
     Route::post('/admin/prices/uploadSPD', 'AdminController@uploadPricesSPD');
     Route::post('/admin/prices/updateSPD', 'AdminController@updatePricesSPD');
 	Route::get('/admin/prices/downloadSPD', 'AdminController@downloadPricesSPD');
     Route::post('/admin/prices/reuploadSPD', 'AdminController@reuploadPricesSPD');
     Route::post('/admin/prices/reprocessSPD', 'AdminController@reprocessPricesSPD');
-    //
     Route::post('/admin/prices/uploadSPI', 'AdminController@uploadPricesSPI');
     Route::post('/admin/prices/updateSPI', 'AdminController@updatePricesSPI');
 	Route::get('/admin/prices/downloadSPI', 'AdminController@downloadPricesSPI');
     Route::post('/admin/prices/reuploadSPI', 'AdminController@reuploadPricesSPI');
     Route::post('/admin/prices/reprocessSPI', 'AdminController@reprocessPricesSPI');
-    //
     Route::post('/admin/prices/uploadPD', 'AdminController@uploadPricesPD');
     Route::post('/admin/prices/updatePD', 'AdminController@updatePricesPD');
 	Route::get('/admin/prices/downloadPD', 'AdminController@downloadPricesPD');

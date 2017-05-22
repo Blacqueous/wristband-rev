@@ -435,7 +435,7 @@
                 </div>
 
                 <div class="cart-submit-options col-xs-12 text-center">
-                    <button id="submitOrder" class="btn btn-submit btn-submit-lg"><i class="fa fa-send" style="padding-right:5px;"></i> SUBMIT ORDER</button>
+                    <a href="/checkout" class="btn btn-submit btn-submit-lg"><i class="fa fa-shopping-cart fa-flip-horizontal"></i>&nbsp;&nbsp;CHECKOUT</a>
                 </div>
             <?php else : ?>
                 <div class="container">
