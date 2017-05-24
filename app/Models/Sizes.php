@@ -13,7 +13,7 @@ class Sizes extends Model {
 
     public function get()
     {
-        // get and return query.
+        // Get and return query.
     	return DB::table($this->table)
                 ->select('*')
                 ->get();
@@ -21,7 +21,7 @@ class Sizes extends Model {
 
     public function getCodes()
     {
-        // get and return query.
+        // Get and return query.
     	return DB::table($this->table)
                 ->select('id', 'code')
                 ->get();
