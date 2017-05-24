@@ -73,13 +73,17 @@
 @endsection
 
 @section('js')
+    <!-- Toastr Notification plugin -->
+    <script src="global/toastr/build/toastr.min.js"></script>
+    <!-- Cart page js file -->
+    <script src="js/checkout.js"></script>
 @endsection
 
 @section('content')
 
 <div class="container">
 
-    <form class="" action="/checkout/submit" method="post">
+    <form id="checkoutSubmit" class="" action="/checkout/submit" method="post">
 
         <div class="row">
 
@@ -141,21 +145,21 @@
                     <div class="col-md-6">
                         <label for="" class="form-label">Email</label>
                         <div class="form-input">
-                            <input type="text" class="form-control" id="email" name="" value="" placeholder="">
+                            <input type="email" class="form-control" id="email" name="Email" value="" placeholder="">
                         </div>
                     </div>
 
                     <div class="col-md-6">
                         <label for="" class="form-label">Confirm Email</label>
                         <div class="form-input">
-                            <input type="text" class="form-control" id="email" name="" value="" placeholder="">
+                            <input type="email" class="form-control" id="email" name="EmailConfirm" value="" placeholder="">
                         </div>
                     </div>
 
                     <div class="col-md-6">
                         <label for="" class="form-label">Phone Number</label>
                         <div class="form-input">
-                            <input type="text" class="form-control" id="phoneNum" name="" value="" placeholder="">
+                            <input type="text" class="form-control" id="phoneNum" name="PhoneNumber" value="" placeholder="">
                         </div>
                     </div>
 
@@ -174,7 +178,7 @@
             </div>
 
             <div class="cart-submit-options col-xs-12 text-center">
-                <button type="submit" class="btn btn-primary btn-submit-lg"><i class="fa fa-plane"></i>&nbsp;&nbsp;SUBMIT ORDER</button> &nbsp;
+                <button type="submit" class="btn btn-primary btn-submit-lg"><i class="fa fa-cart"></i>&nbsp;&nbsp;SUBMIT ORDER</button> &nbsp;
             </div>
 
         </div>
