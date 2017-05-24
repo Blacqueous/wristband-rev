@@ -197,6 +197,7 @@ class CartController extends Controller
 
 	public function checkoutSubmit(Request $request)
 	{
+		// Arrange order data
 		$data_order = [
 			"DateCreated"		=> date('Y-m-d H:i:s'),
 			"TempToken"			=> $request->_token,
@@ -237,6 +238,7 @@ class CartController extends Controller
 			"RandomChr"			=> "",
 			"IPAddress"			=> $request->ip()
 		];
+
 		// Insert new order
 		$orders = new Orders();
 		// $order_id = $orders->insertOrder($data_order);
@@ -254,7 +256,8 @@ class CartController extends Controller
 		];
 
 		$data = [];
-		// Insert new cart
+
+		// Arrange cart data
 		$cart_list = Session::get('_cart');
 		foreach ($cart_list as $key => $list) {
 
