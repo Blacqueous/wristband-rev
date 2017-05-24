@@ -239,35 +239,40 @@ class CartController extends Controller
 		];
 		// Insert new order
 		$orders = new Orders();
-		$order_id = $orders->insertOrder($data_order);
+		// $order_id = $orders->insertOrder($data_order);
+		$order_id = 0;
 
+		$data_cart_default = [
+			"DateCreated"	=> date('Y-m-d H:i:s'),
+			"Status"		=> "1",
+			"OrderID"		=> $order_id,
+			"TempToken"		=> $request->_token,
+			"FullName"		=> $request->FirstName . " " . $request->Surname,
+			"PhoneNo"		=> $request->PhoneNumber,
+			"DateQuote"		=> "",
+			"EmailAddress"	=> $request->Email
+		];
 
-			$data_cart_default = [
-				"DateCreated"	=> date('Y-m-d H:i:s'),
-				"Status"		=> "1",
-				"OrderID"		=> $order_id,
-				"TempToken"		=> $request->_token,
-				"FullName"		=> $request->FirstName . " " . $request->Surname,
-				"PhoneNo"		=> $request->PhoneNumber,
-				"DateQuote"		=> "",
-				"EmailAddress"	=> $request->Email
-			];
-
-
+		$data = [];
 		// Insert new cart
 		$cart_list = Session::get('_cart');
 		foreach ($cart_list as $key => $list) {
 
 			$data_cart_default_band = [
-				"BandStyle"	=> $list['style'],
-				"BandSize"	=> $list['size'],
-				"Font"		=> $list['fonts'],
-				"Total"		=> $list['total'],
+				"BandStyle"			=> $list['style'],
+				"BandSize"			=> $list['size'],
+				"Font"				=> $list['fonts'],
+				"ProductionTime"	=> $list['time_production']['days'],
+				"arProduction"		=> $list['time_production']['days'],
+				"PriceProduction"	=> $list['time_production']['price'],
+				"Delivery"			=> $list['time_shipping']['days'],
+				"arShipping"		=> $list['time_shipping']['days'],
+				"PriceDelivery"		=> $list['time_shipping']['price']
 			];
 
 			$data_cart = [];
-			$data_cart_item = [];
 			$data_cart_free = [];
+			$data_cart_item = [];
 
 			foreach ($list['items'] as $type => $item) {
 				$data_cart_item_attr = [];
@@ -294,21 +299,30 @@ class CartController extends Controller
 				}
 			}
 
-			foreach ($list['free'] as $type => $item) {
-				$data_cart_item_attr = [];
-				$data_cart_free = [
-					"BandType"		=> $type,
-					"arColors"		=> "",
-					"arAddons"		=> $item['price_addon'],
-					"UnitPrice"		=> $item['price_total'],
-				];
+			foreach ($list['free'] as $free_key => $free_val) {
+				if($free_key == 'key-chain') {
+					foreach ($data_cart as $cart_key => $cart_val) {
+						$data_cart[$cart_key]["arFree"] = $free_val['quantity'];
+					}
+				}
+				if($free_key == 'wristbands') {
+					foreach ($data_cart as $cart_key => $cart_val) {
+						$data_cart[$cart_key]["arKeychains"] = $free_val['quantity'];
+					}
+				}
 			}
 
+			// Wrong total. Compute all prices
+			$data_cart_default_band["Total"] = $list['total'];
 
-var_dump($data_cart);
-var_dump($list);
-die;
+			// Last thing to do
+			foreach ($data_cart as $cart_key => $cart_val) {
+				$data[] = array_merge($data_cart_default, $data_cart_default_band, $cart_val);
+			}
 
+// var_dump($data_cart);
+// var_dump($list);
+// die;
 
 			// $data_cart = [
 			// 	"MessageStyle"	=> "",
@@ -321,14 +335,10 @@ die;
 			// 	"BackMessageEndClipart"				=> "",
 			// 	"ContinuousMessageStartClipart"		=> "",
 			// 	"ContinuousEndClipart"				=> "",
-			// 	"ProductionTime"					=> "",
 			// 	"FreeQty"							=> "",
-			// 	"Delivery"							=> "",
 			// 	"Individual_Pack"					=> "",
 			// 	"Keychain"							=> "",
 			// 	"DigitalPrint"						=> "",
-			// 	"PriceProduction"					=> "",
-			// 	"PriceDelivery"						=> "",
 			// 	"PriceIndividual_Pack"				=> "",
 			// 	"PriceKeychain"						=> "",
 			// 	"PriceDigitalPrint"					=> "",
@@ -350,13 +360,10 @@ die;
 			// 	"arBackMessageEndClipart"			=> "",
 			// 	"arContinuousMessageStartClipart"	=> "",
 			// 	"arContinuousEndClipart"			=> "",
-			// 	"arFree"							=> "",
-			// 	"arKeychains"						=> "",
-			// 	"arProduction"						=> "",
-			// 	"arShipping"						=> "",
 			// ];
 		}
 
+var_dump($data);
 die;
 
 		// // Set for success page.
