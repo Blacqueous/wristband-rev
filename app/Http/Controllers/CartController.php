@@ -240,22 +240,78 @@ class CartController extends Controller
 		// Insert new order
 		$orders = new Orders();
 		$order_id = $orders->insertOrder($data_order);
+
+
+			$data_cart_default = [
+				"DateCreated"	=> date('Y-m-d H:i:s'),
+				"Status"		=> "1",
+				"OrderID"		=> $order_id,
+				"TempToken"		=> $request->_token,
+				"FullName"		=> $request->FirstName . " " . $request->Surname,
+				"PhoneNo"		=> $request->PhoneNumber,
+				"DateQuote"		=> "",
+				"EmailAddress"	=> $request->Email
+			];
+
+
 		// Insert new cart
 		$cart_list = Session::get('_cart');
 		foreach ($cart_list as $key => $list) {
-			// foreach ($lists as $key => $list) {
-			// }
+
+			$data_cart_default_band = [
+				"BandStyle"	=> $list['style'],
+				"BandSize"	=> $list['size'],
+				"Font"		=> $list['fonts'],
+				"Total"		=> $list['total'],
+			];
+
+			$data_cart = [];
+			$data_cart_item = [];
+			$data_cart_free = [];
+
+			foreach ($list['items'] as $type => $item) {
+				$data_cart_item_attr = [];
+				$data_cart_item = [
+					"BandType"		=> $type,
+					"arColors"		=> "",
+					"arAddons"		=> $item['price_addon'],
+					"UnitPrice"		=> $item['price_total'],
+				];
+				// Get attribute
+				foreach ($item as $attr_key => $attr_val) {
+					if(is_array($attr_val)) {
+						foreach ($attr_val['size'] as $attr) {
+							$comment = ["Font Color"=> $attr['font'], "Font Name"=> $attr['font_name'], "Size"=> strtoupper($attr['size'])];
+							$data_cart_item_attr[] = [
+								"Qty"		=> $attr['qty'],
+								"Comments"	=> json_encode($comment)
+							];
+						}
+					}
+				}
+				foreach ($data_cart_item_attr as $value) {
+					$data_cart[] = array_merge($data_cart_item, $value);
+				}
+			}
+
+			foreach ($list['free'] as $type => $item) {
+				$data_cart_item_attr = [];
+				$data_cart_free = [
+					"BandType"		=> $type,
+					"arColors"		=> "",
+					"arAddons"		=> $item['price_addon'],
+					"UnitPrice"		=> $item['price_total'],
+				];
+			}
+
+
+var_dump($data_cart);
 var_dump($list);
+die;
+
+
 			// $data_cart = [
-			// 	"DateCreated"						=> date('Y-m-d H:i:s'),
-			// 	"Status"							=> "1",
-			// 	"OrderID"							=> $order_id,
-			// 	"TempToken"							=> $request->_token,
-			// 	"BandStyle"							=> $list['style'],
-			// 	"BandType"							=> "",
-			// 	"BandSize"							=> $list['size'],
-			// 	"MessageStyle"						=> "",
-			// 	"Font"								=> $list['font'],
+			// 	"MessageStyle"	=> "",
 			// 	"FrontMessage"						=> "",
 			// 	"BackMessage"						=> "",
 			// 	"ContinuousMessage"					=> "",
@@ -271,7 +327,6 @@ var_dump($list);
 			// 	"Individual_Pack"					=> "",
 			// 	"Keychain"							=> "",
 			// 	"DigitalPrint"						=> "",
-			// 	"Comments"							=> "",
 			// 	"PriceProduction"					=> "",
 			// 	"PriceDelivery"						=> "",
 			// 	"PriceIndividual_Pack"				=> "",
@@ -284,8 +339,6 @@ var_dump($list);
 			// 	"PriceMouldingFee"					=> "",
 			// 	"RandomChr"							=> "",
 			// 	"newCart"							=> "",
-			// 	"arColors"							=> "",
-			// 	"arAddons"							=> "",
 			// 	"arMoldingFee"						=> "",
 			// 	"arFrontMessage"					=> "",
 			// 	"arBackMessage"						=> "",
@@ -301,48 +354,11 @@ var_dump($list);
 			// 	"arKeychains"						=> "",
 			// 	"arProduction"						=> "",
 			// 	"arShipping"						=> "",
-			// 	"Qty"								=> "",
-			// 	"UnitPrice"							=> "",
-			// 	"Total"								=> "",
-			// 	"FullName"							=> "",
-			// 	"PhoneNo"							=> "",
-			// 	"DateQuote"							=> "",
-			// 	"EmailAddress"						=> ""
 			// ];
 		}
 
 die;
 
-		// $cart_list = Session::get('_cart');
-		// 
-		// foreach ($cart_list as $key => $list) {
-		// 	if(isset($list['clips'])) {
-		// 		if(isset($list['clips']['logo'])) {
-		// 			foreach ($list['clips']['logo'] as $logoName => $logo) {
-		// 				$temp_path = $logo['image'];
-		// 
-		// 				$temp_folder_date = date('Ymd');
-		// 				$dest_path = 'uploads/order/images/' . $temp_folder_date . '/' . $key;
-		// 
-		// 				if(!File::exists($dest_path)) {
-		// 					File::makeDirectory($dest_path, $mode = 0777, true, true);
-		// 				}
-		// 
-		// 				$file_path = substr($temp_path, strpos($temp_path, 'uploads/temp/'));
-		// 
-		// 				// Process image transport.
-		// 				$ext = File::extension($file_path);
-		// 				$name = File::name($file_path);
-		// 				$filename = $name . '.' . $ext;
-		// 
-		// 				File::copy($file_path, $dest_path.'/'.$filename);
-		// 
-		// 				$cart_list[$key]['clips']['logo'][$logoName]['image'] = URL::asset('').$dest_path.'/'.$filename;
-		// 			}
-		// 		}
-		// 	}
-		// }
-		// 
 		// // Set for success page.
 		// Session::flash('order_items', $cart_list);
 		// Session::flash('order_status', 'success');
