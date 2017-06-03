@@ -63,4 +63,21 @@ return [
         ],
     ],
 
+    'paypal' => [
+        'client_id' => 'ASURSFcCTrjrnnzIc4voe_cn5hq3Cl-Z941ftlVek_556jycvAn1Kmr4gSpVCWvjPMEIoCs8XnMucVBb',
+        'secret' => 'ENTuLYrdTgyMWU8ZO5vFbab3_uzouyDyxfbXSrZGVKueGZA9lEG2uvT_rI1iIssO0cv5GxyWvdHOsra2',
+        'settings' => [
+            'mode' => env('PAYPAL_MODE', 'sandbox'),
+            'http.ConnectionTimeOut' => 30,
+            'log.LogEnabled' => true,
+            'log.FileName' => storage_path() . '/logs/paypal.log',
+            'log.LogLevel' => 'ERROR',
+        ],
+    ],
+
+    'authorizenet' => [
+        'name' => 'ANET_LOGIN',
+        'key' => 'ANET_KEY',
+    ],
+
 ];

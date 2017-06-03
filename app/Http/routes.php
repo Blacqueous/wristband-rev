@@ -111,6 +111,17 @@ Route::get('admin/register', 'AuthAdmin\AuthController@showRegistrationForm');
 
 Route::post('admin/register', 'AuthAdmin\AuthController@register');
 
+// PayPal Payments...
+
+// Show payment form
+Route::get('/payment/add-funds/paypal', 'PaypalController@showForm');
+
+// Post payment details for store/process API request
+Route::post('/payment/add-funds/paypal', 'PaypalController@store');
+
+// Handle status
+Route::get('/payment/add-funds/paypal/status', 'PaypalController@getPaymentStatus');
+
 // Admin Pages...
 Route::group(['middleware' => 'admin'], function () {
 

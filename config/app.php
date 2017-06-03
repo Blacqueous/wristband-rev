@@ -161,6 +161,7 @@ return [
          */
         'Collective\Html\HtmlServiceProvider',
         Maatwebsite\Excel\ExcelServiceProvider::class,
+
     ],
 
     /*

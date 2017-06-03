@@ -9,7 +9,10 @@
         "laravel/framework": "5.2.*",
         "guzzlehttp/guzzle": "^6.2",
         "laravelcollective/html": "~5.0",
-        "maatwebsite/excel": "~2.1.0"
+        "maatwebsite/excel": "~2.1.0",
+        "ext-curl": "*",
+        "authorizenet/authorizenet": "1.9.3",
+        "paypal/rest-api-sdk-php": "*"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
