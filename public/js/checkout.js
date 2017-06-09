@@ -33,6 +33,17 @@ $(document).ready(function(e) {
         "hideMethod": "fadeOut"
     }
     
+    $(document).on('keyup', 'input[name="DiscountCode"]', function(e) {
+        $('.form-sub-total .form-total-value span').html(parseInt(total).formatMoney(2, '.', ','));
+        var discount = 0;
+        if ($(this).val().length > 0) {
+            discount = total * 0.10;
+        }
+        $('.form-discount-total .form-total-value span').html(parseInt(discount).formatMoney(2, '.', ','));
+        var grand_total = total - discount;
+        $('.form-grand-total .form-total-value span').html(parseInt(grand_total).formatMoney(2, '.', ','));
+    });
+    
     $(document).on('ifChecked', 'input[name="PaymentType"]', function(e) {
         var self = $(this),
             val = self.val().toUpperCase();
@@ -56,18 +67,18 @@ $(document).ready(function(e) {
             $('input[name="sInfoStreetAddress1"]').val($('input[name="bInfoStreetAddress1"]').val());
             $('input[name="sInfoStreetAddress2"]').val($('input[name="bInfoStreetAddress2"]').val());
             $('input[name="sInfoCity"]').val($('input[name="bInfoCity"]').val());
-            $('input[name="sInfoState"]').val($('input[name="bInfoState"]').val());
             $('input[name="sInfoZipCode"]').val($('input[name="bInfoZipCode"]').val());
-            $('select[name="sInfoCountry"]').val($('select[name="bInfoCountry"]').val());
+            $('select[name="sInfoCountry"]').val($('select[name="bInfoCountry"]').val()).trigger('change');
+            $('select[name="sInfoState"]').val($('select[name="bInfoState"]').val());
         } else {
             $('input[name="sInfoFirstName"]').val('');
             $('input[name="sInfoLastName"]').val('');
             $('input[name="sInfoStreetAddress1"]').val('');
             $('input[name="sInfoStreetAddress2"]').val('');
             $('input[name="sInfoCity"]').val('');
-            $('input[name="sInfoState"]').val('');
             $('input[name="sInfoZipCode"]').val('');
-            $('select[name="sInfoCountry"]').val('US');
+            $('select[name="sInfoCountry"]').val('US').trigger('change');
+            $('select[name="sInfoState"]').val('');
         }
         if ($('input[name="sInfoFirstName"]').val().length > 0) {
             $('input[name="sInfoFirstName"]').closest('.form-group').removeClass('has-error has-danger');
@@ -84,14 +95,14 @@ $(document).ready(function(e) {
         if ($('input[name="sInfoCity"]').val().length > 0) {
             $('input[name="sInfoCity"]').closest('.form-group').removeClass('has-error has-danger');
         }
-        if ($('input[name="sInfoState"]').val().length > 0) {
-            $('input[name="sInfoState"]').closest('.form-group').removeClass('has-error has-danger');
-        }
         if ($('input[name="sInfoZipCode"]').val().length > 0) {
             $('input[name="sInfoZipCode"]').closest('.form-group').removeClass('has-error has-danger');
         }
         if ($('select[name="sInfoCountry"]').val().length > 0) {
             $('select[name="sInfoCountry"]').closest('.form-group').removeClass('has-error has-danger');
+        }
+        if ($('select[name="sInfoState"]').val().length > 0) {
+            $('select[name="sInfoState"]').closest('.form-group').removeClass('has-error has-danger');
         }
     });
     
@@ -307,3 +318,14 @@ $(document).ready(function(e) {
     });
 
 });
+
+Number.prototype.formatMoney = function(c, d, t) {
+    var n = this, 
+        c = isNaN(c = Math.abs(c)) ? 2 : c, 
+        d = d == undefined ? "." : d, 
+        t = t == undefined ? "," : t, 
+        s = n < 0 ? "-" : "", 
+        i = String(parseInt(n = Math.abs(Number(n) || 0).toFixed(c))), 
+        j = (j = i.length) > 3 ? j % 3 : 0;
+    return s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");
+ };

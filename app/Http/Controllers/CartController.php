@@ -27,10 +27,14 @@ use net\authorize\api\contract\v1 as AnetAPI;
 use net\authorize\api\controller as AnetController;
 use PayPal\Api\Amount;
 use PayPal\Api\Details;
-use PayPal\Api\ExecutePayment;
+use PayPal\Api\Item;
+use PayPal\Api\ItemList;
+use PayPal\Api\Payer;
 use PayPal\Api\Payment;
-use PayPal\Api\PaymentExecution;
+use PayPal\Api\RedirectUrls;
 use PayPal\Api\Transaction;
+use PayPal\Auth\OAuthTokenCredential;
+use PayPal\Rest\ApiContext;
 
 class CartController extends Controller
 {
@@ -198,11 +202,13 @@ class CartController extends Controller
 		// 		'items' => (Session::has('_cart')) ? Session::get('_cart') : []
 		// 	];
 		// 	// Do something...
-			$data = [];
+			$data = [
+						'data' => (session('checkout_data')) ? session('checkout_data') : [],
+					];
 			return view('checkout', $data);
 		// }
 
-		// return redirect('/cart')->with('cart_message', 'Cart does not exist.');
+		return redirect('/cart')->with('cart_message', 'Cart does not exist.');
 	}
 
 	public function checkoutSubmit(Request $request)
@@ -217,8 +223,8 @@ class CartController extends Controller
 			"LastName"			=> $request->bInfoLastName,
 			"EmailAddress"		=> $request->bInfoEmail,
 			"PaymentMethod"		=> (strtoupper($request->PaymentType) == "CC") ? 'authnet' : 'paypal',
-			"Paid"				=> "",
-			"PaidDate"			=> "",
+			"Paid"				=> "100",
+			"PaidDate"			=> date('Y-m-d'),
 			"AuthorizeTransID"	=> "",
 			"PaypalEmail"		=> "",
 			"PaymentRemarks"	=> "",
@@ -226,8 +232,8 @@ class CartController extends Controller
 			"DeliveryCharge"	=> "",
 			"DaysProduction"	=> "",
 			"DaysDelivery"		=> "",
-			"DiscountCode"		=> "",
-			"DiscountPercent"	=> "",
+			"DiscountCode"		=> $request->DiscountCode,
+			"DiscountPercent"	=> $request->DiscountPercent,
 			"Address"			=> $request->bInfoStreetAddress1,
 			"Address2"			=> $request->bInfoStreetAddress2,
 			"City"				=> $request->bInfoCity,
@@ -257,51 +263,145 @@ class CartController extends Controller
 			
 			// Create the payment data for a credit card
 			$creditCard = new AnetAPI\CreditCardType();
-			$creditCard->setCardNumber( $request->CardNum );  
-			$creditCard->setExpirationDate( $request->CardExpDateYear . "-" . $request->CardExpDateMonth );
+			$creditCard->setCardNumber(trim(str_replace(' ', '', $request->CardNum)));  
+			$creditCard->setExpirationDate(trim($request->CardExpDateYear)."-".trim($request->CardExpDateMonth));
+    		$creditCard->setCardCode(trim($request->CardCVV));
 			$paymentOne = new AnetAPI\PaymentType();
 			$paymentOne->setCreditCard($creditCard);
+			
+		    $order = new AnetAPI\OrderType();
+		    $order->setDescription("Promotional Wristband");
+			
+		    // Set the customer's Bill To address
+		    $customerAddress = new AnetAPI\CustomerAddressType();
+		    $customerAddress->setFirstName($request->bInfoFirstName);
+		    $customerAddress->setLastName($request->bInfoLastName);
+		    $customerAddress->setAddress($request->bInfoStreetAddress1);
+		    $customerAddress->setCity($request->bInfoCity);
+		    $customerAddress->setState($request->bInfoState);
+		    $customerAddress->setZip($request->bInfoZipCode);
+		    $customerAddress->setCountry($request->bInfoCountry);
+    		$customerAddress->setPhoneNumber($request->bInfoContactNo);
 			
 			// Create a transaction
 			$transactionRequestType = new AnetAPI\TransactionRequestType();
 			$transactionRequestType->setTransactionType("authCaptureTransaction");   
-			$transactionRequestType->setAmount(151.51);
-			$transactionRequestType->setPayment($paymentOne);
+			$transactionRequestType->setAmount($data_order['Paid']);
+    		$transactionRequestType->setBillTo($customerAddress);
+    		$transactionRequestType->setOrder($order);
+    		$transactionRequestType->setPayment($paymentOne);
+
 			$trequest = new AnetAPI\CreateTransactionRequest();
 			$trequest->setMerchantAuthentication($merchantAuthentication);
 			$trequest->setRefId($refId);
 			$trequest->setTransactionRequest($transactionRequestType);
+
 			$controller = new AnetController\CreateTransactionController($trequest);
 			if (App::make('config')->get('services.authorizenet.sandbox')) {
 				$response = $controller->executeWithApiResponse(\net\authorize\api\constants\ANetEnvironment::SANDBOX);
 			} else {
 				$response = $controller->executeWithApiResponse(\net\authorize\api\constants\ANetEnvironment::PRODUCTION);
 			}
-			var_dump($trequest);
-			var_dump($response->getMessages());
-			var_dump($response);
+			// var_dump($response); die;
+			// Default error message
+			$errMsg = 'Something went wrong! Kindly try again.';
 			if ($response != null) {
 				$tresponse = $response->getTransactionResponse();
-
+				
 				if (($tresponse != null) && ($tresponse->getResponseCode()=="1") ) {
-					echo "Charge Credit Card AUTH CODE : " . $tresponse->getAuthCode() . "\n";
-					echo "Charge Credit Card TRANS ID  : " . $tresponse->getTransId() . "\n";
-
+					$data_order['AuthorizeTransID'] = $tresponse->getTransId();
 				} else{
-					echo  "Charge Credit Card ERROR :  Invalid response\n";
+					// Get authnet transaction error message
+					if($tresponse->getErrors()) {
+						if ($tresponse->getErrors()[0] !== null) {
+							if (!empty($tresponse->getErrors()[0]->getErrorText())) {
+								$errMsg = $tresponse->getErrors()[0]->getErrorText();
+							}
+						}
+					}
+					return redirect('/checkout')->withErrors(['message'=> $errMsg], 'checkout')->withInput();
 				}
 			} else {
-				echo  "Charge Credit card Null response returned";
+				// Get authnet response message
+				if ($response->getMessages()->getMessage()) {
+					if ($response->getMessages()->getMessage()[0] !== null) {
+						if (!empty($response->getMessages()->getMessage()[0]->getText())) {
+							$errMsg = $response->getMessages()->getMessage()[0]->getText();
+						}
+					}
+				}
+				return redirect('/checkout')->withErrors(['message'=> $errMsg], 'checkout')->withInput();
 			}
+
 		} else {
+			$payer = new Payer();
+			$payer->setPaymentMethod("paypal");
+
+			$item = new Item();
+			$item->setName('Wristbands')
+				->setCurrency('USD')
+				->setQuantity(1)
+				->setPrice(100);
+			
+			$itemList = new ItemList();
+			$itemList->setItems(array($item));
+			
+			$details = new Details();
+			$details->setShipping(10)
+					->setTax(10)
+					->setSubtotal(17.50);
+			
+			$amount = new Amount();
+			$amount->setCurrency("USD")
+					->setTotal(20)
+					->setDetails($details);
+			
+			$transaction = new Transaction();
+			$transaction->setAmount($amount)
+					    ->setItemList($itemList)
+					    ->setDescription("Payment description")
+			    		->setInvoiceNumber(uniqid());
+			
+			$payment = new Payment();
+			$payment->setIntent("sale")
+				    ->setPayer($payer)
+				    // ->setRedirectUrls($redirectUrls)
+				    ->setTransactions(array($transaction));
+			$request = clone $payment;
+			var_dump($request);
+			$apiContext= new ApiContext(
+							new OAuthTokenCredential(
+								App::make('config')->get('services.paypal.client_id'), // Client ID
+								App::make('config')->get('services.paypal.secret') // Secret
+							)
+		                );
+			var_dump($apiContext);
+			try {
+			    $payment->create($apiContext);
+			} catch (PayPal\Exception\PayPalConnectionException $ex) {
+				echo $ex->getCode(); // Prints the Error Code
+				echo $ex->getData(); // Prints the detailed error message 
+				die($ex);
+			} catch (Exception $ex) {
+				ResultPrinter::printError("Created Payment Using PayPal. Please visit the URL to Approve.", "Payment", null, $request, $ex);
+				exit(1);
+			}
+
+			$approvalUrl = $payment->getApprovalLink();
+			ResultPrinter::printResult("Created Payment Using PayPal. Please visit the URL to Approve.", "Payment", "<a href='$approvalUrl' >$approvalUrl</a>", $request, $payment);
+			
+			// return $payment;
+var_dump('here');
+var_dump($payment);
+var_dump('here');
 			$data_order['PaypalEmail'] = $request->PaypalEmail;
 		}
 
-var_dump('done');
+var_dump($data_order);
 die;
+
 		// Insert new order
 		$orders = new Orders();
-
 		// $order_id = $orders->insertOrder($data_order);
 		$order_id = 0;
 

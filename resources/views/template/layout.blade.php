@@ -27,6 +27,9 @@
 		<!-- Font Awesome core CSS -->
 		<link href="{{ URL::asset('global/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet">
 
+		<!-- SweetAlert core CSS -->
+		<link href="{{ URL::asset('global/sweetalert.js/sweetalert.css') }}" rel="stylesheet">
+
 		<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
 		<link href="{{ URL::asset('assets/css/ie10-viewport-bug-workaround.css') }}" rel="stylesheet">
 
@@ -64,8 +67,8 @@
             //         s.parentNode.insertBefore(gts, s);
             // })();
         </script>
-		<script type='text/javascript' data-cfasync='false'>window.purechatApi = { l: [], t: [], on: function () { this.l.push(arguments); } }; (function () { var done = false; var script = document.createElement('script'); script.async = true; script.type = 'text/javascript'; script.src = 'https://app.purechat.com/VisitorWidget/WidgetScript'; document.getElementsByTagName('HEAD').item(0).appendChild(script); script.onreadystatechange = script.onload = function (e) { if (!done && (!this.readyState || this.readyState == 'loaded' || this.readyState == 'complete')) { var w = new PCWidget({c: 'ff8c4d2b-032b-4f3f-9c29-8411120648ad', f: true }); done = true; } }; })();
-		</script>
+		<!-- <script type='text/javascript' data-cfasync='false'>window.purechatApi = { l: [], t: [], on: function () { this.l.push(arguments); } }; (function () { var done = false; var script = document.createElement('script'); script.async = true; script.type = 'text/javascript'; script.src = 'https://app.purechat.com/VisitorWidget/WidgetScript'; document.getElementsByTagName('HEAD').item(0).appendChild(script); script.onreadystatechange = script.onload = function (e) { if (!done && (!this.readyState || this.readyState == 'loaded' || this.readyState == 'complete')) { var w = new PCWidget({c: 'ff8c4d2b-032b-4f3f-9c29-8411120648ad', f: true }); done = true; } }; })();
+		</script> -->
 		<!-- END: Google Trusted Stores -->
 	</head>
 
@@ -102,6 +105,8 @@
         <script type="text/javascript" src="{{ URL::asset('assets/js/jquery.magnific-popup.min.js') }}"></script>
 
 		<script src="{{ URL::asset('global/bootstrap/js/bootstrap.min.js') }}"></script>
+
+		<script src="{{ URL::asset('global/sweetalert.js/sweetalert.min.js') }}"></script>
 
 		<script src="{{ URL::asset('js/angular.min.js') }}"></script>
         <script src="{{ URL::asset('js/jquery.blink.js') }}"></script>
