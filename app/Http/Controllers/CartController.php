@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App;
 use App\Http\Controllers\Controller;
 use App\Models\AddOns;
 use App\Models\Carts;
@@ -22,6 +23,14 @@ use Mail;
 use Session;
 use Storage;
 use URL;
+use net\authorize\api\contract\v1 as AnetAPI;
+use net\authorize\api\controller as AnetController;
+use PayPal\Api\Amount;
+use PayPal\Api\Details;
+use PayPal\Api\ExecutePayment;
+use PayPal\Api\Payment;
+use PayPal\Api\PaymentExecution;
+use PayPal\Api\Transaction;
 
 class CartController extends Controller
 {
@@ -184,15 +193,16 @@ class CartController extends Controller
 
 	public function checkout(Request $request)
 	{
-		if(Session::has('_cart')) {
-			$data = [
-				'items' => (Session::has('_cart')) ? Session::get('_cart') : []
-			];
-			// Do something...
+		// if(Session::has('_cart')) {
+		// 	$data = [
+		// 		'items' => (Session::has('_cart')) ? Session::get('_cart') : []
+		// 	];
+		// 	// Do something...
+			$data = [];
 			return view('checkout', $data);
-		}
+		// }
 
-		return redirect('/cart')->with('cart_message', 'Cart does not exist.');
+		// return redirect('/cart')->with('cart_message', 'Cart does not exist.');
 	}
 
 	public function checkoutSubmit(Request $request)
@@ -202,11 +212,11 @@ class CartController extends Controller
 			"DateCreated"		=> date('Y-m-d H:i:s'),
 			"TempToken"			=> $request->_token,
 			"TransNo"			=> "",
-			"Status"			=> "1",
-			"FirstName"			=> $request->FirstName,
-			"LastName"			=> $request->Surname,
-			"EmailAddress"		=> $request->Email,
-			"PaymentMethod"		=> "",
+			"Status"			=> '1',
+			"FirstName"			=> $request->bInfoFirstName,
+			"LastName"			=> $request->bInfoLastName,
+			"EmailAddress"		=> $request->bInfoEmail,
+			"PaymentMethod"		=> (strtoupper($request->PaymentType) == "CC") ? 'authnet' : 'paypal',
 			"Paid"				=> "",
 			"PaidDate"			=> "",
 			"AuthorizeTransID"	=> "",
@@ -218,29 +228,80 @@ class CartController extends Controller
 			"DaysDelivery"		=> "",
 			"DiscountCode"		=> "",
 			"DiscountPercent"	=> "",
-			"Address"			=> $request->StreetAddress1,
-			"Address2"			=> $request->StreetAddress2,
-			"City"				=> $request->City,
-			"State"				=> $request->State,
-			"ZipCode"			=> $request->PostalCode,
-			"Country"			=> "",
-			"Phone"				=> $request->PhoneNumber,
-			"ShipFirstName"		=> "",
-			"ShipLastName"		=> "",
-			"ShipAddress"		=> "",
-			"ShipAddress2"		=> "",
-			"ShipCity"			=> "",
-			"ShipState"			=> "",
-			"ShipZipCode"		=> "",
-			"ShipCountry"		=> "",
+			"Address"			=> $request->bInfoStreetAddress1,
+			"Address2"			=> $request->bInfoStreetAddress2,
+			"City"				=> $request->bInfoCity,
+			"State"				=> $request->bInfoState,
+			"ZipCode"			=> $request->bInfoZipCode,
+			"Country"			=> $request->bInfoCountry,
+			"Phone"				=> $request->bInfoContactNo,
+			"ShipFirstName"		=> $request->sInfoFirstName,
+			"ShipLastName"		=> $request->sInfoLastName,
+			"ShipAddress"		=> $request->sInfoStreetAddress1,
+			"ShipAddress2"		=> $request->sInfoStreetAddress2,
+			"ShipCity"			=> $request->sInfoCity,
+			"ShipState"			=> $request->sInfoState,
+			"ShipZipCode"		=> $request->sInfoZipCode,
+			"ShipCountry"		=> $request->sInfoCountry,
 			"DataStream"		=> "",
 			"ReplyString"		=> "",
 			"RandomChr"			=> "",
 			"IPAddress"			=> $request->ip()
 		];
 
+		if (strtoupper($request->PaymentType) == "CC") {
+			$merchantAuthentication = new AnetAPI\MerchantAuthenticationType();
+			$merchantAuthentication->setName(App::make('config')->get('services.authorizenet.name'));
+			$merchantAuthentication->setTransactionKey(App::make('config')->get('services.authorizenet.key'));
+			$refId = 'ref' . time();
+			
+			// Create the payment data for a credit card
+			$creditCard = new AnetAPI\CreditCardType();
+			$creditCard->setCardNumber( $request->CardNum );  
+			$creditCard->setExpirationDate( $request->CardExpDateYear . "-" . $request->CardExpDateMonth );
+			$paymentOne = new AnetAPI\PaymentType();
+			$paymentOne->setCreditCard($creditCard);
+			
+			// Create a transaction
+			$transactionRequestType = new AnetAPI\TransactionRequestType();
+			$transactionRequestType->setTransactionType("authCaptureTransaction");   
+			$transactionRequestType->setAmount(151.51);
+			$transactionRequestType->setPayment($paymentOne);
+			$trequest = new AnetAPI\CreateTransactionRequest();
+			$trequest->setMerchantAuthentication($merchantAuthentication);
+			$trequest->setRefId($refId);
+			$trequest->setTransactionRequest($transactionRequestType);
+			$controller = new AnetController\CreateTransactionController($trequest);
+			if (App::make('config')->get('services.authorizenet.sandbox')) {
+				$response = $controller->executeWithApiResponse(\net\authorize\api\constants\ANetEnvironment::SANDBOX);
+			} else {
+				$response = $controller->executeWithApiResponse(\net\authorize\api\constants\ANetEnvironment::PRODUCTION);
+			}
+			var_dump($trequest);
+			var_dump($response->getMessages());
+			var_dump($response);
+			if ($response != null) {
+				$tresponse = $response->getTransactionResponse();
+
+				if (($tresponse != null) && ($tresponse->getResponseCode()=="1") ) {
+					echo "Charge Credit Card AUTH CODE : " . $tresponse->getAuthCode() . "\n";
+					echo "Charge Credit Card TRANS ID  : " . $tresponse->getTransId() . "\n";
+
+				} else{
+					echo  "Charge Credit Card ERROR :  Invalid response\n";
+				}
+			} else {
+				echo  "Charge Credit card Null response returned";
+			}
+		} else {
+			$data_order['PaypalEmail'] = $request->PaypalEmail;
+		}
+
+var_dump('done');
+die;
 		// Insert new order
 		$orders = new Orders();
+
 		// $order_id = $orders->insertOrder($data_order);
 		$order_id = 0;
 
@@ -323,47 +384,6 @@ class CartController extends Controller
 				$data[] = array_merge($data_cart_default, $data_cart_default_band, $cart_val);
 			}
 
-// var_dump($data_cart);
-// var_dump($list);
-// die;
-
-			// $data_cart = [
-			// 	"MessageStyle"	=> "",
-			// 	"FrontMessage"						=> "",
-			// 	"BackMessage"						=> "",
-			// 	"ContinuousMessage"					=> "",
-			// 	"FrontMessageStartClipart"			=> "",
-			// 	"FrontMessageEndClipart"			=> "",
-			// 	"BackMessageStartClipart"			=> "",
-			// 	"BackMessageEndClipart"				=> "",
-			// 	"ContinuousMessageStartClipart"		=> "",
-			// 	"ContinuousEndClipart"				=> "",
-			// 	"FreeQty"							=> "",
-			// 	"Individual_Pack"					=> "",
-			// 	"Keychain"							=> "",
-			// 	"DigitalPrint"						=> "",
-			// 	"PriceIndividual_Pack"				=> "",
-			// 	"PriceKeychain"						=> "",
-			// 	"PriceDigitalPrint"					=> "",
-			// 	"PriceBackMessage"					=> "",
-			// 	"PriceContinuousMessage"			=> "",
-			// 	"PriceLogo"							=> "",
-			// 	"PriceColorSplit"					=> "",
-			// 	"PriceMouldingFee"					=> "",
-			// 	"RandomChr"							=> "",
-			// 	"newCart"							=> "",
-			// 	"arMoldingFee"						=> "",
-			// 	"arFrontMessage"					=> "",
-			// 	"arBackMessage"						=> "",
-			// 	"arContinuousMessage"				=> "",
-			// 	"arInsideMessage"					=> "",
-			// 	"arFrontMessageStartClipart"		=> "",
-			// 	"arFrontMessageEndClipart"			=> "",
-			// 	"arBackMessageStartClipart"			=> "",
-			// 	"arBackMessageEndClipart"			=> "",
-			// 	"arContinuousMessageStartClipart"	=> "",
-			// 	"arContinuousEndClipart"			=> "",
-			// ];
 		}
 
 var_dump($data);

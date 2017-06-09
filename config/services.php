@@ -76,8 +76,9 @@ return [
     ],
 
     'authorizenet' => [
-        'name' => 'ANET_LOGIN',
-        'key' => 'ANET_KEY',
+        'name' => '5w84kJJZ8mM',
+        'key' => '3F5MzP5p33V7Xcxd',
+        'sandbox' => true,
     ],
 
 ];

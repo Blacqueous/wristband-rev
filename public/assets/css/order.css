@@ -382,13 +382,13 @@ ORDER CSS
 .box-color input {
     border: 1px solid #079ca5;
     border-radius: 2px;
-    color: #8F8F8F;
+    color: #212121;
     text-align: center;
     width: 100%;
 }
 
 .box-color label {
-    color: #A1A1A1;
+    color: #424242;
     font-weight: normal;
 }
 
@@ -405,6 +405,12 @@ ORDER CSS
 .box-color .col-sm-4 {
     margin-bottom: 26px;
 }
+
+input{color:#424242;}
+input::placeholder,.box-color input::placeholder{color:#dddddd;}
+input::-moz-placeholder,.box-color input::-moz-placeholder{color:#dddddd;opacity:1;}
+input::-ms-input-placeholder,.box-color input::-ms-input-placeholder{color:#dddddd;}
+input::-webkit-input-placeholder,.box-color input::-webkit-input-placeholder{color:#dddddd;}
 
 .tab-content h3 {
     color: #079ca5;
@@ -675,36 +681,6 @@ div#order-summary {
 
 .padding-left-25 {
     padding-left: 25px;
-}
-
-.cart-summary {
-    background-color: transparent;
-    border-radius: 5px;
-    padding: 0px;
-}
-
-.cart-summary span{
-     color: #333;
-}
-
-.cart-summary .summary-table {
-    background-color: #fff;
-    margin: 0px auto;
-    font-size: 15px;
-    border-bottom: 1px solid #f3f3f3;
-}
-
-.cart-summary .summary-table.list-first {
-    /*border-radius: 5px 5px 0px 0px;*/
-}
-
-.cart-summary .summary-table.list-last {
-    border-radius: 0px 0px 5px 5px;
-    border-bottom: 0px;
-}
-
-.cart-summary .col-md-9 {
-    border-right: 1px solid #f3f3f3;
 }
 
 .message-selection {
@@ -1301,7 +1277,6 @@ span.fonttext-color {
     height: 34px;
     line-height: 34px;
     margin-bottom: 0px;
-    width: 100%;
 }
 
 .title-color {

@@ -1036,9 +1036,9 @@ input.form-control {
     width: 48%!important;
 	}
 
-.box-color input {
-    /*width: 100%!important;*/
-}
+    .box-color input {
+        /*width: 100%!important;*/
+    }
 
   #footer-link-main, #footer-link-secondary, #footer-text{
 	float:none!important;

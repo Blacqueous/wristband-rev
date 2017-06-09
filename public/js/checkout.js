@@ -1,6 +1,19 @@
 
 $(document).ready(function(e) {
 
+    // init iCheck
+    $('input').iCheck({
+        checkboxClass: 'icheckbox_square-green control-checkbox',
+        radioClass: 'iradio_square-green control-radio',
+        increaseArea: '20%' // optional
+    });
+
+    // init PayForm
+    $('input[name="CardNum"]').payform('formatCardNumber');
+    $('input[name="CardCVV"]').payform('formatCardCVC');
+
+    $('select').attr('required','required');
+
     // Toastr popup behavior
     toastr.options = {
         "closeButton": true,
@@ -19,71 +32,278 @@ $(document).ready(function(e) {
         "showMethod": "fadeIn",
         "hideMethod": "fadeOut"
     }
+    
+    $(document).on('ifChecked', 'input[name="PaymentType"]', function(e) {
+        var self = $(this),
+            val = self.val().toUpperCase();
+        
+        if (val==="PP") {
+            $('.payment-type-pp, .payment-type-icon-pp').removeClass('hide');
+            $('.payment-type-cc, .payment-type-icon-cc').addClass('hide');
+        } else {
+            $('.payment-type-cc, .payment-type-icon-cc').removeClass('hide');
+            $('.payment-type-pp, .payment-type-icon-pp').addClass('hide');
+        }
+    });
+    
+    $(document).on('ifChanged', 'input[name="sameInfo"]', function(e) {
+        var self = $(this),
+            isChecked = self.is(':checked');
 
-    // Submit to cart
-    $('body').on('submit', '#checkoutSubmit', function(e) {
-        e.preventDefault()
+        if (isChecked === true) {
+            $('input[name="sInfoFirstName"]').val($('input[name="bInfoFirstName"]').val());
+            $('input[name="sInfoLastName"]').val($('input[name="bInfoLastName"]').val());
+            $('input[name="sInfoStreetAddress1"]').val($('input[name="bInfoStreetAddress1"]').val());
+            $('input[name="sInfoStreetAddress2"]').val($('input[name="bInfoStreetAddress2"]').val());
+            $('input[name="sInfoCity"]').val($('input[name="bInfoCity"]').val());
+            $('input[name="sInfoState"]').val($('input[name="bInfoState"]').val());
+            $('input[name="sInfoZipCode"]').val($('input[name="bInfoZipCode"]').val());
+            $('select[name="sInfoCountry"]').val($('select[name="bInfoCountry"]').val());
+        } else {
+            $('input[name="sInfoFirstName"]').val('');
+            $('input[name="sInfoLastName"]').val('');
+            $('input[name="sInfoStreetAddress1"]').val('');
+            $('input[name="sInfoStreetAddress2"]').val('');
+            $('input[name="sInfoCity"]').val('');
+            $('input[name="sInfoState"]').val('');
+            $('input[name="sInfoZipCode"]').val('');
+            $('select[name="sInfoCountry"]').val('US');
+        }
+        if ($('input[name="sInfoFirstName"]').val().length > 0) {
+            $('input[name="sInfoFirstName"]').closest('.form-group').removeClass('has-error has-danger');
+        }
+        if ($('input[name="sInfoLastName"]').val().length > 0) {
+            $('input[name="sInfoLastName"]').closest('.form-group').removeClass('has-error has-danger');
+        }
+        if ($('input[name="sInfoStreetAddress1"]').val().length > 0) {
+            $('input[name="sInfoStreetAddress1"]').closest('.form-group').removeClass('has-error has-danger');
+        }
+        if ($('input[name="sInfoStreetAddress2"]').val().length > 0) {
+            $('input[name="sInfoStreetAddress2"]').closest('.form-group').removeClass('has-error has-danger');
+        }
+        if ($('input[name="sInfoCity"]').val().length > 0) {
+            $('input[name="sInfoCity"]').closest('.form-group').removeClass('has-error has-danger');
+        }
+        if ($('input[name="sInfoState"]').val().length > 0) {
+            $('input[name="sInfoState"]').closest('.form-group').removeClass('has-error has-danger');
+        }
+        if ($('input[name="sInfoZipCode"]').val().length > 0) {
+            $('input[name="sInfoZipCode"]').closest('.form-group').removeClass('has-error has-danger');
+        }
+        if ($('select[name="sInfoCountry"]').val().length > 0) {
+            $('select[name="sInfoCountry"]').closest('.form-group').removeClass('has-error has-danger');
+        }
+    });
+    
+    $(document).on('ifChanged', 'input[name="samePaypalEmail"]', function(e) {
+        var self = $(this),
+            isChecked = self.is(':checked');
 
-        var self = $(this);
-        var showMessage = true;
-        var data = self.serializeArray();
-            data[data.length] = { name: "_token", value: $('meta[name="csrf-token"]').attr('content') };
+        if (isChecked === true) {
+            $('input[name="PaypalEmail"]').val($('input[name="bInfoEmail"]').val());
+        } else {
+            $('input[name="PaypalEmail"]').val('');
+        }
+    });
+    
+    $.validator.addMethod('payformCardNumber', function (value, element, param) {
+        var isValid = $.payform.validateCardNumber(value);
+        if (isValid) {
+            return true;
+        } else {
+            return false;
+        }
+    }, 'Credit card number is invalid.');
 
-        // Get proper total qty
-        $.ajax({
-            type: 'POST',
-            url: '/checkout/submit',
-            dataType: 'json',
-            data: data,
-            beforeSend: function() {
-                $('#submitCheckout button[type="submit"]').prop('disabled', true);
-                $('#submitCheckout button[type="submit"]').addClass('disabled');
+    $.validator.addMethod('payformCardCVV', function (value, element, param) {
+        var isValid = $.payform.validateCardCVC(value);
+        if (isValid) {
+            return true;
+        } else {
+            return false;
+        }
+    }, 'Creadit card CVV is invalid.');
+
+    $('#form_checkout').validate({
+        focusInvalid: false,
+        focusCleanup: true,
+        errorClass: "has-error",
+        errorElement: "div.control-input",
+        rules: {
+            bInfoFirstName: {
+                required: true
             },
-            success: function(data) {
-                // Display success message.
-                if(showMessage) {
-                    toastr.success('', '<h5>Your order has been submitted successfully!</h5>');
-                    showMessage = false;
-                }
+            bInfoLastName: {
+                required: true
             },
-            error: function(XMLHttpRequest, textStatus, errorThrown) {
-                // Display error message.
-                if(showMessage) {
-                    toastr.error('', '<h5>Ooops! Something went wrong.</h5>');
-                    showMessage = false;
-                }
-                // Re-enable submit button
-                $('#submitCheckout button[type="submit"]').prop('disabled', false);
-                $('#submitCheckout button[type="submit"]').removeClass('disabled');
+            bInfoEmail: {
+                required: true,
+                email: true
+            },
+            bInfoContactNo: {
+                required: true
+            },
+            bInfoStreetAddress1: {
+                required: true
+            },
+            bInfoStreetAddress2: {
+                required: true
+            },
+            bInfoCity: {
+                required: true
+            },
+            bInfoState: {
+                required: true
+            },
+            bInfoZipCode: {
+                required: true,
+                digits: true
+            },
+            bInfoCountry: {
+                required: true
+            },
+            sInfoFirstName: {
+                required: true
+            },
+            sInfoLastName: {
+                required: true
+            },
+            sInfoStreetAddress1: {
+                required: true
+            },
+            sInfoStreetAddress2: {
+                required: true
+            },
+            sInfoCity: {
+                required: true
+            },
+            sInfoState: {
+                required: true
+            },
+            sInfoZipCode: {
+                required: true,
+                digits: true
+            },
+            sInfoCountry: {
+                required: true
+            },
+            PaymentType: {
+                required: true
+            },
+            CardName: {
+                required: true
+            },
+            CardNum: {
+                required: true,
+                payformCardNumber: true
+            },
+            CardExpDateMonth: {
+                required: true
+            },
+            CardExpDateYear: {
+                required: true
+            },
+            CardCVV: {
+                required: true,
+                payformCardCVV: true
+            },
+            PaypalEmail: {
+                required: true,
+                email: true
             }
-        }).done(function(data) {
-            if(data.status == true) {
-                // Display success message.
-                if(showMessage) {
-                    toastr.success('', '<h5>Your order has been submitted successfully!</h5>');
-                    showMessage = false;
-                }
-            } else {
-                // Display error message.
-                if(showMessage) {
-                    toastr.error('', '<h5>Ooops! Something went wrong.</h5>');
-                    showMessage = false;
-                }
-                // Re-enable submit button
-                $('#submitCheckout button[type="submit"]').prop('disabled', false);
-                $('#submitCheckout button[type="submit"]').removeClass('disabled');
+        },
+        messages: {
+            bInfoFirstName: {
+                required: ''
+            },
+            bInfoLastName: {
+                required: ''
+            },
+            bInfoEmail: {
+                required: '',
+                email: ''
+            },
+            bInfoContactNo: {
+                required: ''
+            },
+            bInfoStreetAddress1: {
+                required: ''
+            },
+            bInfoStreetAddress2: {
+                required: ''
+            },
+            bInfoCity: {
+                required: ''
+            },
+            bInfoState: {
+                required: ''
+            },
+            bInfoZipCode: {
+                required: '',
+                digits: ''
+            },
+            bInfoCountry: {
+                required: ''
+            },
+            sInfoFirstName: {
+                required: ''
+            },
+            sInfoLastName: {
+                required: ''
+            },
+            sInfoStreetAddress1: {
+                required: ''
+            },
+            sInfoStreetAddress2: {
+                required: ''
+            },
+            sInfoCity: {
+                required: ''
+            },
+            sInfoState: {
+                required: ''
+            },
+            sInfoZipCode: {
+                required: '',
+                digits: ''
+            },
+            sInfoCountry: {
+                required: ''
+            },
+            PaymentType: {
+                required: ''
+            },
+            CardName: {
+                required: ''
+            },
+            CardNum: {
+                required: '',
+                payformCardNumber: ''
+            },
+            CardExpDateMonth: {
+                required: ''
+            },
+            CardExpDateYear: {
+                required: ''
+            },
+            CardCVV: {
+                required: '',
+                payformCardCVV: ''
+            },
+            PaypalEmail: {
+                required: '',
+                email: ''
             }
-        }).fail(function(xhr, status, error) {
-            // Display error message.
-            if(showMessage) {
-                toastr.error('', '<h5>Ooops! Something went wrong.</h5>');
-                showMessage = false;
-            }
-            // Re-enable submit button
-            $('#submitCheckout button[type="submit"]').prop('disabled', false);
-            $('#submitCheckout button[type="submit"]').removeClass('disabled');
-        });
-
+        },
+        success: function(label) {
+            // do something
+        },
+        submitHandler: function(form) {
+            form.submit();
+        },
+        invalidHandler: function(form, validator) {
+            validator.errorList[0].element.focus();
+        },
     });
 
 });

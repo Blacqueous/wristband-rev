@@ -1,0 +1,26 @@
+
+.cart-summary {
+    background-color: transparent;
+    border-radius: 5px;
+    padding: 0px;
+}
+
+.cart-summary span {
+     color: #333;
+}
+
+.cart-summary .summary-table {
+    background-color: #fff;
+    margin: 0px auto;
+    font-size: 15px;
+    border-bottom: 1px solid #f3f3f3;
+}
+
+.cart-summary .summary-table.list-last {
+    border-radius: 0px 0px 5px 5px;
+    border-bottom: 0px;
+}
+
+.cart-summary .col-md-9 {
+    border-right: 1px solid #f3f3f3;
+}
