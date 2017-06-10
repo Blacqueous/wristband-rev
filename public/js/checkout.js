@@ -157,9 +157,6 @@ $(document).ready(function(e) {
             bInfoStreetAddress1: {
                 required: true
             },
-            bInfoStreetAddress2: {
-                required: true
-            },
             bInfoCity: {
                 required: true
             },
@@ -180,9 +177,6 @@ $(document).ready(function(e) {
                 required: true
             },
             sInfoStreetAddress1: {
-                required: true
-            },
-            sInfoStreetAddress2: {
                 required: true
             },
             sInfoCity: {
@@ -240,9 +234,6 @@ $(document).ready(function(e) {
             bInfoStreetAddress1: {
                 required: ''
             },
-            bInfoStreetAddress2: {
-                required: ''
-            },
             bInfoCity: {
                 required: ''
             },
@@ -263,9 +254,6 @@ $(document).ready(function(e) {
                 required: ''
             },
             sInfoStreetAddress1: {
-                required: ''
-            },
-            sInfoStreetAddress2: {
                 required: ''
             },
             sInfoCity: {

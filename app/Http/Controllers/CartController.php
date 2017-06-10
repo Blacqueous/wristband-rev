@@ -197,6 +197,10 @@ class CartController extends Controller
 
 	public function checkout(Request $request)
 	{
+		$cart_arr = $this->organizeCart("token", "1010101", "Full Metal", "+639091234567", "full_metal@gmail.com");
+		var_dump($cart_arr);
+		die;
+
 		// if(Session::has('_cart')) {
 		// 	$data = [
 		// 		'items' => (Session::has('_cart')) ? Session::get('_cart') : []
@@ -213,7 +217,7 @@ class CartController extends Controller
 
 	public function checkoutSubmit(Request $request)
 	{
-		// Arrange order data
+		// Initialize order data
 		$data_order = [
 			"DateCreated"		=> date('Y-m-d H:i:s'),
 			"TempToken"			=> $request->_token,
@@ -393,7 +397,7 @@ class CartController extends Controller
 			// payment approval/ cancellation.
 			$baseUrl = URL::to('/');
 			$redirectUrls = new RedirectUrls();
-			$redirectUrls->setReturnUrl("$baseUrl/ExecutePayment.php?success=true")
+			$redirectUrls->setReturnUrl("$baseUrl/success?success=true")
 			    		 ->setCancelUrl("$baseUrl/ExecutePayment.php?success=false");
 
 			// ### Payment
@@ -404,9 +408,6 @@ class CartController extends Controller
 				    ->setPayer($payer)
 				    ->setRedirectUrls($redirectUrls)
 				    ->setTransactions(array($transaction));
-
-			// For Sample Purposes Only.
-			$trequest = clone $payment;
 
 			// ### Create Payment
 			// Create a payment by calling the 'create' method
@@ -432,7 +433,6 @@ class CartController extends Controller
 				return redirect('/checkout')->withErrors(['message'=> $errMsg], 'checkout')->withInput();
 			}
 
-var_dump($trequest->PaypalEmail);
 var_dump($payment);
 var_dump($payment->getId());
 var_dump($payment->getState());
@@ -464,74 +464,6 @@ die;
 
 		$data = [];
 
-		// Arrange cart data
-		$cart_list = Session::get('_cart');
-		foreach ($cart_list as $key => $list) {
-
-			$data_cart_default_band = [
-				"BandStyle"			=> $list['style'],
-				"BandSize"			=> $list['size'],
-				"Font"				=> $list['fonts'],
-				"ProductionTime"	=> $list['time_production']['days'],
-				"arProduction"		=> $list['time_production']['days'],
-				"PriceProduction"	=> $list['time_production']['price'],
-				"Delivery"			=> $list['time_shipping']['days'],
-				"arShipping"		=> $list['time_shipping']['days'],
-				"PriceDelivery"		=> $list['time_shipping']['price']
-			];
-
-			$data_cart = [];
-			$data_cart_free = [];
-			$data_cart_item = [];
-
-			foreach ($list['items'] as $type => $item) {
-				$data_cart_item_attr = [];
-				$data_cart_item = [
-					"BandType"		=> $type,
-					"arColors"		=> "",
-					"arAddons"		=> $item['price_addon'],
-					"UnitPrice"		=> $item['price_total'],
-				];
-				// Get attribute
-				foreach ($item as $attr_key => $attr_val) {
-					if(is_array($attr_val)) {
-						foreach ($attr_val['size'] as $attr) {
-							$comment = ["Font Color"=> $attr['font'], "Font Name"=> $attr['font_name'], "Size"=> strtoupper($attr['size'])];
-							$data_cart_item_attr[] = [
-								"Qty"		=> $attr['qty'],
-								"Comments"	=> json_encode($comment)
-							];
-						}
-					}
-				}
-				foreach ($data_cart_item_attr as $value) {
-					$data_cart[] = array_merge($data_cart_item, $value);
-				}
-			}
-
-			foreach ($list['free'] as $free_key => $free_val) {
-				if($free_key == 'key-chain') {
-					foreach ($data_cart as $cart_key => $cart_val) {
-						$data_cart[$cart_key]["arFree"] = $free_val['quantity'];
-					}
-				}
-				if($free_key == 'wristbands') {
-					foreach ($data_cart as $cart_key => $cart_val) {
-						$data_cart[$cart_key]["arKeychains"] = $free_val['quantity'];
-					}
-				}
-			}
-
-			// Wrong total. Compute all prices
-			$data_cart_default_band["Total"] = $list['total'];
-
-			// Last thing to do
-			foreach ($data_cart as $cart_key => $cart_val) {
-				$data[] = array_merge($data_cart_default, $data_cart_default_band, $cart_val);
-			}
-
-		}
-
 var_dump($data);
 die;
 
@@ -543,5 +475,354 @@ die;
 		// // redirect to success page
 		// return json_encode(true);
 	}
+
+	private function organizeCart($token, $order_id, $full_name, $phone_num, $email) {
+
+		$data_cart_default = [
+			"DateCreated"						=> date('Y-m-d H:i:s'),
+			"Status"							=> "1",
+			"OrderID"							=> $order_id,
+			"TempToken"							=> $token,
+			"BandStyle"							=> "",
+			"BandType"							=> "",
+			"BandSize"							=> "",
+			"MessageStyle"						=> "",
+			"Font"								=> "",
+			"FrontMessage"						=> "",
+			"BackMessage"						=> "",
+			"ContinuousMessage"					=> "",
+			"FrontMessageStartClipart"			=> "",
+			"FrontMessageEndClipart"			=> "",
+			"BackMessageStartClipart"			=> "",
+			"BackMessageEndClipart"				=> "",
+			"ContinuousMessageStartClipart"		=> "",
+			"ContinuousEndClipart"				=> "",
+			"ProductionTime"					=> "",
+			"FreeQty"							=> "",
+			"Delivery"							=> "",
+			"Individual_Pack"					=> "",
+			"Keychain"							=> "",
+			"DigitalPrint"						=> "",
+			"Comments"							=> "",
+			"PriceProduction"					=> "",
+			"PriceDelivery"						=> "",
+			"PriceIndividual_Pack"				=> "",
+			"PriceKeychain"						=> "",
+			"PriceDigitalPrint"					=> "",
+			"PriceBackMessage"					=> "",
+			"PriceContinuousMessage"			=> "",
+			"PriceLogo"							=> "",
+			"PriceColorSplit"					=> "",
+			"PriceMouldingFee"					=> "",
+			"RandomChr"							=> "",
+			"newCart"							=> "",
+			"arColors"							=> "",
+			"arAddons"							=> "",
+			"arMoldingFee"						=> "",
+			"arFrontMessage"					=> "",
+			"arBackMessage"						=> "",
+			"arContinuousMessage"				=> "",
+			"arInsideMessage"					=> "",
+			"arFrontMessageStartClipart"		=> "",
+			"arFrontMessageEndClipart"			=> "",
+			"arBackMessageStartClipart"			=> "",
+			"arBackMessageEndClipart"			=> "",
+			"arContinuousMessageStartClipart"	=> "",
+			"arContinuousEndClipart"			=> "",
+			"arFree"							=> "",
+			"arKeychains"						=> "",
+			"arProduction"						=> "",
+			"arShipping"						=> "",
+			"Qty"								=> "",
+			"UnitPrice"							=> "",
+			"Total"								=> "",
+			"FullName"							=> $full_name,
+			"PhoneNo"							=> $phone_num,
+			"DateQuote"							=> "",
+			"EmailAddress"						=> $email
+		];
+
+		$data = [];
+
+		// Organize cart data
+		$cart_list = Session::get('_cart');
+
+		foreach ($cart_list as $key => $list) {
+
+			$data_cart_default_band = [
+				"BandStyle"				 => strtolower($list['style']),
+				"BandSize"				 => strtolower($list['size']),
+				"Font"					 => strtolower($list['fonts']),
+				"ProductionTime"		 => $list['time_production']['days'],
+				"arProduction"			 => json_encode($list['time_production']),
+				"PriceProduction"		 => $list['time_production']['price'],
+				"Delivery"				 => $list['time_shipping']['days'],
+				"arShipping"			 => json_encode($list['time_shipping']),
+				"PriceDelivery"			 => $list['time_shipping']['price'],
+			];
+
+			// Message
+			if (isset($list['texts'])) {
+
+				if (isset($list['texts']['continue'])) {
+					$data_cart_default_band['MessageStyle'] = "continuous";
+					$data_cart_default_band['ContinuousMessage'] = $list['texts']['continue']['text'];
+					// Reconstruct array
+						$arrMessage = $list['texts']['continue'];
+						$arrMessage['total'] = $arrMessage['price'] * $arrMessage['quantity'];
+					$data_cart_default_band['arContinuousMessage'] = json_encode($arrMessage);
+					$data_cart_default_band['PriceContinuousMessage'] = json_encode($arrMessage['total']);
+				}
+
+				if (isset($list['texts']['front'])) {
+					$data_cart_default_band['MessageStyle'] = "front_back";
+					$data_cart_default_band['FrontMessage'] = $list['texts']['front']['text'];
+					// Reconstruct array
+						$arrMessage = $list['texts']['front'];
+						$arrMessage['total'] = $arrMessage['price'] * $arrMessage['quantity'];
+					$data_cart_default_band['arFrontMessage'] = json_encode($arrMessage);
+				}
+
+				if (isset($list['texts']['back'])) {
+					$data_cart_default_band['MessageStyle'] = "front_back";
+					$data_cart_default_band['BackMessage'] = $list['texts']['back']['text'];
+					// Reconstruct array
+						$arrMessage = $list['texts']['back'];
+						$arrMessage['total'] = $arrMessage['price'] * $arrMessage['quantity'];
+					$data_cart_default_band['arBackMessage'] = json_encode($arrMessage);
+					$data_cart_default_band['PriceBackMessage'] = json_encode($arrMessage['total']);
+				}
+
+				if (isset($list['texts']['inside'])) {
+					// Reconstruct array
+						$arrMessage = $list['texts']['inside'];
+						$arrMessage['total'] = $arrMessage['price'] * $arrMessage['quantity'];
+					$data_cart_default_band['arInsideMessage'] = json_encode($arrMessage);
+				}
+
+			}
+
+			// Clipart
+			if (isset($list['clips'])) {
+
+				if (isset($list['clips']['logo'])) {
+
+					if (isset($list['clips']['logo']['front-end'])) {
+						$arrImage = $list['clips']['logo']['front-end'];
+							unset($arrImage['quantity']);
+						$data_cart_default_band['FrontMessageEndClipart'] = $arrImage['image'];
+						$data_cart_default_band['arFrontMessageEndClipart'] = json_encode($arrImage);
+					}
+
+					if (isset($list['clips']['logo']['front-start'])) {
+						$arrImage = $list['clips']['logo']['front-start'];
+							unset($arrImage['quantity']);
+						$data_cart_default_band['FrontMessageStartClipart'] = $arrImage['image'];
+						$data_cart_default_band['arFrontMessageStartClipart'] = json_encode($arrImage);
+					}
+
+					if (isset($list['clips']['logo']['back-end'])) {
+						$arrImage = $list['clips']['logo']['back-end'];
+							unset($arrImage['quantity']);
+						$data_cart_default_band['BackMessageEndClipart'] = $arrImage['image'];
+						$data_cart_default_band['arBackMessageEndClipart'] = json_encode($arrImage);
+					}
+
+					if (isset($list['clips']['logo']['back-start'])) {
+						$arrImage = $list['clips']['logo']['back-start'];
+							unset($arrImage['quantity']);
+						$data_cart_default_band['BackMessageStartClipart'] = $arrImage['image'];
+						$data_cart_default_band['arBackMessageStartClipart'] = json_encode($arrImage);
+					}
+
+					if (isset($list['clips']['logo']['continue-end'])) {
+						$arrImage = $list['clips']['logo']['continue-end'];
+							unset($arrImage['quantity']);
+						$data_cart_default_band['ContinuousEndClipart'] = $arrImage['image'];
+						$data_cart_default_band['arContinuousEndClipart'] = json_encode($arrImage);
+					}
+
+					if (isset($list['clips']['logo']['continue-start'])) {
+						$arrImage = $list['clips']['logo']['continue-start'];
+							unset($arrImage['quantity']);
+						$data_cart_default_band['ContinuousMessageStartClipart'] = $arrImage['image'];
+						$data_cart_default_band['arContinuousMessageStartClipart'] = json_encode($arrImage);
+					}
+
+				}
+
+			}
+
+			$data_cart = [];
+			$data_cart_free = [];
+			$data_cart_item = [];
+
+			foreach ($list['items'] as $type => $item) {
+
+				$data_cart_item_attr = [];
+				$data_cart_item_addons = [];
+				$item_qty = 0;
+
+				$data_cart_item = [
+					"BandType"	=> strtoupper($type),
+				];
+
+				// Get attribute
+				foreach ($item as $attr_key => $attr_val) {
+
+					if (is_array($attr_val)) {
+
+						foreach ($attr_val['size'] as $attr) {
+
+							$comment = ["font_color"=> strtoupper($attr['font']), "font_name"=> ucwords(strtolower($attr['font_name'])), "size"=> strtoupper($attr['size'])];
+							$arKeychains = ["quantity" => 0];
+							$arWristbands = ["quantity" => 0];
+
+							if (isset($list['free'])) {
+
+								if (isset($list['free']['key-chain'])) {
+									if (isset($list['free']['key-chain']['items'])) {
+										if (isset($list['free']['key-chain']['items'][$attr_val['style']])) {
+											if (isset($list['free']['key-chain']['items'][$attr_val['style']][$attr_key])) {
+												if (isset($list['free']['key-chain']['items'][$attr_val['style']][$attr_key]['size'])) {
+													if (isset($list['free']['key-chain']['items'][$attr_val['style']][$attr_key]['size'][$attr['size']])) {
+														$arKeychainsQty = $list['free']['key-chain']['items'][$attr_val['style']][$attr_key]['size'][$attr['size']]['qty'];
+														$arKeychains = ["quantity"=> $arKeychainsQty];
+													}
+												}
+											}
+										}
+									}
+								}
+
+								if (isset($list['free']['wristbands'])) {
+									if (isset($list['free']['wristbands']['items'])) {
+										if (isset($list['free']['wristbands']['items'][$attr_val['style']])) {
+											if (isset($list['free']['wristbands']['items'][$attr_val['style']][$attr_key])) {
+												if (isset($list['free']['wristbands']['items'][$attr_val['style']][$attr_key]['size'])) {
+													if (isset($list['free']['wristbands']['items'][$attr_val['style']][$attr_key]['size'][$attr['size']])) {
+														$arWristbandsQty = $list['free']['wristbands']['items'][$attr_val['style']][$attr_key]['size'][$attr['size']]['qty'];
+														$arWristbands = ["quantity"=> $arWristbandsQty];
+													}
+												}
+											}
+										}
+									}
+								}
+
+							}
+
+							$data_cart_item_attr[] = [
+								"arColors"		=> json_encode(explode(',', $attr_val['color'])), // JSON String ~ Color
+								"Qty"			=> $attr['qty'], // String ~ Quantity
+								"Comments"		=> json_encode($comment), // JSON String ~ Comment
+								"FreeQty"		=> $arWristbands['quantity'], // Int ~ Free wristbands
+								"arFree"		=> json_encode(["wristbands"=> $arWristbands, "keychains"=> $arKeychains]), // JSON String ~ Free wristbands & keychains
+							];
+
+							// Addons
+							if (isset($list['addon'])) {
+
+								// 3mm Thick
+								if (isset($list['addon']['3mm-thick'])) {
+									$arrAddonBand = $list['addon']['3mm-thick'];
+									// Update values for individual items
+									$arrAddonBand['quantity'] = $attr['qty'];
+									$arrAddonBand['total'] = $arrAddonBand['quantity'] * $arrAddonBand['price'];
+									// Set arAddons values
+									$data_cart_item_addons['3mmThick'] = $arrAddonBand;
+								}
+
+								// Digital Print / Digital Proof
+								if (isset($list['addon']['digital-proof'])) {
+									$arrAddonBand = $list['addon']['digital-proof'];
+									// Update values for individual items
+									$arrAddonBand['quantity'] = $attr['qty'];
+									$arrAddonBand['total'] = $arrAddonBand['quantity'] * $arrAddonBand['price'];
+									// Set values
+									$data_cart_default_band['DigitalPrint'] = $arrAddonBand['quantity'];
+									$data_cart_default_band['PriceDigitalPrint'] = $arrAddonBand['price'];
+									// Set arAddons values
+									$data_cart_item_addons['DigitalPrint'] = $arrAddonBand;
+								}
+
+								// Eco Friendly Addon
+								if (isset($list['addon']['eco-friendly'])) {
+									$arrAddonBand = $list['addon']['eco-friendly'];
+									// Update values for individual items
+									$arrAddonBand['quantity'] = $attr['qty'];
+									$arrAddonBand['total'] = $arrAddonBand['quantity'] * $arrAddonBand['price'];
+									// Set arAddons values
+									$data_cart_item_addons['Ecofriendly'] = $arrAddonBand;
+								}
+
+								// Individual Pack Addon
+								if (isset($list['addon']['individual'])) {
+									$arrAddonBand = $list['addon']['individual'];
+									// Update values for individual items
+									$arrAddonBand['quantity'] = $attr['qty'];
+									$arrAddonBand['total'] = $arrAddonBand['quantity'] * $arrAddonBand['price'];
+									// Set values
+									$data_cart_default_band['Individual_Pack'] = $arrAddonBand['quantity'];
+									$data_cart_default_band['PriceIndividual_Pack'] = $arrAddonBand['price'];
+									// Set arAddons values
+									$data_cart_item_addons['Individual_Pack'] = $arrAddonBand;
+								}
+
+								// Glitters Addon
+								if (isset($list['addon']['glitters'])) {
+									$arrAddonBand = $list['addon']['glitters'];
+									// Update values for individual items
+									$arrAddonBand['quantity'] = $attr['qty'];
+									$arrAddonBand['total'] = $arrAddonBand['quantity'] * $arrAddonBand['price'];
+									// Set arAddons values
+									$data_cart_item_addons['Glitters'] = $arrAddonBand;
+								}
+
+								// Keychain Addon
+								if (isset($list['addon']['key-chain'])) {
+									$arrAddonBand = $list['addon']['key-chain'];
+									// Update values for individual items
+									$arrAddonBand['quantity'] = $attr['qty'];
+									$arrAddonBand['total'] = $arrAddonBand['quantity'] * $arrAddonBand['price'];
+									// Set values
+									$data_cart_default_band['Keychain'] = $arrAddonBand['quantity'];
+									$data_cart_default_band['PriceKeychain'] = $arrAddonBand['price'];
+									// Set arAddons values
+									$data_cart_item_addons['Keychain'] = $arrAddonBand;
+								}
+
+							}
+
+						}
+
+					}
+
+				}
+
+				$data_cart_item['arAddons'] = json_encode($data_cart_item_addons);
+
+				foreach ($data_cart_item_attr as $value) {
+					// Total computation
+					$data_cart_item['UnitPrice'] = $value['Qty'] * ($list['price'] + $item['price_addon']);
+					$data_cart[] = array_merge($data_cart_item, $value);
+				}
+
+			}
+
+			// Last thing to do
+			foreach ($data_cart as $cart_key => $cart_val) {
+				// 
+				// $total = 0;
+				// $total += $cart_val['UnitPrice'];
+
+				$data[] = array_merge($data_cart_default, $data_cart_default_band, $cart_val);
+			}
+
+		}
+
+		return $data;
+	}
+
 
 }

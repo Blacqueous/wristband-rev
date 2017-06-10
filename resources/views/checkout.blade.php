@@ -125,7 +125,7 @@
                         <div class="form-group">
                             <label for="bInfoStreetAddress2" class="control-label col-md-4">Address 2</label>
                             <div class="control-input col-md-8">
-                                <input type="text" class="form-control" id="bInfoStreetAddress2" name="bInfoStreetAddress2" value="<?php echo isset($data['bInfoStreetAddress2']) ? $data['bInfoStreetAddress2'] : ''; ?>" required>
+                                <input type="text" class="form-control" id="bInfoStreetAddress2" name="bInfoStreetAddress2" value="<?php echo isset($data['bInfoStreetAddress2']) ? $data['bInfoStreetAddress2'] : ''; ?>">
                             </div>
                             <div class="clearfix"></div>
                         </div>
@@ -202,7 +202,7 @@
                         <div class="form-group">
                             <label for="sInfoStreetAddress2" class="control-label col-md-4">Address 2</label>
                             <div class="control-input col-md-8">
-                                <input type="text" class="form-control" id="sInfoStreetAddress2" name="sInfoStreetAddress2" value="<?php echo isset($data['sInfoStreetAddress2']) ? $data['sInfoStreetAddress2'] : ''; ?>" required>
+                                <input type="text" class="form-control" id="sInfoStreetAddress2" name="sInfoStreetAddress2" value="<?php echo isset($data['sInfoStreetAddress2']) ? $data['sInfoStreetAddress2'] : ''; ?>">
                             </div>
                             <div class="clearfix"></div>
                         </div>
