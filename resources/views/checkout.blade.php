@@ -253,7 +253,7 @@
 
                             <div class="form-group">
                                 <div class="control-input col-md-12 no-padding">
-                                    <input type="text" class="form-control form-discount" id="DiscountCode" name="DiscountCode" value="<?php echo isset($data['DiscountCode']) ? $data['DiscountCode'] : ''; ?>">
+                                    <input type="text" class="form-control form-discount" id="DiscountCode" name="DiscountCode" value="<?php echo isset($data['DiscountCode']) ? $data['DiscountCode'] : ''; ?>" placeholder="Promo Code">
                                 </div>
                                 <div class="clearfix"></div>
                             </div>

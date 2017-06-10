@@ -68,7 +68,7 @@ return [
         'secret' => 'ENTuLYrdTgyMWU8ZO5vFbab3_uzouyDyxfbXSrZGVKueGZA9lEG2uvT_rI1iIssO0cv5GxyWvdHOsra2',
         'settings' => [
             'mode' => env('PAYPAL_MODE', 'sandbox'),
-            'http.ConnectionTimeOut' => 30,
+            'http.ConnectionTimeOut' => 10000,
             'log.LogEnabled' => true,
             'log.FileName' => storage_path() . '/logs/paypal.log',
             'log.LogLevel' => 'ERROR',

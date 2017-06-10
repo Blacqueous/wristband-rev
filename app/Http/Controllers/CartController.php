@@ -302,7 +302,7 @@ class CartController extends Controller
 			} else {
 				$response = $controller->executeWithApiResponse(\net\authorize\api\constants\ANetEnvironment::PRODUCTION);
 			}
-			// var_dump($response); die;
+			
 			// Default error message
 			$errMsg = 'Something went wrong! Kindly try again.';
 			if ($response != null) {
@@ -310,7 +310,7 @@ class CartController extends Controller
 				
 				if (($tresponse != null) && ($tresponse->getResponseCode()=="1") ) {
 					$data_order['AuthorizeTransID'] = $tresponse->getTransId();
-				} else{
+				} else {
 					// Get authnet transaction error message
 					if($tresponse->getErrors()) {
 						if ($tresponse->getErrors()[0] !== null) {
@@ -334,67 +334,113 @@ class CartController extends Controller
 			}
 
 		} else {
+			// ### Payer
+			// A resource representing a Payer that funds a payment
+			// For paypal account payments, set payment method
+			// to 'paypal'.
 			$payer = new Payer();
 			$payer->setPaymentMethod("paypal");
 
-			$item = new Item();
-			$item->setName('Wristbands')
-				->setCurrency('USD')
-				->setQuantity(1)
-				->setPrice(100);
-			
+			// ### Itemized information
+			// (Optional) Lets you specify item wise
+			// information
+			$item1 = new Item();
+			$item1->setName('Ground Coffee 40 oz')
+			      ->setCurrency('USD')
+			      ->setQuantity(1)
+			      ->setSku("123123") // Similar to `item_number` in Classic API
+			      ->setPrice(7.5);
+			$item2 = new Item();
+			$item2->setName('Granola bars')
+			      ->setCurrency('USD')
+			      ->setQuantity(5)
+			      ->setSku("321321") // Similar to `item_number` in Classic API
+			      ->setPrice(2);
+
 			$itemList = new ItemList();
-			$itemList->setItems(array($item));
-			
+			$itemList->setItems(array($item1, $item2));
+
+			// ### Additional payment details
+			// Use this optional field to set additional
+			// payment information such as tax, shipping
+			// charges etc.
 			$details = new Details();
-			$details->setShipping(10)
-					->setTax(10)
-					->setSubtotal(17.50);
-			
+			$details->setShipping(1.2)
+				    ->setTax(1.3)
+				    ->setSubtotal(17.50);
+
+			// ### Amount
+			// Lets you specify a payment amount.
+			// You can also specify additional details
+			// such as shipping, tax.
 			$amount = new Amount();
 			$amount->setCurrency("USD")
-					->setTotal(20)
-					->setDetails($details);
-			
+				   ->setTotal(20)
+				   ->setDetails($details);
+
+			// ### Transaction
+			// A transaction defines the contract of a
+			// payment - what is the payment for and who
+			// is fulfilling it. 
 			$transaction = new Transaction();
 			$transaction->setAmount($amount)
 					    ->setItemList($itemList)
 					    ->setDescription("Payment description")
-			    		->setInvoiceNumber(uniqid());
-			
+					    ->setInvoiceNumber(uniqid());
+
+			// ### Redirect urls
+			// Set the urls that the buyer must be redirected to after 
+			// payment approval/ cancellation.
+			$baseUrl = URL::to('/');
+			$redirectUrls = new RedirectUrls();
+			$redirectUrls->setReturnUrl("$baseUrl/ExecutePayment.php?success=true")
+			    		 ->setCancelUrl("$baseUrl/ExecutePayment.php?success=false");
+
+			// ### Payment
+			// A Payment Resource; create one using
+			// the above types and intent set to 'sale'
 			$payment = new Payment();
 			$payment->setIntent("sale")
 				    ->setPayer($payer)
-				    // ->setRedirectUrls($redirectUrls)
+				    ->setRedirectUrls($redirectUrls)
 				    ->setTransactions(array($transaction));
-			$request = clone $payment;
-			var_dump($request);
-			$apiContext= new ApiContext(
+
+			// For Sample Purposes Only.
+			$trequest = clone $payment;
+
+			// ### Create Payment
+			// Create a payment by calling the 'create' method
+			// passing it a valid apiContext.
+			// (See bootstrap.php for more on `ApiContext`)
+			// The return object contains the state and the
+			// url to which the buyer must be redirected to
+			// for payment approval
+			$apiContext = new ApiContext(
 							new OAuthTokenCredential(
-								App::make('config')->get('services.paypal.client_id'), // Client ID
-								App::make('config')->get('services.paypal.secret') // Secret
+								App::make('config')->get('services.paypal.client_id'),
+								App::make('config')->get('services.paypal.secret')
 							)
-		                );
-			var_dump($apiContext);
+			            );
+			$apiContext->setConfig(App::make('config')->get('services.paypal.settings'));
+
 			try {
 			    $payment->create($apiContext);
-			} catch (PayPal\Exception\PayPalConnectionException $ex) {
-				echo $ex->getCode(); // Prints the Error Code
-				echo $ex->getData(); // Prints the detailed error message 
-				die($ex);
+				return redirect($payment->getApprovalLink());
 			} catch (Exception $ex) {
-				ResultPrinter::printError("Created Payment Using PayPal. Please visit the URL to Approve.", "Payment", null, $request, $ex);
-				exit(1);
+				// Default error message
+				$errMsg = 'Something went wrong! Payment using PayPal is invalid. Kindly try again.';
+				return redirect('/checkout')->withErrors(['message'=> $errMsg], 'checkout')->withInput();
 			}
 
-			$approvalUrl = $payment->getApprovalLink();
-			ResultPrinter::printResult("Created Payment Using PayPal. Please visit the URL to Approve.", "Payment", "<a href='$approvalUrl' >$approvalUrl</a>", $request, $payment);
-			
-			// return $payment;
-var_dump('here');
+var_dump($trequest->PaypalEmail);
 var_dump($payment);
-var_dump('here');
-			$data_order['PaypalEmail'] = $request->PaypalEmail;
+var_dump($payment->getId());
+var_dump($payment->getState());
+var_dump($payment->getCreateTime());
+var_dump($payment->getLinks());
+var_dump($payment->getApprovalLink());
+die;
+
 		}
 
 var_dump($data_order);
