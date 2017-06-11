@@ -34,14 +34,13 @@ $(document).ready(function(e) {
     }
     
     $(document).on('keyup', 'input[name="DiscountCode"]', function(e) {
-        $('.form-sub-total .form-total-value span').html(parseInt(total).formatMoney(2, '.', ','));
-        var discount = 0;
-        if ($(this).val().length > 0) {
-            discount = total * 0.10;
-        }
-        $('.form-discount-total .form-total-value span').html(parseInt(discount).formatMoney(2, '.', ','));
+        $('.form-sub-total .form-total-value span').html(parseFloat(total).formatMoney(2, '.', ','));
+        var discount = ($(this).val().length > 0) ? total * 0.10 : 0;
+            // discount = discount.toFixed(2);
+        $('.form-discount-total .form-total-value span').html(parseFloat(discount).formatMoney(2, '.', ','));
         var grand_total = total - discount;
-        $('.form-grand-total .form-total-value span').html(parseInt(grand_total).formatMoney(2, '.', ','));
+            // grand_total = grand_total.toFixed(2);
+        $('.form-grand-total .form-total-value span').html(parseFloat(grand_total).formatMoney(2, '.', ','));
     });
     
     $(document).on('ifChecked', 'input[name="PaymentType"]', function(e) {

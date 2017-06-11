@@ -191,23 +191,19 @@ class CartController extends Controller
 		Session::flash('order_status', 'success');
 		// Forget cart items.
 		Session::forget('_cart');
-		// redirect to success page
+		// Redirect to success page
 		return json_encode(true);
 	}
 
 	public function checkout(Request $request)
 	{
-		// if(Session::has('_cart')) {
-		// 	$data = [
-		// 		'items' => (Session::has('_cart')) ? Session::get('_cart') : []
-		// 	];
-		// 	// Do something...
+		if(Session::has('_cart')) {
 			$data = [
-						'data' => (session('checkout_data')) ? session('checkout_data') : [],
-					];
+				'items' => (Session::has('_cart')) ? Session::get('_cart') : [],
+				'data' => (Session::has('checkout_data')) ? Session::get('checkout_data') : [],
+			];
 			return view('checkout', $data);
-		// }
-
+		}
 		return redirect('/cart')->with('cart_message', 'Cart does not exist.');
 	}
 
@@ -264,8 +260,7 @@ class CartController extends Controller
 		}
 
 		$arrCart = $this->organizeCart($request->_token, $order_id, $request->bInfoFirstName." ".$request->bInfoLastName, $request->bInfoContactNo, $request->bInfoEmail);
-var_dump($arrCart);
-die;
+
 		if (strtoupper($request->PaymentType) == "CC") {
 			$merchantAuthentication = new AnetAPI\MerchantAuthenticationType();
 			$merchantAuthentication->setName(App::make('config')->get('services.authorizenet.name'));
@@ -355,41 +350,150 @@ die;
 			// ### Itemized information
 			// (Optional) Lets you specify item wise
 			// information
-
+			$total = 0;
 			$items = [];
+
 			foreach ($arrCart as $value) {
-var_dump($value); die;
-				// $item = new Item();
-				// $item->setName('Ground Coffee 40 oz')
-				// 	 ->setCurrency('USD')
-				// 	 ->setQuantity(1)
-				// 	 ->setPrice(7.5);
-				// $items[] = $item;
+
+				$price = $value['UnitPrice'];
+				$totalPrice = $value['UnitPrice'] * $value['Qty'];
+				$totalAddon = 0;
+
+				$arFrontMessage = json_decode($value['arFrontMessage'], true);
+				if(is_array($arFrontMessage)) {
+					$totalAddon += $arFrontMessage['price'] * $value['Qty'];
+					$price += $arFrontMessage['price'];
+				}
+
+				$arBackMessage = json_decode($value['arBackMessage'], true);
+				if(is_array($arBackMessage)) {
+					$totalAddon += $arBackMessage['price'] * $value['Qty'];
+					$price += $arBackMessage['price'];
+				}
+
+				$arContinuousMessage = json_decode($value['arContinuousMessage'], true);
+				if(is_array($arContinuousMessage)) {
+					$totalAddon += $arContinuousMessage['price'] * $value['Qty'];
+					$price += $arContinuousMessage['price'];
+				}
+
+				$arInsideMessage = json_decode($value['arInsideMessage'], true);
+				if(is_array($arInsideMessage)) {
+					$totalAddon += $arInsideMessage['price'] * $value['Qty'];
+					$price += $arInsideMessage['price'];
+				}
+
+				$arFrontMessageStartClipart = json_decode($value['arFrontMessageStartClipart'], true);
+				if(is_array($arFrontMessageStartClipart)) {
+					$totalAddon += $arFrontMessageStartClipart['price'] * $value['Qty'];
+					$price += $arFrontMessageStartClipart['price'];
+				}
+
+				$arFrontMessageEndClipart = json_decode($value['arFrontMessageEndClipart'], true);
+				if(is_array($arFrontMessageEndClipart)) {
+					$totalAddon += $arFrontMessageEndClipart['price'] * $value['Qty'];
+					$price += $arFrontMessageEndClipart['price'];
+				}
+
+				$arBackMessageStartClipart = json_decode($value['arBackMessageStartClipart'], true);
+				if(is_array($arBackMessageStartClipart)) {
+					$totalAddon += $arBackMessageStartClipart['price'] * $value['Qty'];
+					$price += $arBackMessageStartClipart['price'];
+				}
+
+				$arBackMessageEndClipart = json_decode($value['arBackMessageEndClipart'], true);
+				if(is_array($arBackMessageEndClipart)) {
+					$totalAddon += $arBackMessageEndClipart['price'] * $value['Qty'];
+					$price += $arBackMessageEndClipart['price'];
+				}
+
+				$arContinuousMessageStartClipart = json_decode($value['arContinuousMessageStartClipart'], true);
+				if(is_array($arContinuousMessageStartClipart)) {
+					$totalAddon += $arContinuousMessageStartClipart['price'] * $value['Qty'];
+					$price += $arContinuousMessageStartClipart['price'];
+				}
+
+				$priceContinuousEndClipart = 0;
+				$arContinuousEndClipart = json_decode($value['arContinuousEndClipart'], true);
+				if(is_array($arContinuousEndClipart)) {
+					$totalAddon += $arContinuousEndClipart['price'] * $value['Qty'];
+					$price += $arContinuousEndClipart['price'];
+				}
+
+				$priceContinuousEndClipart = 0;
+				$arContinuousEndClipart = json_decode($value['arContinuousEndClipart'], true);
+				if(is_array($arContinuousEndClipart)) {
+					$totalAddon += $arContinuousEndClipart['price'] * $value['Qty'];
+					$price += $arContinuousEndClipart['price'];
+				}
+
+				$priceAddons = 0;
+				$arPriceAddons = json_decode($value['arAddons'], true);
+				if(is_array($arPriceAddons)) {
+					foreach ($arPriceAddons as $addon) {
+						$totalAddon += $addon['total'];
+						$price += $addon['price'];
+					}
+				}
+
+				// Compute new total
+				$total += $totalPrice + $totalAddon;
+
+				$size = $this->getWristbandsSizeName($value['BandSize']);
+				$sizeBand = $this->getWristbandItemSizeName($value['_Size']);
+				$typeBand = strtolower($value['BandType']);
+				$typeBand = (($typeBand == "dual") ? "" : " " . ucwords($typeBand));
+
+				$name = ucwords(strtolower($value['BandStyle'])) . $typeBand . " Wristband " . $size . " (" . $value['_Name'] . ")" . $sizeBand;
+
+				$item = new Item();
+				$item->setName($name)
+					 ->setCurrency('USD')
+					 ->setQuantity($value['Qty'])
+					 ->setPrice($price);
+				$items[] = $item;
+
 			}
 
-			// $item1 = new Item();
-			// $item1->setName('Ground Coffee 40 oz')
-			//       ->setCurrency('USD')
-			//       ->setQuantity(1)
-			//       ->setPrice(7.5);
-			// 
-			// $item2 = new Item();
-			// $item2->setName('Granola bars')
-			//       ->setCurrency('USD')
-			//       ->setQuantity(5)
-			//       ->setPrice(2);
+			$shipping = $this->getCartShipping();
+			$production = $this->getCartProduction();
+
+			$sub_total = $total + $production['total'];
+			$all_total = $total + $shipping['total'] + $production['total'];
+			$discount = 0;
+			if (!empty($request->DiscountCode)) {
+				$discount = $all_total * 0.10;
+			}
+			$shipping_total = ($all_total - $discount) - $shipping['total'];
+			$shipping_total = number_format($shipping_total, "2");
+
+			// For Production price, if any
+			$item = new Item();
+			$item->setName('Production Price')
+				 ->setCurrency('USD')
+				 ->setQuantity(1)
+				 ->setPrice($production['total']);
+			$items[] = $item;
+
+			// For Discount, if any
+			$item = new Item();
+			$item->setName('Discount')
+				 ->setCurrency('USD')
+				 ->setQuantity(1)
+				 ->setPrice("-".$discount);
+			$items[] = $item;
 
 			$itemList = new ItemList();
-			$itemList->setItems(array($item1, $item2));
+			$itemList->setItems($items);
 
 			// ### Additional payment details
 			// Use this optional field to set additional
 			// payment information such as tax, shipping
 			// charges etc.
 			$details = new Details();
-			$details->setShipping(1.2)
+			$details->setShipping($shipping['total'])
 				    ->setTax(0)
-				    ->setSubtotal(17.50);
+				    ->setSubtotal($shipping_total);
 
 			// ### Amount
 			// Lets you specify a payment amount.
@@ -397,7 +501,7 @@ var_dump($value); die;
 			// such as shipping, tax.
 			$amount = new Amount();
 			$amount->setCurrency("USD")
-				   ->setTotal(20)
+				   ->setTotal(number_format($all_total - $discount, 2))
 				   ->setDetails($details);
 
 			// ### Transaction
@@ -407,7 +511,7 @@ var_dump($value); die;
 			$transaction = new Transaction();
 			$transaction->setAmount($amount)
 					    ->setItemList($itemList)
-					    ->setDescription("Payment description")
+					    ->setDescription("Promotional Wristbands.")
 					    ->setInvoiceNumber(uniqid());
 
 			// ### Redirect urls
@@ -415,8 +519,8 @@ var_dump($value); die;
 			// payment approval/ cancellation.
 			$baseUrl = URL::to('/');
 			$redirectUrls = new RedirectUrls();
-			$redirectUrls->setReturnUrl("$baseUrl/success?success=true")
-			    		 ->setCancelUrl("$baseUrl/ExecutePayment.php?success=false");
+			$redirectUrls->setReturnUrl("$baseUrl/checkout/paypal?success=true")
+			    		 ->setCancelUrl("$baseUrl/checkout/paypal?success=false");
 
 			// ### Payment
 			// A Payment Resource; create one using
@@ -445,10 +549,13 @@ var_dump($value); die;
 			try {
 			    $payment->create($apiContext);
 				if ($payment->getState() == "created") {
-					Session::put('_paypal', Input::all());
+					$paypal_data = [
+						"order_id" => $order_id,
+						"order_input" => Input::all(),
+					];
+					Session::put('_paypal', $paypal_data);
 					return redirect($payment->getApprovalLink());
 				} else {
-					var_dump($payment);
 					$errMsg = 'Something went wrong! Payment using PayPal is invalid. Kindly try again.';
 					return redirect('/checkout')->withErrors(['message'=> $errMsg], 'checkout')->withInput();
 				}
@@ -461,14 +568,8 @@ var_dump($value); die;
 			return redirect('/checkout')->withErrors(['message'=> 'Something went wrong! Kindly try again.'], 'checkout')->withInput();
 		}
 
-var_dump($data_order);
-die;
-
-		$data = [];
-
-var_dump($data);
-die;
-
+		var_dump($data_order);
+		die;
 		// // Set for success page.
 		// Session::flash('order_items', $cart_list);
 		// Session::flash('order_status', 'success');
@@ -478,7 +579,18 @@ die;
 		// return json_encode(true);
 	}
 
-	private function organizeCart($token, $order_id, $full_name, $phone_num, $email) {
+	public function checkoutPaypal(Request $request)
+	{
+		// 
+	}
+
+	private function processCheckoutOrder(Request $request)
+	{
+		// 
+	}
+
+	private function organizeCart($token, $order_id, $full_name, $phone_num, $email)
+	{
 
 		$data_cart_default = [
 			"DateCreated"						=> date('Y-m-d H:i:s'),
@@ -561,100 +673,7 @@ die;
 				"Delivery"				=> $list['time_shipping']['days'],
 				"arShipping"			=> json_encode($list['time_shipping']),
 				"PriceDelivery"			=> $list['time_shipping']['price'],
-				"UnitPrice"				=> $list['price'],
 			];
-
-			// Message
-			if (isset($list['texts'])) {
-
-				if (isset($list['texts']['continue'])) {
-					$data_cart_default_band['MessageStyle'] = "continuous";
-					$data_cart_default_band['ContinuousMessage'] = $list['texts']['continue']['text'];
-					// Reconstruct array
-						$arrMessage = $list['texts']['continue'];
-						$arrMessage['total'] = $arrMessage['price'] * $arrMessage['quantity'];
-					$data_cart_default_band['arContinuousMessage'] = json_encode($arrMessage);
-					$data_cart_default_band['PriceContinuousMessage'] = json_encode($arrMessage['total']);
-				}
-
-				if (isset($list['texts']['front'])) {
-					$data_cart_default_band['MessageStyle'] = "front_back";
-					$data_cart_default_band['FrontMessage'] = $list['texts']['front']['text'];
-					// Reconstruct array
-						$arrMessage = $list['texts']['front'];
-						$arrMessage['total'] = $arrMessage['price'] * $arrMessage['quantity'];
-					$data_cart_default_band['arFrontMessage'] = json_encode($arrMessage);
-				}
-
-				if (isset($list['texts']['back'])) {
-					$data_cart_default_band['MessageStyle'] = "front_back";
-					$data_cart_default_band['BackMessage'] = $list['texts']['back']['text'];
-					// Reconstruct array
-						$arrMessage = $list['texts']['back'];
-						$arrMessage['total'] = $arrMessage['price'] * $arrMessage['quantity'];
-					$data_cart_default_band['arBackMessage'] = json_encode($arrMessage);
-					$data_cart_default_band['PriceBackMessage'] = json_encode($arrMessage['total']);
-				}
-
-				if (isset($list['texts']['inside'])) {
-					// Reconstruct array
-						$arrMessage = $list['texts']['inside'];
-						$arrMessage['total'] = $arrMessage['price'] * $arrMessage['quantity'];
-					$data_cart_default_band['arInsideMessage'] = json_encode($arrMessage);
-				}
-
-			}
-
-			// Clipart
-			if (isset($list['clips'])) {
-
-				if (isset($list['clips']['logo'])) {
-
-					if (isset($list['clips']['logo']['front-end'])) {
-						$arrImage = $list['clips']['logo']['front-end'];
-							unset($arrImage['quantity']);
-						$data_cart_default_band['FrontMessageEndClipart'] = $arrImage['image'];
-						$data_cart_default_band['arFrontMessageEndClipart'] = json_encode($arrImage);
-					}
-
-					if (isset($list['clips']['logo']['front-start'])) {
-						$arrImage = $list['clips']['logo']['front-start'];
-							unset($arrImage['quantity']);
-						$data_cart_default_band['FrontMessageStartClipart'] = $arrImage['image'];
-						$data_cart_default_band['arFrontMessageStartClipart'] = json_encode($arrImage);
-					}
-
-					if (isset($list['clips']['logo']['back-end'])) {
-						$arrImage = $list['clips']['logo']['back-end'];
-							unset($arrImage['quantity']);
-						$data_cart_default_band['BackMessageEndClipart'] = $arrImage['image'];
-						$data_cart_default_band['arBackMessageEndClipart'] = json_encode($arrImage);
-					}
-
-					if (isset($list['clips']['logo']['back-start'])) {
-						$arrImage = $list['clips']['logo']['back-start'];
-							unset($arrImage['quantity']);
-						$data_cart_default_band['BackMessageStartClipart'] = $arrImage['image'];
-						$data_cart_default_band['arBackMessageStartClipart'] = json_encode($arrImage);
-					}
-
-					if (isset($list['clips']['logo']['continue-end'])) {
-						$arrImage = $list['clips']['logo']['continue-end'];
-							unset($arrImage['quantity']);
-						$data_cart_default_band['ContinuousEndClipart'] = $arrImage['image'];
-						$data_cart_default_band['arContinuousEndClipart'] = json_encode($arrImage);
-					}
-
-					if (isset($list['clips']['logo']['continue-start'])) {
-						$arrImage = $list['clips']['logo']['continue-start'];
-							unset($arrImage['quantity']);
-						$data_cart_default_band['ContinuousMessageStartClipart'] = $arrImage['image'];
-						$data_cart_default_band['arContinuousMessageStartClipart'] = json_encode($arrImage);
-					}
-
-				}
-
-			}
 
 			$data_cart = [];
 			$data_cart_free = [];
@@ -715,13 +734,107 @@ die;
 
 							}
 
-							$data_cart_item_attr[] = [
-								"arColors"		=> json_encode(explode(',', strtoupper($attr_val['color']))), // JSON String ~ Color
-								"Qty"			=> $attr['qty'], // String ~ Quantity
-								"Comments"		=> json_encode($comment), // JSON String ~ Comment
-								"FreeQty"		=> $arWristbands['quantity'], // Int ~ Free wristbands
-								"arFree"		=> json_encode(["wristbands"=> $arWristbands, "keychains"=> $arKeychains]), // JSON String ~ Free wristbands & keychains
-							];
+							// Message
+							if (isset($list['texts'])) {
+
+								if (isset($list['texts']['continue'])) {
+									$data_cart_default_band['MessageStyle'] = "continuous";
+									$data_cart_default_band['ContinuousMessage'] = $list['texts']['continue']['text'];
+									// Reconstruct array
+										$arrMessage = $list['texts']['continue'];
+										$arrMessage['quantity'] = $attr['qty'];
+										$arrMessage['total'] = $arrMessage['price'] * $arrMessage['quantity'];
+									$data_cart_default_band['arContinuousMessage'] = json_encode($arrMessage);
+									$data_cart_default_band['PriceContinuousMessage'] = json_encode($arrMessage['total']);
+								}
+
+								if (isset($list['texts']['front'])) {
+									$data_cart_default_band['MessageStyle'] = "front_back";
+									$data_cart_default_band['FrontMessage'] = $list['texts']['front']['text'];
+									// Reconstruct array
+										$arrMessage = $list['texts']['front'];
+										$arrMessage['quantity'] = $attr['qty'];
+										$arrMessage['total'] = $arrMessage['price'] * $arrMessage['quantity'];
+									$data_cart_default_band['arFrontMessage'] = json_encode($arrMessage);
+								}
+
+								if (isset($list['texts']['back'])) {
+									$data_cart_default_band['MessageStyle'] = "front_back";
+									$data_cart_default_band['BackMessage'] = $list['texts']['back']['text'];
+									// Reconstruct array
+										$arrMessage = $list['texts']['back'];
+										$arrMessage['quantity'] = $attr['qty'];
+										$arrMessage['total'] = $arrMessage['price'] * $arrMessage['quantity'];
+									$data_cart_default_band['arBackMessage'] = json_encode($arrMessage);
+									$data_cart_default_band['PriceBackMessage'] = json_encode($arrMessage['total']);
+								}
+
+								if (isset($list['texts']['inside'])) {
+									// Reconstruct array
+										$arrMessage = $list['texts']['inside'];
+										$arrMessage['quantity'] = $attr['qty'];
+										$arrMessage['total'] = $arrMessage['price'] * $arrMessage['quantity'];
+									$data_cart_default_band['arInsideMessage'] = json_encode($arrMessage);
+								}
+
+							}
+
+							// Clipart
+							if (isset($list['clips'])) {
+
+								if (isset($list['clips']['logo'])) {
+
+									if (isset($list['clips']['logo']['front-end'])) {
+										$arrImage = $list['clips']['logo']['front-end'];
+										$arrImage['quantity'] = $attr['qty'];
+										$arrImage['total'] = $arrImage['quantity'] * $arrImage['price'];
+										$data_cart_default_band['FrontMessageEndClipart'] = $arrImage['image'];
+										$data_cart_default_band['arFrontMessageEndClipart'] = json_encode($arrImage);
+									}
+
+									if (isset($list['clips']['logo']['front-start'])) {
+										$arrImage = $list['clips']['logo']['front-start'];
+										$arrImage['quantity'] = $attr['qty'];
+										$arrImage['total'] = $arrImage['quantity'] * $arrImage['price'];
+										$data_cart_default_band['FrontMessageStartClipart'] = $arrImage['image'];
+										$data_cart_default_band['arFrontMessageStartClipart'] = json_encode($arrImage);
+									}
+
+									if (isset($list['clips']['logo']['back-end'])) {
+										$arrImage = $list['clips']['logo']['back-end'];
+										$arrImage['quantity'] = $attr['qty'];
+										$arrImage['total'] = $arrImage['quantity'] * $arrImage['price'];
+										$data_cart_default_band['BackMessageEndClipart'] = $arrImage['image'];
+										$data_cart_default_band['arBackMessageEndClipart'] = json_encode($arrImage);
+									}
+
+									if (isset($list['clips']['logo']['back-start'])) {
+										$arrImage = $list['clips']['logo']['back-start'];
+										$arrImage['quantity'] = $attr['qty'];
+										$arrImage['total'] = $arrImage['quantity'] * $arrImage['price'];
+										$data_cart_default_band['BackMessageStartClipart'] = $arrImage['image'];
+										$data_cart_default_band['arBackMessageStartClipart'] = json_encode($arrImage);
+									}
+
+									if (isset($list['clips']['logo']['continue-end'])) {
+										$arrImage = $list['clips']['logo']['continue-end'];
+										$arrImage['quantity'] = $attr['qty'];
+										$arrImage['total'] = $arrImage['quantity'] * $arrImage['price'];
+										$data_cart_default_band['ContinuousEndClipart'] = $arrImage['image'];
+										$data_cart_default_band['arContinuousEndClipart'] = json_encode($arrImage);
+									}
+
+									if (isset($list['clips']['logo']['continue-start'])) {
+										$arrImage = $list['clips']['logo']['continue-start'];
+										$arrImage['quantity'] = $attr['qty'];
+										$arrImage['total'] = $arrImage['quantity'] * $arrImage['price'];
+										$data_cart_default_band['ContinuousMessageStartClipart'] = $arrImage['image'];
+										$data_cart_default_band['arContinuousMessageStartClipart'] = json_encode($arrImage);
+									}
+
+								}
+
+							}
 
 							// Addons
 							if (isset($list['addon'])) {
@@ -785,6 +898,7 @@ die;
 								// Keychain Addon
 								if (isset($list['addon']['key-chain'])) {
 									$arrAddonBand = $list['addon']['key-chain'];
+									unset($arrAddonBand['items']);
 									// Update values for individual items
 									$arrAddonBand['quantity'] = $attr['qty'];
 									$arrAddonBand['total'] = $arrAddonBand['quantity'] * $arrAddonBand['price'];
@@ -797,16 +911,26 @@ die;
 
 							}
 
+							$data_cart_item_attr[] = [
+								"_Name"			=> ucwords(strtolower($attr_val['title'])),
+								"_Size"			=> strtolower($attr['size']),
+								"arColors"		=> json_encode(explode(',', strtoupper($attr_val['color']))), // JSON String ~ Color
+								"Qty"			=> $attr['qty'], // String ~ Quantity
+								"Comments"		=> json_encode($comment), // JSON String ~ Comment
+								"FreeQty"		=> $arWristbands['quantity'], // Int ~ Free wristbands
+								"arFree"		=> json_encode(["wristbands"=> $arWristbands, "keychains"=> $arKeychains]), // JSON String ~ Free wristbands & keychains
+								"arAddons"		=> json_encode($data_cart_item_addons), // JSON String ~ Addons
+							];
+
 						}
 
 					}
 
 				}
 
-				$data_cart_item['arAddons'] = json_encode($data_cart_item_addons);
-
 				foreach ($data_cart_item_attr as $value) {
 					// Total computation
+					$data_cart_item['UnitPrice'] = $list['price'] + $item['price_addon'];
 					$data_cart_item['Total'] = $value['Qty'] * ($list['price'] + $item['price_addon']);
 					$data_cart[] = array_merge($data_cart_item, $value);
 				}
@@ -821,6 +945,96 @@ die;
 		}
 
 		return $data;
+	}
+
+	private function getCartShipping()
+	{
+
+		$data = [
+			"total" => 0,
+			"items" => [],
+		];
+
+		// Organize cart data
+		$cart_list = Session::get('_cart');
+
+		foreach ($cart_list as $key => $list) {
+			$data['total'] += $list['time_shipping']['price'];
+			$data['items'][] = $list['time_shipping'];
+		}
+
+		return $data;
+	}
+
+	private function getCartProduction()
+	{
+
+		$data = [
+			"total" => 0,
+			"items" => [],
+		];
+
+		// Organize cart data
+		$cart_list = Session::get('_cart');
+
+		foreach ($cart_list as $key => $list) {
+			$data['total'] += $list['time_production']['price'];
+			$data['items'][] = $list['time_production'];
+		}
+
+		return $data;
+	}
+
+	private function getWristbandsSizeName($size="")
+	{
+		$name = "";
+		switch($size) {
+			case '0-25inch':
+				$name = "1/4 inch";
+				break;
+			case '0-50inch':
+				$name = "1/2 inch";
+				break;
+			case '0-75inch':
+				$name = "3/4 inch";
+				break;
+			case '1-00inch':
+				$name = "1 inch";
+				break;
+			case '1-50inch':
+				$name = "1 1/2 inch";
+				break;
+			case '2-00inch':
+				$name = "2 inch";
+				break;
+			default:
+				$name = "1/2 inch";
+				break;
+		}
+		return $name;
+	}
+
+	private function getWristbandItemSizeName($size="")
+	{
+		$name = "";
+		switch($size) {
+			case 'yt':
+				$name = " (Youth)";
+				break;
+			case 'md':
+				$name = " (Medium)";
+				break;
+			case 'ad':
+				$name = " (Adult)";
+				break;
+			case 'xs':
+				$name = " (Extra Small)";
+				break;
+			case 'xl':
+				$name = " (Extra Large)";
+				break;
+		}
+		return $name;
 	}
 
 }

@@ -36,7 +36,12 @@
 
 <?php
     $data = Session::has('_old_input') ? Session::get('_old_input') : [];
-    $total = isset($data['total']) ? $data['total'] : '100';
+    $total = 0;
+	// Organize cart data
+	$cart = Session::get('_cart');
+	foreach ($cart as $items) {
+        $total += $items['total'];
+    }
 ?>
 
 <script type="text/javascript">
@@ -388,7 +393,7 @@
                             <div class="form-group form-discount-total">
                                 <div class="form-total-title col-md-6">Discount:</div>
                                 <div class="form-total-value col-md-6">
-                                    -$<span>{{ number_format(0, 2, '.', ',') }}</span>
+                                    - $<span>{{ number_format(0, 2, '.', ',') }}</span>
                                 </div>
                                 <div class="clearfix"></div>
                             </div>
