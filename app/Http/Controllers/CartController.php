@@ -197,10 +197,6 @@ class CartController extends Controller
 
 	public function checkout(Request $request)
 	{
-		$cart_arr = $this->organizeCart("token", "1010101", "Full Metal", "+639091234567", "full_metal@gmail.com");
-		var_dump($cart_arr);
-		die;
-
 		// if(Session::has('_cart')) {
 		// 	$data = [
 		// 		'items' => (Session::has('_cart')) ? Session::get('_cart') : []
@@ -258,7 +254,18 @@ class CartController extends Controller
 			"RandomChr"			=> "",
 			"IPAddress"			=> $request->ip()
 		];
+		
+		// Insert new order
+		$orders = new Orders();
+		$order_id = $orders->insertOrder($data_order);
 
+		if (!$order_id) {
+			return redirect('/checkout')->withErrors(['message'=> 'Something went wrong! Kindly try again.'], 'checkout')->withInput();
+		}
+
+		$arrCart = $this->organizeCart($request->_token, $order_id, $request->bInfoFirstName." ".$request->bInfoLastName, $request->bInfoContactNo, $request->bInfoEmail);
+var_dump($arrCart);
+die;
 		if (strtoupper($request->PaymentType) == "CC") {
 			$merchantAuthentication = new AnetAPI\MerchantAuthenticationType();
 			$merchantAuthentication->setName(App::make('config')->get('services.authorizenet.name'));
@@ -348,18 +355,29 @@ class CartController extends Controller
 			// ### Itemized information
 			// (Optional) Lets you specify item wise
 			// information
-			$item1 = new Item();
-			$item1->setName('Ground Coffee 40 oz')
-			      ->setCurrency('USD')
-			      ->setQuantity(1)
-			      ->setSku("123123") // Similar to `item_number` in Classic API
-			      ->setPrice(7.5);
-			$item2 = new Item();
-			$item2->setName('Granola bars')
-			      ->setCurrency('USD')
-			      ->setQuantity(5)
-			      ->setSku("321321") // Similar to `item_number` in Classic API
-			      ->setPrice(2);
+
+			$items = [];
+			foreach ($arrCart as $value) {
+var_dump($value); die;
+				// $item = new Item();
+				// $item->setName('Ground Coffee 40 oz')
+				// 	 ->setCurrency('USD')
+				// 	 ->setQuantity(1)
+				// 	 ->setPrice(7.5);
+				// $items[] = $item;
+			}
+
+			// $item1 = new Item();
+			// $item1->setName('Ground Coffee 40 oz')
+			//       ->setCurrency('USD')
+			//       ->setQuantity(1)
+			//       ->setPrice(7.5);
+			// 
+			// $item2 = new Item();
+			// $item2->setName('Granola bars')
+			//       ->setCurrency('USD')
+			//       ->setQuantity(5)
+			//       ->setPrice(2);
 
 			$itemList = new ItemList();
 			$itemList->setItems(array($item1, $item2));
@@ -370,7 +388,7 @@ class CartController extends Controller
 			// charges etc.
 			$details = new Details();
 			$details->setShipping(1.2)
-				    ->setTax(1.3)
+				    ->setTax(0)
 				    ->setSubtotal(17.50);
 
 			// ### Amount
@@ -426,41 +444,25 @@ class CartController extends Controller
 
 			try {
 			    $payment->create($apiContext);
-				return redirect($payment->getApprovalLink());
+				if ($payment->getState() == "created") {
+					Session::put('_paypal', Input::all());
+					return redirect($payment->getApprovalLink());
+				} else {
+					var_dump($payment);
+					$errMsg = 'Something went wrong! Payment using PayPal is invalid. Kindly try again.';
+					return redirect('/checkout')->withErrors(['message'=> $errMsg], 'checkout')->withInput();
+				}
 			} catch (Exception $ex) {
 				// Default error message
 				$errMsg = 'Something went wrong! Payment using PayPal is invalid. Kindly try again.';
 				return redirect('/checkout')->withErrors(['message'=> $errMsg], 'checkout')->withInput();
 			}
 
-var_dump($payment);
-var_dump($payment->getId());
-var_dump($payment->getState());
-var_dump($payment->getCreateTime());
-var_dump($payment->getLinks());
-var_dump($payment->getApprovalLink());
-die;
-
+			return redirect('/checkout')->withErrors(['message'=> 'Something went wrong! Kindly try again.'], 'checkout')->withInput();
 		}
 
 var_dump($data_order);
 die;
-
-		// Insert new order
-		$orders = new Orders();
-		// $order_id = $orders->insertOrder($data_order);
-		$order_id = 0;
-
-		$data_cart_default = [
-			"DateCreated"	=> date('Y-m-d H:i:s'),
-			"Status"		=> "1",
-			"OrderID"		=> $order_id,
-			"TempToken"		=> $request->_token,
-			"FullName"		=> $request->FirstName . " " . $request->Surname,
-			"PhoneNo"		=> $request->PhoneNumber,
-			"DateQuote"		=> "",
-			"EmailAddress"	=> $request->Email
-		];
 
 		$data = [];
 
@@ -550,15 +552,16 @@ die;
 		foreach ($cart_list as $key => $list) {
 
 			$data_cart_default_band = [
-				"BandStyle"				 => strtolower($list['style']),
-				"BandSize"				 => strtolower($list['size']),
-				"Font"					 => strtolower($list['fonts']),
-				"ProductionTime"		 => $list['time_production']['days'],
-				"arProduction"			 => json_encode($list['time_production']),
-				"PriceProduction"		 => $list['time_production']['price'],
-				"Delivery"				 => $list['time_shipping']['days'],
-				"arShipping"			 => json_encode($list['time_shipping']),
-				"PriceDelivery"			 => $list['time_shipping']['price'],
+				"BandStyle"				=> strtolower($list['style']),
+				"BandSize"				=> strtolower($list['size']),
+				"Font"					=> strtolower($list['fonts']),
+				"ProductionTime"		=> $list['time_production']['days'],
+				"arProduction"			=> json_encode($list['time_production']),
+				"PriceProduction"		=> $list['time_production']['price'],
+				"Delivery"				=> $list['time_shipping']['days'],
+				"arShipping"			=> json_encode($list['time_shipping']),
+				"PriceDelivery"			=> $list['time_shipping']['price'],
+				"UnitPrice"				=> $list['price'],
 			];
 
 			// Message
@@ -674,7 +677,7 @@ die;
 
 						foreach ($attr_val['size'] as $attr) {
 
-							$comment = ["font_color"=> strtoupper($attr['font']), "font_name"=> ucwords(strtolower($attr['font_name'])), "size"=> strtoupper($attr['size'])];
+							$comment = ["font_color"=> strtoupper($attr['font']), "font_name"=> ucwords(strtolower($attr['font_name'])), "size"=> strtolower($attr['size'])];
 							$arKeychains = ["quantity" => 0];
 							$arWristbands = ["quantity" => 0];
 
@@ -713,7 +716,7 @@ die;
 							}
 
 							$data_cart_item_attr[] = [
-								"arColors"		=> json_encode(explode(',', $attr_val['color'])), // JSON String ~ Color
+								"arColors"		=> json_encode(explode(',', strtoupper($attr_val['color']))), // JSON String ~ Color
 								"Qty"			=> $attr['qty'], // String ~ Quantity
 								"Comments"		=> json_encode($comment), // JSON String ~ Comment
 								"FreeQty"		=> $arWristbands['quantity'], // Int ~ Free wristbands
@@ -804,18 +807,14 @@ die;
 
 				foreach ($data_cart_item_attr as $value) {
 					// Total computation
-					$data_cart_item['UnitPrice'] = $value['Qty'] * ($list['price'] + $item['price_addon']);
+					$data_cart_item['Total'] = $value['Qty'] * ($list['price'] + $item['price_addon']);
 					$data_cart[] = array_merge($data_cart_item, $value);
 				}
 
 			}
 
-			// Last thing to do
+			// Last thing to do. Merge everything...
 			foreach ($data_cart as $cart_key => $cart_val) {
-				// 
-				// $total = 0;
-				// $total += $cart_val['UnitPrice'];
-
 				$data[] = array_merge($data_cart_default, $data_cart_default_band, $cart_val);
 			}
 
@@ -823,6 +822,5 @@ die;
 
 		return $data;
 	}
-
 
 }
