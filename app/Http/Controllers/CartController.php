@@ -209,7 +209,6 @@ class CartController extends Controller
 
 	public function checkoutSubmit(Request $request)
 	{
-		return redirect('/checkout')->withErrors(['message'=> 'Something went wrong! Kindly try again.'], 'checkout')->withInput();
 		// Initialize order data
 		$data_order = [
 			"DateCreated"		=> date('Y-m-d H:i:s'),
@@ -220,8 +219,8 @@ class CartController extends Controller
 			"LastName"			=> $request->bInfoLastName,
 			"EmailAddress"		=> $request->bInfoEmail,
 			"PaymentMethod"		=> (strtoupper($request->PaymentType) == "CC") ? 'authnet' : 'paypal',
-			"Paid"				=> "100",
-			"PaidDate"			=> date('Y-m-d'),
+			"Paid"				=> "0",
+			"PaidDate"			=> "",
 			"AuthorizeTransID"	=> "",
 			"PaypalEmail"		=> $request->PaypalEmail,
 			"PaymentRemarks"	=> "",
@@ -261,6 +260,7 @@ class CartController extends Controller
 		}
 
 		$arrCart = $this->organizeCart($request->_token, $order_id, $request->bInfoFirstName." ".$request->bInfoLastName, $request->bInfoContactNo, $request->bInfoEmail);
+		// var_dump($arrCart); die;
 
 		if (strtoupper($request->PaymentType) == "CC") {
 			$merchantAuthentication = new AnetAPI\MerchantAuthenticationType();
@@ -290,10 +290,21 @@ class CartController extends Controller
 		    $customerAddress->setCountry($request->bInfoCountry);
     		$customerAddress->setPhoneNumber($request->bInfoContactNo);
 			
+			// Compute total
+			$total = 0;
+			$cart = Session::get('_cart');
+			foreach ($cart as $cartVal) {
+				$total += $cartVal['total'];
+			}
+			$discount = 0;
+			if (!empty($request->DiscountCode)) {
+				$discount = $total * 0.10;
+			}
+
 			// Create a transaction
 			$transactionRequestType = new AnetAPI\TransactionRequestType();
 			$transactionRequestType->setTransactionType("authCaptureTransaction");   
-			$transactionRequestType->setAmount($data_order['Paid']);
+			$transactionRequestType->setAmount($total - $discount);
     		$transactionRequestType->setBillTo($customerAddress);
     		$transactionRequestType->setOrder($order);
     		$transactionRequestType->setPayment($paymentOne);
@@ -317,6 +328,24 @@ class CartController extends Controller
 				
 				if (($tresponse != null) && ($tresponse->getResponseCode()=="1") ) {
 					$data_order['AuthorizeTransID'] = $tresponse->getTransId();
+					$data_order['Status'] = 1;
+					$data_order['Paid'] = 1;
+					$data_order['PaidDate'] = date('Y-m-d');
+
+					$orders_model = new Orders();
+					$orders_model->where('ID', $order_id)->update($data_order);
+
+					foreach ($arrCart as $key => $value) {
+						unset($arrCart[$key]['_Name']);
+						unset($arrCart[$key]['_Size']);
+					}
+
+					$carts_model = new Carts();
+					$carts_model->insert($arrCart);
+					Session::forget('_cart');
+					Session::forget('_paypal');
+					Session::flash('_checkout_success', true);
+					return redirect('/checkout/success');
 				} else {
 					// Get authnet transaction error message
 					if($tresponse->getErrors()) {
@@ -339,6 +368,7 @@ class CartController extends Controller
 				}
 				return redirect('/checkout')->withErrors(['message'=> $errMsg], 'checkout')->withInput();
 			}
+			return redirect('/checkout')->withErrors(['message'=> $errMsg], 'checkout')->withInput();
 
 		} else {
 			// ### Payer
@@ -421,12 +451,12 @@ class CartController extends Controller
 					$price += $arContinuousEndClipart['price'];
 				}
 
-				$priceContinuousEndClipart = 0;
-				$arContinuousEndClipart = json_decode($value['arContinuousEndClipart'], true);
-				if(is_array($arContinuousEndClipart)) {
-					$totalAddon += $arContinuousEndClipart['price'] * $value['Qty'];
-					$price += $arContinuousEndClipart['price'];
-				}
+				// $priceContinuousEndClipart = 0;
+				// $arContinuousEndClipart = json_decode($value['arContinuousEndClipart'], true);
+				// if(is_array($arContinuousEndClipart)) {
+				// 	$totalAddon += $arContinuousEndClipart['price'] * $value['Qty'];
+				// 	$price += $arContinuousEndClipart['price'];
+				// }
 
 				$priceAddons = 0;
 				$arPriceAddons = json_decode($value['arAddons'], true);
@@ -453,7 +483,6 @@ class CartController extends Controller
 					 ->setQuantity($value['Qty'])
 					 ->setPrice($price);
 				$items[] = $item;
-
 			}
 
 			$shipping = $this->getCartShipping();
@@ -571,15 +600,6 @@ class CartController extends Controller
 			return redirect('/checkout')->withErrors(['message'=> 'Something went wrong! Kindly try again.'], 'checkout')->withInput();
 		}
 
-		var_dump($data_order);
-		die;
-		// // Set for success page.
-		// Session::flash('order_items', $cart_list);
-		// Session::flash('order_status', 'success');
-		// // Forget cart items.
-		// Session::forget('_cart');
-		// // redirect to success page
-		// return json_encode(true);
 	}
 
 	public function checkoutPaypal(Request $request)
@@ -623,7 +643,7 @@ class CartController extends Controller
 		    // The payer_id is added to the request query parameters
 		    // when the user is redirected from paypal back to your site
 		    $execution = new PaymentExecution();
-		    $execution->setPayerId($_GET['PayerID']);
+		    $execution->setPayerId($request->PayerID);
 
 			// ### Itemized information
 			// (Optional) Lets you specify item wise
@@ -686,13 +706,7 @@ class CartController extends Controller
 				if(is_array($arContinuousEndClipart)) {
 					$totalAddon += $arContinuousEndClipart['price'] * $value['Qty'];
 				}
-			
-				$priceContinuousEndClipart = 0;
-				$arContinuousEndClipart = json_decode($value['arContinuousEndClipart'], true);
-				if(is_array($arContinuousEndClipart)) {
-					$totalAddon += $arContinuousEndClipart['price'] * $value['Qty'];
-				}
-			
+
 				$priceAddons = 0;
 				$arPriceAddons = json_decode($value['arAddons'], true);
 				if(is_array($arPriceAddons)) {
@@ -717,23 +731,23 @@ class CartController extends Controller
 			$shipping_total = ($all_total - $discount) - $shipping['total'];
 			$shipping_total = number_format($shipping_total, "2");
 			
-// ### Optional Changes to Amount
-// If you wish to update the amount that you wish to charge the customer,
-// based on the shipping address or any other reason, you could
-// do that by passing the transaction object with just `amount` field in it.
-// Here is the example on how we changed the shipping to $1 more than before.
-$details = new Details();
-$details->setShipping($shipping['total'])
-	    ->setTax(0)
-	    ->setSubtotal($shipping_total);
+			// ### Optional Changes to Amount
+			// If you wish to update the amount that you wish to charge the customer,
+			// based on the shipping address or any other reason, you could
+			// do that by passing the transaction object with just `amount` field in it.
+			// Here is the example on how we changed the shipping to $1 more than before.
+			$details = new Details();
+			$details->setShipping($shipping['total'])
+				    ->setTax(0)
+				    ->setSubtotal($shipping_total);
 
-$amount = new Amount();
-$amount->setCurrency("USD")
-	   ->setTotal(number_format($all_total - $discount, 2))
-	   ->setDetails($details);
+			$amount = new Amount();
+			$amount->setCurrency("USD")
+				   ->setTotal(number_format($all_total - $discount, 2))
+				   ->setDetails($details);
 
-$transaction = new Transaction();
-$transaction->setAmount($amount);
+			$transaction = new Transaction();
+			$transaction->setAmount($amount);
 
 			// Add the above transaction object inside our Execution object.
 			$execution->addTransaction($transaction);
@@ -765,18 +779,16 @@ die;
 		Session::put('_old_input', Session::get('_paypal.order_input'));
 		return redirect('/checkout')->withErrors(['message'=> 'Approval for PayPal checkout is cancelled. Kindly try again.'], 'checkout');
 
-var_dump($request->success);
-var_dump($request->paymentId);
-var_dump($request->token);
-var_dump($request->PayerID);
-var_dump(Session::get('_paypal'));
-die;
-
 	}
 
-	private function processCheckoutOrder(Request $request)
+	public function checkoutSuccess()
 	{
-		// 
+		if (Session::has('_checkout_success')) {
+			if (Session::get('_checkout_success')) {
+				return view('checkout-success', []);
+			}
+		}
+		return redirect('/');
 	}
 
 	private function organizeCart($token, $order_id, $full_name, $phone_num, $email)
@@ -1006,16 +1018,16 @@ die;
 										$data_cart_default_band['arBackMessageStartClipart'] = json_encode($arrImage);
 									}
 
-									if (isset($list['clips']['logo']['continue-end'])) {
-										$arrImage = $list['clips']['logo']['continue-end'];
+									if (isset($list['clips']['logo']['cont-end'])) {
+										$arrImage = $list['clips']['logo']['cont-end'];
 										$arrImage['quantity'] = $attr['qty'];
 										$arrImage['total'] = $arrImage['quantity'] * $arrImage['price'];
 										$data_cart_default_band['ContinuousEndClipart'] = $arrImage['image'];
 										$data_cart_default_band['arContinuousEndClipart'] = json_encode($arrImage);
 									}
 
-									if (isset($list['clips']['logo']['continue-start'])) {
-										$arrImage = $list['clips']['logo']['continue-start'];
+									if (isset($list['clips']['logo']['cont-start'])) {
+										$arrImage = $list['clips']['logo']['cont-start'];
 										$arrImage['quantity'] = $attr['qty'];
 										$arrImage['total'] = $arrImage['quantity'] * $arrImage['price'];
 										$data_cart_default_band['ContinuousMessageStartClipart'] = $arrImage['image'];
@@ -1088,14 +1100,18 @@ die;
 								// Keychain Addon
 								if (isset($list['addon']['key-chain'])) {
 									$arrAddonBand = $list['addon']['key-chain'];
-									unset($arrAddonBand['items']);
 									// Update values for individual items
-									$arrAddonBand['quantity'] = $attr['qty'];
+									if ($arrAddonBand['all'] == 'true') {
+										$arrAddonBand['quantity'] = $attr['qty'];
+									} else {
+										$arrAddonBand['quantity'] = $arrAddonBand['items'][$attr_val['style']][$attr_key]['size'][$attr['size']]['qty'];
+									}
 									$arrAddonBand['total'] = $arrAddonBand['quantity'] * $arrAddonBand['price'];
 									// Set values
 									$data_cart_default_band['Keychain'] = $arrAddonBand['quantity'];
 									$data_cart_default_band['PriceKeychain'] = $arrAddonBand['price'];
 									// Set arAddons values
+									unset($arrAddonBand['items']);
 									$data_cart_item_addons['Keychain'] = $arrAddonBand;
 								}
 

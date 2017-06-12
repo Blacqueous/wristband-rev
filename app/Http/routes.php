@@ -93,6 +93,8 @@ Route::post('/checkout/submit', 'CartController@checkoutSubmit');
 
 Route::get('/checkout/paypal', 'CartController@checkoutPaypal');
 
+Route::get('/checkout/success', 'CartController@checkoutSuccess');
+
 Route::get('/submit/success', 'ViewController@submitSuccess');
 
 Route::post('/quote/send', 'ViewController@mailTest');

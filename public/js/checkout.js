@@ -43,6 +43,16 @@ $(document).ready(function(e) {
         $('.form-grand-total .form-total-value span').html(parseFloat(grand_total).formatMoney(2, '.', ','));
     });
     
+    $(document).on('blur', 'input[name="DiscountCode"]', function(e) {
+        $('.form-sub-total .form-total-value span').html(parseFloat(total).formatMoney(2, '.', ','));
+        var discount = ($(this).val().length > 0) ? total * 0.10 : 0;
+            // discount = discount.toFixed(2);
+        $('.form-discount-total .form-total-value span').html(parseFloat(discount).formatMoney(2, '.', ','));
+        var grand_total = total - discount;
+            // grand_total = grand_total.toFixed(2);
+        $('.form-grand-total .form-total-value span').html(parseFloat(grand_total).formatMoney(2, '.', ','));
+    });
+    
     $(document).on('ifChecked', 'input[name="PaymentType"]', function(e) {
         var self = $(this),
             val = self.val().toUpperCase();

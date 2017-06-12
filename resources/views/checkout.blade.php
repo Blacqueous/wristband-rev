@@ -61,6 +61,7 @@
                 $('select[name="sInfoCountry"]').val(sInfoCountry).trigger('change');
                 $('select[name="sInfoState"]').val(sInfoState);
             }
+            $('input[name="DiscountCode"]').trigger('keyup');
         }, 500);
         if(errMsg.trim().length > 0) {
             sweetAlert("Oops...", errMsg, "error");
