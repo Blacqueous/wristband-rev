@@ -28,6 +28,16 @@ class Orders extends Model {
                 ->get();
     }
 
+    public function checkOrderByTransNo($transNo=null)
+    {
+        // Get and return query.
+    	return DB::table($this->table)
+                ->select('ID')
+                ->where('TransNo', '=', $transNo)
+                ->where('Status', '=', 0)
+                ->get();
+    }
+
     public function insertOrder($data=null)
     {
         if(is_null($data) || empty($data)) {

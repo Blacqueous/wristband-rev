@@ -209,12 +209,13 @@ class CartController extends Controller
 
 	public function checkoutSubmit(Request $request)
 	{
+		return redirect('/checkout')->withErrors(['message'=> 'Something went wrong! Kindly try again.'], 'checkout')->withInput();
 		// Initialize order data
 		$data_order = [
 			"DateCreated"		=> date('Y-m-d H:i:s'),
 			"TempToken"			=> $request->_token,
 			"TransNo"			=> "",
-			"Status"			=> '1',
+			"Status"			=> "0",
 			"FirstName"			=> $request->bInfoFirstName,
 			"LastName"			=> $request->bInfoLastName,
 			"EmailAddress"		=> $request->bInfoEmail,
@@ -222,7 +223,7 @@ class CartController extends Controller
 			"Paid"				=> "100",
 			"PaidDate"			=> date('Y-m-d'),
 			"AuthorizeTransID"	=> "",
-			"PaypalEmail"		=> "",
+			"PaypalEmail"		=> $request->PaypalEmail,
 			"PaymentRemarks"	=> "",
 			"ProductionCharge"	=> "",
 			"DeliveryCharge"	=> "",
@@ -475,13 +476,15 @@ class CartController extends Controller
 				 ->setPrice($production['total']);
 			$items[] = $item;
 
-			// For Discount, if any
-			$item = new Item();
-			$item->setName('Discount')
-				 ->setCurrency('USD')
-				 ->setQuantity(1)
-				 ->setPrice("-".$discount);
-			$items[] = $item;
+			if ($discount > 0) {
+				// For Discount, if any
+				$item = new Item();
+				$item->setName('Discount')
+					 ->setCurrency('USD')
+					 ->setQuantity(1)
+					 ->setPrice("-".$discount);
+				$items[] = $item;
+			}
 
 			$itemList = new ItemList();
 			$itemList->setItems($items);
@@ -581,7 +584,194 @@ class CartController extends Controller
 
 	public function checkoutPaypal(Request $request)
 	{
-		// 
+		if (!Session::has('_cart')) {
+			return redirect('/cart')->with('cart_message', 'Cart does not exist.');
+		}
+
+		if (!Session::has('_paypal')) {
+			return redirect('/cart')->with('cart_message', 'Cart does not exist.');
+		}
+
+		// Session::put('_old_input', Session::get('_paypal.order_input'));
+		// return redirect('/checkout')->withErrors(['message'=> 'Something went wrong with your PayPal checkout. Kindly try again.'], 'checkout');
+
+		if($request->success && $request->success == 'true') {
+			// ### Create Payment
+			// Create a payment by calling the 'create' method
+			// passing it a valid apiContext.
+			// (See bootstrap.php for more on `ApiContext`)
+			// The return object contains the state and the
+			// url to which the buyer must be redirected to
+			// for payment approval
+			$apiContext = new ApiContext(
+							new OAuthTokenCredential(
+								App::make('config')->get('services.paypal.client_id'),
+								App::make('config')->get('services.paypal.secret')
+							)
+						);
+			$apiContext->setConfig(App::make('config')->get('services.paypal.settings'));
+
+		    // Get the payment Object by passing paymentId
+		    // payment id was previously stored in session in
+		    // CreatePaymentUsingPayPal.php
+		    $paymentId = $request->paymentId;
+		    $payment = Payment::get($paymentId, $apiContext);
+
+		    // ### Payment Execute
+		    // PaymentExecution object includes information necessary
+		    // to execute a PayPal account payment.
+		    // The payer_id is added to the request query parameters
+		    // when the user is redirected from paypal back to your site
+		    $execution = new PaymentExecution();
+		    $execution->setPayerId($_GET['PayerID']);
+
+			// ### Itemized information
+			// (Optional) Lets you specify item wise
+			// information
+			$total = 0;
+			$items = [];
+			
+			foreach ($arrCart as $value) {
+			
+				$totalPrice = $value['UnitPrice'] * $value['Qty'];
+				$totalAddon = 0;
+			
+				$arFrontMessage = json_decode($value['arFrontMessage'], true);
+				if(is_array($arFrontMessage)) {
+					$totalAddon += $arFrontMessage['price'] * $value['Qty'];
+				}
+			
+				$arBackMessage = json_decode($value['arBackMessage'], true);
+				if(is_array($arBackMessage)) {
+					$totalAddon += $arBackMessage['price'] * $value['Qty'];
+				}
+			
+				$arContinuousMessage = json_decode($value['arContinuousMessage'], true);
+				if(is_array($arContinuousMessage)) {
+					$totalAddon += $arContinuousMessage['price'] * $value['Qty'];
+				}
+			
+				$arInsideMessage = json_decode($value['arInsideMessage'], true);
+				if(is_array($arInsideMessage)) {
+					$totalAddon += $arInsideMessage['price'] * $value['Qty'];
+				}
+			
+				$arFrontMessageStartClipart = json_decode($value['arFrontMessageStartClipart'], true);
+				if(is_array($arFrontMessageStartClipart)) {
+					$totalAddon += $arFrontMessageStartClipart['price'] * $value['Qty'];
+				}
+			
+				$arFrontMessageEndClipart = json_decode($value['arFrontMessageEndClipart'], true);
+				if(is_array($arFrontMessageEndClipart)) {
+					$totalAddon += $arFrontMessageEndClipart['price'] * $value['Qty'];
+				}
+			
+				$arBackMessageStartClipart = json_decode($value['arBackMessageStartClipart'], true);
+				if(is_array($arBackMessageStartClipart)) {
+					$totalAddon += $arBackMessageStartClipart['price'] * $value['Qty'];
+				}
+			
+				$arBackMessageEndClipart = json_decode($value['arBackMessageEndClipart'], true);
+				if(is_array($arBackMessageEndClipart)) {
+					$totalAddon += $arBackMessageEndClipart['price'] * $value['Qty'];
+				}
+			
+				$arContinuousMessageStartClipart = json_decode($value['arContinuousMessageStartClipart'], true);
+				if(is_array($arContinuousMessageStartClipart)) {
+					$totalAddon += $arContinuousMessageStartClipart['price'] * $value['Qty'];
+				}
+			
+				$priceContinuousEndClipart = 0;
+				$arContinuousEndClipart = json_decode($value['arContinuousEndClipart'], true);
+				if(is_array($arContinuousEndClipart)) {
+					$totalAddon += $arContinuousEndClipart['price'] * $value['Qty'];
+				}
+			
+				$priceContinuousEndClipart = 0;
+				$arContinuousEndClipart = json_decode($value['arContinuousEndClipart'], true);
+				if(is_array($arContinuousEndClipart)) {
+					$totalAddon += $arContinuousEndClipart['price'] * $value['Qty'];
+				}
+			
+				$priceAddons = 0;
+				$arPriceAddons = json_decode($value['arAddons'], true);
+				if(is_array($arPriceAddons)) {
+					foreach ($arPriceAddons as $addon) {
+						$totalAddon += $addon['total'];
+					}
+				}
+			
+				// Compute new total
+				$total += $totalPrice + $totalAddon;
+			}
+			
+			$shipping = $this->getCartShipping();
+			$production = $this->getCartProduction();
+			
+			$sub_total = $total + $production['total'];
+			$all_total = $total + $shipping['total'] + $production['total'];
+			$discount = 0;
+			if (!empty($request->DiscountCode)) {
+				$discount = $all_total * 0.10;
+			}
+			$shipping_total = ($all_total - $discount) - $shipping['total'];
+			$shipping_total = number_format($shipping_total, "2");
+			
+// ### Optional Changes to Amount
+// If you wish to update the amount that you wish to charge the customer,
+// based on the shipping address or any other reason, you could
+// do that by passing the transaction object with just `amount` field in it.
+// Here is the example on how we changed the shipping to $1 more than before.
+$details = new Details();
+$details->setShipping($shipping['total'])
+	    ->setTax(0)
+	    ->setSubtotal($shipping_total);
+
+$amount = new Amount();
+$amount->setCurrency("USD")
+	   ->setTotal(number_format($all_total - $discount, 2))
+	   ->setDetails($details);
+
+$transaction = new Transaction();
+$transaction->setAmount($amount);
+
+			// Add the above transaction object inside our Execution object.
+			$execution->addTransaction($transaction);
+
+			try {
+			    // Execute the payment
+			    // (See bootstrap.php for more on `ApiContext`)
+			    $result = $payment->execute($execution, $apiContext);
+
+			    try {
+			        $payment = Payment::get($paymentId, $apiContext);
+var_dump($payment);
+var_dump($payment->getId());
+die;
+			    } catch (Exception $ex) {
+					Session::put('_old_input', Session::get('_paypal.order_input'));
+					return redirect('/checkout')->withErrors(['message'=> 'Something went wrong with your PayPal checkout. Kindly try again.'], 'checkout');
+			    }
+			} catch (Exception $ex) {
+				Session::put('_old_input', Session::get('_paypal.order_input'));
+				return redirect('/checkout')->withErrors(['message'=> 'Something went wrong with your PayPal checkout. Kindly try again.'], 'checkout');
+			}
+
+		} else {
+			Session::put('_old_input', Session::get('_paypal.order_input'));
+			return redirect('/checkout')->withErrors(['message'=> 'Approval for PayPal checkout is cancelled. Kindly try again.'], 'checkout');
+		}
+
+		Session::put('_old_input', Session::get('_paypal.order_input'));
+		return redirect('/checkout')->withErrors(['message'=> 'Approval for PayPal checkout is cancelled. Kindly try again.'], 'checkout');
+
+var_dump($request->success);
+var_dump($request->paymentId);
+var_dump($request->token);
+var_dump($request->PayerID);
+var_dump(Session::get('_paypal'));
+die;
+
 	}
 
 	private function processCheckoutOrder(Request $request)
