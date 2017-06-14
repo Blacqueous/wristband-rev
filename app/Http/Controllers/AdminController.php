@@ -59,7 +59,7 @@ class AdminController extends Controller
 
     public function managePrices()
     {
-        return view('admin.manage_prices');
+        return view('admin.manage.prices');
     }
 
     public function manageImages()
@@ -75,27 +75,22 @@ class AdminController extends Controller
         }
         $data['size'] = $this->formatBytes($size);
 
-        return view('admin.manage_images', $data);
+        return view('admin.manage.images', $data);
     }
 
-    public function formatBytes($bytes, $precision = 2)
+    public function manageOrders()
     {
-        $units = array('B', 'KB', 'MB', 'GB', 'TB');
+        return view('admin.manage.orders', []);
+    }
 
-        $bytes = max($bytes, 0);
-        $pow = floor(($bytes ? log($bytes) : 0) / log(1024));
-        $pow = min($pow, count($units) - 1);
-
-        // Uncomment one of the following alternatives
-        $bytes /= pow(1024, $pow);
-        // $bytes /= (1 << (10 * $pow));
-
-        return round($bytes, $precision) . ' ' . $units[$pow];
+    public function manageDiscounts()
+    {
+        return view('admin.manage.discounts', []);
     }
 
     public function resetJSON()
     {
-        return view('admin.manage_reset_cache');
+        return view('admin.manage.cacheReset');
     }
 
     public function processResetJSON(Request $request)
@@ -884,6 +879,21 @@ class AdminController extends Controller
     public function contains($needle, $haystack)
     {
         return strpos($haystack, $needle) !== false;
+    }
+
+    public function formatBytes($bytes, $precision = 2)
+    {
+        $units = array('B', 'KB', 'MB', 'GB', 'TB');
+
+        $bytes = max($bytes, 0);
+        $pow = floor(($bytes ? log($bytes) : 0) / log(1024));
+        $pow = min($pow, count($units) - 1);
+
+        // Uncomment one of the following alternatives
+        $bytes /= pow(1024, $pow);
+        // $bytes /= (1 << (10 * $pow));
+
+        return round($bytes, $precision) . ' ' . $units[$pow];
     }
 
 }

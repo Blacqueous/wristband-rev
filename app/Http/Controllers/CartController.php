@@ -628,10 +628,8 @@ class CartController extends Controller
 			return redirect('/cart')->with('cart_message', 'Cart does not exist.');
 		}
 
-		// Session::put('_old_input', Session::get('_paypal.order_input'));
-		// return redirect('/checkout')->withErrors(['message'=> 'Something went wrong with your PayPal checkout. Kindly try again.'], 'checkout');
-
 		if($request->success && $request->success == 'true') {
+
 			// ### Create Payment
 			// Create a payment by calling the 'create' method
 			// passing it a valid apiContext.
@@ -841,7 +839,7 @@ class CartController extends Controller
 
 		} else {
 			Session::put('_old_input', Session::get('_paypal.order_input'));
-			return redirect('/checkout')->withErrors(['message'=> 'Approval for PayPal checkout is cancelled. Kindly try again.'], 'checkout');
+			return redirect('/checkout')->withErrors(['message'=> 'PayPal checkout is cancelled. Kindly try again.'], 'checkout');
 		}
 
 		Session::put('_old_input', Session::get('_paypal.order_input'));

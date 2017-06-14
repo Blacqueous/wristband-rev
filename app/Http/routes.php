@@ -135,9 +135,9 @@ Route::group(['middleware' => 'admin'], function () {
     // Admin pages
     Route::get('/admin/prices', 'AdminController@managePrices');
     Route::get('/admin/images', 'AdminController@manageImages');
-    Route::post('/admin/images/clear', 'AdminController@clearTempImages');
     Route::get('/admin/reset', 'AdminController@resetJSON');
-    Route::post('/admin/reset', 'AdminController@processResetJSON');
+    Route::get('/admin/orders', 'AdminController@manageOrders');
+    Route::get('/admin/discounts', 'AdminController@manageDiscounts');
 
     // Admin price related actions
     Route::post('/admin/prices/uploadWB', 'AdminController@uploadPricesWB');
@@ -166,4 +166,9 @@ Route::group(['middleware' => 'admin'], function () {
     Route::post('/admin/prices/reuploadPD', 'AdminController@reuploadPricesPD');
     Route::post('/admin/prices/reprocessPD', 'AdminController@reprocessPricesPD');
 
+    // Admin images realated actions
+    Route::post('/admin/images/clear', 'AdminController@clearTempImages');
+
+    // Admin reset related actions
+    Route::post('/admin/reset', 'AdminController@processResetJSON');
 });

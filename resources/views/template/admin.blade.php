@@ -125,19 +125,19 @@
 		    background-color: rgba(0, 0, 0, 0.2);
 		}
 		.sidebar-nav li:nth-child(2):before, .sidebar-nav li:nth-child(2).active {
-		    background-color: #1abc9c;
+		    background-color: #1ABC9C;
 		}
 		.sidebar-nav li:nth-child(3):before, .sidebar-nav li:nth-child(3).active {
-			background-color: #3498db;
+			background-color: #3498DB;
 		}
 		.sidebar-nav li:nth-child(4):before, .sidebar-nav li:nth-child(4).active {
-			background-color: #9b59b6;
+			background-color: #F57C00;
 		}
 		.sidebar-nav li:nth-child(5):before, .sidebar-nav li:nth-child(5).active {
-			background-color: #e67e22;
+			background-color: #9C27B0;
 		}
 		.sidebar-nav li:nth-child(6):before, .sidebar-nav li:nth-child(6).active {
-			background-color: #1abc9c;
+			background-color: #FF76A4;
 		}
 		.sidebar-nav li:nth-child(7):before, .sidebar-nav li:nth-child(7).active {
 			background-color: #3498db;
@@ -178,8 +178,9 @@
 
 		.sidebar-nav > .sidebar-brand {
 		    min-height: 60px;
-		    font-size: 20px;
+		    font-size: 22px;
 		    line-height: 44px;
+		    text-transform: uppercase;
 		}
 		.sidebar-nav .dropdown-menu {
 		    position: relative;
@@ -351,7 +352,7 @@
 				<ul class="nav sidebar-nav">
 					<li class="sidebar-brand">
 						<a href="#" onclick="event.preventDefault();">
-							Wristband Admin
+							Promotional Wristband
 						</a>
 					</li>
 					<li @if($menu == 1) class="active" @endif>
@@ -365,9 +366,18 @@
 						</a>
 					</li>
 					<li @if($menu == 3) class="active" @endif>
-					<!-- <li class="nav-reset"> -->
 						<a href="{{ URL::to('/admin/reset') }}">
-							<i class="fa fa-retweet"></i> Reset Cache
+							<i class="fa fa-eraser"></i> Clear Cache
+						</a>
+					</li>
+					<li @if($menu == 4) class="active" @endif>
+						<a href="{{ URL::to('/admin/orders') }}">
+							<i class="fa fa-shopping-cart"></i> Manage Orders
+						</a>
+					</li>
+					<li @if($menu == 5) class="active" @endif>
+						<a href="{{ URL::to('/admin/discounts') }}">
+							<i class="fa fa-ticket"></i> Manage Promo Code
 						</a>
 					</li>
 					<li class="nav-logout">

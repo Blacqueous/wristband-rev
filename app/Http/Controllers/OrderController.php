@@ -17,6 +17,10 @@ use Illuminate\Http\Request;
 use Mail;
 use Session;
 use Storage;
+use net\authorize\api\contract\v1 as AnetAPI;
+$merchantAuthentication = new AnetAPI\MerchantAuthenticationType();
+$merchantAuthentication->setName("YOURLOGIN");
+$merchantAuthentication->setTransactionKey("YOURKEY");
 
 class OrderController extends Controller
 {
