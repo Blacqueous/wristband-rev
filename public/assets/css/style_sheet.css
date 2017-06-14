@@ -81,15 +81,15 @@ ul#menu-header-menu {
 }
 
 li.menu-item.menu-item-type-post_type {
-    float: left;
-    list-style: none;
-    padding: 18px 14px 18px 15px;
+	float: left;
+	list-style: none;
+	padding: 18px 14px 18px 12px;
 }
 
 li.menu-item.menu-item-type-post_type a{
 	 color: #079ca5;
 	 text-transform:uppercase;
-	 font-size:18px;
+	 font-size:16px;
 }
 
 li.menu-item.menu-item-type-post_type a:hover{
@@ -820,8 +820,8 @@ body, a, [input type="radio"] , [input type="checkbox"]{
 }
 
 #coup-box {
-    /* background: url(img/discount.jpg) no-repeat; 
-    height: 400px;*/
+    /* background: url(img/discount.jpg) no-repeat;
+    height: 400px; */
     width: 100%;
     padding: 22px 112px;
     background-size: 100% auto;

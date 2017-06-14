@@ -19,6 +19,14 @@ Route::get('/about', function () { return view('about'); });
 
 Route::get('/custom-wristband', function () { return view('homepage'); });
 
+Route::get('/polyester-lanyard',function () { return view('polyester'); });
+
+Route::get('/tubular-lanyard',function () { return view('tubular'); });
+
+Route::get('/nylon-lanyard',function () { return view('nylon'); });
+
+Route::get('/woven-lanyard',function () { return view('woven'); });
+
 Route::get('/privacy', function () { return view('privacy'); });
 
 Route::get('/faq', function () { return view('faq'); });
