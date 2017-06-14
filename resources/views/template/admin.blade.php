@@ -355,6 +355,16 @@
 							Promotional Wristband
 						</a>
 					</li>
+					<li @if($menu == 4) class="active" @endif>
+						<a href="{{ URL::to('/admin/orders') }}">
+							<i class="fa fa-shopping-cart"></i> Manage Orders
+						</a>
+					</li>
+					<li @if($menu == 5) class="active" @endif>
+						<a href="{{ URL::to('/admin/discounts') }}">
+							<i class="fa fa-ticket"></i> Manage Promo Code
+						</a>
+					</li>
 					<li @if($menu == 1) class="active" @endif>
 						<a href="{{ URL::to('/admin/prices') }}">
 							<i class="fa fa-money"></i> Manage Prices
@@ -368,16 +378,6 @@
 					<li @if($menu == 3) class="active" @endif>
 						<a href="{{ URL::to('/admin/reset') }}">
 							<i class="fa fa-eraser"></i> Clear Cache
-						</a>
-					</li>
-					<li @if($menu == 4) class="active" @endif>
-						<a href="{{ URL::to('/admin/orders') }}">
-							<i class="fa fa-shopping-cart"></i> Manage Orders
-						</a>
-					</li>
-					<li @if($menu == 5) class="active" @endif>
-						<a href="{{ URL::to('/admin/discounts') }}">
-							<i class="fa fa-ticket"></i> Manage Promo Code
 						</a>
 					</li>
 					<li class="nav-logout">
