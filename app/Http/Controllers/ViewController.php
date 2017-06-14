@@ -34,7 +34,6 @@ class ViewController extends Controller
         return view('fonts', $data);
 	}
 
-
 	public function pageClipartList()
 	{
 		$cliparts = new ClipartList();

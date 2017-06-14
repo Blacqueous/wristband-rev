@@ -84,7 +84,7 @@
 						<li class="menu-item menu-item-type-post_type current-menu-item page_item"><a href="{{ URL::to('/') }}">Home</a></li>
 						<li class="menu-item menu-item-type-post_type"><a href="{{ URL::to('/order') }}">Order Now</a></li>
 						<li class="menu-item menu-item-type-post_type"><a href="{{ URL::to('/price') }}">Prices</a></li>
-						<li class="dropdown menu-item menu-item-type-post_type"><a id="prod-main" data-toggle="dropdown" class="dropdown-toggle">Products</a>
+						<li class="dropdown menu-item menu-item-type-post_type"><a id="prod-main" data-toggle="dropdown" class="dropdown-toggle">Wristbands</a>
 							<ul class="dropdown-menu">
 								<li><a href="{{ URL::to('/product/printed') }}">Printed</a></li>
 								<li><a href="{{ URL::to('/product/debossed') }}">Debossed</a></li>
@@ -94,6 +94,14 @@
 								<li><a href="{{ URL::to('/product/embossed-printed') }}">Embossed Printed</a></li>
 								<li><a href="{{ URL::to('/product/figured') }}">Figured</a></li>
 								<li><a href="{{ URL::to('/product/blank') }}">Blank</a></li>
+							</ul>
+						</li>
+						<li class="dropdown menu-item menu-item menu-item-type-post_type"><a id="prod-main2" href="#" data-toggle="dropdown" class="dropdown-toggle">Lanyards</a>
+							<ul class="dropdown-menu">
+								<li><a href="{{ URL::to('/polyester-lanyard') }}">Polyester Lanyards</a></li>
+								<li><a href="{{ URL::to('/tubular-lanyard') }}">Tubular Lanyards</a></li>
+								<li><a href="{{ URL::to('/nylon-lanyard') }}">Nylon Lanyards</a></li>
+								<li><a href="{{ URL::to('/woven-lanyard') }}">Woven Lanyards</a></li>
 							</ul>
 						</li>
 						<li class="dropdown menu-item menu-item menu-item-type-post_type"><a id="prod-main2" href="#" data-toggle="dropdown" class="dropdown-toggle">Wristband Options</a>
@@ -114,9 +122,15 @@
 				</div>
 			</div><!--/.navbar-collapse -->
 		</section>
-
+		<div class="timer-area">
+			<span class="text-banner">Order 100 wristbands or more & Get 100 Free Wristbands and 10 Keychains!  Time remaining: </span>
+			<span id="countdown2"></span>
+			<span id="order-now"><a href="/order">Order Now</a></span>
+		</div>
+		
 		<!--.Banner Slideshow -->
-		@if(Route::getCurrentRoute()->uri() == '/')
+
+		@if(Route::getCurrentRoute()->uri() == 'custom-wristband')
 			<div class="banner">
 				<div id="slideshow">
 					<div id="slider-images" style="display: block;">
@@ -134,10 +148,5 @@
 		@endif
 
 		<!--/.Banner Slideshow -->
-		<div class="timer-area">
-			<span class="text-banner">Order 100 wristbands or more & Get 100 Free Wristbands and 10 Keychains!  Time remaining: </span>
-			<span id="countdown2"></span>
-			<span id="order-now"><a href="/order">Order Now</a></span>
-		</div>
     </div>
 </header>

@@ -259,14 +259,14 @@
 
                             <div class="form-group">
                                 <div class="control-input col-md-12 no-padding">
-                                    <input type="text" class="form-control form-discount" id="DiscountCode" name="DiscountCode" value="<?php echo isset($data['DiscountCode']) ? $data['DiscountCode'] : ''; ?>" placeholder="Promo Code">
+                                    <input type="text" class="form-control form-discount" id="DiscountCode" name="DiscountCode" value="<?php echo isset($data['SAVE10']) ? $data['SAVE10'] : ''; ?>" placeholder="Promo Code">
                                 </div>
                                 <div class="clearfix"></div>
                             </div>
 
                         </div>
 
-                        <div class="col-lg-12 no-padding">
+                        <div class="col-lg-12 no-padding"  style="margin-bottom:100px;">
 
                             <div class="page-header">
                                 <h3>Payment Information</h3>
@@ -347,6 +347,7 @@
                                 </div>
 
                                 <div class="clearfix"></div>
+								<div class=""><img src="{{ URL::asset('assets/images/credit-cards.png') }}"></div>
 
                             </div>
 
@@ -358,6 +359,7 @@
                                         <input type="email" class="form-control" id="PaypalEmail" name="PaypalEmail" value="" required>
                                     </div>
                                     <div class="clearfix"></div>
+									<div class=""><img src="{{ URL::asset('assets/images/paypal.png') }}"></div>
                                 </div>
         
                                 <div class="form-group form-checkbox">
