@@ -1016,7 +1016,7 @@ class AdminController extends Controller
                 $value->ShipZipCode,
                 $value->ShipCountry,
                 "<i>".$value->IPAddress."</i>",
-                "<button class='btn btn-danger'>Delete</button></i>",
+                "<button class='btn btn-danger delete-orders' data-id='".$value->ID."'>Delete</button></i>",
             ];
         }
 		$output = [

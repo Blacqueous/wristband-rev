@@ -182,4 +182,5 @@ Route::group(['middleware' => 'admin'], function () {
 
     // Admin orders related actions
     Route::get('/admin/orders/list', 'AdminController@getOrders');
+    Route::post('/admin/orders/delete', 'AdminController@deleteOrders');
 });
