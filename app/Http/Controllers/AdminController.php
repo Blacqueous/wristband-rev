@@ -6,6 +6,7 @@ use App;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Models\AddOns;
+use App\Models\Orders;
 use App\Models\Prices;
 use App\Models\Sizes;
 use App\Models\Styles;
@@ -872,6 +873,150 @@ class AdminController extends Controller
             return true;
         }
         return false;
+    }
+
+    // Orders ------------------------------------------------------------------
+
+    public function getOrders(Request $request)
+    {
+        switch ($request->order[0]['column']) {
+            case '0':
+                $order_col = "ID";
+                break;
+            case '1':
+                $order_col = "PaymentMethod";
+                break;
+            case '2':
+                $order_col = "PaidDate";
+                break;
+            case '3':
+                $order_col = "AuthorizeTransID";
+                break;
+            case '4':
+                $order_col = "PaypalEmail";
+                break;
+            case '5':
+                $order_col = "FirstName";
+                break;
+            case '6':
+                $order_col = "LastName";
+                break;
+            case '7':
+                $order_col = "Address";
+                break;
+            case '8':
+                $order_col = "Address2";
+                break;
+            case '9':
+                $order_col = "City";
+                break;
+            case '10':
+                $order_col = "State";
+                break;
+            case '11':
+                $order_col = "ZipCode";
+                break;
+            case '12':
+                $order_col = "Country";
+                break;
+            case '13':
+                $order_col = "Phone";
+                break;
+            case '14':
+                $order_col = "ProductionCharge";
+                break;
+            case '15':
+                $order_col = "DaysProduction";
+                break;
+            case '16':
+                $order_col = "DeliveryCharge";
+                break;
+            case '17':
+                $order_col = "DaysDelivery";
+                break;
+            case '18':
+                $order_col = "DiscountCode";
+                break;
+            case '19':
+                $order_col = "DiscountPercent";
+                break;
+            case '20':
+                $order_col = "ShipFirstName";
+                break;
+            case '21':
+                $order_col = "ShipLastName";
+                break;
+            case '22':
+                $order_col = "ShipAddress";
+                break;
+            case '23':
+                $order_col = "ShipAddress2";
+                break;
+            case '24':
+                $order_col = "ShipCity";
+                break;
+            case '25':
+                $order_col = "ShipState";
+                break;
+            case '26':
+                $order_col = "ShipZipCode";
+                break;
+            case '27':
+                $order_col = "ShipCountry";
+                break;
+            case '28':
+                $order_col = "IPAddress";
+                break;
+            default:
+                $order_col = "ID";
+                break;
+        }
+
+        $data = [];
+        $orders = new Orders();
+        $orders = $orders->getDatatables(trim($request->search['value']), $request->start, $request->length, $order_col, $request->order[0]['dir']);
+        
+        foreach ($orders['data'] as $key => $value) {
+            $data[] = [
+                $value->ID,
+                $value->PaymentMethod,
+                date('Y-m-d', strtotime($value->PaidDate)),
+                $value->AuthorizeTransID,
+                $value->PaypalEmail,
+                $value->FirstName,
+                $value->LastName,
+                $value->Address,
+                $value->Address2,
+                $value->City,
+                $value->State,
+                $value->ZipCode,
+                $value->Country,
+                $value->Phone,
+                $value->ProductionCharge,
+                $value->DaysProduction,
+                $value->DeliveryCharge,
+                $value->DaysDelivery,
+                $value->DiscountCode,
+                $value->DiscountPercent,
+                $value->ShipFirstName,
+                $value->ShipLastName,
+                $value->ShipAddress,
+                $value->ShipAddress2,
+                $value->ShipCity,
+                $value->ShipState,
+                $value->ShipZipCode,
+                $value->ShipCountry,
+                "<i>".$value->IPAddress."</i>",
+            ];
+        }
+		$output = [
+    		"draw"				=> $request->draw,
+    		"data"				=> $data,
+    		"recordsTotal"		=> $orders['total'],
+    		"recordsFiltered"	=> count($orders['data'])
+        ];
+		echo json_encode($output);
+        exit;
     }
 
     // Miscellaneous -----------------------------------------------------------

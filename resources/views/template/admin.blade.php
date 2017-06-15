@@ -397,7 +397,7 @@
 				</button>
 				<div class="container">
 					<div class="row">
-						<div class="col-lg-8 col-lg-offset-2 text-center">
+						<div class="col-lg-12 text-center">
 							@section('content')
 							@show
 						</div>

@@ -179,4 +179,7 @@ Route::group(['middleware' => 'admin'], function () {
 
     // Admin reset related actions
     Route::post('/admin/reset', 'AdminController@processResetJSON');
+
+    // Admin orders related actions
+    Route::get('/admin/orders/list', 'AdminController@getOrders');
 });
