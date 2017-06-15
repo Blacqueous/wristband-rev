@@ -883,88 +883,88 @@ class AdminController extends Controller
             case '0':
                 $order_col = "ID";
                 break;
-            case '1':
+            case '2':
                 $order_col = "PaymentMethod";
                 break;
-            case '2':
+            case '3':
                 $order_col = "PaidDate";
                 break;
-            case '3':
+            case '4':
                 $order_col = "AuthorizeTransID";
                 break;
-            case '4':
+            case '5':
                 $order_col = "PaypalEmail";
                 break;
-            case '5':
+            case '6':
                 $order_col = "FirstName";
                 break;
-            case '6':
+            case '7':
                 $order_col = "LastName";
                 break;
-            case '7':
+            case '8':
                 $order_col = "Address";
                 break;
-            case '8':
+            case '9':
                 $order_col = "Address2";
                 break;
-            case '9':
+            case '10':
                 $order_col = "City";
                 break;
-            case '10':
+            case '11':
                 $order_col = "State";
                 break;
-            case '11':
+            case '12':
                 $order_col = "ZipCode";
                 break;
-            case '12':
+            case '13':
                 $order_col = "Country";
                 break;
-            case '13':
+            case '14':
                 $order_col = "Phone";
                 break;
-            case '14':
+            case '15':
                 $order_col = "ProductionCharge";
                 break;
-            case '15':
+            case '16':
                 $order_col = "DaysProduction";
                 break;
-            case '16':
+            case '17':
                 $order_col = "DeliveryCharge";
                 break;
-            case '17':
+            case '18':
                 $order_col = "DaysDelivery";
                 break;
-            case '18':
+            case '19':
                 $order_col = "DiscountCode";
                 break;
-            case '19':
+            case '20':
                 $order_col = "DiscountPercent";
                 break;
-            case '20':
+            case '21':
                 $order_col = "ShipFirstName";
                 break;
-            case '21':
+            case '22':
                 $order_col = "ShipLastName";
                 break;
-            case '22':
+            case '23':
                 $order_col = "ShipAddress";
                 break;
-            case '23':
+            case '24':
                 $order_col = "ShipAddress2";
                 break;
-            case '24':
+            case '25':
                 $order_col = "ShipCity";
                 break;
-            case '25':
+            case '26':
                 $order_col = "ShipState";
                 break;
-            case '26':
+            case '27':
                 $order_col = "ShipZipCode";
                 break;
-            case '27':
+            case '28':
                 $order_col = "ShipCountry";
                 break;
-            case '28':
+            case '29':
                 $order_col = "IPAddress";
                 break;
             default:
@@ -977,14 +977,23 @@ class AdminController extends Controller
         $orders = $orders->getDatatables(trim($request->search['value']), $request->start, $request->length, $order_col, $request->order[0]['dir']);
         
         foreach ($orders['data'] as $key => $value) {
+            if ($value->PaymentMethod == "paypal") {
+                $paymentMethod = "<span class='text-info'><i class='fa fa-paypal'></i> PayPal</span>";
+            } else if ($value->PaymentMethod == "authnet") {
+                $paymentMethod = "<span class='text-warning'><i class='fa fa-credit-card'></i> Auth.Net</span>";
+            } else {
+                $paymentMethod = "-";
+            };
+            
             $data[] = [
                 $value->ID,
-                $value->PaymentMethod,
+                ($value->Paid) ? "<i class='fa fa-check text-success'></i>" : "<i class='fa fa-times text-danger'></i>",
+                $paymentMethod,
                 date('Y-m-d', strtotime($value->PaidDate)),
-                $value->AuthorizeTransID,
-                $value->PaypalEmail,
-                $value->FirstName,
-                $value->LastName,
+                ($value->AuthorizeTransID) ? $value->AuthorizeTransID : "-",
+                ($value->PaypalEmail) ? $value->PaypalEmail : "-",
+                ucwords(strtolower($value->FirstName)),
+                ucwords(strtolower($value->LastName)),
                 $value->Address,
                 $value->Address2,
                 $value->City,
@@ -992,14 +1001,14 @@ class AdminController extends Controller
                 $value->ZipCode,
                 $value->Country,
                 $value->Phone,
-                $value->ProductionCharge,
-                $value->DaysProduction,
-                $value->DeliveryCharge,
-                $value->DaysDelivery,
-                $value->DiscountCode,
+                "$".$value->ProductionCharge,
+                $value->DaysProduction." Days",
+                "$".$value->DeliveryCharge,
+                $value->DaysDelivery." Days",
+                "<em style='text-transform: uppercase;'>".$value->DiscountCode."</em>",
                 $value->DiscountPercent,
-                $value->ShipFirstName,
-                $value->ShipLastName,
+                ucwords(strtolower($value->ShipFirstName)),
+                ucwords(strtolower($value->ShipLastName)),
                 $value->ShipAddress,
                 $value->ShipAddress2,
                 $value->ShipCity,
@@ -1007,6 +1016,7 @@ class AdminController extends Controller
                 $value->ShipZipCode,
                 $value->ShipCountry,
                 "<i>".$value->IPAddress."</i>",
+                "<button class='btn btn-danger'>Delete</button></i>",
             ];
         }
 		$output = [

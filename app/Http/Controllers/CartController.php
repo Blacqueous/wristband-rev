@@ -332,6 +332,12 @@ class CartController extends Controller
 					$data_order['Status'] = 1;
 					$data_order['Paid'] = 1;
 					$data_order['PaidDate'] = date('Y-m-d');
+					$shipping = $this->getCartShipping();
+					$production = $this->getCartProduction();
+					$data_order['DaysDelivery'] = $shipping['days'];
+					$data_order['DeliveryCharge'] = $shipping['total'];
+					$data_order['DaysProduction'] = $production['days'];
+					$data_order['ProductionCharge'] = $production['total'];
 
 					$orders_model = new Orders();
 					$orders_model->where('ID', $order_id)->update($data_order);
@@ -806,12 +812,18 @@ class CartController extends Controller
 
 			    try {
 			        $payment = Payment::get($paymentId, $apiContext);
+					$shipping = $this->getCartShipping();
+					$production = $this->getCartProduction();
 
 					$data_order = [
 						"TransNo" => $payment->getId(),
 						"Status" => 1,
 						"Paid" => 1,
 						"PaidDate" => date('Y-m-d'),
+						"DaysDelivery" => $shipping['days'],
+						"DeliveryCharge" => $shipping['total'],
+						"DaysProduction" => $production['days'],
+						"ProductionCharge" => $production['total'],
 					];
 
 					$orders_model = new Orders();
@@ -1221,16 +1233,16 @@ class CartController extends Controller
 
 	private function getCartShipping()
 	{
-
 		$data = [
+			"days" => 0,
 			"total" => 0,
 			"items" => [],
 		];
 
-		// Organize cart data
 		$cart_list = Session::get('_cart');
 
 		foreach ($cart_list as $key => $list) {
+			$data['days'] += $list['time_shipping']['days'];
 			$data['total'] += $list['time_shipping']['price'];
 			$data['items'][] = $list['time_shipping'];
 		}
@@ -1240,16 +1252,16 @@ class CartController extends Controller
 
 	private function getCartProduction()
 	{
-
 		$data = [
+			"days" => 0,
 			"total" => 0,
 			"items" => [],
 		];
 
-		// Organize cart data
 		$cart_list = Session::get('_cart');
 
 		foreach ($cart_list as $key => $list) {
+			$data['days'] += $list['time_production']['days'];
 			$data['total'] += $list['time_production']['price'];
 			$data['items'][] = $list['time_production'];
 		}
