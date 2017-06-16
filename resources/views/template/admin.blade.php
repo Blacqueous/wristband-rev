@@ -362,7 +362,7 @@
 					</li>
 					<li @if($menu == 5) class="active" @endif>
 						<a href="{{ URL::to('/admin/discounts') }}">
-							<i class="fa fa-ticket"></i> Manage Promo Code
+							<i class="fa fa-ticket"></i> Manage Discount Codes
 						</a>
 					</li>
 					<li @if($menu == 1) class="active" @endif>

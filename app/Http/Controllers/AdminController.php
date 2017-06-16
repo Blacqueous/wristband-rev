@@ -6,6 +6,8 @@ use App;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Models\AddOns;
+use App\Models\Carts;
+use App\Models\Discounts;
 use App\Models\Orders;
 use App\Models\Prices;
 use App\Models\Sizes;
@@ -978,18 +980,19 @@ class AdminController extends Controller
         
         foreach ($orders['data'] as $key => $value) {
             if ($value->PaymentMethod == "paypal") {
-                $paymentMethod = "<span class='text-info'><i class='fa fa-paypal'></i> PayPal</span>";
+                $paymentMethod = "<span class='text-paypal'><i class='fa fa-paypal'></i> PayPal</span>";
             } else if ($value->PaymentMethod == "authnet") {
-                $paymentMethod = "<span class='text-warning'><i class='fa fa-credit-card'></i> Auth.Net</span>";
+                $paymentMethod = "<span class='text-authnet'><i class='fa fa-credit-card-alt'></i> AuthNet</span>";
             } else {
                 $paymentMethod = "-";
             };
             
             $data[] = [
+                "<input type='checkbox' class='check-action' data-id='".$value->ID."'/>",
                 $value->ID,
                 ($value->Paid) ? "<i class='fa fa-check text-success'></i>" : "<i class='fa fa-times text-danger'></i>",
                 $paymentMethod,
-                date('Y-m-d', strtotime($value->PaidDate)),
+                date('Y-m-d H:i:s', strtotime($value->PaidDate)),
                 ($value->AuthorizeTransID) ? $value->AuthorizeTransID : "-",
                 ($value->PaypalEmail) ? $value->PaypalEmail : "-",
                 ucwords(strtolower($value->FirstName)),
@@ -1005,7 +1008,7 @@ class AdminController extends Controller
                 $value->DaysProduction." Days",
                 "$".$value->DeliveryCharge,
                 $value->DaysDelivery." Days",
-                "<em style='text-transform: uppercase;'>".$value->DiscountCode."</em>",
+                ($value->DiscountCode) ? "<em style='text-transform: uppercase;'>".$value->DiscountCode."</em>" : "-",
                 $value->DiscountPercent,
                 ucwords(strtolower($value->ShipFirstName)),
                 ucwords(strtolower($value->ShipLastName)),
@@ -1016,7 +1019,6 @@ class AdminController extends Controller
                 $value->ShipZipCode,
                 $value->ShipCountry,
                 "<i>".$value->IPAddress."</i>",
-                "<button class='btn btn-danger delete-orders' data-id='".$value->ID."'>Delete</button></i>",
             ];
         }
 		$output = [
@@ -1024,6 +1026,104 @@ class AdminController extends Controller
     		"data"				=> $data,
     		"recordsTotal"		=> $orders['total'],
     		"recordsFiltered"	=> count($orders['data'])
+        ];
+		echo json_encode($output);
+        exit;
+    }
+
+    public function removeOrders(Request $request)
+    {
+        $order = new Orders();
+        $order = $order->removeOrders($request->ids);
+        if ($order || $order >= 0) {
+            $cart = new Carts();
+            $cart = $cart->flagCartsAsRemovedByOrderID($request->ids);
+            echo json_encode(['status'=> true, 'count'=> $order]);
+        } else {
+            echo json_encode(['status'=> false, 'count'=> $order]);
+        }
+        exit();
+    }
+
+    public function doneOrders(Request $request)
+    {
+        $order = new Orders();
+        $order = $order->doneOrders($request->ids);
+        if ($order || $order >= 0) {
+            $cart = new Carts();
+            $cart = $cart->flagCartsAsDoneByOrderID($request->ids);
+            echo json_encode(['status'=> true, 'count'=> $order]);
+        } else {
+            echo json_encode(['status'=> false, 'count'=> $order]);
+        }
+        exit();
+    }
+
+    public function deleteDoneOrders(Request $request)
+    {
+        $order = new Orders();
+        $order = $order->deleteDoneOrders();
+        if ($order) {
+            $cart = new Carts();
+            $cart = $cart->deleteDoneCarts();
+            echo json_encode(['status'=> true]);
+        } else {
+            echo json_encode(['status'=> false]);
+        }
+        exit();
+    }
+
+    // Discounts ---------------------------------------------------------------
+
+    public function getDiscounts(Request $request)
+    {
+        switch ($request->order[0]['column']) {
+            case '0':
+                $order_col = "ID";
+                break;
+            case '2':
+                $order_col = "Code";
+                break;
+            case '3':
+                $order_col = "Percentage";
+                break;
+            case '4':
+                $order_col = "Status";
+                break;
+            case '5':
+                $order_col = "DateStart";
+                break;
+            case '6':
+                $order_col = "DateEnd";
+                break;
+            case '7':
+                $order_col = "DateCreated";
+                break;
+            default:
+                $order_col = "ID";
+                break;
+        }
+
+        $data = [];
+        $discounts = new Discounts();
+        $discounts = $discounts->getDatatables(trim($request->search['value']), $request->start, $request->length, $order_col, $request->order[0]['dir']);
+        
+        foreach ($discounts['data'] as $key => $value) {
+            $data[] = [
+                "<input type='checkbox' class='check-action' data-id='".$value->ID."'/>",
+                $value->Code,
+                $value->Percentage,
+                ($value->Status) ? "<i class='fa fa-check text-success'></i>" : "<i class='fa fa-times text-danger'></i>",
+                date('Y-m-d H:i:s', strtotime($value->DateStart)),
+                date('Y-m-d H:i:s', strtotime($value->DateEnd)),
+                date('Y-m-d H:i:s', strtotime($value->DateCreated)),
+            ];
+        }
+		$output = [
+    		"draw"				=> $request->draw,
+    		"data"				=> $data,
+    		"recordsTotal"		=> $discounts['total'],
+    		"recordsFiltered"	=> count($discounts['data'])
         ];
 		echo json_encode($output);
         exit;

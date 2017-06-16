@@ -299,7 +299,9 @@ class CartController extends Controller
 			}
 			$discount = 0;
 			if (!empty($request->DiscountCode)) {
-				$discount = $total * 0.10;
+				if ($request->DiscountCode == "SAVE10") {
+					$discount = $all_total * 0.10;
+				}
 			}
 
 			// Create a transaction
@@ -331,7 +333,7 @@ class CartController extends Controller
 					$data_order['AuthorizeTransID'] = $tresponse->getTransId();
 					$data_order['Status'] = 1;
 					$data_order['Paid'] = 1;
-					$data_order['PaidDate'] = date('Y-m-d');
+					$data_order['PaidDate'] = date('Y-m-d H:i:s');
 					$shipping = $this->getCartShipping();
 					$production = $this->getCartProduction();
 					$data_order['DaysDelivery'] = $shipping['days'];
@@ -514,7 +516,9 @@ class CartController extends Controller
 			$all_total = $total + $shipping['total'] + $production['total'];
 			$discount = 0;
 			if (!empty($request->DiscountCode)) {
-				$discount = $all_total * 0.10;
+				if ($request->DiscountCode == "SAVE10") {
+					$discount = $all_total * 0.10;
+				}
 			}
 			$shipping_total = ($all_total - $discount) - $shipping['total'];
 			$shipping_total = number_format($shipping_total, "2");
@@ -779,7 +783,9 @@ class CartController extends Controller
 			$all_total = $total + $shipping['total'] + $production['total'];
 			$discount = 0;
 			if (!empty($request->DiscountCode)) {
-				$discount = $all_total * 0.10;
+				if ($request->DiscountCode == "SAVE10") {
+					$discount = $all_total * 0.10;
+				}
 			}
 			$shipping_total = ($all_total - $discount) - $shipping['total'];
 			$shipping_total = number_format($shipping_total, "2");
@@ -819,7 +825,7 @@ class CartController extends Controller
 						"TransNo" => $payment->getId(),
 						"Status" => 1,
 						"Paid" => 1,
-						"PaidDate" => date('Y-m-d'),
+						"PaidDate" => date('Y-m-d H:i:s'),
 						"DaysDelivery" => $shipping['days'],
 						"DeliveryCharge" => $shipping['total'],
 						"DaysProduction" => $production['days'],

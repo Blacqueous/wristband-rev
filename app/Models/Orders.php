@@ -19,13 +19,29 @@ class Orders extends Model {
                 ->get();
     }
 
-    public function getDatatables($search_str, $offset, $limit, $order_col, $order_dir)
+    public function getDatatables($search_str="", $offset="0", $limit="10", $order_col="ID", $order_dir="ASC")
     {
+        if(is_null($search_str) || empty($search_str)) {
+            $search_str = "";
+        }
+        if(is_null($offset) || empty($offset)) {
+            $offset = "0";
+        }
+        if(is_null($limit) || empty($limit)) {
+            $limit = "10";
+        }
+        if(is_null($order_col) || empty($order_col)) {
+            $order_col = "ID";
+        }
+        if(is_null($order_dir) || empty($order_dir)) {
+            $order_dir = "ASC";
+        }
         // Get and return query.
         $data = [];
     	$query = DB::table($this->table)
                    ->select('*')
-                   ->where("ID", "LIKE", "%".$search_str."%")
+                   ->where("Status", "!=", "-1")
+                   ->orWhere("ID", "LIKE", "%".$search_str."%")
                    ->orWhere("TransNo", "LIKE", "%".$search_str."%")
                    ->orWhere("Status", "LIKE", "%".$search_str."%")
                    ->orWhere("FirstName", "LIKE", "%".$search_str."%")
@@ -56,7 +72,7 @@ class Orders extends Model {
                    ->orWhere("ShipCity", "LIKE", "%".$search_str."%")
                    ->orWhere("ShipState", "LIKE", "%".$search_str."%")
                    ->orWhere("ShipZipCode", "LIKE", "%".$search_str."%")
-                   ->orWhere("ShipCountry", "LIKE", "%".$search_str."%")
+                   ->orWhere("ShipZipCode", "LIKE", "%".$search_str."%")
         		   ->orderBy($order_col, $order_dir);
         $data['total'] = $query->count();
         $data['data'] = $query->offset($offset)
@@ -67,6 +83,9 @@ class Orders extends Model {
 
     public function checkOrderById($id=null)
     {
+        if(is_null($data) || empty($data)) {
+            return false;
+        }
         // Get and return query.
     	return DB::table($this->table)
                 ->select('ID')
@@ -76,6 +95,9 @@ class Orders extends Model {
 
     public function checkOrderByTransNo($transNo=null)
     {
+        if(is_null($data) || empty($data)) {
+            return false;
+        }
         // Get and return query.
     	return DB::table($this->table)
                 ->select('ID')
@@ -86,12 +108,42 @@ class Orders extends Model {
 
     public function insertOrder($data=null)
     {
-        if(is_null($data) || empty($data)) {
+        if(is_null($data) || empty($data) || !is_array($data)) {
             return false;
         }
         // Insert new data.
     	return DB::table($this->table)
                 ->insertGetId($data);
+    }
+
+    public function removeOrders($ids=null)
+    {
+        if(is_null($ids) || empty($ids) || !is_array($ids)) {
+            return false;
+        }
+        // Update status of $ids to "0" for delete(?).
+    	return DB::table($this->table)
+                ->whereIn('ID', $ids)
+                ->update(['Status' => '0']);
+    }
+
+    public function doneOrders($ids=null)
+    {
+        if(is_null($ids) || empty($ids) || !is_array($ids)) {
+            return false;
+        }
+        // Update status of $ids to "-1" for done(?).
+    	return DB::table($this->table)
+                ->whereIn('ID', $ids)
+                ->update(['Status' => '-1']);
+    }
+
+    public function deleteDoneOrders()
+    {
+        // Update status of $ids to "-1" for done(?).
+        return DB::table($this->table)
+                ->where('Status', '=', '-1')
+                ->delete();
     }
 
 }

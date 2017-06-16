@@ -38,4 +38,34 @@ class Carts extends Model {
                 ->insertGetId($data);
     }
 
+    public function flagCartsAsRemovedByOrderID($order_ids=null)
+    {
+        if(is_null($order_ids) || empty($order_ids) || !is_array($order_ids)) {
+            return false;
+        }
+        // Update status of $order_ids to "0" for delete(?).
+    	return DB::table($this->table)
+                ->whereIn('OrderID', $order_ids)
+                ->update(['Status' => '0']);
+    }
+
+    public function flagCartsAsDoneByOrderID($order_ids=null)
+    {
+        if(is_null($order_ids) || empty($order_ids) || !is_array($order_ids)) {
+            return false;
+        }
+        // Update status of $order_ids to "-1" for done(?).
+    	return DB::table($this->table)
+                ->whereIn('OrderID', $order_ids)
+                ->update(['Status' => '-1']);
+    }
+
+    public function deleteDoneCarts()
+    {
+        // Update status of $ids to "-1" for done(?).
+        return DB::table($this->table)
+                ->where('Status', '=', '-1')
+                ->delete();
+    }
+
 }
