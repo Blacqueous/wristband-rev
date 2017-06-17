@@ -982,7 +982,7 @@ class AdminController extends Controller
             if ($value->PaymentMethod == "paypal") {
                 $paymentMethod = "<span class='text-paypal'><i class='fa fa-paypal'></i> PayPal</span>";
             } else if ($value->PaymentMethod == "authnet") {
-                $paymentMethod = "<span class='text-authnet'><i class='fa fa-credit-card-alt'></i> AuthNet</span>";
+                $paymentMethod = "<span class='text-authnet'><i class='fa fa-credit-card-alt'></i> Auth.Net</span>";
             } else {
                 $paymentMethod = "-";
             };

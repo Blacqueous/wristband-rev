@@ -41,38 +41,40 @@ class Orders extends Model {
     	$query = DB::table($this->table)
                    ->select('*')
                    ->where("Status", "!=", "-1")
-                   ->orWhere("ID", "LIKE", "%".$search_str."%")
-                   ->orWhere("TransNo", "LIKE", "%".$search_str."%")
-                   ->orWhere("Status", "LIKE", "%".$search_str."%")
-                   ->orWhere("FirstName", "LIKE", "%".$search_str."%")
-                   ->orWhere("LastName", "LIKE", "%".$search_str."%")
-                   ->orWhere("EmailAddress", "LIKE", "%".$search_str."%")
-                   ->orWhere("PaymentMethod", "LIKE", "%".$search_str."%")
-                   ->orWhere("Paid", "LIKE", "%".$search_str."%")
-                   ->orWhere("PaidDate", "LIKE", "%".$search_str."%")
-                   ->orWhere("AuthorizeTransID", "LIKE", "%".$search_str."%")
-                   ->orWhere("PaypalEmail", "LIKE", "%".$search_str."%")
-                   ->orWhere("PaymentRemarks", "LIKE", "%".$search_str."%")
-                   ->orWhere("ProductionCharge", "LIKE", "%".$search_str."%")
-                   ->orWhere("DeliveryCharge", "LIKE", "%".$search_str."%")
-                   ->orWhere("DaysProduction", "LIKE", "%".$search_str."%")
-                   ->orWhere("DaysDelivery", "LIKE", "%".$search_str."%")
-                   ->orWhere("DiscountCode", "LIKE", "%".$search_str."%")
-                   ->orWhere("Address", "LIKE", "%".$search_str."%")
-                   ->orWhere("Address2", "LIKE", "%".$search_str."%")
-                   ->orWhere("City", "LIKE", "%".$search_str."%")
-                   ->orWhere("State", "LIKE", "%".$search_str."%")
-                   ->orWhere("ZipCode", "LIKE", "%".$search_str."%")
-                   ->orWhere("Country", "LIKE", "%".$search_str."%")
-                   ->orWhere("Phone", "LIKE", "%".$search_str."%")
-                   ->orWhere("ShipFirstName", "LIKE", "%".$search_str."%")
-                   ->orWhere("ShipLastName", "LIKE", "%".$search_str."%")
-                   ->orWhere("ShipAddress", "LIKE", "%".$search_str."%")
-                   ->orWhere("ShipAddress2", "LIKE", "%".$search_str."%")
-                   ->orWhere("ShipCity", "LIKE", "%".$search_str."%")
-                   ->orWhere("ShipState", "LIKE", "%".$search_str."%")
-                   ->orWhere("ShipZipCode", "LIKE", "%".$search_str."%")
-                   ->orWhere("ShipZipCode", "LIKE", "%".$search_str."%")
+                   ->where(function($query) use ($search_str) {
+                        $query->where("ID", "LIKE", "%".$search_str."%");
+                        $query->orWhere("TransNo", "LIKE", "%".$search_str."%");
+                        $query->orWhere("Status", "LIKE", "%".$search_str."%");
+                        $query->orWhere("FirstName", "LIKE", "%".$search_str."%");
+                        $query->orWhere("LastName", "LIKE", "%".$search_str."%");
+                        $query->orWhere("EmailAddress", "LIKE", "%".$search_str."%");
+                        $query->orWhere("PaymentMethod", "LIKE", "%".$search_str."%");
+                        $query->orWhere("Paid", "LIKE", "%".$search_str."%");
+                        $query->orWhere("PaidDate", "LIKE", "%".$search_str."%");
+                        $query->orWhere("AuthorizeTransID", "LIKE", "%".$search_str."%");
+                        $query->orWhere("PaypalEmail", "LIKE", "%".$search_str."%");
+                        $query->orWhere("PaymentRemarks", "LIKE", "%".$search_str."%");
+                        $query->orWhere("ProductionCharge", "LIKE", "%".$search_str."%");
+                        $query->orWhere("DeliveryCharge", "LIKE", "%".$search_str."%");
+                        $query->orWhere("DaysProduction", "LIKE", "%".$search_str."%");
+                        $query->orWhere("DaysDelivery", "LIKE", "%".$search_str."%");
+                        $query->orWhere("DiscountCode", "LIKE", "%".$search_str."%");
+                        $query->orWhere("Address", "LIKE", "%".$search_str."%");
+                        $query->orWhere("Address2", "LIKE", "%".$search_str."%");
+                        $query->orWhere("City", "LIKE", "%".$search_str."%");
+                        $query->orWhere("State", "LIKE", "%".$search_str."%");
+                        $query->orWhere("ZipCode", "LIKE", "%".$search_str."%");
+                        $query->orWhere("Country", "LIKE", "%".$search_str."%");
+                        $query->orWhere("Phone", "LIKE", "%".$search_str."%");
+                        $query->orWhere("ShipFirstName", "LIKE", "%".$search_str."%");
+                        $query->orWhere("ShipLastName", "LIKE", "%".$search_str."%");
+                        $query->orWhere("ShipAddress", "LIKE", "%".$search_str."%");
+                        $query->orWhere("ShipAddress2", "LIKE", "%".$search_str."%");
+                        $query->orWhere("ShipCity", "LIKE", "%".$search_str."%");
+                        $query->orWhere("ShipState", "LIKE", "%".$search_str."%");
+                        $query->orWhere("ShipZipCode", "LIKE", "%".$search_str."%");
+                        $query->orWhere("ShipZipCode", "LIKE", "%".$search_str."%");
+                   })
         		   ->orderBy($order_col, $order_dir);
         $data['total'] = $query->count();
         $data['data'] = $query->offset($offset)

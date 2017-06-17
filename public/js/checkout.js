@@ -35,7 +35,8 @@ $(document).ready(function(e) {
     
     $(document).on('keyup', 'input[name="DiscountCode"]', function(e) {
         $('.form-sub-total .form-total-value span').html(parseFloat(total).formatMoney(2, '.', ','));
-        var discount = ($(this).val().length > 0) ? total * 0.10 : 0;
+        if ($(this).val().length <= 0) { return false; }
+        var discount = ($(this).val().toUpperCase() == "SAVE10") ? total * 0.10 : 0;
             // discount = discount.toFixed(2);
         $('.form-discount-total .form-total-value span').html(parseFloat(discount).formatMoney(2, '.', ','));
         var grand_total = total - discount;
@@ -46,7 +47,7 @@ $(document).ready(function(e) {
     $(document).on('blur', 'input[name="DiscountCode"]', function(e) {
         $('.form-sub-total .form-total-value span').html(parseFloat(total).formatMoney(2, '.', ','));
         if ($(this).val().length <= 0) { return false; }
-        var discount = ($(this).val() == "SAVE10") ? total * 0.10 : 0;
+        var discount = ($(this).val().toUpperCase() == "SAVE10") ? total * 0.10 : 0;
             // discount = discount.toFixed(2);
         $('.form-discount-total .form-total-value span').html(parseFloat(discount).formatMoney(2, '.', ','));
         var grand_total = total - discount;

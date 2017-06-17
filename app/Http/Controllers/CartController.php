@@ -299,8 +299,9 @@ class CartController extends Controller
 			}
 			$discount = 0;
 			if (!empty($request->DiscountCode)) {
-				if ($request->DiscountCode == "SAVE10") {
-					$discount = $all_total * 0.10;
+				if (strtoupper($request->DiscountCode) == "SAVE10") {
+					$discount = $total * 0.10;
+					$discount = number_format($discount, "2");
 				}
 			}
 
@@ -516,8 +517,9 @@ class CartController extends Controller
 			$all_total = $total + $shipping['total'] + $production['total'];
 			$discount = 0;
 			if (!empty($request->DiscountCode)) {
-				if ($request->DiscountCode == "SAVE10") {
+				if (strtoupper($request->DiscountCode) == "SAVE10") {
 					$discount = $all_total * 0.10;
+					$discount = number_format($discount, "2");
 				}
 			}
 			$shipping_total = ($all_total - $discount) - $shipping['total'];
@@ -782,9 +784,10 @@ class CartController extends Controller
 			$sub_total = $total + $production['total'];
 			$all_total = $total + $shipping['total'] + $production['total'];
 			$discount = 0;
-			if (!empty($request->DiscountCode)) {
-				if ($request->DiscountCode == "SAVE10") {
+			if (!empty($paypalRequest['DiscountCode'])) {
+				if (strtoupper($paypalRequest['DiscountCode']) == "SAVE10") {
 					$discount = $all_total * 0.10;
+					$discount = number_format($discount, "2");
 				}
 			}
 			$shipping_total = ($all_total - $discount) - $shipping['total'];
