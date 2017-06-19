@@ -285,15 +285,15 @@ div.tab button.active {
 							 <h2>Woven Lanyard</h2>
 								<div class="slideshow-container">
 									<div class="mySlides fade">
-									  <img src="{{ URL::asset('assets/lanyard/images/ployester-1.jpg')}}" style="width:100%">
+									  <img src="{{ URL::asset('assets/lanyard/images/woven.png')}}" style="width:100%">
 									</div>
 
 									<div class="mySlides fade">
-									  <img src="{{ URL::asset('assets/lanyard/images/polyester-2.jpg')}}" style="width:100%">
+									  <img src="{{ URL::asset('assets/lanyard/images/woven-1.png')}}" style="width:100%">
 									</div>
 
 									<div class="mySlides fade">
-									  <img src="{{ URL::asset('assets/lanyard/images/lanyard-img-1.png')}}" style="width:100%">
+									  <img src="{{ URL::asset('assets/lanyard/images/Woven-2.png')}}" style="width:100%">
 									</div>
 								</div>
 								<div style="clear:both"></div>
