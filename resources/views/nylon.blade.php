@@ -274,8 +274,31 @@ div.tab button.active {
 	<div class="container">
 				<h1 data-fontsize="36" data-lineheight="39">Custom Lanyards</h1>
 				<div>
-						<p>We at wristbandcreation.com carry a large selection of plain and patterned lanyards in wide array of colors, designs, and patterns. We can do a full customization with quality which is best in class. Lanyards and badges are perfect for tradeshows, conventions and company functions. Printed or woven your own custom logos will definitely display and highlight your business or company name, government agencies such as military or schools and events that requires identity or security. Match it with your choice of a special attachment to meet your requirements such as ID ring, clips and hooks. Customized lanyards is guaranteed to provide and the most economical way to promote awareness for your brand, charity events, services, or corporate functions.</p>
-				<p>To help you promote your company, wristbandcreation.com can provide you with a wide selection of lanyards in many different styles and colors according to your exact requirement. Choose your own style of lanyards, we offer Polyester, Tubular, Nylon, Woven, and Full Color lanyards. You can put your own logo on the lanyards, or choose any message and font. Choose your own color and attachments.</p>
+						<p>Promotionalwristband.com is your one-stop shop for your entire lanyard needs.
+
+						Lanyards are very popular to use in carrying badges and cards. They are your best
+
+						option in representing and promoting your company name, school, organization and
+
+						even government agencies including military and police officers. The lanyards are
+
+						widely used to promote awareness and perfect for your company functions and schools
+
+						events.</p><br /> <p>Here at Promotionalwristband.com, you can fully customize how your lanyards will look
+
+						like exactly the way you wanted. Choose your own style of lanyards such as Polyester,
+
+						Tubular, Nylon, Woven, Plain and Full Colored lanyards. You can put your own brand
+
+						and your logo. You can also add your personalized message using the color and font
+
+						style of your choice.</p> <br /><p>To ensure the correct design of your lanyards, we can email you a sample proof for free
+
+						so you’ll see a preview prior to production. Go ahead and customize your own lanyards
+
+						now and we guarantee to offer you the highest quality and cheapest price in the market
+
+						today!</p>
 				<p>We do offer a free virtual mock up of the finished product for a more guaranteed satisfaction before we start producing your order. So order now as we guarantee to provide you lanyards and attachments that are both of the highest standards and are reasonable and cheapest on price!</p>
 
 				</div>
@@ -305,7 +328,15 @@ div.tab button.active {
 								</div>
 						</div>
 							<div class="lanyardtext">
-								<p>The polyester lanyards is our most popular type of lanyards. We use high quality polyester, and we will imprint your message and logo on the lanyards using high quality silk screen printing. It offers a perfect balance of a good looking basic lanyard at a very reasonable price. It is very durable and comfortable to wear. We can imprint several colors on the same lanyard. This is the perfect choice for a basic text design or any basic logo with simple colors.</p>
+								<p>If you’re looking for shinier lanyard, then the nylon style is the choice for you. The
+
+							lanyards are made of fine nylon material which makes it shinier and maintain its form
+
+							and durability for quite a long time. The nylon texture of the lanyards will be the best
+
+							option for your logos that have complex designs to really come out alive and shiny on
+
+							the lanyards.</p>
 							</div>
 					</div>
 					<div class="banner-right" style="float:left;width:418px;padding:14px">
