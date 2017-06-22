@@ -142,6 +142,9 @@
 					<div id="slider-images" style="display: none;">
 						<img src="{{ URL::asset('assets/images/src/banner2.jpg') }}">
 					</div>
+					<div id="slider-images" style="display: none;">
+						<img src="{{ URL::asset('assets/images/src/banner4.jpg') }}">
+					</div>
 				</div>
 				<div class=""></div>
 			</div>
