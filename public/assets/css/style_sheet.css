@@ -820,8 +820,8 @@ body, a, [input type="radio"] , [input type="checkbox"]{
 }
 
 #coup-box {
-    /* background: url(img/discount.jpg) no-repeat;
-    height: 400px; */
+    /* background: url(img/discount.jpg) no-repeat;*/
+    height: 400px; 
     width: 100%;
     padding: 22px 112px;
     background-size: 100% auto;
