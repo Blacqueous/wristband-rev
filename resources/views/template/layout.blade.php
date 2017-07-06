@@ -18,7 +18,7 @@
 		<meta name="geo.position" content="40.663857;-74.223181"/>
 		<meta name="ICBM" content="40.663857, -74.223181"/>
 		<link rel="icon" href="{{ URL::asset('../../favicon.ico') }}">
-
+		<meta name="google-site-verification" content="donyC2DWRFLJm-yUeDOoD9YnWD6PEBR9fU-sE5kggG0" />
 		<title>Custom Silicone Wristbands | Promotional Wristbands @yield('title')</title>
 
 		<!-- Bootstrap core CSS -->
@@ -70,6 +70,16 @@
 		<!-- <script type='text/javascript' data-cfasync='false'>window.purechatApi = { l: [], t: [], on: function () { this.l.push(arguments); } }; (function () { var done = false; var script = document.createElement('script'); script.async = true; script.type = 'text/javascript'; script.src = 'https://app.purechat.com/VisitorWidget/WidgetScript'; document.getElementsByTagName('HEAD').item(0).appendChild(script); script.onreadystatechange = script.onload = function (e) { if (!done && (!this.readyState || this.readyState == 'loaded' || this.readyState == 'complete')) { var w = new PCWidget({c: 'ff8c4d2b-032b-4f3f-9c29-8411120648ad', f: true }); done = true; } }; })();
 		</script> -->
 		<!-- END: Google Trusted Stores -->
+			<script>
+			  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+			  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+			  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+			  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+			  ga('create', 'UA-90869436-1', 'auto');
+			  ga('send', 'pageview');
+
+			</script>
 	</head>
 
     <body>
