@@ -67,7 +67,7 @@
 			table.dataTable tbody tr td.text-limit {
 				max-width: 100px;
 				overflow: hidden;
-				text-overflow: ellipsis;
+				/*text-overflow: ellipsis;*/
 				white-space: nowrap;
 			}
             table.dataTable tbody tr td.text-transno {

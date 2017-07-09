@@ -299,6 +299,9 @@ class AdminController extends Controller
                     if(count($csv) > 0) {
                         Prices::truncatePrice();
                         Prices::insertPrice($csv);
+                        $p = new Prices();
+                        $p->getJSONPrices();
+                        $p->getJSONPrice();
                     }
                 });
             } catch (\Exception $e) {
