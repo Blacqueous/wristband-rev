@@ -986,17 +986,17 @@ class AdminController extends Controller
             } else {
                 $paymentMethod = "-";
             }
-            if ($value->Status == '-1') {
-                $paymentStatus = "<span class='text-warning'><i class='fa fa-circle'></i></span>";
-            } else if ($value->Status == '0') {
-                $paymentStatus = "<span class='text-primary'><i class='fa fa-circle'></i></span>";
-            } else {
-                $paymentStatus = "<span class='text-success'><i class='fa fa-circle'></i></span>";
-            }
+            // if ($value->Status == '-1') {
+            //     $paymentStatus = "<span class='text-warning'><i class='fa fa-circle'></i></span>";
+            // } else if ($value->Status == '0') {
+            //     $paymentStatus = "<span class='text-primary'><i class='fa fa-circle'></i></span>";
+            // } else {
+            //     $paymentStatus = "<span class='text-success'><i class='fa fa-circle'></i></span>";
+            // }
             
             $data[] = [
                 "<input type='checkbox' class='check-action' data-id='".$value->ID."'/>",
-                $paymentStatus,
+                // $paymentStatus,
                 $value->ID,
                 ($value->Paid) ? "<i class='fa fa-check text-success'></i>" : "<i class='fa fa-times text-danger'></i>",
                 $paymentMethod,
@@ -1027,7 +1027,7 @@ class AdminController extends Controller
                 $value->ShipZipCode,
                 $value->ShipCountry,
                 "<i>".$value->IPAddress."</i>",
-                "<button class='btn btn-default pull-right'><i class='fa fa-shopping-cart'></i> Show Cart</button>",
+                // "<button class='btn btn-default pull-right'><i class='fa fa-shopping-cart'></i> Show Cart</button>",
             ];
         }
 		$output = [

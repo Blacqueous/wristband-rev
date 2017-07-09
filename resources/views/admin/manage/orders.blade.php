@@ -30,6 +30,10 @@
 			.text-success {
 				color: #4CAF50;
 			}
+            .row .col-sm-12 {
+                overflow-x: auto;
+                margin: 5px 0 15px 0;
+            }
 			.table-striped > tbody > tr:nth-of-type(odd) {
 			    background-color: #fafafa;
 			}
@@ -183,19 +187,19 @@
             		'bLengthChange': false,
     				'columnDefs': [
                         { 'targets': 0, 'orderable': false },
-                        { 'targets': 1, 'orderable': false },
-                        { 'targets': 3, 'orderable': false },
-                        { 'targets': 6, 'className': 'text-transno' },
+                        // { 'targets': 1, 'orderable': false },
+                        { 'targets': 2, 'orderable': false },
+                        { 'targets': 5, 'className': 'text-transno' },
+                        { 'targets': 7, 'className': 'text-limit' },
                         { 'targets': 8, 'className': 'text-limit' },
                         { 'targets': 9, 'className': 'text-limit' },
                         { 'targets': 10, 'className': 'text-limit' },
                         { 'targets': 11, 'className': 'text-limit' },
-                        { 'targets': 12, 'className': 'text-limit' },
+                        { 'targets': 22, 'className': 'text-limit' },
                         { 'targets': 23, 'className': 'text-limit' },
                         { 'targets': 24, 'className': 'text-limit' },
                         { 'targets': 25, 'className': 'text-limit' },
                         { 'targets': 26, 'className': 'text-limit' },
-                        { 'targets': 27, 'className': 'text-limit' },
     				],
 					'fnDrawCallback': function() {
 					    $('input.check-action').iCheck({
@@ -226,22 +230,22 @@
             		'paging': true,
             		'pageLength': 10,
             		'processing': true,
-					'responsive': {
-				        details: {
-				            display: $.fn.dataTable.Responsive.display.modal({
-				                header: function (row) {
-				                    var data = row.data();
-				                    return 'Details for Order #'+data[2];
-				                },
-				                footer: function (row) {
-				                    return 'Details for Order';
-				                }
-				            }),
-				            renderer: $.fn.dataTable.Responsive.renderer.tableAll({
-				                tableClass: 'table',
-				            }),
-				        }
-				    },
+					// 'responsive': {
+				    //     details: {
+				    //         display: $.fn.dataTable.Responsive.display.modal({
+				    //             header: function (row) {
+				    //                 var data = row.data();
+				    //                 return 'Details for Order #'+data[2];
+				    //             },
+				    //             footer: function (row) {
+				    //                 return 'Details for Order';
+				    //             }
+				    //         }),
+				    //         renderer: $.fn.dataTable.Responsive.renderer.tableAll({
+				    //             tableClass: 'table',
+				    //         }),
+				    //     }
+				    // },
                     'searching': true,
             		'serverSide': true,
             	});
@@ -291,9 +295,9 @@
 						check_arr.push($(this).attr('data-id'));
 					});
 					if (check_arr.length <= 0) { swal('Ooops!', 'Please select an order.', 'error'); return false; }
-					var content = (check_arr.length <= 1) ? 'Flag the order as removed!' : 'Flag these selected orders as removed!';
-					var contentSuccess = (check_arr.length <= 1) ? 'The order is flagged as removed!' : 'The selected orders are flagged as removed!';
-					var contentNone = (check_arr.length <= 1) ? 'This order is already flagged as removed!' : 'These selected orders are already flagged as removed!';
+					var content = (check_arr.length <= 1) ? 'Delete the order?' : 'Delete these selected orders?';
+					var contentSuccess = (check_arr.length <= 1) ? 'The order is deleted!' : 'The selected orders are deleted!';
+					var contentNone = (check_arr.length <= 1) ? 'This order is already deleted!' : 'These selected orders are already deleted!';
                     swal({
                         title: "Are you sure?",
                         text: content,
@@ -455,11 +459,12 @@
 		<br>
 		<div class="row row-actions">
             <div class="pull-left">
-    			<button type="button" id="remOrder" class="btn btn-primary"><i class="fa fa-remove"></i> Flag as Removed</button>
-    			<button type="button" id="doneOrder" class="btn btn-warning"><i class="fa fa-bookmark"></i> Flag as Done</button>
-    			<button type="button" id="delOrder" class="btn btn-danger"><i class="fa fa-trash-o"></i> Delete All Done Orders</button>
+    			<button type="button" id="remOrder" class="btn btn-primary"><i class="fa fa-trash"></i> Delete</button>
+    			<!-- <button type="button" id="remOrder" class="btn btn-primary"><i class="fa fa-remove"></i> Flag as Removed</button> -->
+    			<!-- <button type="button" id="doneOrder" class="btn btn-warning"><i class="fa fa-bookmark"></i> Flag as Done</button> -->
+    			<!-- <button type="button" id="delOrder" class="btn btn-danger"><i class="fa fa-trash-o"></i> Delete All Done Orders</button> -->
             </div>
-            <div class="pull-right">
+            <!-- <div class="pull-right">
                 <div class="form-group-inline">
                     <label for="showRemoved">Show Remove?</label>
                     <input type="checkbox" id="showRemoved" data-toggle="toggle"/>
@@ -468,14 +473,14 @@
                     <label for="showRemoved">Show Done?</label>
                     <input type="checkbox" id="showDone" data-toggle="toggle" data-onstyle="warning"/>
                 </div>
-            </div>
+            </div> -->
 		</div>
-        <div class="row">
-			<table id="orders" class="table table-bordered table-hover table-striped dt-responsive nowrap" cellspacing="0">
+        <div class="row table-row">
+			<table id="orders" class="table table-bordered table-hover table-striped nowrap" cellspacing="0">
                 <thead>
                     <tr>
                         <th><input type='checkbox' class='check-all'/></th>
-                        <th>Status</th>
+                        <!-- <th>Status</th> -->
                         <th>ID</th>
                         <th>Paid</th>
                         <th>Payment Type</th>
@@ -506,7 +511,7 @@
                         <th>Shipping Zip Code</th>
                         <th>Shipping Country</th>
                         <th>IP Address</th>
-                        <th></th>
+                        <!-- <th></th> -->
                     </tr>
                 </thead>
             </table>
