@@ -45,6 +45,7 @@
 @endsection
 
 @section('content')
+
 <div id="main-content" class="row homecontent">
 	<div class="container">
 		<!-- Start Title --->
@@ -97,9 +98,9 @@
 					</tr>
 					<tr>
 						<td>
-							30
+							50
 						</td>
-							@foreach($prices['printed']['30'] as $key => $value)
+							@foreach($prices['printed']['50'] as $key => $value)
 								<td>{{ $value }}</td>
 							@endforeach
 					</tr>
@@ -247,9 +248,9 @@
 					</tr>
 					<tr>
 						<td>
-							30
+							50
 						</td>
-							@foreach($prices['debossed']['30'] as $key => $value)
+							@foreach($prices['debossed']['50'] as $key => $value)
 								<td>{{ $value }}</td>
 							@endforeach
 					</tr>
@@ -397,9 +398,9 @@
 					</tr>
 					<tr>
 						<td>
-							30
+							50
 						</td>
-							@foreach($prices['ink-injected']['30'] as $key => $value)
+							@foreach($prices['ink-injected']['50'] as $key => $value)
 								<td>{{ $value }}</td>
 							@endforeach
 					</tr>
@@ -547,9 +548,9 @@
 					</tr>
 					<tr>
 						<td>
-							30
+							50
 						</td>
-							@foreach($prices['embossed']['30'] as $key => $value)
+							@foreach($prices['embossed']['50'] as $key => $value)
 								<td>{{ $value }}</td>
 							@endforeach
 					</tr>
@@ -698,9 +699,9 @@
 					</tr>
 					<tr>
 						<td>
-							30
+							50
 						</td>
-							@foreach($prices['dual-layer']['30'] as $key => $value)
+							@foreach($prices['dual-layer']['50'] as $key => $value)
 
 							@if($key=='0-50inch')
 								<td>{{ $value }}</td>
@@ -908,9 +909,9 @@
 					</tr>
 					<tr>
 						<td>
-							30
+							50
 						</td>
-							@foreach($prices['embossed-printed']['30'] as $key => $value)
+							@foreach($prices['embossed-printed']['50'] as $key => $value)
 								<td>{{ $value }}</td>
 							@endforeach
 					</tr>
@@ -1061,9 +1062,9 @@
 					</tr>
 					<tr>
 						<td>
-							30
+							50
 						</td>
-							@foreach($prices['figured']['30'] as $key => $value)
+							@foreach($prices['figured']['50'] as $key => $value)
 								@if($key=='0-50inch')
 								<td>{{ $value }}</td>
 							@elseif($key=='0-75inch')
@@ -1283,9 +1284,9 @@
 					</tr>
 					<tr>
 						<td>
-							30
+							50
 						</td>
-							@foreach($prices['blank']['30'] as $key => $value)
+							@foreach($prices['blank']['50'] as $key => $value)
 								<td>{{ $value }}</td>
 							@endforeach
 					</tr>

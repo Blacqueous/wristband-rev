@@ -67,6 +67,7 @@
                     <br/>
                     <div class="row">
                         <strong>ORDER DETAILS :</strong>
+ 
                         <br/><br/>
                         <div id="order-summary" class="col-xs-12">
     						<h1>Order Summary</h1>
@@ -127,6 +128,30 @@
 														@endif
 													
 													@endforeach
+                                                    </p>
+
+                                                    <p>Font Color:
+                                                    @foreach($items['items']['solid'] as $key => $value)
+                                                        @if(isset($value['title']))
+                                                                @foreach($items['items']['solid'][$key]['size'] as $var => $value)
+                                                                     {{ $items['items']['solid'][$key]['size'][$var]['font_name']."," }}
+                                                                @endforeach
+                                                        @endif
+                                                    
+                                                    @endforeach
+                                                    </p>
+
+                                                    <p>Size Name:
+                                                    @foreach($items['items']['solid'] as $key => $value)
+                                                        @if(isset($value['title']))
+                                                                @foreach($items['items']['solid'][$key]['size'] as $var => $value)
+                                                                     {{ $items['items']['solid'][$key]['size'][$var]['size']."," }}
+                                                                @endforeach
+                                                        @endif
+                                                    
+                                                    @endforeach
+                                                    </p>
+
 													<p>Quantity: {{ $items['quantity'] }}</p>
                                                     <i class="fa fa-circle-o-notch"></i>Wristbands ({{ $items['quantity'] }} x ${{ number_format($items['price'], 2) }} each)
                                                 </div>
@@ -145,7 +170,30 @@
 														@endif
 													
 													@endforeach
-													<p>
+													</p>
+
+                                                    <p>Font Color:
+                                                    @foreach($items['items']['segmented'] as $key => $value)
+                                                        @if(isset($value['title']))
+                                                                @foreach($items['items']['segmented'][$key]['size'] as $var => $value)
+                                                                     {{ $items['items']['segmented'][$key]['size'][$var]['font_name'].","  }}
+                                                                @endforeach
+                                                        @endif
+                                                    
+                                                    @endforeach
+                                                    </p>
+
+                                                    <p>Size Name:
+                                                    @foreach($items['items']['segmented'] as $key => $value)
+                                                        @if(isset($value['title']))
+                                                                @foreach($items['items']['segmented'][$key]['size'] as $var => $value)
+                                                                     {{ $items['items']['segmented'][$key]['size'][$var]['size'].","  }}
+                                                                @endforeach
+                                                        @endif
+                                                    
+                                                    @endforeach
+                                                    </p>
+                                                    
 													<p>Quantity: {{ $items['quantity'] }}</p>
                                                     <i class="fa fa-life-ring"></i>Segmented Wristbands (<span class="value">{{ $items['items']['segmented']['quantity'] }} x ${{ number_format($items['items']['segmented']['price_addon'], 2) }} each</span>)
                                                 </div>
@@ -165,7 +213,30 @@
 														@endif
 													
 													@endforeach
-													<p>
+													</p>
+
+                                                    <p>Font Color:
+                                                    @foreach($items['items']['swirl'] as $key => $value)
+                                                        @if(isset($value['title']))
+                                                                @foreach($items['items']['swirl'][$key]['size'] as $var => $value)
+                                                                     {{ $items['items']['swirl'][$key]['size'][$var]['font_name']."," }}
+                                                                @endforeach
+                                                        @endif
+                                                    
+                                                    @endforeach
+                                                    </p>
+
+                                                    <p>Size Name:
+                                                    @foreach($items['items']['swirl'] as $key => $value)
+                                                        @if(isset($value['title']))
+                                                                @foreach($items['items']['swirl'][$key]['size'] as $var => $value)
+                                                                     {{ $items['items']['swirl'][$key]['size'][$var]['size'].","  }}
+                                                                @endforeach
+                                                        @endif
+                                                    
+                                                    @endforeach
+                                                    </p>
+                                                    
 													<p>Quantity: {{ $items['quantity'] }}</p>
                                                     <i class="fa fa-life-ring"></i>Swirl Wristbands (<span class="value">{{ $items['items']['swirl']['quantity'] }} x ${{ number_format($items['items']['swirl']['price_addon'], 2) }} each</span>)
                                                 </div>
@@ -185,7 +256,30 @@
 														@endif
 													
 													@endforeach
-													<p>
+													</p>
+
+                                                    <p>Font Color:
+                                                    @foreach($items['items']['glow'] as $key => $value)
+                                                        @if(isset($value['title']))
+                                                                @foreach($items['items']['glow'][$key]['size'] as $var => $value)
+                                                                     {{ $items['items']['glow'][$key]['size'][$var]['font_name'].","  }}
+                                                                @endforeach
+                                                        @endif
+                                                    
+                                                    @endforeach
+                                                    </p>
+
+                                                    <p>Size Name:
+                                                    @foreach($items['items']['glow'] as $key => $value)
+                                                        @if(isset($value['title']))
+                                                                @foreach($items['items']['glow'][$key]['size'] as $var => $value)
+                                                                     {{ $items['items']['glow'][$key]['size'][$var]['size'].","  }}
+                                                                @endforeach
+                                                        @endif
+                                                    
+                                                    @endforeach
+                                                    </p>
+                                                    
 													<p>Quantity: {{ $items['quantity'] }}</p>
                                                     <i class="fa fa-life-ring"></i>Glow Wristbands (<span class="value">{{ $items['items']['glow']['quantity'] }} x ${{ number_format($items['items']['glow']['price_addon'], 2) }} each</span>)
                                                 </div>
