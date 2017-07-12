@@ -85,6 +85,12 @@ class AdminController extends Controller
     {
         return view('admin.manage.orders', []);
     }
+	
+	public function manageCartOrders()
+    {
+		$posts = Carts::getCartOrders();
+        return view('admin.manage.carts')->with(['posts' => $posts]);;
+    }
 
     public function manageDiscounts()
     {

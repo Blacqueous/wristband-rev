@@ -18,7 +18,52 @@ class Carts extends Model {
                 ->select('*')
                 ->get();
     }
-
+	
+	public static function getCartOrders(){
+        return DB::SELECT(DB::RAW("SELECT DateCreated,
+						Status,
+                        OrderID,
+                        BandStyle,
+                        BandType,
+                        BandSize,
+                        MessageStyle,
+                        Font,
+                        FrontMessage,
+                        BackMessage,
+                        ContinuousMessage,
+                        FrontMessageStartClipart,
+                        FrontMessageEndClipart,
+                        BackMessageStartClipart,
+                        BackMessageEndClipart,
+                        ContinuousMessageStartClipart,
+                        ContinuousEndClipart,
+                        ProductionTime,
+                        FreeQty,
+                        Delivery,
+                        Individual_Pack,
+                        Keychain,
+                        DigitalPrint,
+                        Comments,
+                        PriceProduction,
+                        PriceDelivery,
+                        PriceIndividual_Pack,
+                        PriceKeychain,
+                        PriceDigitalPrint,
+                        PriceBackMessage,
+						PriceContinuousMessage,
+						PriceLogo,
+						PriceColorSplit,
+						PriceMouldingFee,
+						RandomChr,
+						arColors,
+						Qty,
+						UnitPrice,
+						Total,
+						FullName,
+						PhoneNo,
+						EmailAddress FROM cart"));
+    }
+	
     public function checkCartById($id=null)
     {
         // Get and return query.
