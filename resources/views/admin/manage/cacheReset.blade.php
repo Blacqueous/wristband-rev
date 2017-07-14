@@ -69,7 +69,8 @@
 @endsection
 
 @section('content')
-    <h1>Reset Cache</h1>
+    <h1>Reset All</h1>
+    <h4>Reset cached json data <small style="color: #bdbdbd;">(including prices, styles & etc)</small></h4>
     <br/>
     <a id="resetJSON" href="javascript:;" class="btn btn-danger" data-toggle="confirmation" data-placement="bottom" data-trigger="hover"><i class="fa fa-rotate-left"></i> Process Reset</a>
 @endsection

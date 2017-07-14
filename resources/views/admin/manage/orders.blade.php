@@ -49,7 +49,7 @@
                 background-image: none;
             }
  			table.dataTable thead:first-child  tr:first-child th:first-child {
-				padding-left: 30px;
+				/*padding-left: 30px;*/
 				width: auto !important;
             }
 		    table.dataTable tbody td {

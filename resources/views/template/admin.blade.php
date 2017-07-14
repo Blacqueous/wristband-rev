@@ -377,7 +377,7 @@
 					</li>
 					<li @if($menu == 3) class="active" @endif>
 						<a href="{{ URL::to('/admin/reset') }}">
-							<i class="fa fa-eraser"></i> Clear Cache
+							<i class="fa fa-eraser"></i> Reset All
 						</a>
 					</li>
 					<li class="nav-logout">

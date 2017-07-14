@@ -60,42 +60,29 @@ class AdminController extends Controller
         return redirect('/admin/orders');
     }
 
-    public function managePrices()
-    {
-        return view('admin.manage.prices');
-    }
-
-    public function manageImages()
-    {
-        $size = 0;
-        $data = [
-            'size' => 0
-        ];
-        foreach(File::allFiles($this->pathImageTemp) as $key => $value) {
-            if(!strpos($value, date('Ymd'))) {
-                $size += File::size($value->getPathName());
-            }
-        }
-        $data['size'] = $this->formatBytes($size);
-
-        return view('admin.manage.images', $data);
-    }
+    // Manage orders -----------------------------------------------------------
 
     public function manageOrders()
     {
         return view('admin.manage.orders', []);
     }
-	
+
+    // Manage carts ------------------------------------------------------------
+
 	public function manageCartOrders()
     {
 		$posts = Carts::getCartOrders();
         return view('admin.manage.carts')->with(['posts' => $posts]);;
     }
 
+    // Manage discounts --------------------------------------------------------
+
     public function manageDiscounts()
     {
         return view('admin.manage.discounts', []);
     }
+
+    // Reset JSON --------------------------------------------------------------
 
     public function resetJSON()
     {
@@ -141,6 +128,24 @@ class AdminController extends Controller
         return json_encode([ 'status' => false ]); // Ugh! Nope!
     }
 
+    // Clear temporary images --------------------------------------------------
+
+    public function manageImages()
+    {
+        $size = 0;
+        $data = [
+            'size' => 0
+        ];
+        foreach(File::allFiles($this->pathImageTemp) as $key => $value) {
+            if(!strpos($value, date('Ymd'))) {
+                $size += File::size($value->getPathName());
+            }
+        }
+        $data['size'] = $this->formatBytes($size);
+
+        return view('admin.manage.images', $data);
+    }
+
     public function clearTempImages(Request $request)
     {
         try {
@@ -162,7 +167,14 @@ class AdminController extends Controller
         return json_encode([ 'status' => false ]); // WRONG!!!
     }
 
-    // Wristband Prices --------------------------------------------------------
+    // Manage prices -----------------------------------------------------------
+
+    public function managePrices()
+    {
+        return view('admin.manage.prices');
+    }
+
+    // Manage wristband prices -------------------------------------------------
 
     public function updatePricesWB(Request $request)
     {
@@ -318,7 +330,7 @@ class AdminController extends Controller
         return false;
     }
 
-    // Addon Prices ------------------------------------------------------------
+    // Manage add-on prices ----------------------------------------------------
 
     public function updatePricesAO(Request $request)
     {
@@ -467,7 +479,7 @@ class AdminController extends Controller
         return false;
     }
 
-    // Shipping Prices (Domestic) ----------------------------------------------
+    // Manage shipping prices (Domestic) ---------------------------------------
 
     public function updatePricesSPD(Request $request)
     {
@@ -607,7 +619,7 @@ class AdminController extends Controller
         return false;
     }
 
-    // Shipping Prices (International) -----------------------------------------
+    // Manage shipping prices (International) ----------------------------------
 
     public function updatePricesSPI(Request $request)
     {
@@ -747,7 +759,7 @@ class AdminController extends Controller
         return false;
     }
 
-    // Production Prices -------------------------------------------------------
+    // Manage production prices ------------------------------------------------
 
     public function updatePricesPD(Request $request)
     {
