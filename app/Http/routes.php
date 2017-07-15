@@ -174,6 +174,7 @@ Route::group(['middleware' => 'admin'], function () {
 	Route::get('/admin/prices/downloadPD', 'AdminController@downloadPricesPD');
     Route::post('/admin/prices/reuploadPD', 'AdminController@reuploadPricesPD');
     Route::post('/admin/prices/reprocessPD', 'AdminController@reprocessPricesPD');
+    Route::post('/admin/prices/updateMoldingFee', 'AdminController@updateMoldingFee');
 
     // Admin images realated actions
     Route::post('/admin/images/clear', 'AdminController@clearTempImages');

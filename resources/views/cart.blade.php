@@ -140,6 +140,7 @@
                                             </div>
                                         </div>
                                         @endif
+{{ var_dump(($value['items']['solid'])) }}
                                     @endif
                                     @if(isset($value['time_production']))
                                     <div id="summary-table-production" class="summary-table-group">

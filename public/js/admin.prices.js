@@ -642,4 +642,42 @@ $(document).ready(function(e) {
         rootSelector: '[data-toggle=confirmation-min]',
     });
 
+    // -------------------------------------------------------------
+
+    $('body').on('click', '#updatePriceMF', function(e) {
+        var strVal = $('#priceMF').val();
+        var valFlt = parseFloat(strVal);
+
+        if(strVal.length > 0 && !isNaN(valFlt)) {
+            $.ajax({
+                type: 'POST',
+                url: '/admin/prices/updateMoldingFee',
+                data: {
+                    _token: $('meta[name="csrf-token"]').attr('content'),
+                    price: valFlt
+                },
+                beforeSend: function() {
+                    $('.btn').prop('disabled', true);
+                    $('.btn').addClass('disabled');
+                    toastr.info('Wait a while, we\'re updating.', 'Processing...');
+                },
+                success: function() { },
+                error: function() {
+                    toastr.error('Update failed. Try again.', 'Ooops!');
+                    $('.btn').prop('disabled', false);
+                    $('.btn').removeClass('disabled');
+                },
+            }).done(function(data) {
+                data = $.parseJSON(data);
+                if(data.status) {
+                    toastr.success('Update successful.', 'Congrats!');
+                } else {
+                    toastr.error('Update failed. Try again.', 'Ooops!');
+                }
+                $('.btn').prop('disabled', false);
+                $('.btn').removeClass('disabled');
+            });
+        }
+    });
+
 });

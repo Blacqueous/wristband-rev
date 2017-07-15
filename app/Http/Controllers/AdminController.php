@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Models\AddOns;
 use App\Models\Carts;
 use App\Models\Discounts;
+use App\Models\MoldingFee;
 use App\Models\Orders;
 use App\Models\Prices;
 use App\Models\Sizes;
@@ -120,6 +121,9 @@ class AdminController extends Controller
             $sizechart = new SizeChart();
             $sizechart->reset();
 
+    		$molding_fee = new MoldingFee();
+            $molding_fee->reset();
+
             return json_encode([ 'status' => true ]); // Success!
         } catch(\Exception $ex) {
             // Hah! Something went wrong!
@@ -171,7 +175,10 @@ class AdminController extends Controller
 
     public function managePrices()
     {
-        return view('admin.manage.prices');
+        $data = array();
+        $moldingFee = new MoldingFee();
+        $data['molding_fee'] = $moldingFee->getJSONPrice()[0];
+        return view('admin.manage.prices', $data);
     }
 
     // Manage wristband prices -------------------------------------------------
@@ -1157,6 +1164,23 @@ class AdminController extends Controller
         ];
 		echo json_encode($output);
         exit;
+    }
+
+    // Molding fee -------------------------------------------------------------
+
+    public function updateMoldingFee(Request $request)
+    {
+        $status = false;
+        // Check if price exists
+        if(is_numeric($request->price)) {
+            // Update
+            MoldingFee::insertPrice(['price'=> $request->price]);
+            $status = true;
+        }
+        $mf = new MoldingFee();
+        $mf->reset();
+        // Return status.
+        return json_encode([ 'status' => $status ]);
     }
 
     // Miscellaneous -----------------------------------------------------------
