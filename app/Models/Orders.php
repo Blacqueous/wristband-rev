@@ -46,14 +46,14 @@ class Orders extends Model {
         $data = [];
     	$query = DB::table($this->table)
                     ->select('*');
-        if ($show_removed == 'false' && $show_done == 'false') {
-            $query->where('Status', '!=', '-1');
-            $query->where('Status', '!=', '0');
-        } else if ($show_removed == 'false' && $show_done == 'true') {
-            $query->where('Status', '!=', '0');
-        } else if ($show_removed == 'true' && $show_done == 'false') {
-            $query->where('Status', '!=', '-1');
-        }
+        // if ($show_removed == 'false' && $show_done == 'false') {
+        //     $query->where('Status', '!=', '-1');
+        //     $query->where('Status', '!=', '0');
+        // } else if ($show_removed == 'false' && $show_done == 'true') {
+        //     $query->where('Status', '!=', '0');
+        // } else if ($show_removed == 'true' && $show_done == 'false') {
+        //     $query->where('Status', '!=', '-1');
+        // }
         $query->where(function($query) use ($search_str) {
                 $query->where("ID", "LIKE", "%".$search_str."%");
                 $query->orWhere("TransNo", "LIKE", "%".$search_str."%");
@@ -139,7 +139,8 @@ class Orders extends Model {
         // Update status of $ids to "0" for delete(?).
     	return DB::table($this->table)
                 ->whereIn('ID', $ids)
-                ->update(['Status' => '0']);
+                // ->update(['Status' => '0']);
+                ->delete();
     }
 
     public function doneOrders($ids=null)

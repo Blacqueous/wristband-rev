@@ -53,7 +53,7 @@ Route::get('/quote', 'ViewController@pageQuote');
 
 Route::get('/schoolpo', 'ViewController@pageSchoolPO');
 
-Route::get('/digitaldesign', 'ViewController@pageDigitalDesign');
+Route::get('/digital-design', 'ViewController@pageDigitalDesign');
 
 Route::get('/product', function () { return redirect('/'); });
 
@@ -145,6 +145,7 @@ Route::group(['middleware' => 'admin'], function () {
     Route::get('/admin/images', 'AdminController@manageImages');
     Route::get('/admin/reset', 'AdminController@resetJSON');
     Route::get('/admin/orders', 'AdminController@manageOrders');
+	Route::get('/admin/cart-details', 'AdminController@manageCartOrders');
     Route::get('/admin/discounts', 'AdminController@manageDiscounts');
 
     // Admin price related actions
@@ -173,6 +174,7 @@ Route::group(['middleware' => 'admin'], function () {
 	Route::get('/admin/prices/downloadPD', 'AdminController@downloadPricesPD');
     Route::post('/admin/prices/reuploadPD', 'AdminController@reuploadPricesPD');
     Route::post('/admin/prices/reprocessPD', 'AdminController@reprocessPricesPD');
+    Route::post('/admin/prices/updateMoldingFee', 'AdminController@updateMoldingFee');
 
     // Admin images realated actions
     Route::post('/admin/images/clear', 'AdminController@clearTempImages');

@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Models\AddOns;
 use App\Models\Carts;
 use App\Models\Discounts;
+use App\Models\MoldingFee;
 use App\Models\Orders;
 use App\Models\Prices;
 use App\Models\Sizes;
@@ -60,36 +61,29 @@ class AdminController extends Controller
         return redirect('/admin/orders');
     }
 
-    public function managePrices()
-    {
-        return view('admin.manage.prices');
-    }
-
-    public function manageImages()
-    {
-        $size = 0;
-        $data = [
-            'size' => 0
-        ];
-        foreach(File::allFiles($this->pathImageTemp) as $key => $value) {
-            if(!strpos($value, date('Ymd'))) {
-                $size += File::size($value->getPathName());
-            }
-        }
-        $data['size'] = $this->formatBytes($size);
-
-        return view('admin.manage.images', $data);
-    }
+    // Manage orders -----------------------------------------------------------
 
     public function manageOrders()
     {
         return view('admin.manage.orders', []);
     }
 
+    // Manage carts ------------------------------------------------------------
+
+	public function manageCartOrders()
+    {
+		$posts = Carts::getCartOrders();
+        return view('admin.manage.carts')->with(['posts' => $posts]);;
+    }
+
+    // Manage discounts --------------------------------------------------------
+
     public function manageDiscounts()
     {
         return view('admin.manage.discounts', []);
     }
+
+    // Reset JSON --------------------------------------------------------------
 
     public function resetJSON()
     {
@@ -127,12 +121,33 @@ class AdminController extends Controller
             $sizechart = new SizeChart();
             $sizechart->reset();
 
+    		$molding_fee = new MoldingFee();
+            $molding_fee->reset();
+
             return json_encode([ 'status' => true ]); // Success!
         } catch(\Exception $ex) {
             // Hah! Something went wrong!
             return json_encode([ 'status' => false ]);
         }
         return json_encode([ 'status' => false ]); // Ugh! Nope!
+    }
+
+    // Clear temporary images --------------------------------------------------
+
+    public function manageImages()
+    {
+        $size = 0;
+        $data = [
+            'size' => 0
+        ];
+        foreach(File::allFiles($this->pathImageTemp) as $key => $value) {
+            if(!strpos($value, date('Ymd'))) {
+                $size += File::size($value->getPathName());
+            }
+        }
+        $data['size'] = $this->formatBytes($size);
+
+        return view('admin.manage.images', $data);
     }
 
     public function clearTempImages(Request $request)
@@ -156,7 +171,17 @@ class AdminController extends Controller
         return json_encode([ 'status' => false ]); // WRONG!!!
     }
 
-    // Wristband Prices --------------------------------------------------------
+    // Manage prices -----------------------------------------------------------
+
+    public function managePrices()
+    {
+        $data = array();
+        $moldingFee = new MoldingFee();
+        $data['molding_fee'] = $moldingFee->getJSONPrice()[0];
+        return view('admin.manage.prices', $data);
+    }
+
+    // Manage wristband prices -------------------------------------------------
 
     public function updatePricesWB(Request $request)
     {
@@ -299,6 +324,9 @@ class AdminController extends Controller
                     if(count($csv) > 0) {
                         Prices::truncatePrice();
                         Prices::insertPrice($csv);
+                        $p = new Prices();
+                        $p->getJSONPrices();
+                        $p->getJSONPrice();
                     }
                 });
             } catch (\Exception $e) {
@@ -309,7 +337,7 @@ class AdminController extends Controller
         return false;
     }
 
-    // Addon Prices ------------------------------------------------------------
+    // Manage add-on prices ----------------------------------------------------
 
     public function updatePricesAO(Request $request)
     {
@@ -458,7 +486,7 @@ class AdminController extends Controller
         return false;
     }
 
-    // Shipping Prices (Domestic) ----------------------------------------------
+    // Manage shipping prices (Domestic) ---------------------------------------
 
     public function updatePricesSPD(Request $request)
     {
@@ -598,7 +626,7 @@ class AdminController extends Controller
         return false;
     }
 
-    // Shipping Prices (International) -----------------------------------------
+    // Manage shipping prices (International) ----------------------------------
 
     public function updatePricesSPI(Request $request)
     {
@@ -738,7 +766,7 @@ class AdminController extends Controller
         return false;
     }
 
-    // Production Prices -------------------------------------------------------
+    // Manage production prices ------------------------------------------------
 
     public function updatePricesPD(Request $request)
     {
@@ -986,17 +1014,17 @@ class AdminController extends Controller
             } else {
                 $paymentMethod = "-";
             }
-            if ($value->Status == '-1') {
-                $paymentStatus = "<span class='text-warning'><i class='fa fa-circle'></i></span>";
-            } else if ($value->Status == '0') {
-                $paymentStatus = "<span class='text-primary'><i class='fa fa-circle'></i></span>";
-            } else {
-                $paymentStatus = "<span class='text-success'><i class='fa fa-circle'></i></span>";
-            }
+            // if ($value->Status == '-1') {
+            //     $paymentStatus = "<span class='text-warning'><i class='fa fa-circle'></i></span>";
+            // } else if ($value->Status == '0') {
+            //     $paymentStatus = "<span class='text-primary'><i class='fa fa-circle'></i></span>";
+            // } else {
+            //     $paymentStatus = "<span class='text-success'><i class='fa fa-circle'></i></span>";
+            // }
             
             $data[] = [
                 "<input type='checkbox' class='check-action' data-id='".$value->ID."'/>",
-                $paymentStatus,
+                // $paymentStatus,
                 $value->ID,
                 ($value->Paid) ? "<i class='fa fa-check text-success'></i>" : "<i class='fa fa-times text-danger'></i>",
                 $paymentMethod,
@@ -1027,7 +1055,7 @@ class AdminController extends Controller
                 $value->ShipZipCode,
                 $value->ShipCountry,
                 "<i>".$value->IPAddress."</i>",
-                "<button class='btn btn-default pull-right'><i class='fa fa-shopping-cart'></i> Show Cart</button>",
+                // "<button class='btn btn-default pull-right'><i class='fa fa-shopping-cart'></i> Show Cart</button>",
             ];
         }
 		$output = [
@@ -1136,6 +1164,23 @@ class AdminController extends Controller
         ];
 		echo json_encode($output);
         exit;
+    }
+
+    // Molding fee -------------------------------------------------------------
+
+    public function updateMoldingFee(Request $request)
+    {
+        $status = false;
+        // Check if price exists
+        if(is_numeric($request->price)) {
+            // Update
+            MoldingFee::insertPrice(['price'=> $request->price]);
+            $status = true;
+        }
+        $mf = new MoldingFee();
+        $mf->reset();
+        // Return status.
+        return json_encode([ 'status' => $status ]);
     }
 
     // Miscellaneous -----------------------------------------------------------

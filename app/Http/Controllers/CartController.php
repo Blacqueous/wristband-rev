@@ -6,6 +6,7 @@ use App;
 use App\Http\Controllers\Controller;
 use App\Models\AddOns;
 use App\Models\Carts;
+use App\Models\MoldingFee;
 use App\Models\Orders;
 use App\Models\Prices;
 use App\Models\TimeProduction;
@@ -42,6 +43,9 @@ class CartController extends Controller
 
 	public function index(Request $request)
 	{
+		// $a = $this->organizeCart("1", "1", "LOL", "12345", "1@1.1");
+		// var_dump($a);
+		// die;
 		$data = [
 			'items' => (Session::has('_cart')) ? Session::get('_cart') : []
 		];
@@ -981,6 +985,8 @@ class CartController extends Controller
 				// Get attribute
 				foreach ($item as $attr_key => $attr_val) {
 
+					$has_molding_fee = false;
+
 					if (is_array($attr_val)) {
 
 						foreach ($attr_val['size'] as $attr) {
@@ -1204,6 +1210,15 @@ class CartController extends Controller
 
 							}
 
+							// Molding Fee
+							$moldingFeePrice = ['price'=> 0];
+							if(!$has_molding_fee) {
+								$moldingFee = new MoldingFee();
+								$moldingFee = $moldingFee->getJSONPrice()[0];
+								$moldingFeePrice['price'] = $moldingFee;
+								$has_molding_fee = true;
+							}
+
 							$data_cart_item_attr[] = [
 								"_Name"			=> ucwords(strtolower($attr_val['title'])),
 								"_Size"			=> strtolower($attr['size']),
@@ -1213,6 +1228,8 @@ class CartController extends Controller
 								"FreeQty"		=> $arWristbands['quantity'], // Int ~ Free wristbands
 								"arFree"		=> json_encode(["wristbands"=> $arWristbands, "keychains"=> $arKeychains]), // JSON String ~ Free wristbands & keychains
 								"arAddons"		=> json_encode($data_cart_item_addons), // JSON String ~ Addons
+								"PriceMouldingFee"	=> $moldingFeePrice['price'],
+								"arMoldingFee"		=> json_encode($moldingFeePrice), // JSON String ~ Molding Fee
 							];
 
 						}
@@ -1223,11 +1240,10 @@ class CartController extends Controller
 
 				foreach ($data_cart_item_attr as $value) {
 					// Total computation
-					$data_cart_item['UnitPrice'] = $list['price'] + $item['price_addon'];
-					$data_cart_item['Total'] = $value['Qty'] * ($list['price'] + $item['price_addon']);
+					$data_cart_item['UnitPrice'] = $list['price'] + $item['price_addon'] + $value['PriceMouldingFee'];
+					$data_cart_item['Total'] = ($value['Qty'] * ($list['price'] + $item['price_addon'])) + $value['PriceMouldingFee'];
 					$data_cart[] = array_merge($data_cart_item, $value);
 				}
-
 			}
 
 			// Last thing to do. Merge everything...

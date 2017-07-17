@@ -64,10 +64,10 @@ return [
     ],
 
     'paypal' => [
-        'client_id' => 'ASURSFcCTrjrnnzIc4voe_cn5hq3Cl-Z941ftlVek_556jycvAn1Kmr4gSpVCWvjPMEIoCs8XnMucVBb',
-        'secret' => 'ENTuLYrdTgyMWU8ZO5vFbab3_uzouyDyxfbXSrZGVKueGZA9lEG2uvT_rI1iIssO0cv5GxyWvdHOsra2',
+        'client_id' => 'Aat-pItpUT7M8NRjurPbXHHV2xjr1OpeLstdx12i0Bf7RxFP_w3Tobz-e7LO4Z4c6-Gykyb9ed_3IfKW',
+        'secret' => 'EKYfVgIpvcNUsX05JXkFacUdEz655PZJ6eLzgV1R5cyua0g7Js-UCO3Y9vgyxEoL6ByR2LxHxDkVBUOc',
         'settings' => [
-            'mode' => env('PAYPAL_MODE', 'sandbox'),
+            'mode' => env('PAYPAL_MODE', 'live'),
             'http.ConnectionTimeOut' => 10000,
             'log.LogEnabled' => true,
             'log.FileName' => storage_path() . '/logs/paypal.log',
@@ -76,9 +76,9 @@ return [
     ],
 
     'authorizenet' => [
-        'name' => '5w84kJJZ8mM',
-        'key' => '3F5MzP5p33V7Xcxd',
-        'sandbox' => true,
+        'name' => '7QX9k7vtJp38',
+        'key' => '733N9khenL2E8fJ7',
+        'sandbox' => false,
     ],
 
 ];
