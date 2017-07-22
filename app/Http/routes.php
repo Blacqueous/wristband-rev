@@ -91,7 +91,7 @@ Route::post('/cart/update/{index}', 'CartController@cartUpdateStart');
 
 Route::post('/cart/delete', 'CartController@cartDelete');
 
-Route::post('/cart/clear', 'CartController@cartClear');
+Route::get('/cart/clear', 'CartController@cartClear');
 
 Route::post('/cart/submit', 'CartController@cartSubmit');
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\AddOns;
+use App\Models\MoldingFee;
 use App\Models\Prices;
 use App\Models\TimeProduction;
 use App\Models\TimeShipping;
@@ -46,6 +47,9 @@ class OrderController extends Controller
 
 		$list_font = new FontList();
 		$data['list_fonts'] = $list_font->getFonts();
+
+		$moldingFee = new MoldingFee();
+		$data['molding_fee'] = $moldingFee->getJSONPrice()[0];
 
 		$price = new Prices();
 		$data['prices'] = $price->getJSONPrice();
