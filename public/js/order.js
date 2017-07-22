@@ -2289,12 +2289,6 @@ function getTotal()
             case 'xs': idx_size = "3"; break;
             case 'xl': idx_size = "4"; break;
         }
-console.log(items['data']);
-console.log(items['data'][element.attr('data-style')]);
-console.log(items['data'][element.attr('data-style')]['list']);
-console.log(items['data'][element.attr('data-style')]['list'][element.attr('data-index')]);
-console.log(element.attr('data-index'));
-console.log(items['data'][element.attr('data-style')]['list'][element.attr('data-index')][idx_size]);
         if(freeKCqty > 0) {
             if(typeof freeKCitems[element.attr('data-style')] == "undefined") {
                 freeKCitems[element.attr('data-style')] = {};

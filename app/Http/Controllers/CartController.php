@@ -43,8 +43,6 @@ class CartController extends Controller
 
 	public function index(Request $request)
 	{
-		// $a = $this->organizeCart("1", "1", "LOL", "12345", "1@1.1");
-
 		$data = [
 			'items' => (Session::has('_cart')) ? Session::get('_cart') : []
 		];
@@ -264,7 +262,6 @@ class CartController extends Controller
 		}
 
 		$arrCart = $this->organizeCart($request->_token, $order_id, $request->bInfoFirstName." ".$request->bInfoLastName, $request->bInfoContactNo, $request->bInfoEmail);
-		// var_dump($arrCart); die;
 
 		if (strtoupper($request->PaymentType) == "CC") {
 			$merchantAuthentication = new AnetAPI\MerchantAuthenticationType();
@@ -382,7 +379,6 @@ class CartController extends Controller
 				return redirect('/checkout')->withErrors(['message'=> $errMsg], 'checkout')->withInput();
 			}
 			return redirect('/checkout')->withErrors(['message'=> $errMsg], 'checkout')->withInput();
-
 		} else {
 			// ### Payer
 			// A resource representing a Payer that funds a payment
@@ -395,129 +391,30 @@ class CartController extends Controller
 			// (Optional) Lets you specify item wise
 			// information
 			$total = 0;
-			$priceAll = 0;
-			$addonAll = 0;
 			$items = [];
+			$all_prod = 0;
+			$all_ship = 0;
+			$count = 0;
 
-			foreach ($arrCart as $value) {
+			$ppcart = Session::get('_cart');
+			foreach ($ppcart as $value) {
 
-				$price = $value['UnitPrice'];
-				$totalPrice = $value['UnitPrice'] * $value['Qty'];
-				$totalAddon = 0;
-				$priceAll += $totalPrice;
+				$price = $value['total'] - ($value['time_production']['price'] + $value['time_shipping']['price']);
+				$total += $price;
+				$all_prod += $value['time_production']['price'];
+				$all_ship += $value['time_shipping']['price'];
 
-				$arFrontMessage = json_decode($value['arFrontMessage'], true);
-				if(is_array($arFrontMessage)) {
-					$totalAddon += $arFrontMessage['price'] * $value['Qty'];
-					$price += $arFrontMessage['price'];
-					$addonAll += $arFrontMessage['price'] * $value['Qty'];
-				}
-
-				$arBackMessage = json_decode($value['arBackMessage'], true);
-				if(is_array($arBackMessage)) {
-					$totalAddon += $arBackMessage['price'] * $value['Qty'];
-					$price += $arBackMessage['price'];
-					$addonAll += $arFrontMessage['price'] * $value['Qty'];
-				}
-
-				$arContinuousMessage = json_decode($value['arContinuousMessage'], true);
-				if(is_array($arContinuousMessage)) {
-					$totalAddon += $arContinuousMessage['price'] * $value['Qty'];
-					$price += $arContinuousMessage['price'];
-					$addonAll += $arFrontMessage['price'] * $value['Qty'];
-				}
-
-				$arInsideMessage = json_decode($value['arInsideMessage'], true);
-				if(is_array($arInsideMessage)) {
-					$totalAddon += $arInsideMessage['price'] * $value['Qty'];
-					$price += $arInsideMessage['price'];
-					$addonAll += $arFrontMessage['price'] * $value['Qty'];
-				}
-
-				$arFrontMessageStartClipart = json_decode($value['arFrontMessageStartClipart'], true);
-				if(is_array($arFrontMessageStartClipart)) {
-					$totalAddon += $arFrontMessageStartClipart['price'] * $value['Qty'];
-					$price += $arFrontMessageStartClipart['price'];
-					$addonAll += $arFrontMessage['price'] * $value['Qty'];
-				}
-
-				$arFrontMessageEndClipart = json_decode($value['arFrontMessageEndClipart'], true);
-				if(is_array($arFrontMessageEndClipart)) {
-					$totalAddon += $arFrontMessageEndClipart['price'] * $value['Qty'];
-					$price += $arFrontMessageEndClipart['price'];
-					$addonAll += $arFrontMessage['price'] * $value['Qty'];
-				}
-
-				$arBackMessageStartClipart = json_decode($value['arBackMessageStartClipart'], true);
-				if(is_array($arBackMessageStartClipart)) {
-					$totalAddon += $arBackMessageStartClipart['price'] * $value['Qty'];
-					$price += $arBackMessageStartClipart['price'];
-					$addonAll += $arFrontMessage['price'] * $value['Qty'];
-				}
-
-				$arBackMessageEndClipart = json_decode($value['arBackMessageEndClipart'], true);
-				if(is_array($arBackMessageEndClipart)) {
-					$totalAddon += $arBackMessageEndClipart['price'] * $value['Qty'];
-					$price += $arBackMessageEndClipart['price'];
-					$addonAll += $arFrontMessage['price'] * $value['Qty'];
-				}
-
-				$arContinuousMessageStartClipart = json_decode($value['arContinuousMessageStartClipart'], true);
-				if(is_array($arContinuousMessageStartClipart)) {
-					$totalAddon += $arContinuousMessageStartClipart['price'] * $value['Qty'];
-					$price += $arContinuousMessageStartClipart['price'];
-					$addonAll += $arFrontMessage['price'] * $value['Qty'];
-				}
-
-				$priceContinuousEndClipart = 0;
-				$arContinuousEndClipart = json_decode($value['arContinuousEndClipart'], true);
-				if(is_array($arContinuousEndClipart)) {
-					$totalAddon += $arContinuousEndClipart['price'] * $value['Qty'];
-					$price += $arContinuousEndClipart['price'];
-					$addonAll += $arFrontMessage['price'] * $value['Qty'];
-				}
-
-				$priceAddons = 0;
-				$arPriceAddons = json_decode($value['arAddons'], true);
-				if(is_array($arPriceAddons)) {
-					foreach ($arPriceAddons as $addon) {
-						$totalAddon += $addon['total'];
-						// $price += $addon['price'];
-						$addonAll += $addon['total'];
-					}
-				}
-
-				// Compute new total
-				$total += $totalPrice + $totalAddon;
-
-				$size = $this->getWristbandsSizeName($value['BandSize']);
-				$sizeBand = $this->getWristbandItemSizeName($value['_Size']);
-				$typeBand = strtolower($value['BandType']);
-				$typeBand = (($typeBand == "dual") ? "" : " " . ucwords($typeBand));
-
-				$name = ucwords(strtolower($value['BandStyle'])) . $typeBand . " Wristband " . $size . " (" . $value['_Name'] . ")" . $sizeBand;
+				$name = "Order #" . ++$count;
 
 				$item = new Item();
 				$item->setName($name)
 					 ->setCurrency('USD')
-					 ->setQuantity($value['Qty'])
+					 ->setQuantity(1)
 					 ->setPrice($price);
 				$items[] = $item;
 			}
 
-			// For Addon price, if any
-			$item = new Item();
-			$item->setName('Addons')
-				 ->setCurrency('USD')
-				 ->setQuantity(1)
-				 ->setPrice($addonAll);
-			$items[] = $item;
-
-			$shipping = $this->getCartShipping();
-			$production = $this->getCartProduction();
-
-			$sub_total = $total + $production['total'];
-			$all_total = $total + $shipping['total'] + $production['total'];
+			$all_total = $total + $all_ship + $all_prod;
 			$discount = 0;
 			if (!empty($request->DiscountCode)) {
 				if (strtoupper($request->DiscountCode) == "SAVE10") {
@@ -525,15 +422,15 @@ class CartController extends Controller
 					$discount = number_format($discount, "2");
 				}
 			}
-			$shipping_total = ($all_total - $discount) - $shipping['total'];
+			$shipping_total = ($all_total - $discount) - $all_ship;
 			$shipping_total = number_format($shipping_total, "2");
 
 			// For Production price, if any
 			$item = new Item();
-			$item->setName('Production Price')
+			$item->setName('Production')
 				 ->setCurrency('USD')
 				 ->setQuantity(1)
-				 ->setPrice($production['total']);
+				 ->setPrice($all_prod);
 			$items[] = $item;
 
 			if ($discount > 0) {
@@ -554,7 +451,7 @@ class CartController extends Controller
 			// payment information such as tax, shipping
 			// charges etc.
 			$details = new Details();
-			$details->setShipping($shipping['total'])
+			$details->setShipping($all_ship)
 				    ->setTax(0)
 				    ->setSubtotal($shipping_total);
 
@@ -681,111 +578,22 @@ class CartController extends Controller
 			$priceAll = 0;
 			$addonAll = 0;
 			$items = [];
+			$all_prod = 0;
+			$all_ship = 0;
 
 			$order_id = Session::get('_paypal.order_id');
 			$paypalRequest = Session::get('_paypal.order_input');
+			$arrCart = $this->organizeCart($request->_token, $order_id, $request->bInfoFirstName." ".$request->bInfoLastName, $request->bInfoContactNo, $request->bInfoEmail);
 
-			$arrCart = $this->organizeCart($paypalRequest['_token'], $order_id, $paypalRequest['bInfoFirstName']." ".$paypalRequest['bInfoLastName'], $paypalRequest['bInfoContactNo'], $paypalRequest['bInfoEmail']);
-			// var_dump($arrCart); die;
-
-			foreach ($arrCart as $value) {
-
-				$price = $value['UnitPrice'];
-				$totalPrice = $value['UnitPrice'] * $value['Qty'];
-				$totalAddon = 0;
-				$priceAll += $totalPrice;
-
-				$arFrontMessage = json_decode($value['arFrontMessage'], true);
-				if(is_array($arFrontMessage)) {
-					$totalAddon += $arFrontMessage['price'] * $value['Qty'];
-					$price += $arFrontMessage['price'];
-					$addonAll += $arFrontMessage['price'] * $value['Qty'];
-				}
-
-				$arBackMessage = json_decode($value['arBackMessage'], true);
-				if(is_array($arBackMessage)) {
-					$totalAddon += $arBackMessage['price'] * $value['Qty'];
-					$price += $arBackMessage['price'];
-					$addonAll += $arFrontMessage['price'] * $value['Qty'];
-				}
-
-				$arContinuousMessage = json_decode($value['arContinuousMessage'], true);
-				if(is_array($arContinuousMessage)) {
-					$totalAddon += $arContinuousMessage['price'] * $value['Qty'];
-					$price += $arContinuousMessage['price'];
-					$addonAll += $arFrontMessage['price'] * $value['Qty'];
-				}
-
-				$arInsideMessage = json_decode($value['arInsideMessage'], true);
-				if(is_array($arInsideMessage)) {
-					$totalAddon += $arInsideMessage['price'] * $value['Qty'];
-					$price += $arInsideMessage['price'];
-					$addonAll += $arFrontMessage['price'] * $value['Qty'];
-				}
-
-				$arFrontMessageStartClipart = json_decode($value['arFrontMessageStartClipart'], true);
-				if(is_array($arFrontMessageStartClipart)) {
-					$totalAddon += $arFrontMessageStartClipart['price'] * $value['Qty'];
-					$price += $arFrontMessageStartClipart['price'];
-					$addonAll += $arFrontMessage['price'] * $value['Qty'];
-				}
-
-				$arFrontMessageEndClipart = json_decode($value['arFrontMessageEndClipart'], true);
-				if(is_array($arFrontMessageEndClipart)) {
-					$totalAddon += $arFrontMessageEndClipart['price'] * $value['Qty'];
-					$price += $arFrontMessageEndClipart['price'];
-					$addonAll += $arFrontMessage['price'] * $value['Qty'];
-				}
-
-				$arBackMessageStartClipart = json_decode($value['arBackMessageStartClipart'], true);
-				if(is_array($arBackMessageStartClipart)) {
-					$totalAddon += $arBackMessageStartClipart['price'] * $value['Qty'];
-					$price += $arBackMessageStartClipart['price'];
-					$addonAll += $arFrontMessage['price'] * $value['Qty'];
-				}
-
-				$arBackMessageEndClipart = json_decode($value['arBackMessageEndClipart'], true);
-				if(is_array($arBackMessageEndClipart)) {
-					$totalAddon += $arBackMessageEndClipart['price'] * $value['Qty'];
-					$price += $arBackMessageEndClipart['price'];
-					$addonAll += $arFrontMessage['price'] * $value['Qty'];
-				}
-
-				$arContinuousMessageStartClipart = json_decode($value['arContinuousMessageStartClipart'], true);
-				if(is_array($arContinuousMessageStartClipart)) {
-					$totalAddon += $arContinuousMessageStartClipart['price'] * $value['Qty'];
-					$price += $arContinuousMessageStartClipart['price'];
-					$addonAll += $arFrontMessage['price'] * $value['Qty'];
-				}
-
-				$priceContinuousEndClipart = 0;
-				$arContinuousEndClipart = json_decode($value['arContinuousEndClipart'], true);
-				if(is_array($arContinuousEndClipart)) {
-					$totalAddon += $arContinuousEndClipart['price'] * $value['Qty'];
-					$price += $arContinuousEndClipart['price'];
-					$addonAll += $arFrontMessage['price'] * $value['Qty'];
-				}
-
-				$priceAddons = 0;
-				$arPriceAddons = json_decode($value['arAddons'], true);
-				if(is_array($arPriceAddons)) {
-					foreach ($arPriceAddons as $addon) {
-						$totalAddon += $addon['total'];
-						// $price += $addon['price'];
-						$addonAll += $addon['total'];
-					}
-				}
-
-				// Compute new total
-				$total += $totalPrice + $totalAddon;
-
+			$ppcart = Session::get('_cart');
+			foreach ($ppcart as $value) {
+				$price = $value['total'] - ($value['time_production']['price'] + $value['time_shipping']['price']);
+				$total += $price;
+				$all_prod += $value['time_production']['price'];
+				$all_ship += $value['time_shipping']['price'];
 			}
 
-			$shipping = $this->getCartShipping();
-			$production = $this->getCartProduction();
-
-			$sub_total = $total + $production['total'];
-			$all_total = $total + $shipping['total'] + $production['total'];
+			$all_total = $total + $all_ship + $all_prod;
 			$discount = 0;
 			if (!empty($paypalRequest['DiscountCode'])) {
 				if (strtoupper($paypalRequest['DiscountCode']) == "SAVE10") {
@@ -793,7 +601,7 @@ class CartController extends Controller
 					$discount = number_format($discount, "2");
 				}
 			}
-			$shipping_total = ($all_total - $discount) - $shipping['total'];
+			$shipping_total = ($all_total - $discount) - $all_ship;
 			$shipping_total = number_format($shipping_total, "2");
 
 			// ### Optional Changes to Amount
@@ -802,7 +610,7 @@ class CartController extends Controller
 			// do that by passing the transaction object with just `amount` field in it.
 			// Here is the example on how we changed the shipping to $1 more than before.
 			$details = new Details();
-			$details->setShipping($shipping['total'])
+			$details->setShipping($all_ship)
 				    ->setTax(0)
 				    ->setSubtotal($shipping_total);
 
@@ -956,15 +764,16 @@ class CartController extends Controller
 		foreach ($cart_list as $key => $list) {
 
 			$data_cart_default_band = [
-				"BandStyle"				=> strtolower($list['style']),
-				"BandSize"				=> strtolower($list['size']),
-				"Font"					=> strtolower($list['fonts']),
-				"ProductionTime"		=> $list['time_production']['days'],
-				"arProduction"			=> json_encode($list['time_production']),
-				"PriceProduction"		=> $list['time_production']['price'],
-				"Delivery"				=> $list['time_shipping']['days'],
-				"arShipping"			=> json_encode($list['time_shipping']),
-				"PriceDelivery"			=> $list['time_shipping']['price'],
+				"BandStyle"			=> strtolower($list['style']),
+				"BandSize"			=> strtolower($list['size']),
+				"Font"				=> strtolower($list['fonts']),
+				"ProductionTime"	=> $list['time_production']['days'],
+				"arProduction"		=> json_encode($list['time_production']),
+				"PriceProduction"	=> $list['time_production']['price'],
+				"Delivery"			=> $list['time_shipping']['days'],
+				"arShipping"		=> json_encode($list['time_shipping']),
+				"PriceDelivery"		=> $list['time_shipping']['price'],
+				"RandomChr"			=> $key,
 			];
 			
 			$data_cart = [];
@@ -1194,7 +1003,7 @@ class CartController extends Controller
 								if ($arrAddonBand['all'] == 'true') {
 									$arrAddonBand['quantity'] = $item['qty'];
 								} else {
-									$arrAddonBand['quantity'] = $arrAddonBand['items'][$variantsKey['style']][$attr_key]['size'][$attr['size']]['qty'];
+									$arrAddonBand['quantity'] = $arrAddonBand['items'][$item['style']][$variantsKey]['size'][$item['size']]['qty'];
 								}
 								$arrAddonBand['total'] = $arrAddonBand['quantity'] * $arrAddonBand['price'];
 								// Set values
