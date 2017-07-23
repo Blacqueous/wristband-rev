@@ -17,6 +17,7 @@
 		<script type="text/javascript">
 			const price_json = JSON.parse('<?php echo(json_encode($prices)); ?>');
 			const addon_json = JSON.parse('<?php echo(json_encode($addons)); ?>');
+			const molding_fee = JSON.parse('<?php echo(json_encode($molding_fee)); ?>');
 			const _cart = JSON.parse('<?php echo(json_encode($cart)); ?>');
             const _index = '{{ $index }}';
 		</script>

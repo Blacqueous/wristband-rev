@@ -1981,10 +1981,11 @@ function getTotal()
         'style': $style,
         'size': $size,
         'items': items,
-        'free': {},
+        'free': free,
         'addon': addon,
         'price': 0,
         'quantity': 0,
+        'molding_fee': molding_fee,
         'time_production': { 'days': 0, 'price': 0 },
         'time_shipping': { 'days': 0, 'price': 0 },
         'total': 0
@@ -2001,42 +2002,53 @@ function getTotal()
     if(typeof loadProdShip == "undefined")
         loadProdShip = true;
 
+    // Add new fields.
+    $collection['items']['count'] = 0;
+    $collection['items']['price_all'] = 0;
+    $collection['items']['price_all_addon'] = 0;
+    $collection['items']['price_all_moldfee'] = 0;
+    $collection['items']['quantity_all'] = 0;
+
     // Loop through all items
-    $.each($collection['items'], function(styleKey, styleVal) {
+    $.each($collection['items']['data'], function(styleKey, styleVal) {
 
-        // Add new fields.
-        $collection['items'][styleKey]['quantity'] = 0;
-        $collection['items'][styleKey]['price_addon'] = 0;
-        $collection['items'][styleKey]['price_total'] = 0;
+        $collection['items']['data'][styleKey]['quantity'] = 0;
+        $collection['items']['data'][styleKey]['price_addon'] = 0;
+        $collection['items']['count'] += Object.keys(styleVal['list']).length;
+        $collection['items']['price_all_moldfee'] += (Object.keys(styleVal['list']).length * molding_fee);
+        $collection['items']['data'][styleKey]['price_moldfee'] = (Object.keys(styleVal['list']).length * molding_fee);
 
-        $.each(styleVal, function(itemKey, itemValue) {
-            $.each(itemValue['size'], function(sizeKey, sizeValue) {
+        $.each(styleVal['list'], function(listKey, listVal) {
+
+            $.each(listVal, function(itemKey, itemVal) {
                 // Create & append preview image.
-                $collection.quantity += sizeValue.qty;
-                $collection['items'][styleKey]['quantity'] += sizeValue.qty;
-            });
-        });
+                $collection['quantity'] += itemVal.qty;
+                $collection['items']['quantity_all'] += itemVal.qty;
+                $collection['items']['data'][styleKey]['quantity'] += itemVal.qty;
 
-        // Get add on price.
-        var hasQty = false;
-        $.each($arr_addon[styleKey], function(addon_qty, addon_prc) {
-            // Check if already found the price.
-            if(hasQty == false) {
-                // If less than or equal.
-                if($collection['items'][styleKey]['quantity'] <= 20) { // Get price.
-                    $collection['items'][styleKey]['price_addon'] = parseFloat(addon_prc);
-                    hasQty = true; // Flag! price found.
-                } else if(parseInt(addon_qty) <= $collection['items'][styleKey]['quantity']) { // Get price.
-                    $collection['items'][styleKey]['price_addon'] = parseFloat(addon_prc);
-                } else { // Flag if additional item price found.
-                    hasQty = true;
+                if(typeof $arr_addon[styleKey] != "undefined") {
+                    $.each($arr_addon[styleKey], function(addon_qty, addon_prc) {
+                        // If less than or equal.
+                        if(parseInt(itemVal.qty) <= 20) { // Get price.
+                            $collection['items']['data'][styleKey]['price_addon'] = parseFloat(addon_prc);
+                            hasQty = true; // Flag price found.
+                        } else if(parseInt(addon_qty) <= parseInt(itemVal.qty)) { // Get price.
+                            $collection['items']['data'][styleKey]['price_addon'] = parseFloat(addon_prc);
+                        } else { // Flag if additional item price found.
+                            hasQty = true;
+                        }
+                    });
                 }
-            }
-        });
 
-        $collection['items'][styleKey]['price_total'] = ($collection['items'][styleKey]['price_addon'] * $collection['items'][styleKey]['quantity']);
+                $collection['items']['price_all_addon'] += ($collection['items']['data'][styleKey]['price_addon'] * parseInt(itemVal.qty));
+
+            });
+
+        });
 
     });
+
+    $collection['items']['price_all'] += $collection['items']['price_all_addon'] + $collection['items']['price_all_moldfee'];
 
     // Set item price.
     var hasQty = false;
@@ -2069,22 +2081,32 @@ function getTotal()
                     element = $(element);
                     addon_qty = (element.val().trim() == "") ? 0 : parseInt(element.val().trim());
                     total += addon_qty;
+                    idx_size = 0;
+                    switch(element.attr('data-size')) {
+                        case 'yt': idx_size = "0"; break;
+                        case 'md': idx_size = "1"; break;
+                        case 'ad': idx_size = "2"; break;
+                        case 'xs': idx_size = "3"; break;
+                        case 'xl': idx_size = "4"; break;
+                    }
                     if(addon_qty > 0) {
-                        if(typeof addon_items[element.attr('data-style')] == "undefined")
-                        addon_items[element.attr('data-style')] = {};
-                        if(typeof addon_items[element.attr('data-style')][element.attr('data-index')] == "undefined")
+                        if(typeof addon_items[element.attr('data-style')] == "undefined") {
+                            addon_items[element.attr('data-style')] = {};
+                        }
+                        if(typeof addon_items[element.attr('data-style')][element.attr('data-index')] == "undefined") {
                             addon_items[element.attr('data-style')][element.attr('data-index')] = {
-                                color: items[element.attr('data-style')][element.attr('data-index')]['color'],
+                                color: items['data'][element.attr('data-style')]['list'][element.attr('data-index')][idx_size]['color'],
                                 size: {},
-                                style: items[element.attr('data-style')][element.attr('data-index')]['style'],
-                                title: items[element.attr('data-style')][element.attr('data-index')]['title'],
-                                type: items[element.attr('data-style')][element.attr('data-index')]['type']
+                                style: items['data'][element.attr('data-style')]['list'][element.attr('data-index')][idx_size]['style'],
+                                title: items['data'][element.attr('data-style')]['list'][element.attr('data-index')][idx_size]['title'],
+                                type: items['data'][element.attr('data-style')]['list'][element.attr('data-index')][idx_size]['type']
                             };
-                        addon_items[element.attr('data-style')][element.attr('data-index')]['size'][element.attr('data-size')] = {
-                            font: items[element.attr('data-style')][element.attr('data-index')]['size'][element.attr('data-size')]['font'],
-                            font_name: items[element.attr('data-style')][element.attr('data-index')]['size'][element.attr('data-size')]['font_name'],
+                        }
+                        addon_items[element.attr('data-style')][element.attr('data-index')]['size'][idx_size] = {
+                            font: items['data'][element.attr('data-style')]['list'][element.attr('data-index')][idx_size]['font'],
+                            font_name: items['data'][element.attr('data-style')]['list'][element.attr('data-index')][idx_size]['font_name'],
                             qty: addon_qty,
-                            size: items[element.attr('data-style')][element.attr('data-index')]['size'][element.attr('data-size')]['size']
+                            size: items['data'][element.attr('data-style')]['list'][element.attr('data-index')][idx_size]['size']
                         };
                     }
                 });
@@ -2126,22 +2148,32 @@ function getTotal()
                 element = $(element);
                 addonKCqty = (element.val().trim() == "") ? 0 : parseInt(element.val().trim())
                 addonKCtotal += addonKCqty;
+                idx_size = 0;
+                switch(element.attr('data-size')) {
+                    case 'yt': idx_size = "0"; break;
+                    case 'md': idx_size = "1"; break;
+                    case 'ad': idx_size = "2"; break;
+                    case 'xs': idx_size = "3"; break;
+                    case 'xl': idx_size = "4"; break;
+                }
                 if(addonKCqty > 0) {
-                    if(typeof addonKCitems[element.attr('data-style')] == "undefined")
-                    addonKCitems[element.attr('data-style')] = {};
-                    if(typeof addonKCitems[element.attr('data-style')][element.attr('data-index')] == "undefined")
+                    if(typeof addonKCitems[element.attr('data-style')] == "undefined") {
+                        addonKCitems[element.attr('data-style')] = {};
+                    }
+                    if(typeof addonKCitems[element.attr('data-style')][element.attr('data-index')] == "undefined") {
                         addonKCitems[element.attr('data-style')][element.attr('data-index')] = {
-                            color: items[element.attr('data-style')][element.attr('data-index')]['color'],
+                            color: items['data'][element.attr('data-style')]['list'][element.attr('data-index')][idx_size]['color'],
                             size: {},
-                            style: items[element.attr('data-style')][element.attr('data-index')]['style'],
-                            title: items[element.attr('data-style')][element.attr('data-index')]['title'],
-                            type: items[element.attr('data-style')][element.attr('data-index')]['type']
+                            style: items['data'][element.attr('data-style')]['list'][element.attr('data-index')][idx_size]['style'],
+                            title: items['data'][element.attr('data-style')]['list'][element.attr('data-index')][idx_size]['title'],
+                            type: items['data'][element.attr('data-style')]['list'][element.attr('data-index')][idx_size]['type']
                         };
+                    }
                     addonKCitems[element.attr('data-style')][element.attr('data-index')]['size'][element.attr('data-size')] = {
-                        font: items[element.attr('data-style')][element.attr('data-index')]['size'][element.attr('data-size')]['font'],
-                        font_name: items[element.attr('data-style')][element.attr('data-index')]['size'][element.attr('data-size')]['font_name'],
+                        font: items['data'][element.attr('data-style')]['list'][element.attr('data-index')][idx_size]['font'],
+                        font_name: items['data'][element.attr('data-style')]['list'][element.attr('data-index')][idx_size]['font_name'],
                         qty: addonKCqty,
-                        size: items[element.attr('data-style')][element.attr('data-index')]['size'][element.attr('data-size')]['size']
+                        size: items['data'][element.attr('data-style')]['list'][element.attr('data-index')][idx_size]['size']
                     };
                 }
             });
@@ -2212,22 +2244,32 @@ function getTotal()
         element = $(element);
         freeKCqty = (element.val().trim() == "") ? 0 : parseInt(element.val().trim())
         freeKCtotal += freeKCqty;
+        idx_size = 0;
+        switch(element.attr('data-size')) {
+            case 'yt': idx_size = "0"; break;
+            case 'md': idx_size = "1"; break;
+            case 'ad': idx_size = "2"; break;
+            case 'xs': idx_size = "3"; break;
+            case 'xl': idx_size = "4"; break;
+        }
         if(freeKCqty > 0) {
-            if(typeof freeKCitems[element.attr('data-style')] == "undefined")
-            freeKCitems[element.attr('data-style')] = {};
-            if(typeof freeKCitems[element.attr('data-style')][element.attr('data-index')] == "undefined")
+            if(typeof freeKCitems[element.attr('data-style')] == "undefined") {
+                freeKCitems[element.attr('data-style')] = {};
+            }
+            if(typeof freeKCitems[element.attr('data-style')][element.attr('data-index')] == "undefined") {
                 freeKCitems[element.attr('data-style')][element.attr('data-index')] = {
-                    color: items[element.attr('data-style')][element.attr('data-index')]['color'],
+                    color: items['data'][element.attr('data-style')]['list'][element.attr('data-index')][idx_size]['color'],
                     size: {},
-                    style: items[element.attr('data-style')][element.attr('data-index')]['style'],
-                    title: items[element.attr('data-style')][element.attr('data-index')]['title'],
-                    type: items[element.attr('data-style')][element.attr('data-index')]['type']
+                    style: items['data'][element.attr('data-style')]['list'][element.attr('data-index')][idx_size]['style'],
+                    title: items['data'][element.attr('data-style')]['list'][element.attr('data-index')][idx_size]['title'],
+                    type: items['data'][element.attr('data-style')]['list'][element.attr('data-index')][idx_size]['type']
                 };
-            freeKCitems[element.attr('data-style')][element.attr('data-index')]['size'][element.attr('data-size')] = {
-                font: items[element.attr('data-style')][element.attr('data-index')]['size'][element.attr('data-size')]['font'],
-                font_name: items[element.attr('data-style')][element.attr('data-index')]['size'][element.attr('data-size')]['font_name'],
+            }
+            freeKCitems[element.attr('data-style')][element.attr('data-index')][idx_size] = {
+                font: items['data'][element.attr('data-style')]['list'][element.attr('data-index')][idx_size]['font'],
+                font_name: items['data'][element.attr('data-style')]['list'][element.attr('data-index')][idx_size]['font_name'],
                 qty: freeKCqty,
-                size: items[element.attr('data-style')][element.attr('data-index')]['size'][element.attr('data-size')]['size']
+                size: items['data'][element.attr('data-style')]['list'][element.attr('data-index')][idx_size]['size']
             };
         }
     });
@@ -2241,23 +2283,33 @@ function getTotal()
     $.each($(".freewb"), function(key, element) {
         element = $(element);
         freeWBqty = (element.val().trim() == "") ? 0 : parseInt(element.val().trim())
+        idx_size = 0;
+        switch(element.attr('data-size')) {
+            case 'yt': idx_size = "0"; break;
+            case 'md': idx_size = "1"; break;
+            case 'ad': idx_size = "2"; break;
+            case 'xs': idx_size = "3"; break;
+            case 'xl': idx_size = "4"; break;
+        }
         if(freeWBqty > 0) {
             freeWBtotal += freeWBqty;
-            if(typeof freeWBitems[element.attr('data-style')] == "undefined")
-            freeWBitems[element.attr('data-style')] = {};
-            if(typeof freeWBitems[element.attr('data-style')][element.attr('data-index')] == "undefined")
-            freeWBitems[element.attr('data-style')][element.attr('data-index')] = {
-                color: items[element.attr('data-style')][element.attr('data-index')]['color'],
-                size: {},
-                style: items[element.attr('data-style')][element.attr('data-index')]['style'],
-                title: items[element.attr('data-style')][element.attr('data-index')]['title'],
-                type: items[element.attr('data-style')][element.attr('data-index')]['type']
-            };
-            freeWBitems[element.attr('data-style')][element.attr('data-index')]['size'][element.attr('data-size')] = {
-                font: items[element.attr('data-style')][element.attr('data-index')]['size'][element.attr('data-size')]['font'],
-                font_name: items[element.attr('data-style')][element.attr('data-index')]['size'][element.attr('data-size')]['font_name'],
+            if(typeof freeWBitems[element.attr('data-style')] == "undefined") {
+                freeWBitems[element.attr('data-style')] = {};
+            }
+            if(typeof freeWBitems[element.attr('data-style')][element.attr('data-index')] == "undefined") {
+                freeWBitems[element.attr('data-style')][element.attr('data-index')] = {
+                    color: items['data'][element.attr('data-style')]['list'][element.attr('data-index')][idx_size]['color'],
+                    size: {},
+                    style: items['data'][element.attr('data-style')]['list'][element.attr('data-index')][idx_size]['style'],
+                    title: items['data'][element.attr('data-style')]['list'][element.attr('data-index')][idx_size]['title'],
+                    type: items['data'][element.attr('data-style')]['list'][element.attr('data-index')][idx_size]['type']
+                };
+            }
+            freeWBitems[element.attr('data-style')][element.attr('data-index')][idx_size] = {
+                font: items['data'][element.attr('data-style')]['list'][element.attr('data-index')][idx_size]['font'],
+                font_name: items['data'][element.attr('data-style')]['list'][element.attr('data-index')][idx_size]['font_name'],
                 qty: freeWBqty,
-                size: items[element.attr('data-style')][element.attr('data-index')]['size'][element.attr('data-size')]['size']
+                size: items['data'][element.attr('data-style')]['list'][element.attr('data-index')][idx_size]['size']
             };
         }
     });
@@ -2274,6 +2326,8 @@ function getTotal()
 
     // COMPUTE THE TOTAL PRICE
     $collection.total += $collection.quantity * $collection.price;
+    $collection.total += $collection.items.price_all_addon;
+    $collection.total += $collection.items.price_all_moldfee;
 
     if(typeof $collection.items['segmented'] != "undefined") {
         $collection.total += $collection.items['segmented'].price_total;
@@ -2499,45 +2553,48 @@ function loadFree()
     var html_wb = "";
 
     // Loop through all items
-    $.each(items, function( styleKey, styleVal ) {
-        $.each(styleVal, function( itemKey, itemValue ) {
-            $.each(itemValue['size'], function( sizeKey, sizeValue ) {
-                // Create & append preview image
-                total += sizeValue.qty;
+    if(typeof items['data'] !== "undefined") {
+        $.each(items["data"], function(styleKey, styleVal) {
+            $.each(styleVal['list'], function(listKey, listVal) {
+                $.each(listVal, function(itemKey, itemVal) {
+                    // Create & append preview image
+                    total += itemVal.qty;
+                    // For free wristbands
+                    html_wb += '<li class="fwb-list conversion-wrist-'+itemVal.style+' free-wrist-'+itemVal.style+'-'+itemVal.size+'-'+itemVal.title+'" data-band-color="' + itemVal.color.split(",").join("-") + '">';
+                    html_wb += '<div class="fwb-text col-md-6 col-sm-12">';
+                        html_wb += '<div class="col-xs-4 fwb-text-content">'+itemVal.style.toUpperCase()+'</div>';
+                        html_wb += '<div class="col-xs-4 fwb-text-content">'+itemVal.title.toUpperCase()+'</div>';
+                        html_wb += '<div class="col-xs-4 fwb-text-content">'+getSizeTitle(itemVal.size).toUpperCase()+'</div>';
+                    html_wb += '</div>';
+                    html_wb += '<div class="align-right col-md-6 col-sm-12"><h4 class="fwb-text col-xs-12 hidden-md hidden-lg text-center fwb-text-hidden-header">INPUT QUANTITY</h4><input type="number" class="freewb col-xs-12" id="freewb-'+itemVal.style+'-'+itemVal.size+'-'+itemVal.color.split(",").join("-")+'" name="'+itemVal.style+'-'+itemVal.size+'-'+itemVal.color.split(",").join("-")+'-fwb" data-style="'+itemVal.style+'" data-color="'+itemVal.color+'" data-font-color="'+itemVal.font+'" data-name="'+itemVal.title+'" data-size="'+itemVal.size+'" data-index="'+listKey+'" placeholder="0" data-maxlength="3" /></div>';
+                    html_wb += '<div class="clearfix"></div>';
+                    html_wb += '</li>';
 
-                // For free wristbands
-                html_wb += '<li class="fwb-list conversion-wrist-'+itemValue.style+' free-wrist-'+itemValue.style+'-'+sizeKey+'-'+itemValue.title+'" data-band-color="' + itemValue.color.split(",").join("-") + '">';
-                html_wb += '<div class="fwb-text col-md-6 col-sm-12">';
-                    html_wb += '<div class="col-xs-4 fwb-text-content">'+itemValue.style.toUpperCase()+'</div>';
-                    html_wb += '<div class="col-xs-4 fwb-text-content">'+itemValue.title.toUpperCase()+'</div>';
-                    html_wb += '<div class="col-xs-4 fwb-text-content">'+getSizeTitle(sizeKey).toUpperCase()+'</div>';
-                html_wb += '</div>';
-                html_wb += '<div class="align-right col-md-6 col-sm-12"><h4 class="fwb-text col-xs-12 hidden-md hidden-lg text-center fwb-text-hidden-header">INPUT QUANTITY</h4><input type="number" class="freewb col-xs-12" id="freewb-'+itemValue.style+'-'+sizeKey+'-'+itemValue.color.split(",").join("-")+'" name="'+itemValue.style+'-'+sizeKey+'-'+itemValue.color.split(",").join("-")+'-fwb" data-style="'+itemValue.style+'" data-color="'+itemValue.color+'" data-font-color="'+sizeValue.font+'" data-name="'+itemValue.title+'" data-size="'+sizeKey+'" data-index="'+itemKey+'" placeholder="0" data-maxlength="3" /></div>';
-                html_wb += '<div class="clearfix"></div>';
-                html_wb += '</li>';
-                // For free keychains
-                html_kc += '<li class="fwb-list conversion-wrist-'+itemValue.style+' free-wrist-'+itemValue.style+'-'+sizeKey+'-'+itemValue.title+'" data-band-color="' + itemValue.color.split(",").join("-") + '">';
-                html_kc += '<div class="fwb-text col-md-6 col-sm-12">';
-                    html_kc += '<div class="col-xs-4 fwb-text-content">'+itemValue.style.toUpperCase()+'</div>';
-                    html_kc += '<div class="col-xs-4 fwb-text-content">'+itemValue.title.toUpperCase()+'</div>';
-                    html_kc += '<div class="col-xs-4 fwb-text-content">'+getSizeTitle(sizeKey).toUpperCase()+'</div>';
-                html_kc += '</div>';
-                html_kc += '<div class="align-right col-md-6 col-sm-12"><h4 class="fwb-text col-xs-12 hidden-md hidden-lg text-center fwb-text-hidden-header">INPUT QUANTITY</h4><input type="number" class="freekc col-xs-12" id="freekc-'+itemValue.style+'-'+sizeKey+'-'+itemValue.color.split(",").join("-")+'" name="'+itemValue.style+'-'+sizeKey+'-'+itemValue.color.split(",").join("-")+'-fwb" data-style="'+itemValue.style+'" data-color="'+itemValue.color+'" data-font-color="'+sizeValue.font+'" data-name="'+itemValue.title+'" data-size="'+sizeKey+'" data-index="'+itemKey+'" placeholder="0" data-maxlength="3" /></div>';
-                html_kc += '<div class="clearfix"></div>';
-                html_kc += '</li>';
-                // For free wristbands
-                html += '<li class="fwb-list conversion-wrist-'+itemValue.style+' free-wrist-'+itemValue.style+'-'+sizeKey+'-'+itemValue.title+'" data-band-color="' + itemValue.color.split(",").join("-") + '">';
-                html += '<div class="fwb-text col-md-6 col-sm-12">';
-                    html += '<div class="col-xs-4 fwb-text-content">'+itemValue.style.toUpperCase()+'</div>';
-                    html += '<div class="col-xs-4 fwb-text-content">'+itemValue.title.toUpperCase()+'</div>';
-                    html += '<div class="col-xs-4 fwb-text-content">'+getSizeTitle(sizeKey).toUpperCase()+'</div>';
-                html += '</div>';
-                html += '<div class="align-right col-md-6 col-sm-12"><h4 class="fwb-text col-xs-12 hidden-md hidden-lg text-center fwb-text-hidden-header">INPUT QUANTITY</h4><input type="number" class="addonkc col-xs-12" id="freewb-'+itemValue.style+'-'+sizeKey+'-'+itemValue.color.split(",").join("-")+'" name="'+itemValue.style+'-'+sizeKey+'-'+itemValue.color.split(",").join("-")+'-fwb" data-style="'+itemValue.style+'" data-color="'+itemValue.color+'" data-font-color="'+sizeValue.font+'" data-name="'+itemValue.title+'" data-size="'+sizeKey+'" data-index="'+itemKey+'" placeholder="0" data-maxlength="3" /></div>';
-                html += '<div class="clearfix"></div>';
-                html += '</li>';
+                    // For free keychains
+                    html_kc += '<li class="fwb-list conversion-wrist-'+itemVal.style+' free-wrist-'+itemVal.style+'-'+itemVal.size+'-'+itemVal.title+'" data-band-color="' + itemVal.color.split(",").join("-") + '">';
+                    html_kc += '<div class="fwb-text col-md-6 col-sm-12">';
+                        html_kc += '<div class="col-xs-4 fwb-text-content">'+itemVal.style.toUpperCase()+'</div>';
+                        html_kc += '<div class="col-xs-4 fwb-text-content">'+itemVal.title.toUpperCase()+'</div>';
+                        html_kc += '<div class="col-xs-4 fwb-text-content">'+getSizeTitle(itemVal.size).toUpperCase()+'</div>';
+                    html_kc += '</div>';
+                    html_kc += '<div class="align-right col-md-6 col-sm-12"><h4 class="fwb-text col-xs-12 hidden-md hidden-lg text-center fwb-text-hidden-header">INPUT QUANTITY</h4><input type="number" class="freekc col-xs-12" id="freekc-'+itemVal.style+'-'+itemVal.size+'-'+itemVal.color.split(",").join("-")+'" name="'+itemVal.style+'-'+itemVal.size+'-'+itemVal.color.split(",").join("-")+'-fwb" data-style="'+itemVal.style+'" data-color="'+itemVal.color+'" data-font-color="'+itemVal.font+'" data-name="'+itemVal.title+'" data-size="'+itemVal.size+'" data-index="'+listKey+'" placeholder="0" data-maxlength="3" /></div>';
+                    html_kc += '<div class="clearfix"></div>';
+                    html_kc += '</li>';
+
+                    // For free wristbands
+                    html += '<li class="fwb-list conversion-wrist-'+itemVal.style+' free-wrist-'+itemVal.style+'-'+itemVal.size+'-'+itemVal.title+'" data-band-color="' + itemVal.color.split(",").join("-") + '">';
+                    html += '<div class="fwb-text col-md-6 col-sm-12">';
+                        html += '<div class="col-xs-4 fwb-text-content">'+itemVal.style.toUpperCase()+'</div>';
+                        html += '<div class="col-xs-4 fwb-text-content">'+itemVal.title.toUpperCase()+'</div>';
+                        html += '<div class="col-xs-4 fwb-text-content">'+getSizeTitle(itemVal.size).toUpperCase()+'</div>';
+                    html += '</div>';
+                    html += '<div class="align-right col-md-6 col-sm-12"><h4 class="fwb-text col-xs-12 hidden-md hidden-lg text-center fwb-text-hidden-header">INPUT QUANTITY</h4><input type="number" class="addonkc col-xs-12" id="freewb-'+itemVal.style+'-'+itemVal.size+'-'+itemVal.color.split(",").join("-")+'" name="'+itemVal.style+'-'+itemVal.size+'-'+itemVal.color.split(",").join("-")+'-fwb" data-style="'+itemVal.style+'" data-color="'+itemVal.color+'" data-font-color="'+itemVal.font+'" data-name="'+itemVal.title+'" data-size="'+itemVal.size+'" data-index="'+listKey+'" placeholder="0" data-maxlength="3" /></div>';
+                    html += '<div class="clearfix"></div>';
+                    html += '</li>';
+                });
             });
         });
-    });
+    }
 
     if(html == "") {
         html += '<li class="fwb-list">';
@@ -2648,6 +2705,7 @@ function loadTotal(loadProdShip)
         'addon': addon,
         'price': 0,
         'quantity': 0,
+        'molding_fee': molding_fee,
         'time_production': { 'days': 0, 'price': 0 },
         'time_shipping': { 'days': 0, 'price': 0 },
         'total': 0
@@ -2664,42 +2722,53 @@ function loadTotal(loadProdShip)
     if(typeof loadProdShip == "undefined")
         loadProdShip = true;
 
+    // Add new fields.
+    $collection['items']['count'] = 0;
+    $collection['items']['price_all'] = 0;
+    $collection['items']['price_all_addon'] = 0;
+    $collection['items']['price_all_moldfee'] = 0;
+    $collection['items']['quantity_all'] = 0;
+
     // Loop through all items
-    $.each($collection['items'], function(styleKey, styleVal) {
+    $.each($collection['items']['data'], function(styleKey, styleVal) {
 
-        // Add new fields.
-        $collection['items'][styleKey]['quantity'] = 0;
-        $collection['items'][styleKey]['price_addon'] = 0;
-        $collection['items'][styleKey]['price_total'] = 0;
+        $collection['items']['data'][styleKey]['quantity'] = 0;
+        $collection['items']['data'][styleKey]['price_addon'] = 0;
+        $collection['items']['count'] += Object.keys(styleVal['list']).length;
+        $collection['items']['price_all_moldfee'] += (Object.keys(styleVal['list']).length * molding_fee);
+        $collection['items']['data'][styleKey]['price_moldfee'] = (Object.keys(styleVal['list']).length * molding_fee);
 
-        $.each(styleVal, function(itemKey, itemValue) {
-            $.each(itemValue['size'], function(sizeKey, sizeValue) {
+        $.each(styleVal['list'], function(listKey, listVal) {
+
+            $.each(listVal, function(itemKey, itemVal) {
                 // Create & append preview image.
-                $collection.quantity += sizeValue.qty;
-                $collection['items'][styleKey]['quantity'] += sizeValue.qty;
-            });
-        });
+                $collection['quantity'] += itemVal.qty;
+                $collection['items']['quantity_all'] += itemVal.qty;
+                $collection['items']['data'][styleKey]['quantity'] += itemVal.qty;
 
-        // Get add on price.
-        var hasQty = false;
-        $.each($arr_addon[styleKey], function(addon_qty, addon_prc) {
-            // Check if already found the price.
-            if(hasQty == false) {
-                // If less than or equal.
-                if($collection['items'][styleKey]['quantity'] <= 20) { // Get price.
-                    $collection['items'][styleKey]['price_addon'] = parseFloat(addon_prc);
-                    hasQty = true; // Flag! price found.
-                } else if(parseInt(addon_qty) <= $collection['items'][styleKey]['quantity']) { // Get price.
-                    $collection['items'][styleKey]['price_addon'] = parseFloat(addon_prc);
-                } else { // Flag if additional item price found.
-                    hasQty = true;
+                if(typeof $arr_addon[styleKey] != "undefined") {
+                    $.each($arr_addon[styleKey], function(addon_qty, addon_prc) {
+                        // If less than or equal.
+                        if(parseInt(itemVal.qty) <= 20) { // Get price.
+                            $collection['items']['data'][styleKey]['price_addon'] = parseFloat(addon_prc);
+                            hasQty = true; // Flag price found.
+                        } else if(parseInt(addon_qty) <= parseInt(itemVal.qty)) { // Get price.
+                            $collection['items']['data'][styleKey]['price_addon'] = parseFloat(addon_prc);
+                        } else { // Flag if additional item price found.
+                            hasQty = true;
+                        }
+                    });
                 }
-            }
-        });
 
-        $collection['items'][styleKey]['price_total'] = ($collection['items'][styleKey]['price_addon'] * $collection['items'][styleKey]['quantity']);
+                $collection['items']['price_all_addon'] += ($collection['items']['data'][styleKey]['price_addon'] * parseInt(itemVal.qty));
+
+            });
+
+        });
 
     });
+
+    $collection['items']['price_all'] += $collection['items']['price_all_addon'] + $collection['items']['price_all_moldfee'];
 
     if($collection.quantity >= 20) {
 
@@ -2855,6 +2924,8 @@ function loadTotal(loadProdShip)
 
                         // COMPUTE THE TOTAL PRICE
                         $collection.total += $collection.quantity * $collection.price;
+                        $collection.total += $collection.items.price_all_addon;
+                        $collection.total += $collection.items.price_all_moldfee;
 
                         if(typeof $collection.items['segmented'] != "undefined") {
                             $collection.total += $collection.items['segmented'].price_total;
@@ -2981,10 +3052,12 @@ function loadTotal(loadProdShip)
             $collection.time_production.price = ( elementProd.attr("data-price") != "" && !isNaN( parseFloat(elementProd.attr("data-price")) ) ) ? parseFloat(elementProd.attr("data-price")) : 0;
             var elementShip = $("#ShippingTime option:selected");
             $collection.time_shipping.days = ( elementShip.val() != "" && !isNaN( parseInt(elementShip.val()) ) ) ? parseInt(elementShip.val()) : 0;
-            $collection.time_shipping.price = ( elementShip.attr("data-price") != "" && !isNaN( parseFloat(elementShip.attr("data-price")) ) ) ? parseFloat(elementShip.attr("data-price")) : 0;
+            $collection.time_shipping.price = ( elementShip.attr("data-price") != "" && !isNaN( parseFloat(elementShip.attr("data-price")) ) ) ? parseFloat(elementShip.attr("data-price")) : 00;
 
                     // COMPUTE THE TOTAL PRICE
                     $collection.total += $collection.quantity * $collection.price;
+                    $collection.total += $collection.items.price_all_addon;
+                    $collection.total += $collection.items.price_all_moldfee;
 
                     if(typeof $collection.items['segmented'] != "undefined") {
                         $collection.total += $collection.items['segmented'].price_total;
@@ -3205,11 +3278,11 @@ function resetPreview()
     $('.preview-text, .preview-clipart').removeAttr("style");
 
     // Loop through all items
-    $.each(items, function( styleKey, styleVal ) {
-        $.each(styleVal, function( itemKey, itemValue ) {
-            $.each(itemValue['size'], function( sizeKey, sizeValue ) {
+    $.each(items["data"], function(styleKey, styleVal) {
+        $.each(styleVal['list'], function(listKey, listVal) {
+            $.each(listVal, function(itemKey, itemVal) {
                 // Create & append preview image
-                loadPreview(styleKey, itemValue['type'], itemValue['color'], sizeValue['font'], isFirst);
+                loadPreview(itemVal.style, itemVal.type, itemVal.color, itemVal.font, isFirst);
                 if(isFirst) { isFirst = false; }
             });
         });
@@ -3249,77 +3322,73 @@ function loadForm()
         // Reset item Object.
         items = _cart.items;
         itemKeys = [];
+
         // Set fields
-        $.each(items, function(aKey, aValue) {
-            $.each(aValue, function(bKey, bValue) {
-
-                // if($.inArray(bKey, itemKeys)) {
-                //     itemKeys.push(bKey);
-                // }
-
-                if(typeof bValue['size'] != "undefined") {
+        $.each(items["data"], function(styleKey, styleVal) {
+            $.each(styleVal['list'], function(listKey, listVal) {
+                $.each(listVal, function(itemKey, itemVal) {
                     // Fix titles
-                    wbTitle = (bValue['title']).toLowerCase();
+                    wbTitle = (itemVal['title']).toLowerCase();
                     // If item is customized,
                     if(wbTitle.includes('custom')) {
                         // Set possible image value
-                        _img = $('#URLasset').val() + 'gd/img/custom/regular/' + aKey + '/' + bValue['color'].split(',').join('-') + '.png';
+                        _img = $('#URLasset').val() + 'gd/img/custom/regular/' + itemVal['style'] + '/' + itemVal['color'].split(',').join('-') + '.png';
                         if((_cart.style).toLowerCase() == 'figured')
-                            _img = $('#URLasset').val() + 'gd/img/custom/figured/' + aKey + '/' + bValue['color'].split(',').join('-') + '.png';
+                            _img = $('#URLasset').val() + 'gd/img/custom/figured/' + itemVal['style'] + '/' + itemVal['color'].split(',').join('-') + '.png';
                         // Get template
                         $.ajax({
                             type: 'GET',
-                            url: '/getTemplateCustomWristband?id=' + bKey + '&type=' + aKey + '&style=' + _cart.style + '&image=' + _img + '&color=' + bValue['color'].split(',').join(', '),
+                            url: '/getTemplateCustomWristband?id=' + listKey + '&type=' + itemVal['type'] + '&style=' + _cart.style + '&image=' + _img + '&color=' + itemVal['color'].split(',').join(', '),
                             data: {
-                                items: JSON.stringify(bValue['size'])
+                                items: JSON.stringify(itemVal['size'])
                             },
                             beforeSend: function() { },
                             success: function() { }
                         }).done(function(data) {
                             // Do something when everything is done.
-                            $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+aKey+"'] .main-color-content").prepend(data);
+                            $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+itemVal['style']+"'] .main-color-content").prepend(data);
 
-                            $.each(bValue['size'], function(cKey, cValue) {
-                                // Check if view more section must open.
-                                if(cKey == "xs" || cKey == "xl") {
-                                    $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+aKey+"'] input[ref-size='"+cKey+"'][ref-style='"+aKey+"'][ref-index='"+bKey+"'][ref-color='"+bValue['color'].split(',').join(', ')+"']").closest('.box-color').find('.view-more').removeClass('collapsed');
-                                    $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+aKey+"'] input[ref-size='"+cKey+"'][ref-style='"+aKey+"'][ref-index='"+bKey+"'][ref-color='"+bValue['color'].split(',').join(', ')+"']").closest('.box-color').find('.view-more').attr('aria-expanded', 'true');
-                                    $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+aKey+"'] input[ref-size='"+cKey+"'][ref-style='"+aKey+"'][ref-index='"+bKey+"'][ref-color='"+bValue['color'].split(',').join(', ')+"']").closest('.show-content').addClass('in');
-                                    $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+aKey+"'] input[ref-size='"+cKey+"'][ref-style='"+aKey+"'][ref-index='"+bKey+"'][ref-color='"+bValue['color'].split(',').join(', ')+"']").closest('.show-content').removeAttr("style");
-                                }
-                            });
-                        });
-                    } else {  // If normal...
-                        // Go through all item sizes.
-                        $.each(bValue['size'], function(cKey, cValue) {
-                            // Update field indeces.
-                            $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='" + aKey + "'] input[ref-style='" + aKey + "'][ref-color='" + bValue['color'].split(',').join(', ') + "']").attr('ref-index', bKey);
-                            // Update field quantity.
-                            var newVal1 = $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='" + aKey + "'] input[ref-size='" + cKey + "'][ref-style='" + aKey + "'][ref-index='" + bKey + "'][ref-color='" + bValue['color'].split(',').join(', ') + "']").val();
-                                newVal1 = (newVal1 != "") ? parseFloat(newVal1) : 0;
-                                newVal = newVal1 + parseFloat(cValue['qty']);
-                            $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+aKey+"'] input[ref-size='"+cKey+"'][ref-style='"+aKey+"'][ref-index='"+bKey+"'][ref-color='"+bValue['color'].split(',').join(', ')+"']").val(newVal);
-                            // Update font color.
-                            $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+aKey+"'] input[ref-size='"+cKey+"'][ref-style='"+aKey+"'][ref-index='"+bKey+"'][ref-color='"+bValue['color'].split(',').join(', ')+"']").closest('.box-color-qty').find('.fntin').attr('ref-font-name', cValue['font-name']);
-                            $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+aKey+"'] input[ref-size='"+cKey+"'][ref-style='"+aKey+"'][ref-index='"+bKey+"'][ref-color='"+bValue['color'].split(',').join(', ')+"']").closest('.box-color-qty').find('.fntin').attr('ref-font-color', cValue['font']);
-                            $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+aKey+"'] input[ref-size='"+cKey+"'][ref-style='"+aKey+"'][ref-index='"+bKey+"'][ref-color='"+bValue['color'].split(',').join(', ')+"']").closest('.box-color-qty').find('.fntin').css({'background-color': '#' + cValue['font']});
                             // Check if view more section must open.
-                            if(cKey == "xs" || cKey == "xl") {
-                                $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+aKey+"'] input[ref-size='"+cKey+"'][ref-style='"+aKey+"'][ref-index='"+bKey+"'][ref-color='"+bValue['color'].split(',').join(', ')+"']").closest('.box-color').find('.view-more').removeClass('collapsed');
-                                $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+aKey+"'] input[ref-size='"+cKey+"'][ref-style='"+aKey+"'][ref-index='"+bKey+"'][ref-color='"+bValue['color'].split(',').join(', ')+"']").closest('.box-color').find('.view-more').attr('aria-expanded', 'true');
-                                $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+aKey+"'] input[ref-size='"+cKey+"'][ref-style='"+aKey+"'][ref-index='"+bKey+"'][ref-color='"+bValue['color'].split(',').join(', ')+"']").closest('.show-content').addClass('in');
-                                $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+aKey+"'] input[ref-size='"+cKey+"'][ref-style='"+aKey+"'][ref-index='"+bKey+"'][ref-color='"+bValue['color'].split(',').join(', ')+"']").closest('.show-content').removeAttr("style");
+                            if(itemVal['size'] == "xs" || itemVal['size'] == "xl") {
+                                $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+itemVal['style']+"'] input[ref-size='"+itemVal['size']+"'][ref-style='"+itemVal['style']+"'][ref-index='"+listKey+"'][ref-color='"+itemVal['color'].split(',').join(', ')+"']").closest('.box-color').find('.view-more').removeClass('collapsed');
+                                $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+itemVal['style']+"'] input[ref-size='"+itemVal['size']+"'][ref-style='"+itemVal['style']+"'][ref-index='"+listKey+"'][ref-color='"+itemVal['color'].split(',').join(', ')+"']").closest('.box-color').find('.view-more').attr('aria-expanded', 'true');
+                                $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+itemVal['style']+"'] input[ref-size='"+itemVal['size']+"'][ref-style='"+itemVal['style']+"'][ref-index='"+listKey+"'][ref-color='"+itemVal['color'].split(',').join(', ')+"']").closest('.show-content').addClass('in');
+                                $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+itemVal['style']+"'] input[ref-size='"+itemVal['size']+"'][ref-style='"+itemVal['style']+"'][ref-index='"+listKey+"'][ref-color='"+itemVal['color'].split(',').join(', ')+"']").closest('.show-content').removeAttr("style");
                             }
                         });
+                    } else {  // If normal...
+                        // Update field indeces.
+                        $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='" + itemVal['style'] + "'] input[ref-style='" + itemVal['style'] + "'][ref-color='" + itemVal['color'].split(',').join(', ') + "']").attr('ref-index', listKey);
+                        // Update field quantity.
+                        var newVal1 = $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='" + itemVal['style'] + "'] input[ref-size='" + itemVal['size'] + "'][ref-style='" + itemVal['style'] + "'][ref-index='" + listKey + "'][ref-color='" + itemVal['color'].split(',').join(', ') + "']").val();
+                            newVal1 = (newVal1 != "") ? parseFloat(newVal1) : 0;
+                            newVal = newVal1 + parseFloat(itemVal['qty']);
+                        $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+itemVal['style']+"'] input[ref-size='"+itemVal['size']+"'][ref-style='"+itemVal['style']+"'][ref-index='"+listKey+"'][ref-color='"+itemVal['color'].split(',').join(', ')+"']").val(newVal);
+                        // Update font color.
+                        $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+itemVal['style']+"'] input[ref-size='"+itemVal['size']+"'][ref-style='"+itemVal['style']+"'][ref-index='"+listKey+"'][ref-color='"+itemVal['color'].split(',').join(', ')+"']").closest('.box-color-qty').find('.fntin').attr('ref-font-name', itemVal['font_title']);
+                        $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+itemVal['style']+"'] input[ref-size='"+itemVal['size']+"'][ref-style='"+itemVal['style']+"'][ref-index='"+listKey+"'][ref-color='"+itemVal['color'].split(',').join(', ')+"']").closest('.box-color-qty').find('.fntin').attr('ref-font-color', itemVal['font']);
+                        $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+itemVal['style']+"'] input[ref-size='"+itemVal['size']+"'][ref-style='"+itemVal['style']+"'][ref-index='"+listKey+"'][ref-color='"+itemVal['color'].split(',').join(', ')+"']").closest('.box-color-qty').find('.fntin').css({'background-color': '#' + itemVal['font']});
+                        // Check if view more section must open.
+                        if(itemVal['size'] == "xs" || itemVal['size'] == "xl") {
+                            $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+itemVal['style']+"'] input[ref-size='"+itemVal['size']+"'][ref-style='"+itemVal['style']+"'][ref-index='"+listKey+"'][ref-color='"+itemVal['color'].split(',').join(', ')+"']").closest('.box-color').find('.view-more').removeClass('collapsed');
+                            $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+itemVal['style']+"'] input[ref-size='"+itemVal['size']+"'][ref-style='"+itemVal['style']+"'][ref-index='"+listKey+"'][ref-color='"+itemVal['color'].split(',').join(', ')+"']").closest('.box-color').find('.view-more').attr('aria-expanded', 'true');
+                            $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+itemVal['style']+"'] input[ref-size='"+itemVal['size']+"'][ref-style='"+itemVal['style']+"'][ref-index='"+listKey+"'][ref-color='"+itemVal['color'].split(',').join(', ')+"']").closest('.show-content').addClass('in');
+                            $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+itemVal['style']+"'] input[ref-size='"+itemVal['size']+"'][ref-style='"+itemVal['style']+"'][ref-index='"+listKey+"'][ref-color='"+itemVal['color'].split(',').join(', ')+"']").closest('.show-content').removeAttr("style");
+                        }
                     }
-                    // Item array update! Important
-                    $.each(bValue['size'], function(cKey, cValue) {
-                        // Parse item quantities
-                        items[aKey][bKey]['size'][cKey]['qty'] = parseFloat(items[aKey][bKey]['size'][cKey]['qty']);
-                    });
-                }
+                    var idx_size = "0";
+                    switch(itemVal['size']) {
+                        case 'yt': idx_size = "0"; break;
+                        case 'md': idx_size = "1"; break;
+                        case 'ad': idx_size = "2"; break;
+                        case 'xs': idx_size = "3"; break;
+                        case 'xl': idx_size = "4"; break;
+                    }
+                    items['data'][itemVal['style']]['list'][listKey][idx_size]['qty'] = parseFloat(items['data'][itemVal['style']]['list'][listKey][idx_size]['qty']);
+                });
             });
         });
+
         // reset wristband previews.
         resetPreview();
         // Load free items.
@@ -3338,11 +3407,11 @@ function loadForm()
                 $('#dv-10-free-keychains .convert-container').removeClass('hidden');
                 $.each(free['key-chain']['items'], function(aKey, aValue) {
                     $.each(aValue, function(bKey, bValue) {
-                        if(typeof bValue['size'] != "undefined") {
-                            $.each(bValue['size'], function(cKey, cValue) {
-                                $("input[data-size='"+cKey+"'][data-style='"+aKey+"'][data-font-color='"+cValue['font']+"'][data-color='"+bValue['color'].split(',').join(',')+"'].freekc").val(cValue['qty']);
-                            });
-                        }
+                        $.each(bValue, function(cKey, cValue) {
+                            if(typeof cValue != "object") {
+                                $("input[data-size='"+cValue['size']+"'][data-style='"+aKey+"'][data-font-color='"+cValue['font']+"'][data-color='"+bValue['color'].split(',').join(',')+"'].freekc").val(cValue['qty']);
+                            }
+                        });
                     });
                 });
             }
@@ -3352,11 +3421,11 @@ function loadForm()
                 $('#dv-100-free-wristbands .convert-container').removeClass('hidden');
                 $.each(free['wristbands']['items'], function(aKey, aValue) {
                     $.each(aValue, function(bKey, bValue) {
-                        if(typeof bValue['size'] != "undefined") {
-                            $.each(bValue['size'], function(cKey, cValue) {
-                                $("input[data-size='"+cKey+"'][data-style='"+aKey+"'][data-font-color='"+cValue['font']+"'][data-color='"+bValue['color'].split(',').join(',')+"'].freewb").val(cValue['qty']);
-                            });
-                        }
+                        $.each(bValue, function(cKey, cValue) {
+                            if(typeof cValue == "object") {
+                                $("input[data-size='"+cValue['size']+"'][data-style='"+aKey+"'][data-font-color='"+cValue['font']+"'][data-color='"+bValue['color'].split(',').join(',')+"'].freewb").val(cValue['qty']);
+                            }
+                        });
                     });
                 });
             }

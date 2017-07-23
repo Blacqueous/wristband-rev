@@ -253,25 +253,25 @@ $(document).ready(function() {
             // Determines if a preview is to be made
             var makePreview = true;
             // Generate an index using title.
-            var idx = $(this).attr('ref-index');
-            var idx_size = "0";
-            switch(size) {
-                case 'yt':
-                    idx_size = "0";
-                    break;
-                case 'md':
-                    idx_size = "1";
-                    break;
-                case 'ad':
-                    idx_size = "2";
-                    break;
-                case 'xs':
-                    idx_size = "3";
-                    break;
-                case 'xl':
-                    idx_size = "4";
-                    break;
-            }
+                var idx = $(this).attr('ref-index');
+                var idx_size = "0";
+                switch(size) {
+                    case 'yt':
+                        idx_size = "0";
+                        break;
+                    case 'md':
+                        idx_size = "1";
+                        break;
+                    case 'ad':
+                        idx_size = "2";
+                        break;
+                    case 'xs':
+                        idx_size = "3";
+                        break;
+                    case 'xl':
+                        idx_size = "4";
+                        break;
+                }
 
             switch(type) {
                 case 'embossed':
