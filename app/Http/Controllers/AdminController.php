@@ -910,91 +910,91 @@ class AdminController extends Controller
     public function getOrders(Request $request)
     {
         switch ($request->order[0]['column']) {
-            case '2':
+            case '1':
                 $order_col = "ID";
                 break;
-            case '4':
+            case '3':
                 $order_col = "PaymentMethod";
                 break;
-            case '5':
+            case '4':
                 $order_col = "PaidDate";
                 break;
-            case '6':
+            case '5':
                 $order_col = "AuthorizeTransID";
                 break;
-            case '7':
+            case '6':
                 $order_col = "PaypalEmail";
                 break;
-            case '8':
+            case '7':
                 $order_col = "FirstName";
                 break;
-            case '9':
+            case '8':
                 $order_col = "LastName";
                 break;
-            case '10':
+            case '9':
                 $order_col = "Address";
                 break;
-            case '11':
+            case '10':
                 $order_col = "Address2";
                 break;
-            case '12':
+            case '11':
                 $order_col = "City";
                 break;
-            case '13':
+            case '12':
                 $order_col = "State";
                 break;
-            case '14':
+            case '13':
                 $order_col = "ZipCode";
                 break;
-            case '15':
+            case '14':
                 $order_col = "Country";
                 break;
-            case '16':
+            case '15':
                 $order_col = "Phone";
                 break;
-            case '17':
+            case '16':
                 $order_col = "ProductionCharge";
                 break;
-            case '18':
+            case '17':
                 $order_col = "DaysProduction";
                 break;
-            case '19':
+            case '18':
                 $order_col = "DeliveryCharge";
                 break;
-            case '20':
+            case '19':
                 $order_col = "DaysDelivery";
                 break;
-            case '21':
+            case '20':
                 $order_col = "DiscountCode";
                 break;
-            case '22':
+            case '21':
                 $order_col = "DiscountPercent";
                 break;
-            case '23':
+            case '22':
                 $order_col = "ShipFirstName";
                 break;
-            case '24':
+            case '23':
                 $order_col = "ShipLastName";
                 break;
-            case '25':
+            case '24':
                 $order_col = "ShipAddress";
                 break;
-            case '26':
+            case '25':
                 $order_col = "ShipAddress2";
                 break;
-            case '27':
+            case '26':
                 $order_col = "ShipCity";
                 break;
-            case '28':
+            case '27':
                 $order_col = "ShipState";
                 break;
-            case '29':
+            case '28':
                 $order_col = "ShipZipCode";
                 break;
-            case '30':
+            case '29':
                 $order_col = "ShipCountry";
                 break;
-            case '31':
+            case '30':
                 $order_col = "IPAddress";
                 break;
             default:
@@ -1055,7 +1055,7 @@ class AdminController extends Controller
                 $value->ShipZipCode,
                 $value->ShipCountry,
                 "<i>".$value->IPAddress."</i>",
-                // "<button class='btn btn-default pull-right'><i class='fa fa-shopping-cart'></i> Show Cart</button>",
+                "<button class='show-cart btn btn-default pull-right' data-order-id='".$value->ID."'><i class='fa fa-shopping-cart'></i> Show Cart</button>",
             ];
         }
 		$output = [

@@ -2045,19 +2045,34 @@ function getTotal()
     $collection['items']['price_all_addon'] = 0;
     $collection['items']['price_all_moldfee'] = 0;
     $collection['items']['quantity_all'] = 0;
+    $has_free_mold = false;
 
     // Loop through all items
     $.each($collection['items']['data'], function(styleKey, styleVal) {
 
         $collection['items']['data'][styleKey]['quantity'] = 0;
         $collection['items']['data'][styleKey]['price_addon'] = 0;
-        $collection['items']['count'] += Object.keys(styleVal['list']).length;
-        $collection['items']['price_all_moldfee'] += (Object.keys(styleVal['list']).length * molding_fee);
-        $collection['items']['data'][styleKey]['price_moldfee'] = (Object.keys(styleVal['list']).length * molding_fee);
+        // $collection['items']['count'] += Object.keys(styleVal['list']).length;
+        // $collection['items']['price_all_moldfee'] += (Object.keys(styleVal['list']).length * molding_fee);
+        // $collection['items']['data'][styleKey]['price_moldfee'] = (Object.keys(styleVal['list']).length * molding_fee);
 
         $.each(styleVal['list'], function(listKey, listVal) {
 
             $.each(listVal, function(itemKey, itemVal) {
+
+                // Determine molding fee count & value computation
+                if ($has_free_mold) {
+                    $collection['items']['count']++;
+                    if (typeof $collection['items']['data'][styleKey]['price_moldfee'] != "undefined") {
+                        $collection['items']['data'][styleKey]['price_moldfee'] = 0;
+                    } else {
+                        $collection['items']['data'][styleKey]['price_moldfee'] += molding_fee;
+                    }
+                    $collection['items']['price_all_moldfee'] += molding_fee;
+                } else {
+                    $has_free_mold = true;
+                }
+
                 // Create & append preview image.
                 $collection['quantity'] += itemVal.qty;
                 $collection['items']['quantity_all'] += itemVal.qty;
@@ -2765,19 +2780,34 @@ function loadTotal(loadProdShip)
     $collection['items']['price_all_addon'] = 0;
     $collection['items']['price_all_moldfee'] = 0;
     $collection['items']['quantity_all'] = 0;
+    $has_free_mold = false;
 
     // Loop through all items
     $.each($collection['items']['data'], function(styleKey, styleVal) {
 
         $collection['items']['data'][styleKey]['quantity'] = 0;
         $collection['items']['data'][styleKey]['price_addon'] = 0;
-        $collection['items']['count'] += Object.keys(styleVal['list']).length;
-        $collection['items']['price_all_moldfee'] += (Object.keys(styleVal['list']).length * molding_fee);
-        $collection['items']['data'][styleKey]['price_moldfee'] = (Object.keys(styleVal['list']).length * molding_fee);
+        // $collection['items']['count'] += Object.keys(styleVal['list']).length;
+        // $collection['items']['price_all_moldfee'] += (Object.keys(styleVal['list']).length * molding_fee);
+        // $collection['items']['data'][styleKey]['price_moldfee'] = (Object.keys(styleVal['list']).length * molding_fee);
 
         $.each(styleVal['list'], function(listKey, listVal) {
 
             $.each(listVal, function(itemKey, itemVal) {
+
+                // Determine molding fee count & value computation
+                if ($has_free_mold) {
+                    $collection['items']['count']++;
+                    if (typeof $collection['items']['data'][styleKey]['price_moldfee'] != "undefined") {
+                        $collection['items']['data'][styleKey]['price_moldfee'] = 0;
+                    } else {
+                        $collection['items']['data'][styleKey]['price_moldfee'] += molding_fee;
+                    }
+                    $collection['items']['price_all_moldfee'] += molding_fee;
+                } else {
+                    $has_free_mold = true;
+                }
+
                 // Create & append preview image.
                 $collection['quantity'] += itemVal.qty;
                 $collection['items']['quantity_all'] += itemVal.qty;
@@ -3220,7 +3250,7 @@ function loadTotal(loadProdShip)
         $('#total-area .no-total').removeClass('hidden');
 
     }
-
+console.log($collection);
 }
 
 function loadWristbands($style, $size)
