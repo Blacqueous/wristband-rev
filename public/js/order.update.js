@@ -254,6 +254,26 @@ $(document).ready(function() {
             var qty = (value) ? parseInt(value) : 0;
             // Determines if a preview is to be made
             var makePreview = true;
+            // Generate an index using title.
+                var idx = $(this).attr('ref-index');
+                var idx_size = "0";
+                switch(size) {
+                    case 'yt':
+                        idx_size = "0";
+                        break;
+                    case 'md':
+                        idx_size = "1";
+                        break;
+                    case 'ad':
+                        idx_size = "2";
+                        break;
+                    case 'xs':
+                        idx_size = "3";
+                        break;
+                    case 'xl':
+                        idx_size = "4";
+                        break;
+                }
 
             switch(type) {
                 case 'embossed':
@@ -269,65 +289,66 @@ $(document).ready(function() {
                     break;
             }
 
-            // Check if WB style exists.
-            if (typeof items[style] == "undefined")
-                items[style] = {}; // If not, then create object
+            if (typeof items["data"] == "undefined")
+                items["data"] = {}; // If not, then create object
 
-            // Generate an index using title.
-            // var idx = style + '-' + color.replace(/,/g, '-');
-            var idx = $(this).attr('ref-index');
+            // Check if WB style exists.
+            if (typeof items["data"][style] == "undefined")
+                items["data"][style] = {}; // If not, then create object
+
+            if (typeof items["data"][style]['list'] == "undefined")
+                items["data"][style]['list'] = {};
+
+            if (typeof items["data"][style]['list'][idx] == "undefined")
+                items["data"][style]['list'][idx] = {};
 
             // Check if WB color exists.
-            if (typeof items[style][idx] == "undefined") {
+            if (typeof items["data"][style]['list'][idx][idx_size] == "undefined") {
                 // Create WB color.
-                items[style][idx] = {
-                    'color': color,
-                    'style': style,
-                    'title': title,
-                    'type': type,
+                items["data"][style]['list'][idx][idx_size] = {
+                    "color": color,
+                    "font": font,
+                    "font_title": font_name,
+                    "qty": qty,
+                    "size": size,
+                    "style": style,
+                    "title": title,
+                    "type": type,
                 };
                 // Flag to reate preview for new items
                 makePreview = true;
             } else {
-                items[style][idx]['color'] = color;
-            }
-
-            // Check WB color has existing values.
-            if (typeof items[style][idx]['size'] == "undefined")
-                items[style][idx]['size'] = {}; // Create WB color values Object.
-
-            // Check if size is existing on current WB color.
-            if (typeof items[style][idx]['size'][size] == "undefined") {
-                // Create new size Object.
-                items[style][idx]['size'][size] = {
-                    'qty': qty,
-                    'font': font,
-                    'font_name': font_name,
-                    'size': size
-                }
-            } else { // If existing...
-                items[style][idx]['size'][size]['qty'] = qty; // Update item quantity.
-                items[style][idx]['size'][size]['font'] = font; // Update item quantity.
-                items[style][idx]['size'][size]['font_name'] = font_name; // Update item quantity.
+                items["data"][style]['list'][idx][idx_size]["color"] = color;
+                items["data"][style]['list'][idx][idx_size]["qty"] = qty;
+                items["data"][style]['list'][idx][idx_size]["font"] = font;
+                items["data"][style]['list'][idx][idx_size]["font_title"] = font_name.toLowerCase();
             }
 
             // Check if quantity is less than 0.
             if (qty<=0) {
 
                 // Delete the WB size value from specific item.
-                delete items[style][idx]['size'][size];
+                delete items["data"][style]['list'][idx][idx_size];
 
                 // Delete the WB color if has size values. If not, then delete it.
-                if ($.isEmptyObject(items[style][idx]['size'])) {
-                    delete items[style][idx];
-                    // Flasg to remove preview image.
+                if ($.isEmptyObject(items["data"][style]['list'][idx])) {
+                    delete items["data"][style]['list'][idx];
+                    // Flag to remove preview image.
                     makePreview = false;
                 }
 
-                // Delete the WB style if completely empty.
-                // (Must delete, data will be useless.)
-                if ($.isEmptyObject(items[style])) {
-                    delete items[style];
+                // Delete the WB color if has size values. If not, then delete it.
+                if ($.isEmptyObject(items["data"][style]['list'])) {
+                    delete items["data"][style];
+                    // Flag to remove preview image.
+                    makePreview = false;
+                }
+
+                // Delete the WB color if has size values. If not, then delete it.
+                if ($.isEmptyObject(items["data"])) {
+                    delete items;
+                    // Flag to remove preview image.
+                    makePreview = false;
                 }
 
                 // If value is less than or is equal to 0, empty the field.
@@ -1714,25 +1735,32 @@ function displayTotal($collection)
     $('#summary-table-wristbands .price').html( ($collection.price).formatMoney() );
     $('#summary-table-wristbands .total').html( ($collection.quantity * $collection.price).formatMoney() );
 
-    if(typeof $collection.items['segmented'] != "undefined") {
+    if(typeof $collection.items.data['segmented'] != "undefined") {
         $('#summary-table-segmented').removeClass('hidden');
-        $('#summary-table-segmented .qty').html( $collection.items['segmented'].quantity );
-        $('#summary-table-segmented .price').html( ($collection.items['segmented'].price_addon).formatMoney() );
-        $('#summary-table-segmented .total').html( ($collection.items['segmented'].price_total).formatMoney() );
+        $('#summary-table-segmented .qty').html( $collection.items.data['segmented'].quantity );
+        $('#summary-table-segmented .price').html( ($collection.items.data['segmented'].price_addon).formatMoney() );
+        $('#summary-table-segmented .total').html( ($collection.items.data['segmented'].quantity * $collection.items.data['segmented'].price_addon).formatMoney() );
     }
 
-    if(typeof $collection.items['swirl'] != "undefined") {
+    if(typeof $collection.items.data['swirl'] != "undefined") {
         $('#summary-table-swirl').removeClass('hidden');
-        $('#summary-table-swirl .qty').html( $collection.items['swirl'].quantity );
-        $('#summary-table-swirl .price').html( ($collection.items['swirl'].price_addon).formatMoney() );
-        $('#summary-table-swirl .total').html( ($collection.items['swirl'].price_total).formatMoney() );
+        $('#summary-table-swirl .qty').html( $collection.items.data['swirl'].quantity );
+        $('#summary-table-swirl .price').html( ($collection.items.data['swirl'].price_addon).formatMoney() );
+        $('#summary-table-swirl .total').html( ($collection.items.data['swirl'].quantity * $collection.items.data['swirl'].price_addon).formatMoney() );
     }
 
-    if(typeof $collection.items['glow'] != "undefined") {
+    if(typeof $collection.items.data['glow'] != "undefined") {
         $('#summary-table-glow').removeClass('hidden');
-        $('#summary-table-glow .qty').html( $collection.items['glow'].quantity );
-        $('#summary-table-glow .price').html( ($collection.items['glow'].price_addon).formatMoney() );
-        $('#summary-table-glow .total').html( ($collection.items['glow'].price_total).formatMoney() );
+        $('#summary-table-glow .qty').html( $collection.items.data['glow'].quantity );
+        $('#summary-table-glow .price').html( ($collection.items.data['glow'].price_addon).formatMoney() );
+        $('#summary-table-glow .total').html( ($collection.items.data['glow'].quantity * $collection.items.data['glow'].price_addon).formatMoney() );
+    }
+
+    if(typeof $collection.molding_fee != "undefined") {
+        $('#summary-table-molding-fee').removeClass('hidden');
+        $('#summary-table-molding-fee .qty').html( $collection.items.count );
+        $('#summary-table-molding-fee .price').html( ($collection.molding_fee).formatMoney() );
+        $('#summary-table-molding-fee .total').html( ($collection.items.price_all_moldfee).formatMoney() );
     }
 
     if(typeof $collection.time_production != "undefined") {
@@ -1753,29 +1781,29 @@ function displayTotal($collection)
         if(typeof $collection.texts['front'] != "undefined") {
             $('#summary-table-text #text-front').removeClass('hidden');
             $('#summary-table-text #text-front .qty').html( $collection.quantity );
-            $('#summary-table-text #text-front .price').html( (parseFloat($collection.texts['front'].price)).formatMoney() );
-            $('#summary-table-text #text-front .total').html( (parseFloat($collection.texts['front'].total)).formatMoney() );
+            $('#summary-table-text #text-front .price').html( ($collection.texts['front'].price).formatMoney() );
+            $('#summary-table-text #text-front .total').html( ($collection.texts['front'].total).formatMoney() );
         }
 
         if(typeof $collection.texts['back'] != "undefined") {
             $('#summary-table-text #text-back').removeClass('hidden');
             $('#summary-table-text #text-back .qty').html( $collection.texts['back'].quantity );
-            $('#summary-table-text #text-back .price').html( (parseFloat($collection.texts['back'].price)).formatMoney() );
-            $('#summary-table-text #text-back .total').html( (parseFloat($collection.texts['back'].total)).formatMoney() );
+            $('#summary-table-text #text-back .price').html( ($collection.texts['back'].price).formatMoney() );
+            $('#summary-table-text #text-back .total').html( ($collection.texts['back'].total).formatMoney() );
         }
 
         if(typeof $collection.texts['continue'] != "undefined") {
             $('#summary-table-text #text-continuous').removeClass('hidden');
             $('#summary-table-text #text-continuous .qty').html( $collection.quantity );
-            $('#summary-table-text #text-continuous .price').html( (parseFloat($collection.texts['continue'].price)).formatMoney() );
-            $('#summary-table-text #text-continuous .total').html( (parseFloat($collection.texts['continue'].total)).formatMoney() );
+            $('#summary-table-text #text-continuous .price').html( ($collection.texts['continue'].price).formatMoney() );
+            $('#summary-table-text #text-continuous .total').html( ($collection.texts['continue'].total).formatMoney() );
         }
 
         if(typeof $collection.texts['inside'] != "undefined") {
             $('#summary-table-text #text-inside').removeClass('hidden');
             $('#summary-table-text #text-inside .qty').html( $collection.texts['inside'].quantity );
-            $('#summary-table-text #text-inside .price').html( (parseFloat($collection.texts['inside'].price)).formatMoney() );
-            $('#summary-table-text #text-inside .total').html( (parseFloat($collection.texts['inside'].total)).formatMoney() );
+            $('#summary-table-text #text-inside .price').html( ($collection.texts['inside'].price).formatMoney() );
+            $('#summary-table-text #text-inside .total').html( ($collection.texts['inside'].total).formatMoney() );
         }
     }
 
@@ -1786,50 +1814,50 @@ function displayTotal($collection)
             if(typeof $collection.clips.logo['front-start'] != "undefined") {
                 $('#summary-table-clipart #clipart-front-start').removeClass('hidden');
                 $('#summary-table-clipart #clipart-front-start .qty').html( $collection.clips.logo['front-start'].quantity );
-                $('#summary-table-clipart #clipart-front-start .price').html( (parseFloat($collection.clips.logo['front-start'].price)).formatMoney() );
-                $('#summary-table-clipart #clipart-front-start .total').html( (parseFloat($collection.clips.logo['front-start'].total)).formatMoney() );
+                $('#summary-table-clipart #clipart-front-start .price').html( ($collection.clips.logo['front-start'].price).formatMoney() );
+                $('#summary-table-clipart #clipart-front-start .total').html( ($collection.clips.logo['front-start'].total).formatMoney() );
             }
 
             if(typeof $collection.clips.logo['front-end'] != "undefined") {
                 $('#summary-table-clipart #clipart-front-end').removeClass('hidden');
                 $('#summary-table-clipart #clipart-front-end .qty').html( $collection.clips.logo['front-end'].quantity );
-                $('#summary-table-clipart #clipart-front-end .price').html( (parseFloat($collection.clips.logo['front-end'].price)).formatMoney() );
-                $('#summary-table-clipart #clipart-front-end .total').html( (parseFloat($collection.clips.logo['front-end'].total)).formatMoney() );
+                $('#summary-table-clipart #clipart-front-end .price').html( ($collection.clips.logo['front-end'].price).formatMoney() );
+                $('#summary-table-clipart #clipart-front-end .total').html( ($collection.clips.logo['front-end'].total).formatMoney() );
             }
 
             if(typeof $collection.clips.logo['back-start'] != "undefined") {
                 $('#summary-table-clipart #clipart-back-start').removeClass('hidden');
                 $('#summary-table-clipart #clipart-back-start .qty').html( $collection.clips.logo['back-start'].quantity );
-                $('#summary-table-clipart #clipart-back-start .price').html( (parseFloat($collection.clips.logo['back-start'].price)).formatMoney() );
-                $('#summary-table-clipart #clipart-back-start .total').html( (parseFloat($collection.clips.logo['back-start'].total)).formatMoney() );
+                $('#summary-table-clipart #clipart-back-start .price').html( ($collection.clips.logo['back-start'].price).formatMoney() );
+                $('#summary-table-clipart #clipart-back-start .total').html( ($collection.clips.logo['back-start'].total).formatMoney() );
             }
 
             if(typeof $collection.clips.logo['back-end'] != "undefined") {
                 $('#summary-table-clipart #clipart-back-end').removeClass('hidden');
                 $('#summary-table-clipart #clipart-back-end .qty').html( $collection.clips.logo['back-end'].quantity );
-                $('#summary-table-clipart #clipart-back-end .price').html( (parseFloat($collection.clips.logo['back-end'].price)).formatMoney() );
-                $('#summary-table-clipart #clipart-back-end .total').html( (parseFloat($collection.clips.logo['back-end'].total)).formatMoney() );
+                $('#summary-table-clipart #clipart-back-end .price').html( ($collection.clips.logo['back-end'].price).formatMoney() );
+                $('#summary-table-clipart #clipart-back-end .total').html( ($collection.clips.logo['back-end'].total).formatMoney() );
             }
 
             if(typeof $collection.clips.logo['cont-start'] != "undefined") {
                 $('#summary-table-clipart #clipart-cont-start').removeClass('hidden');
                 $('#summary-table-clipart #clipart-cont-start .qty').html( $collection.clips.logo['cont-start'].quantity );
-                $('#summary-table-clipart #clipart-cont-start .price').html( (parseFloat($collection.clips.logo['cont-start'].price)).formatMoney() );
-                $('#summary-table-clipart #clipart-cont-start .total').html( (parseFloat($collection.clips.logo['cont-start'].total)).formatMoney() );
+                $('#summary-table-clipart #clipart-cont-start .price').html( ($collection.clips.logo['cont-start'].price).formatMoney() );
+                $('#summary-table-clipart #clipart-cont-start .total').html( ($collection.clips.logo['cont-start'].total).formatMoney() );
             }
 
             if(typeof $collection.clips.logo['cont-end'] != "undefined") {
                 $('#summary-table-clipart #clipart-cont-end').removeClass('hidden');
                 $('#summary-table-clipart #clipart-cont-end .qty').html( $collection.clips.logo['cont-end'].quantity );
-                $('#summary-table-clipart #clipart-cont-end .price').html( (parseFloat($collection.clips.logo['cont-end'].price)).formatMoney() );
-                $('#summary-table-clipart #clipart-cont-end .total').html( (parseFloat($collection.clips.logo['cont-end'].total)).formatMoney() );
+                $('#summary-table-clipart #clipart-cont-end .price').html( ($collection.clips.logo['cont-end'].price).formatMoney() );
+                $('#summary-table-clipart #clipart-cont-end .total').html( ($collection.clips.logo['cont-end'].total).formatMoney() );
             }
 
             if(typeof $collection.clips.logo['front-center'] != "undefined") {
                 $('#summary-table-clipart #clipart-front-center').removeClass('hidden');
                 $('#summary-table-clipart #clipart-front-center .qty').html( $collection.clips.logo['front-center'].quantity );
-                $('#summary-table-clipart #clipart-front-center .price').html( (parseFloat($collection.clips.logo['front-center'].price)).formatMoney() );
-                $('#summary-table-clipart #clipart-front-center .total').html( (parseFloat($collection.clips.logo['front-center'].total)).formatMoney() );
+                $('#summary-table-clipart #clipart-front-center .price').html( ($collection.clips.logo['front-center'].price).formatMoney() );
+                $('#summary-table-clipart #clipart-front-center .total').html( ($collection.clips.logo['front-center'].total).formatMoney() );
             }
 
         }
@@ -1841,15 +1869,15 @@ function displayTotal($collection)
         if(typeof $collection.addon['3mm-thick'] != "undefined") {
             $('#summary-table-addon #addon-3mm-thick').removeClass('hidden');
             $('#summary-table-addon #addon-3mm-thick .qty').html( $collection.addon['3mm-thick'].quantity );
-            $('#summary-table-addon #addon-3mm-thick .price').html( (parseFloat($collection.addon['3mm-thick'].price)).formatMoney() );
-            $('#summary-table-addon #addon-3mm-thick .total').html( (parseFloat($collection.addon['3mm-thick'].total)).formatMoney() );
+            $('#summary-table-addon #addon-3mm-thick .price').html( ($collection.addon['3mm-thick'].price).formatMoney() );
+            $('#summary-table-addon #addon-3mm-thick .total').html( ($collection.addon['3mm-thick'].total).formatMoney() );
         }
 
         if(typeof $collection.addon['digital-proof'] != "undefined") {
             $('#summary-table-addon #addon-digital-proof').removeClass('hidden');
             $('#summary-table-addon #addon-digital-proof .qty').html( $collection.addon['digital-proof'].quantity );
-            $('#summary-table-addon #addon-digital-proof .price').html( (parseFloat($collection.addon['digital-proof'].price)).formatMoney() );
-            $('#summary-table-addon #addon-digital-proof .total').html( (parseFloat($collection.addon['digital-proof'].total)).formatMoney() );
+            $('#summary-table-addon #addon-digital-proof .price').html( ($collection.addon['digital-proof'].price).formatMoney() );
+            $('#summary-table-addon #addon-digital-proof .total').html( ($collection.addon['digital-proof'].total).formatMoney() );
         }
 
         if(typeof $collection.addon['eco-friendly'] != "undefined") {
@@ -1862,41 +1890,43 @@ function displayTotal($collection)
         if(typeof $collection.addon['glitters'] != "undefined") {
             $('#summary-table-addon #addon-glitters').removeClass('hidden');
             $('#summary-table-addon #addon-glitters .qty').html( $collection.addon['glitters'].quantity );
-            $('#summary-table-addon #addon-glitters .price').html( (parseFloat($collection.addon['glitters'].price)).formatMoney() );
-            $('#summary-table-addon #addon-glitters .total').html( (parseFloat($collection.addon['glitters'].total)).formatMoney() );
+            $('#summary-table-addon #addon-glitters .price').html( ($collection.addon['glitters'].price).formatMoney() );
+            $('#summary-table-addon #addon-glitters .total').html( ($collection.addon['glitters'].total).formatMoney() );
         }
 
         if(typeof $collection.addon['individual'] != "undefined") {
             $('#summary-table-addon #addon-individual').removeClass('hidden');
             $('#summary-table-addon #addon-individual .qty').html( $collection.addon['individual'].quantity );
-            $('#summary-table-addon #addon-individual .price').html( parseFloat($collection.addon['individual'].price).formatMoney() );
-            $('#summary-table-addon #addon-individual .total').html( parseFloat($collection.addon['individual'].total).formatMoney() );
+            $('#summary-table-addon #addon-individual .price').html( ($collection.addon['individual'].price).formatMoney() );
+            $('#summary-table-addon #addon-individual .total').html( ($collection.addon['individual'].total).formatMoney() );
         }
 
         if(typeof $collection.addon['key-chain'] != "undefined") {
             $('#summary-table-addon #addon-key-chain').removeClass('hidden');
             $('#summary-table-addon #addon-key-chain .qty').html( $collection.addon['key-chain'].quantity );
-            $('#summary-table-addon #addon-key-chain .price').html( parseFloat($collection.addon['key-chain'].price).formatMoney() );
-            $('#summary-table-addon #addon-key-chain .total').html( parseFloat($collection.addon['key-chain'].total).formatMoney() );
+            $('#summary-table-addon #addon-key-chain .price').html( ($collection.addon['key-chain'].price).formatMoney() );
+            $('#summary-table-addon #addon-key-chain .total').html( ($collection.addon['key-chain'].total).formatMoney() );
         }
     }
 
-    if (typeof $collection.free['key-chain'] != "undefined" || typeof $collection.free['wristbands'] != "undefined") {
-        if (!$.isEmptyObject($collection.free['key-chain'].items) || !$.isEmptyObject($collection.free['wristbands'].items)) {
-            $('#summary-table-free').removeClass('hidden');
+    if (!$.isEmptyObject($collection.free)) {
+        $('#summary-table-free').removeClass('hidden');
 
-            if(typeof $collection.free['key-chain'] != "undefined") {
-                if ( parseFloat($collection.free['key-chain'].quantity) > 0 ) {
-                    $('#summary-table-free #free-key-chain').removeClass('hidden');
-                    $('#summary-table-free #free-key-chain .qty').html( $collection.free['key-chain'].quantity );
-                }
+        if(typeof $collection.free['key-chain'] != "undefined") {
+            $('#summary-table-free #free-key-chain').removeClass('hidden');
+            if(typeof $collection.free['key-chain']['quantity'] != "undefined") {
+                $('#summary-table-free #free-key-chain .qty').html( $collection.free['key-chain']['quantity'] );
+            } else {
+                $('#summary-table-free #free-key-chain .qty').html( $collection.free['key-chain'] );
             }
+        }
 
-            if(typeof $collection.free['wristbands'] != "undefined") {
-                if ( parseFloat($collection.free['wristbands'].quantity) > 0 ) {
-                    $('#summary-table-free #free-wristband').removeClass('hidden');
-                    $('#summary-table-free #free-wristband .qty').html( $collection.free['wristbands'].quantity );
-                }
+        if(typeof $collection.free['wristbands'] != "undefined") {
+            $('#summary-table-free #free-wristband').removeClass('hidden');
+            if(typeof $collection.free['wristbands']['quantity'] != "undefined") {
+                $('#summary-table-free #free-wristband .qty').html( $collection.free['wristbands']['quantity'] );
+            } else {
+                $('#summary-table-free #free-wristband .qty').html( $collection.free['wristbands'] );
             }
         }
     }
@@ -2014,33 +2044,52 @@ function getTotal()
 
         $collection['items']['data'][styleKey]['quantity'] = 0;
         $collection['items']['data'][styleKey]['price_addon'] = 0;
-        $collection['items']['count'] += Object.keys(styleVal['list']).length;
-        $collection['items']['price_all_moldfee'] += (Object.keys(styleVal['list']).length * molding_fee);
-        $collection['items']['data'][styleKey]['price_moldfee'] = (Object.keys(styleVal['list']).length * molding_fee);
+        // $collection['items']['count'] += Object.keys(styleVal['list']).length;
+        // $collection['items']['price_all_moldfee'] += (Object.keys(styleVal['list']).length * molding_fee);
+        // $collection['items']['data'][styleKey]['price_moldfee'] = (Object.keys(styleVal['list']).length * molding_fee);
 
         $.each(styleVal['list'], function(listKey, listVal) {
 
+            $has_free_mold = false;
+
             $.each(listVal, function(itemKey, itemVal) {
-                // Create & append preview image.
-                $collection['quantity'] += itemVal.qty;
-                $collection['items']['quantity_all'] += itemVal.qty;
-                $collection['items']['data'][styleKey]['quantity'] += itemVal.qty;
 
-                if(typeof $arr_addon[styleKey] != "undefined") {
-                    $.each($arr_addon[styleKey], function(addon_qty, addon_prc) {
-                        // If less than or equal.
-                        if(parseInt(itemVal.qty) <= 20) { // Get price.
-                            $collection['items']['data'][styleKey]['price_addon'] = parseFloat(addon_prc);
-                            hasQty = true; // Flag price found.
-                        } else if(parseInt(addon_qty) <= parseInt(itemVal.qty)) { // Get price.
-                            $collection['items']['data'][styleKey]['price_addon'] = parseFloat(addon_prc);
-                        } else { // Flag if additional item price found.
-                            hasQty = true;
+                if(typeof itemVal != "undefined" && typeof itemVal == "object") {
+
+                    // Determine molding fee count & value computation
+                    if ($has_free_mold) {
+                        $collection['items']['count']++;
+                        if (typeof $collection['items']['data'][styleKey]['price_moldfee'] != "undefined") {
+                            $collection['items']['data'][styleKey]['price_moldfee'] = 0;
+                        } else {
+                            $collection['items']['data'][styleKey]['price_moldfee'] += molding_fee;
                         }
-                    });
-                }
+                        $collection['items']['price_all_moldfee'] += molding_fee;
+                    } else {
+                        $has_free_mold = true;
+                    }
 
-                $collection['items']['price_all_addon'] += ($collection['items']['data'][styleKey]['price_addon'] * parseInt(itemVal.qty));
+                    // Create & append preview image.
+                    $collection['quantity'] += itemVal.qty;
+                    $collection['items']['quantity_all'] += itemVal.qty;
+                    $collection['items']['data'][styleKey]['quantity'] += itemVal.qty;
+
+                    if(typeof $arr_addon[styleKey] != "undefined") {
+                        $.each($arr_addon[styleKey], function(addon_qty, addon_prc) {
+                            // If less than or equal.
+                            if(parseInt(itemVal.qty) <= 20) { // Get price.
+                                $collection['items']['data'][styleKey]['price_addon'] = parseFloat(addon_prc);
+                                hasQty = true; // Flag price found.
+                            } else if(parseInt(addon_qty) <= parseInt(itemVal.qty)) { // Get price.
+                                $collection['items']['data'][styleKey]['price_addon'] = parseFloat(addon_prc);
+                            } else { // Flag if additional item price found.
+                                hasQty = true;
+                            }
+                        });
+                    }
+
+                    $collection['items']['price_all_addon'] += ($collection['items']['data'][styleKey]['price_addon'] * parseInt(itemVal.qty));
+                }
 
             });
 
@@ -2551,46 +2600,49 @@ function loadFree()
     var html = "";
     var html_kc = "";
     var html_wb = "";
+    free = {};
 
     // Loop through all items
     if(typeof items['data'] !== "undefined") {
         $.each(items["data"], function(styleKey, styleVal) {
             $.each(styleVal['list'], function(listKey, listVal) {
                 $.each(listVal, function(itemKey, itemVal) {
-                    // Create & append preview image
-                    total += itemVal.qty;
-                    // For free wristbands
-                    html_wb += '<li class="fwb-list conversion-wrist-'+itemVal.style+' free-wrist-'+itemVal.style+'-'+itemVal.size+'-'+itemVal.title+'" data-band-color="' + itemVal.color.split(",").join("-") + '">';
-                    html_wb += '<div class="fwb-text col-md-6 col-sm-12">';
-                        html_wb += '<div class="col-xs-4 fwb-text-content">'+itemVal.style.toUpperCase()+'</div>';
-                        html_wb += '<div class="col-xs-4 fwb-text-content">'+itemVal.title.toUpperCase()+'</div>';
-                        html_wb += '<div class="col-xs-4 fwb-text-content">'+getSizeTitle(itemVal.size).toUpperCase()+'</div>';
-                    html_wb += '</div>';
-                    html_wb += '<div class="align-right col-md-6 col-sm-12"><h4 class="fwb-text col-xs-12 hidden-md hidden-lg text-center fwb-text-hidden-header">INPUT QUANTITY</h4><input type="number" class="freewb col-xs-12" id="freewb-'+itemVal.style+'-'+itemVal.size+'-'+itemVal.color.split(",").join("-")+'" name="'+itemVal.style+'-'+itemVal.size+'-'+itemVal.color.split(",").join("-")+'-fwb" data-style="'+itemVal.style+'" data-color="'+itemVal.color+'" data-font-color="'+itemVal.font+'" data-name="'+itemVal.title+'" data-size="'+itemVal.size+'" data-index="'+listKey+'" placeholder="0" data-maxlength="3" /></div>';
-                    html_wb += '<div class="clearfix"></div>';
-                    html_wb += '</li>';
+                    if(typeof itemVal != "undefined" && typeof itemVal == "object") {
+                        // Create & append preview image
+                        total += itemVal.qty;
+                        // For free wristbands
+                        html_wb += '<li class="fwb-list conversion-wrist-'+itemVal.style+' free-wrist-'+itemVal.style+'-'+itemVal.size+'-'+itemVal.title+'" data-band-color="' + itemVal.color.split(",").join("-") + '">';
+                        html_wb += '<div class="fwb-text col-md-6 col-sm-12">';
+                            html_wb += '<div class="col-xs-4 fwb-text-content">'+itemVal.style.toUpperCase()+'</div>';
+                            html_wb += '<div class="col-xs-4 fwb-text-content">'+itemVal.title.toUpperCase()+'</div>';
+                            html_wb += '<div class="col-xs-4 fwb-text-content">'+getSizeTitle(itemVal.size).toUpperCase()+'</div>';
+                        html_wb += '</div>';
+                        html_wb += '<div class="align-right col-md-6 col-sm-12"><h4 class="fwb-text col-xs-12 hidden-md hidden-lg text-center fwb-text-hidden-header">INPUT QUANTITY</h4><input type="number" class="freewb col-xs-12" id="freewb-'+itemVal.style+'-'+itemVal.size+'-'+itemVal.color.split(",").join("-")+'" name="'+itemVal.style+'-'+itemVal.size+'-'+itemVal.color.split(",").join("-")+'-fwb" data-style="'+itemVal.style+'" data-color="'+itemVal.color+'" data-font-color="'+itemVal.font+'" data-name="'+itemVal.title+'" data-size="'+itemVal.size+'" data-index="'+listKey+'" placeholder="0" data-maxlength="3" /></div>';
+                        html_wb += '<div class="clearfix"></div>';
+                        html_wb += '</li>';
 
-                    // For free keychains
-                    html_kc += '<li class="fwb-list conversion-wrist-'+itemVal.style+' free-wrist-'+itemVal.style+'-'+itemVal.size+'-'+itemVal.title+'" data-band-color="' + itemVal.color.split(",").join("-") + '">';
-                    html_kc += '<div class="fwb-text col-md-6 col-sm-12">';
-                        html_kc += '<div class="col-xs-4 fwb-text-content">'+itemVal.style.toUpperCase()+'</div>';
-                        html_kc += '<div class="col-xs-4 fwb-text-content">'+itemVal.title.toUpperCase()+'</div>';
-                        html_kc += '<div class="col-xs-4 fwb-text-content">'+getSizeTitle(itemVal.size).toUpperCase()+'</div>';
-                    html_kc += '</div>';
-                    html_kc += '<div class="align-right col-md-6 col-sm-12"><h4 class="fwb-text col-xs-12 hidden-md hidden-lg text-center fwb-text-hidden-header">INPUT QUANTITY</h4><input type="number" class="freekc col-xs-12" id="freekc-'+itemVal.style+'-'+itemVal.size+'-'+itemVal.color.split(",").join("-")+'" name="'+itemVal.style+'-'+itemVal.size+'-'+itemVal.color.split(",").join("-")+'-fwb" data-style="'+itemVal.style+'" data-color="'+itemVal.color+'" data-font-color="'+itemVal.font+'" data-name="'+itemVal.title+'" data-size="'+itemVal.size+'" data-index="'+listKey+'" placeholder="0" data-maxlength="3" /></div>';
-                    html_kc += '<div class="clearfix"></div>';
-                    html_kc += '</li>';
+                        // For free keychains
+                        html_kc += '<li class="fwb-list conversion-wrist-'+itemVal.style+' free-wrist-'+itemVal.style+'-'+itemVal.size+'-'+itemVal.title+'" data-band-color="' + itemVal.color.split(",").join("-") + '">';
+                        html_kc += '<div class="fwb-text col-md-6 col-sm-12">';
+                            html_kc += '<div class="col-xs-4 fwb-text-content">'+itemVal.style.toUpperCase()+'</div>';
+                            html_kc += '<div class="col-xs-4 fwb-text-content">'+itemVal.title.toUpperCase()+'</div>';
+                            html_kc += '<div class="col-xs-4 fwb-text-content">'+getSizeTitle(itemVal.size).toUpperCase()+'</div>';
+                        html_kc += '</div>';
+                        html_kc += '<div class="align-right col-md-6 col-sm-12"><h4 class="fwb-text col-xs-12 hidden-md hidden-lg text-center fwb-text-hidden-header">INPUT QUANTITY</h4><input type="number" class="freekc col-xs-12" id="freekc-'+itemVal.style+'-'+itemVal.size+'-'+itemVal.color.split(",").join("-")+'" name="'+itemVal.style+'-'+itemVal.size+'-'+itemVal.color.split(",").join("-")+'-fwb" data-style="'+itemVal.style+'" data-color="'+itemVal.color+'" data-font-color="'+itemVal.font+'" data-name="'+itemVal.title+'" data-size="'+itemVal.size+'" data-index="'+listKey+'" placeholder="0" data-maxlength="3" /></div>';
+                        html_kc += '<div class="clearfix"></div>';
+                        html_kc += '</li>';
 
-                    // For free wristbands
-                    html += '<li class="fwb-list conversion-wrist-'+itemVal.style+' free-wrist-'+itemVal.style+'-'+itemVal.size+'-'+itemVal.title+'" data-band-color="' + itemVal.color.split(",").join("-") + '">';
-                    html += '<div class="fwb-text col-md-6 col-sm-12">';
-                        html += '<div class="col-xs-4 fwb-text-content">'+itemVal.style.toUpperCase()+'</div>';
-                        html += '<div class="col-xs-4 fwb-text-content">'+itemVal.title.toUpperCase()+'</div>';
-                        html += '<div class="col-xs-4 fwb-text-content">'+getSizeTitle(itemVal.size).toUpperCase()+'</div>';
-                    html += '</div>';
-                    html += '<div class="align-right col-md-6 col-sm-12"><h4 class="fwb-text col-xs-12 hidden-md hidden-lg text-center fwb-text-hidden-header">INPUT QUANTITY</h4><input type="number" class="addonkc col-xs-12" id="freewb-'+itemVal.style+'-'+itemVal.size+'-'+itemVal.color.split(",").join("-")+'" name="'+itemVal.style+'-'+itemVal.size+'-'+itemVal.color.split(",").join("-")+'-fwb" data-style="'+itemVal.style+'" data-color="'+itemVal.color+'" data-font-color="'+itemVal.font+'" data-name="'+itemVal.title+'" data-size="'+itemVal.size+'" data-index="'+listKey+'" placeholder="0" data-maxlength="3" /></div>';
-                    html += '<div class="clearfix"></div>';
-                    html += '</li>';
+                        // For free wristbands
+                        html += '<li class="fwb-list conversion-wrist-'+itemVal.style+' free-wrist-'+itemVal.style+'-'+itemVal.size+'-'+itemVal.title+'" data-band-color="' + itemVal.color.split(",").join("-") + '">';
+                        html += '<div class="fwb-text col-md-6 col-sm-12">';
+                            html += '<div class="col-xs-4 fwb-text-content">'+itemVal.style.toUpperCase()+'</div>';
+                            html += '<div class="col-xs-4 fwb-text-content">'+itemVal.title.toUpperCase()+'</div>';
+                            html += '<div class="col-xs-4 fwb-text-content">'+getSizeTitle(itemVal.size).toUpperCase()+'</div>';
+                        html += '</div>';
+                        html += '<div class="align-right col-md-6 col-sm-12"><h4 class="fwb-text col-xs-12 hidden-md hidden-lg text-center fwb-text-hidden-header">INPUT QUANTITY</h4><input type="number" class="addonkc col-xs-12" id="freewb-'+itemVal.style+'-'+itemVal.size+'-'+itemVal.color.split(",").join("-")+'" name="'+itemVal.style+'-'+itemVal.size+'-'+itemVal.color.split(",").join("-")+'-fwb" data-style="'+itemVal.style+'" data-color="'+itemVal.color+'" data-font-color="'+itemVal.font+'" data-name="'+itemVal.title+'" data-size="'+itemVal.size+'" data-index="'+listKey+'" placeholder="0" data-maxlength="3" /></div>';
+                        html += '<div class="clearfix"></div>';
+                        html += '</li>';
+                    }
                 });
             });
         });
@@ -2734,33 +2786,53 @@ function loadTotal(loadProdShip)
 
         $collection['items']['data'][styleKey]['quantity'] = 0;
         $collection['items']['data'][styleKey]['price_addon'] = 0;
-        $collection['items']['count'] += Object.keys(styleVal['list']).length;
-        $collection['items']['price_all_moldfee'] += (Object.keys(styleVal['list']).length * molding_fee);
-        $collection['items']['data'][styleKey]['price_moldfee'] = (Object.keys(styleVal['list']).length * molding_fee);
+        // $collection['items']['count'] += Object.keys(styleVal['list']).length;
+        // $collection['items']['price_all_moldfee'] += (Object.keys(styleVal['list']).length * molding_fee);
+        // $collection['items']['data'][styleKey]['price_moldfee'] = (Object.keys(styleVal['list']).length * molding_fee);
 
         $.each(styleVal['list'], function(listKey, listVal) {
 
+            $has_free_mold = false;
+
             $.each(listVal, function(itemKey, itemVal) {
-                // Create & append preview image.
-                $collection['quantity'] += itemVal.qty;
-                $collection['items']['quantity_all'] += itemVal.qty;
-                $collection['items']['data'][styleKey]['quantity'] += itemVal.qty;
 
-                if(typeof $arr_addon[styleKey] != "undefined") {
-                    $.each($arr_addon[styleKey], function(addon_qty, addon_prc) {
-                        // If less than or equal.
-                        if(parseInt(itemVal.qty) <= 20) { // Get price.
-                            $collection['items']['data'][styleKey]['price_addon'] = parseFloat(addon_prc);
-                            hasQty = true; // Flag price found.
-                        } else if(parseInt(addon_qty) <= parseInt(itemVal.qty)) { // Get price.
-                            $collection['items']['data'][styleKey]['price_addon'] = parseFloat(addon_prc);
-                        } else { // Flag if additional item price found.
-                            hasQty = true;
+                if(typeof itemVal != "undefined" && typeof itemVal == "object") {
+
+                    // Determine molding fee count & value computation
+                    if ($has_free_mold) {
+                        $collection['items']['count']++;
+                        if (typeof $collection['items']['data'][styleKey]['price_moldfee'] != "undefined") {
+                            $collection['items']['data'][styleKey]['price_moldfee'] = 0;
+                        } else {
+                            $collection['items']['data'][styleKey]['price_moldfee'] += molding_fee;
                         }
-                    });
-                }
+                        $collection['items']['price_all_moldfee'] += molding_fee;
+                    } else {
+                        $has_free_mold = true;
+                    }
 
-                $collection['items']['price_all_addon'] += ($collection['items']['data'][styleKey]['price_addon'] * parseInt(itemVal.qty));
+                    // Create & append preview image.
+                    $collection['quantity'] += itemVal.qty;
+                    $collection['items']['quantity_all'] += itemVal.qty;
+                    $collection['items']['data'][styleKey]['quantity'] += itemVal.qty;
+
+                    if(typeof $arr_addon[styleKey] != "undefined") {
+                        $.each($arr_addon[styleKey], function(addon_qty, addon_prc) {
+                            // If less than or equal.
+                            if(parseInt(itemVal.qty) <= 20) { // Get price.
+                                $collection['items']['data'][styleKey]['price_addon'] = parseFloat(addon_prc);
+                                hasQty = true; // Flag price found.
+                            } else if(parseInt(addon_qty) <= parseInt(itemVal.qty)) { // Get price.
+                                $collection['items']['data'][styleKey]['price_addon'] = parseFloat(addon_prc);
+                            } else { // Flag if additional item price found.
+                                hasQty = true;
+                            }
+                        });
+                    }
+
+                    $collection['items']['price_all_addon'] += ($collection['items']['data'][styleKey]['price_addon'] * parseInt(itemVal.qty));
+
+                }
 
             });
 
@@ -3281,8 +3353,10 @@ function resetPreview()
     $.each(items["data"], function(styleKey, styleVal) {
         $.each(styleVal['list'], function(listKey, listVal) {
             $.each(listVal, function(itemKey, itemVal) {
+                if(typeof itemVal != "undefined" && typeof itemVal == "object") {
                 // Create & append preview image
-                loadPreview(itemVal.style, itemVal.type, itemVal.color, itemVal.font, isFirst);
+                    loadPreview(itemVal.style, itemVal.type, itemVal.color, itemVal.font, isFirst);
+                }
                 if(isFirst) { isFirst = false; }
             });
         });
@@ -3327,27 +3401,48 @@ function loadForm()
         $.each(items["data"], function(styleKey, styleVal) {
             $.each(styleVal['list'], function(listKey, listVal) {
                 $.each(listVal, function(itemKey, itemVal) {
-                    // Fix titles
-                    wbTitle = (itemVal['title']).toLowerCase();
-                    // If item is customized,
-                    if(wbTitle.includes('custom')) {
-                        // Set possible image value
-                        _img = $('#URLasset').val() + 'gd/img/custom/regular/' + itemVal['style'] + '/' + itemVal['color'].split(',').join('-') + '.png';
-                        if((_cart.style).toLowerCase() == 'figured')
-                            _img = $('#URLasset').val() + 'gd/img/custom/figured/' + itemVal['style'] + '/' + itemVal['color'].split(',').join('-') + '.png';
-                        // Get template
-                        $.ajax({
-                            type: 'GET',
-                            url: '/getTemplateCustomWristband?id=' + listKey + '&type=' + itemVal['type'] + '&style=' + _cart.style + '&image=' + _img + '&color=' + itemVal['color'].split(',').join(', '),
-                            data: {
-                                items: JSON.stringify(itemVal['size'])
-                            },
-                            beforeSend: function() { },
-                            success: function() { }
-                        }).done(function(data) {
-                            // Do something when everything is done.
-                            $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+itemVal['style']+"'] .main-color-content").prepend(data);
+                    if(typeof itemVal !== "undefined" && typeof itemVal == "object") {
+                        // Fix titles
+                        wbTitle = itemVal.title.toLowerCase();
+                        // If item is customized,
+                        if(wbTitle.includes('custom')) {
+                            // Set possible image value
+                            _img = $('#URLasset').val() + 'gd/img/custom/regular/' + itemVal['style'] + '/' + itemVal['color'].split(',').join('-') + '.png';
+                            if((_cart.style).toLowerCase() == 'figured')
+                                _img = $('#URLasset').val() + 'gd/img/custom/figured/' + itemVal['style'] + '/' + itemVal['color'].split(',').join('-') + '.png';
+                            // Get template
+                            $.ajax({
+                                type: 'GET',
+                                url: '/getTemplateCustomWristband?id=' + listKey + '&type=' + itemVal['type'] + '&style=' + _cart.style + '&image=' + _img + '&color=' + itemVal['color'].split(',').join(', '),
+                                data: {
+                                    items: JSON.stringify(itemVal['size'])
+                                },
+                                beforeSend: function() { },
+                                success: function() { }
+                            }).done(function(data) {
+                                // Do something when everything is done.
+                                $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+itemVal['style']+"'] .main-color-content").prepend(data);
 
+                                // Check if view more section must open.
+                                if(itemVal['size'] == "xs" || itemVal['size'] == "xl") {
+                                    $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+itemVal['style']+"'] input[ref-size='"+itemVal['size']+"'][ref-style='"+itemVal['style']+"'][ref-index='"+listKey+"'][ref-color='"+itemVal['color'].split(',').join(', ')+"']").closest('.box-color').find('.view-more').removeClass('collapsed');
+                                    $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+itemVal['style']+"'] input[ref-size='"+itemVal['size']+"'][ref-style='"+itemVal['style']+"'][ref-index='"+listKey+"'][ref-color='"+itemVal['color'].split(',').join(', ')+"']").closest('.box-color').find('.view-more').attr('aria-expanded', 'true');
+                                    $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+itemVal['style']+"'] input[ref-size='"+itemVal['size']+"'][ref-style='"+itemVal['style']+"'][ref-index='"+listKey+"'][ref-color='"+itemVal['color'].split(',').join(', ')+"']").closest('.show-content').addClass('in');
+                                    $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+itemVal['style']+"'] input[ref-size='"+itemVal['size']+"'][ref-style='"+itemVal['style']+"'][ref-index='"+listKey+"'][ref-color='"+itemVal['color'].split(',').join(', ')+"']").closest('.show-content').removeAttr("style");
+                                }
+                            });
+                        } else {  // If normal...
+                            // Update field indeces.
+                            $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='" + itemVal['style'] + "'] input[ref-style='" + itemVal['style'] + "'][ref-color='" + itemVal['color'].split(',').join(', ') + "']").attr('ref-index', listKey);
+                            // Update field quantity.
+                            var newVal1 = $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='" + itemVal['style'] + "'] input[ref-size='" + itemVal['size'] + "'][ref-style='" + itemVal['style'] + "'][ref-index='" + listKey + "'][ref-color='" + itemVal['color'].split(',').join(', ') + "']").val();
+                                newVal1 = (newVal1 != "") ? parseFloat(newVal1) : 0;
+                                newVal = newVal1 + parseFloat(itemVal['qty']);
+                            $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+itemVal['style']+"'] input[ref-size='"+itemVal['size']+"'][ref-style='"+itemVal['style']+"'][ref-index='"+listKey+"'][ref-color='"+itemVal['color'].split(',').join(', ')+"']").val(newVal);
+                            // Update font color.
+                            $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+itemVal['style']+"'] input[ref-size='"+itemVal['size']+"'][ref-style='"+itemVal['style']+"'][ref-index='"+listKey+"'][ref-color='"+itemVal['color'].split(',').join(', ')+"']").closest('.box-color-qty').find('.fntin').attr('ref-font-name', itemVal['font_title']);
+                            $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+itemVal['style']+"'] input[ref-size='"+itemVal['size']+"'][ref-style='"+itemVal['style']+"'][ref-index='"+listKey+"'][ref-color='"+itemVal['color'].split(',').join(', ')+"']").closest('.box-color-qty').find('.fntin').attr('ref-font-color', itemVal['font']);
+                            $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+itemVal['style']+"'] input[ref-size='"+itemVal['size']+"'][ref-style='"+itemVal['style']+"'][ref-index='"+listKey+"'][ref-color='"+itemVal['color'].split(',').join(', ')+"']").closest('.box-color-qty').find('.fntin').css({'background-color': '#' + itemVal['font']});
                             // Check if view more section must open.
                             if(itemVal['size'] == "xs" || itemVal['size'] == "xl") {
                                 $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+itemVal['style']+"'] input[ref-size='"+itemVal['size']+"'][ref-style='"+itemVal['style']+"'][ref-index='"+listKey+"'][ref-color='"+itemVal['color'].split(',').join(', ')+"']").closest('.box-color').find('.view-more').removeClass('collapsed');
@@ -3355,36 +3450,17 @@ function loadForm()
                                 $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+itemVal['style']+"'] input[ref-size='"+itemVal['size']+"'][ref-style='"+itemVal['style']+"'][ref-index='"+listKey+"'][ref-color='"+itemVal['color'].split(',').join(', ')+"']").closest('.show-content').addClass('in');
                                 $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+itemVal['style']+"'] input[ref-size='"+itemVal['size']+"'][ref-style='"+itemVal['style']+"'][ref-index='"+listKey+"'][ref-color='"+itemVal['color'].split(',').join(', ')+"']").closest('.show-content').removeAttr("style");
                             }
-                        });
-                    } else {  // If normal...
-                        // Update field indeces.
-                        $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='" + itemVal['style'] + "'] input[ref-style='" + itemVal['style'] + "'][ref-color='" + itemVal['color'].split(',').join(', ') + "']").attr('ref-index', listKey);
-                        // Update field quantity.
-                        var newVal1 = $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='" + itemVal['style'] + "'] input[ref-size='" + itemVal['size'] + "'][ref-style='" + itemVal['style'] + "'][ref-index='" + listKey + "'][ref-color='" + itemVal['color'].split(',').join(', ') + "']").val();
-                            newVal1 = (newVal1 != "") ? parseFloat(newVal1) : 0;
-                            newVal = newVal1 + parseFloat(itemVal['qty']);
-                        $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+itemVal['style']+"'] input[ref-size='"+itemVal['size']+"'][ref-style='"+itemVal['style']+"'][ref-index='"+listKey+"'][ref-color='"+itemVal['color'].split(',').join(', ')+"']").val(newVal);
-                        // Update font color.
-                        $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+itemVal['style']+"'] input[ref-size='"+itemVal['size']+"'][ref-style='"+itemVal['style']+"'][ref-index='"+listKey+"'][ref-color='"+itemVal['color'].split(',').join(', ')+"']").closest('.box-color-qty').find('.fntin').attr('ref-font-name', itemVal['font_title']);
-                        $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+itemVal['style']+"'] input[ref-size='"+itemVal['size']+"'][ref-style='"+itemVal['style']+"'][ref-index='"+listKey+"'][ref-color='"+itemVal['color'].split(',').join(', ')+"']").closest('.box-color-qty').find('.fntin').attr('ref-font-color', itemVal['font']);
-                        $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+itemVal['style']+"'] input[ref-size='"+itemVal['size']+"'][ref-style='"+itemVal['style']+"'][ref-index='"+listKey+"'][ref-color='"+itemVal['color'].split(',').join(', ')+"']").closest('.box-color-qty').find('.fntin').css({'background-color': '#' + itemVal['font']});
-                        // Check if view more section must open.
-                        if(itemVal['size'] == "xs" || itemVal['size'] == "xl") {
-                            $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+itemVal['style']+"'] input[ref-size='"+itemVal['size']+"'][ref-style='"+itemVal['style']+"'][ref-index='"+listKey+"'][ref-color='"+itemVal['color'].split(',').join(', ')+"']").closest('.box-color').find('.view-more').removeClass('collapsed');
-                            $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+itemVal['style']+"'] input[ref-size='"+itemVal['size']+"'][ref-style='"+itemVal['style']+"'][ref-index='"+listKey+"'][ref-color='"+itemVal['color'].split(',').join(', ')+"']").closest('.box-color').find('.view-more').attr('aria-expanded', 'true');
-                            $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+itemVal['style']+"'] input[ref-size='"+itemVal['size']+"'][ref-style='"+itemVal['style']+"'][ref-index='"+listKey+"'][ref-color='"+itemVal['color'].split(',').join(', ')+"']").closest('.show-content').addClass('in');
-                            $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+itemVal['style']+"'] input[ref-size='"+itemVal['size']+"'][ref-style='"+itemVal['style']+"'][ref-index='"+listKey+"'][ref-color='"+itemVal['color'].split(',').join(', ')+"']").closest('.show-content').removeAttr("style");
                         }
+                        var idx_size = "0";
+                        switch(itemVal['size']) {
+                            case 'yt': idx_size = "0"; break;
+                            case 'md': idx_size = "1"; break;
+                            case 'ad': idx_size = "2"; break;
+                            case 'xs': idx_size = "3"; break;
+                            case 'xl': idx_size = "4"; break;
+                        }
+                        items['data'][itemVal['style']]['list'][listKey][idx_size]['qty'] = parseFloat(items['data'][itemVal['style']]['list'][listKey][idx_size]['qty']);
                     }
-                    var idx_size = "0";
-                    switch(itemVal['size']) {
-                        case 'yt': idx_size = "0"; break;
-                        case 'md': idx_size = "1"; break;
-                        case 'ad': idx_size = "2"; break;
-                        case 'xs': idx_size = "3"; break;
-                        case 'xl': idx_size = "4"; break;
-                    }
-                    items['data'][itemVal['style']]['list'][listKey][idx_size]['qty'] = parseFloat(items['data'][itemVal['style']]['list'][listKey][idx_size]['qty']);
                 });
             });
         });

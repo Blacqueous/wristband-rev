@@ -561,6 +561,14 @@
 										$<span class="total">0.00</span>
 									</div>
 								</div>
+								<div id="summary-table-molding-fee" class="summary-table-group summary-table-state hidden">
+									<div class="col-xs-9 no-padding-left">
+										<i class="fa fa-adjust"></i>Molding Fee (<span class="qty">0</span> x $<span class="price">0.00</span> each)
+									</div>
+									<div class="col-xs-3 text-right no-padding-right">
+										$<span class="total">0.00</span>
+									</div>
+								</div>
 								<div id="summary-table-production" class="summary-table-group summary-table-state hidden">
 									<div class="col-xs-9 no-padding-left">
 										<i class="fa fa-dropbox"></i>Production (<span class="days">0</span> Days)

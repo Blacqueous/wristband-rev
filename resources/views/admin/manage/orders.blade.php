@@ -14,10 +14,10 @@
         <link href="{{ URL::asset('global/bootstrap-toggle/css/bootstrap-toggle.min.css') }}" rel="stylesheet" type="text/css">
         <style>
 			.row-actions {
-				padding: 0px;
                 margin-bottom: 10px;
 				margin-left: -15px;
 				margin-right: -15px;
+				padding: 0px;
 			}
 			.text-authnet {
 				color: #E09719;
@@ -31,8 +31,9 @@
 				color: #4CAF50;
 			}
             .row .col-sm-12 {
-                overflow-x: auto;
                 margin: 5px 0 15px 0;
+                overflow-x: auto;
+                padding: 0px;
             }
 			.table-striped > tbody > tr:nth-of-type(odd) {
 			    background-color: #fafafa;
@@ -49,7 +50,6 @@
                 background-image: none;
             }
  			table.dataTable thead:first-child  tr:first-child th:first-child {
-				/*padding-left: 30px;*/
 				width: auto !important;
             }
 		    table.dataTable tbody td {
@@ -67,7 +67,6 @@
 			table.dataTable tbody tr td.text-limit {
 				max-width: 100px;
 				overflow: hidden;
-				/*text-overflow: ellipsis;*/
 				white-space: nowrap;
 			}
             table.dataTable tbody tr td.text-transno {
@@ -125,16 +124,16 @@
 				padding-top: 0px;
 			}
 			table.dtr-details tr:last-child td {
-				padding-bottom: 0px;
 				border-width: 0px;
+				padding-bottom: 0px;
 			}
 			table.dtr-details tr:last-child td:first-child {
 				color: #fff;
 			}
 			table.dtr-details tr td:first-child {
 				font-weight: bold;
-				width: 30% !important;
 				padding-right: 15px;
+				width: 30% !important;
 			}
 			div.loadingoverlay {
 				z-index: 99999 !important;
@@ -200,6 +199,7 @@
                         { 'targets': 24, 'className': 'text-limit' },
                         { 'targets': 25, 'className': 'text-limit' },
                         { 'targets': 26, 'className': 'text-limit' },
+                        { 'targets': 31, 'orderable': false },
     				],
 					'fnDrawCallback': function() {
 					    $('input.check-action').iCheck({
@@ -226,7 +226,7 @@
                         'infoEmpty': 'No records available',
                         'processing': '<i class="fa fa-spin fa-circle-o-notch fa-3x fa-fw"></i>',
             		},
-            		'order': [[2, 'desc']],
+            		'order': [[1, 'desc']],
             		'paging': true,
             		'pageLength': 10,
             		'processing': true,
@@ -448,6 +448,11 @@
 					});
 				});
 
+                $(document).on('click', '.show-cart', function(e) {
+                    var order_id = $(this).attr('data-order-id');
+                    console.log(order_id);
+                });
+
             });
         </script>
 @endsection
@@ -511,7 +516,7 @@
                         <th>Shipping Zip Code</th>
                         <th>Shipping Country</th>
                         <th>IP Address</th>
-                        <!-- <th></th> -->
+                        <th></th>
                     </tr>
                 </thead>
             </table>

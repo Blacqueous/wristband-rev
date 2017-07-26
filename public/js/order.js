@@ -2045,7 +2045,6 @@ function getTotal()
     $collection['items']['price_all_addon'] = 0;
     $collection['items']['price_all_moldfee'] = 0;
     $collection['items']['quantity_all'] = 0;
-    $has_free_mold = false;
 
     // Loop through all items
     $.each($collection['items']['data'], function(styleKey, styleVal) {
@@ -2057,6 +2056,8 @@ function getTotal()
         // $collection['items']['data'][styleKey]['price_moldfee'] = (Object.keys(styleVal['list']).length * molding_fee);
 
         $.each(styleVal['list'], function(listKey, listVal) {
+
+            $has_free_mold = false;
 
             $.each(listVal, function(itemKey, itemVal) {
 
@@ -2780,7 +2781,6 @@ function loadTotal(loadProdShip)
     $collection['items']['price_all_addon'] = 0;
     $collection['items']['price_all_moldfee'] = 0;
     $collection['items']['quantity_all'] = 0;
-    $has_free_mold = false;
 
     // Loop through all items
     $.each($collection['items']['data'], function(styleKey, styleVal) {
@@ -2792,6 +2792,8 @@ function loadTotal(loadProdShip)
         // $collection['items']['data'][styleKey]['price_moldfee'] = (Object.keys(styleVal['list']).length * molding_fee);
 
         $.each(styleVal['list'], function(listKey, listVal) {
+
+            $has_free_mold = false;
 
             $.each(listVal, function(itemKey, itemVal) {
 
@@ -3250,7 +3252,7 @@ function loadTotal(loadProdShip)
         $('#total-area .no-total').removeClass('hidden');
 
     }
-console.log($collection);
+
 }
 
 function loadWristbands($style, $size)
