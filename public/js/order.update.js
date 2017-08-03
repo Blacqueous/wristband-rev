@@ -2039,6 +2039,8 @@ function getTotal()
     $collection['items']['price_all_moldfee'] = 0;
     $collection['items']['quantity_all'] = 0;
 
+    mold_arr = [];
+
     // Loop through all items
     $.each($collection['items']['data'], function(styleKey, styleVal) {
 
@@ -2050,23 +2052,15 @@ function getTotal()
 
         $.each(styleVal['list'], function(listKey, listVal) {
 
-            $has_free_mold = false;
-
             $.each(listVal, function(itemKey, itemVal) {
 
                 if(typeof itemVal != "undefined" && typeof itemVal == "object") {
 
-                    // Determine molding fee count & value computation
-                    if ($has_free_mold) {
+                    if(mold_arr.indexOf(itemVal.size) < 0) {
+                        mold_arr.push(itemVal.size);
+                        // Add values
                         $collection['items']['count']++;
-                        if (typeof $collection['items']['data'][styleKey]['price_moldfee'] != "undefined") {
-                            $collection['items']['data'][styleKey]['price_moldfee'] = 0;
-                        } else {
-                            $collection['items']['data'][styleKey]['price_moldfee'] += molding_fee;
-                        }
                         $collection['items']['price_all_moldfee'] += molding_fee;
-                    } else {
-                        $has_free_mold = true;
                     }
 
                     // Create & append preview image.
@@ -2781,6 +2775,8 @@ function loadTotal(loadProdShip)
     $collection['items']['price_all_moldfee'] = 0;
     $collection['items']['quantity_all'] = 0;
 
+    mold_arr = [];
+
     // Loop through all items
     $.each($collection['items']['data'], function(styleKey, styleVal) {
 
@@ -2792,23 +2788,15 @@ function loadTotal(loadProdShip)
 
         $.each(styleVal['list'], function(listKey, listVal) {
 
-            $has_free_mold = false;
-
             $.each(listVal, function(itemKey, itemVal) {
 
                 if(typeof itemVal != "undefined" && typeof itemVal == "object") {
 
-                    // Determine molding fee count & value computation
-                    if ($has_free_mold) {
+                    if(mold_arr.indexOf(itemVal.size) < 0) {
+                        mold_arr.push(itemVal.size);
+                        // Add values
                         $collection['items']['count']++;
-                        if (typeof $collection['items']['data'][styleKey]['price_moldfee'] != "undefined") {
-                            $collection['items']['data'][styleKey]['price_moldfee'] = 0;
-                        } else {
-                            $collection['items']['data'][styleKey]['price_moldfee'] += molding_fee;
-                        }
                         $collection['items']['price_all_moldfee'] += molding_fee;
-                    } else {
-                        $has_free_mold = true;
                     }
 
                     // Create & append preview image.
