@@ -2063,9 +2063,11 @@ function getTotal()
 
                 if(mold_arr.indexOf(itemVal.size) < 0) {
                     mold_arr.push(itemVal.size);
-                    // Add values
-                    $collection['items']['count']++;
-                    $collection['items']['price_all_moldfee'] += molding_fee;
+                    if (mold_arr.length > 1) {
+                        // Add values
+                        $collection['items']['count']++;
+                        $collection['items']['price_all_moldfee'] += molding_fee;
+                    }
                 }
 
                 // Create & append preview image.
@@ -2094,6 +2096,8 @@ function getTotal()
         });
 
     });
+
+    $collection['items']['mold_list'] = mold_arr;
 
     $collection['items']['price_all'] += $collection['items']['price_all_addon'] + $collection['items']['price_all_moldfee'];
 
@@ -2793,9 +2797,11 @@ function loadTotal(loadProdShip)
 
                 if(mold_arr.indexOf(itemVal.size) < 0) {
                     mold_arr.push(itemVal.size);
-                    // Add values
-                    $collection['items']['count']++;
-                    $collection['items']['price_all_moldfee'] += molding_fee;
+                    if (mold_arr.length > 1) {
+                        // Add values
+                        $collection['items']['count']++;
+                        $collection['items']['price_all_moldfee'] += molding_fee;
+                    }
                 }
 
                 // Create & append preview image.
@@ -2824,6 +2830,8 @@ function loadTotal(loadProdShip)
         });
 
     });
+
+    $collection['items']['mold_list'] = mold_arr;
 
     $collection['items']['price_all'] += $collection['items']['price_all_addon'] + $collection['items']['price_all_moldfee'];
 

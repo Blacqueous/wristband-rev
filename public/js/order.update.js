@@ -1910,22 +1910,33 @@ function displayTotal($collection)
     }
 
     if (!$.isEmptyObject($collection.free)) {
-        $('#summary-table-free').removeClass('hidden');
 
         if(typeof $collection.free['key-chain'] != "undefined") {
-            $('#summary-table-free #free-key-chain').removeClass('hidden');
             if(typeof $collection.free['key-chain']['quantity'] != "undefined") {
-                $('#summary-table-free #free-key-chain .qty').html( $collection.free['key-chain']['quantity'] );
+                var _kcq = parseInt($collection.free['key-chain']['quantity']);
+                if(!isNaN(_kcq) && _kcq>0) {
+                    $('#summary-table-free').removeClass('hidden');
+                    $('#summary-table-free #free-key-chain').removeClass('hidden');
+                    $('#summary-table-free #free-key-chain .qty').html( _kcq );
+                }
             } else {
+                $('#summary-table-free').removeClass('hidden');
+                $('#summary-table-free #free-key-chain').removeClass('hidden');
                 $('#summary-table-free #free-key-chain .qty').html( $collection.free['key-chain'] );
             }
         }
 
         if(typeof $collection.free['wristbands'] != "undefined") {
-            $('#summary-table-free #free-wristband').removeClass('hidden');
             if(typeof $collection.free['wristbands']['quantity'] != "undefined") {
-                $('#summary-table-free #free-wristband .qty').html( $collection.free['wristbands']['quantity'] );
+                var _wbq = parseInt($collection.free['key-chain']['quantity']);
+                if(!isNaN(_wbq) && _wbq>0) {
+                    $('#summary-table-free').removeClass('hidden');
+                    $('#summary-table-free #free-wristband').removeClass('hidden');
+                    $('#summary-table-free #free-wristband .qty').html( _wbq );
+                }
             } else {
+                $('#summary-table-free').removeClass('hidden');
+                $('#summary-table-free #free-wristband').removeClass('hidden');
                 $('#summary-table-free #free-wristband .qty').html( $collection.free['wristbands'] );
             }
         }
@@ -2058,9 +2069,11 @@ function getTotal()
 
                     if(mold_arr.indexOf(itemVal.size) < 0) {
                         mold_arr.push(itemVal.size);
-                        // Add values
-                        $collection['items']['count']++;
-                        $collection['items']['price_all_moldfee'] += molding_fee;
+                        if (mold_arr.length > 1) {
+                            // Add values
+                            $collection['items']['count']++;
+                            $collection['items']['price_all_moldfee'] += molding_fee;
+                        }
                     }
 
                     // Create & append preview image.
@@ -2090,6 +2103,8 @@ function getTotal()
         });
 
     });
+
+    $collection['items']['mold_list'] = mold_arr;
 
     $collection['items']['price_all'] += $collection['items']['price_all_addon'] + $collection['items']['price_all_moldfee'];
 
@@ -2794,9 +2809,11 @@ function loadTotal(loadProdShip)
 
                     if(mold_arr.indexOf(itemVal.size) < 0) {
                         mold_arr.push(itemVal.size);
-                        // Add values
-                        $collection['items']['count']++;
-                        $collection['items']['price_all_moldfee'] += molding_fee;
+                        if (mold_arr.length > 1) {
+                            // Add values
+                            $collection['items']['count']++;
+                            $collection['items']['price_all_moldfee'] += molding_fee;
+                        }
                     }
 
                     // Create & append preview image.
@@ -2827,6 +2844,8 @@ function loadTotal(loadProdShip)
         });
 
     });
+
+    $collection['items']['mold_list'] = mold_arr;
 
     $collection['items']['price_all'] += $collection['items']['price_all_addon'] + $collection['items']['price_all_moldfee'];
 
