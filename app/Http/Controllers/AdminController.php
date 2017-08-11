@@ -70,7 +70,7 @@ class AdminController extends Controller
 
     // Manage carts ------------------------------------------------------------
 
-	public function manageCartOrders()
+	public function manageCartOrders($order_id)
     {
 		$posts = Carts::getCartOrders();
         return view('admin.manage.carts')->with(['posts' => $posts]);;

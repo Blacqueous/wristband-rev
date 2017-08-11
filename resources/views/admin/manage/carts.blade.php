@@ -1,7 +1,7 @@
 
 @extends('template.admin', ['type' => 1, 'menu' => 4])
 
-@section('title', 'Orders')
+@section('title', 'Cart Orders')
 
 @section('css')
 <!-- Additional CSS plugins -->
@@ -14,10 +14,10 @@
         <link href="{{ URL::asset('global/bootstrap-toggle/css/bootstrap-toggle.min.css') }}" rel="stylesheet" type="text/css">
         <style>
 			.row-actions {
+				padding: 0px;
                 margin-bottom: 10px;
 				margin-left: -15px;
 				margin-right: -15px;
-				padding: 0px;
 			}
 			.text-authnet {
 				color: #E09719;
@@ -31,9 +31,8 @@
 				color: #4CAF50;
 			}
             .row .col-sm-12 {
-                margin: 5px 0 15px 0;
                 overflow-x: auto;
-                padding: 0px;
+                margin: 5px 0 15px 0;
             }
 			.table-striped > tbody > tr:nth-of-type(odd) {
 			    background-color: #fafafa;
@@ -50,6 +49,7 @@
                 background-image: none;
             }
  			table.dataTable thead:first-child  tr:first-child th:first-child {
+				padding-left: 30px;
 				width: auto !important;
             }
 		    table.dataTable tbody td {
@@ -67,6 +67,7 @@
 			table.dataTable tbody tr td.text-limit {
 				max-width: 100px;
 				overflow: hidden;
+				/*text-overflow: ellipsis;*/
 				white-space: nowrap;
 			}
             table.dataTable tbody tr td.text-transno {
@@ -124,16 +125,16 @@
 				padding-top: 0px;
 			}
 			table.dtr-details tr:last-child td {
-				border-width: 0px;
 				padding-bottom: 0px;
+				border-width: 0px;
 			}
 			table.dtr-details tr:last-child td:first-child {
 				color: #fff;
 			}
 			table.dtr-details tr td:first-child {
 				font-weight: bold;
-				padding-right: 15px;
 				width: 30% !important;
+				padding-right: 15px;
 			}
 			div.loadingoverlay {
 				z-index: 99999 !important;
@@ -199,7 +200,6 @@
                         { 'targets': 24, 'className': 'text-limit' },
                         { 'targets': 25, 'className': 'text-limit' },
                         { 'targets': 26, 'className': 'text-limit' },
-                        { 'targets': 31, 'orderable': false },
     				],
 					'fnDrawCallback': function() {
 					    $('input.check-action').iCheck({
@@ -226,7 +226,7 @@
                         'infoEmpty': 'No records available',
                         'processing': '<i class="fa fa-spin fa-circle-o-notch fa-3x fa-fw"></i>',
             		},
-            		'order': [[1, 'desc']],
+            		'order': [[2, 'desc']],
             		'paging': true,
             		'pageLength': 10,
             		'processing': true,
@@ -448,33 +448,18 @@
 					});
 				});
 
-                $(document).on('click', '.show-cart', function(e) {
-                    var order_id = $(this).attr('data-order-id');
-                    // Get proper total qty
-						$.ajax({
-							type: 'GET',
-							url: '/carts?order_id='+$order_id,
-							data: { },
-							beforeSend: function() { },
-							success: function() { }
-						}).done(function(data) {
-							// Do something when everything is done.
-							$parent.prepend(data);
-						});
-                });
-
             });
         </script>
 @endsection
 
 @section('content')
     <div class="container">
-	    <h1>Manage Orders</h1>
+	    <h1>Cart Orders</h1>
 		<br>
 		<br>
 		<div class="row row-actions">
             <div class="pull-left">
-    			<button type="button" id="remOrder" class="btn btn-primary"><i class="fa fa-trash"></i> Delete</button>
+    		
     			<!-- <button type="button" id="remOrder" class="btn btn-primary"><i class="fa fa-remove"></i> Flag as Removed</button> -->
     			<!-- <button type="button" id="doneOrder" class="btn btn-warning"><i class="fa fa-bookmark"></i> Flag as Done</button> -->
     			<!-- <button type="button" id="delOrder" class="btn btn-danger"><i class="fa fa-trash-o"></i> Delete All Done Orders</button> -->
@@ -491,45 +476,105 @@
             </div> -->
 		</div>
         <div class="row table-row">
-			<table id="orders" class="table table-bordered table-hover table-striped nowrap" cellspacing="0">
+		  <div class="col-sm-12">
+			<table id="carts-orders" class="table table-bordered table-hover table-striped nowrap" cellspacing="0">
                 <thead>
                     <tr>
-                        <th><input type='checkbox' class='check-all'/></th>
                         <!-- <th>Status</th> -->
-                        <th>ID</th>
-                        <th>Paid</th>
-                        <th>Payment Type</th>
-                        <th>Paid Date</th>
-                        <th>Trans ID</th>
-                        <th>PayPal Email</th>
-                        <th>First Name</th>
-                        <th>Last Name</th>
-                        <th>Address</th>
-                        <th>Address 2</th>
-                        <th>City</th>
-                        <th>State</th>
-                        <th>Zip Code</th>
-                        <th>Country</th>
-                        <th>Phone</th>
-                        <th>Production Charge</th>
-                        <th>Production Days</th>
-                        <th>Delivery Charge</th>
-                        <th>Delivery Days</th>
-                        <th>Discount Code</th>
-                        <th>Discount Percent</th>
-                        <th>Shipping First Name</th>
-                        <th>Shipping Last Name</th>
-                        <th>Shipping Address</th>
-                        <th>Shipping Address 2</th>
-                        <th>Shipping City</th>
-                        <th>Shipping State</th>
-                        <th>Shipping Zip Code</th>
-                        <th>Shipping Country</th>
-                        <th>IP Address</th>
-                        <th></th>
+                        <th>Date Created</th>
+						 <th>Status</th>
+                        <th>Order ID</th>
+                        <th>Band Style</th>
+                        <th>Band Type</th>
+                        <th>Band Size</th>
+                        <th>Message Style</th>
+                        <th>Font</th>
+                        <th>Front Message</th>
+                        <th>Back Message</th>
+                        <th>Continuous Message</th>
+                        <th>Front Message StartClipart</th>
+                        <th>Front Message EndClipart</th>
+                        <th>Back Message StartClipart</th>
+                        <th>Back Message EndClipart</th>
+                        <th>Continuous Message StartClipart</th>
+                        <th>Continuous Message EndClipart</th>
+                        <th>Production Time</th>
+                        <th>Free Qty</th>
+                        <th>Delivery</th>
+                        <th>Individual Pack</th>
+                        <th>Keychain</th>
+                        <th>Digital Print</th>
+                        <th>Comments</th>
+                        <th>Price Production</th>
+                        <th>Price Delivery</th>
+                        <th>Price Invidual Pack</th>
+                        <th>Price Keychain</th>
+                        <th>Price Digital Print</th>
+                        <th>Price Back Message</th>
+						<th>Price Continuous Message</th>
+						<th>Price Logo</th>
+						<th>Price Color Split</th>
+						<th>Price Moulding Fee</th>
+						<th>Random Chr</th>
+						<th>Color Code</th>
+						<th>Qty</th>
+						<th>Unit Price</th>
+						<th>Total</th>
+						<th>Full Name</th>
+						<th>Phone</th>
+						<th>Email Ad</th>
+                        <!-- <th></th> -->
                     </tr>
                 </thead>
+				@foreach($posts as $post)
+				<tr>
+				
+                        <td>  {{ $post->DateCreated}} </td> 
+						<td>  {{ $post->Status}} </td> 
+                        <td>  {{ $post->OrderID}} </td> 
+                        <td>  {{ $post->BandStyle}} </td> 
+                        <td>  {{ $post->BandType}} </td> 
+                        <td>  {{ $post->BandSize}} </td> 
+                        <td>  {{ $post->MessageStyle}} </td> 
+                        <td>  {{ $post->Font}} </td> 
+                        <td>  {{ $post->FrontMessage}} </td> 
+                        <td>  {{ $post->BackMessage}} </td> 
+                        <td>  {{ $post->ContinuousMessage}} </td> 
+                        <td>  {{ $post->FrontMessageStartClipart}} </td> 
+                        <td>  {{ $post->FrontMessageEndClipart}} </td> 
+                        <td>  {{ $post->BackMessageStartClipart}} </td> 
+                        <td>  {{ $post->BackMessageEndClipart}} </td> 
+                        <td>  {{ $post->ContinuousMessageStartClipart}} </td> 
+                        <td>  {{ $post->ContinuousEndClipart}} </td> 
+                        <td>  {{ $post->ProductionTime}} </td> 
+                        <td>  {{ $post->FreeQty}} </td> 
+                        <td>  {{ $post->Delivery}} </td> 
+                        <td>  {{ $post->Individual_Pack}} </td> 
+                        <td>  {{ $post->Keychain}} </td> 
+                        <td>  {{ $post->DigitalPrint}} </td> 
+                        <td>  {{ $post->Comments}} </td> 
+                        <td>  {{ $post->PriceProduction}} </td> 
+                        <td>  {{ $post->PriceDelivery}} </td> 
+                        <td>  {{ $post->PriceIndividual_Pack}} </td> 
+                        <td>  {{ $post->PriceKeychain}} </td> 
+                        <td>  {{ $post->PriceDigitalPrint}} </td> 
+                        <td>  {{ $post->PriceBackMessage}} </td> 
+						<td>  {{ $post->PriceContinuousMessage}} </td> 
+						<td>  {{ $post->PriceLogo}} </td> 
+						<td>  {{ $post->PriceColorSplit}} </td> 
+						<td>  {{ $post->PriceMouldingFee}} </td> 
+						<td>  {{ $post->RandomChr}} </td> 
+						<td>  {{ $post->arColors}} </td> 
+						<td>  {{ $post->Qty}} </td> 
+						<td>  {{ $post->UnitPrice}} </td> 
+						<td>  {{ $post->Total}} </td> 
+						<td>  {{ $post->FullName}} </td> 
+						<td>  {{ $post->PhoneNo}} </td> 
+						<td>  {{ $post->EmailAddress}} </td> 
+				</tr>
+				@endforeach
             </table>
+		  </div>
         </div>
     </div>
     <br/>

@@ -19,7 +19,7 @@ class Carts extends Model {
                 ->get();
     }
 	
-	public static function getCartOrders(){
+	public static function getCartOrders($data){
         return DB::SELECT(DB::RAW("SELECT DateCreated,
 						Status,
                         OrderID,
