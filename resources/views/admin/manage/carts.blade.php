@@ -166,295 +166,15 @@
         <script src="{{ URL::asset('global/iCheck/icheck.min.js') }}"></script>
         <script src="{{ URL::asset('global/bootstrap-toggle/js/bootstrap-toggle.min.js') }}"></script>
         <script type="text/javascript">
-            $(document).ready(function() {
+           
+                   
 
-				$('input.check-all').iCheck({
-					checkboxClass: 'icheckbox_square-blue control-checkbox',
-					radioClass: 'iradio_square-blue control-radio',
-					increaseArea: '20%', // optional
-				});
-
-                $('#orders').DataTable({
-            		'ajax': {
-            			'url': '/admin/orders/list',
-            			'data': function(d) {
-                            d.showRemoved = $('#showRemoved').is(':checked');
-                            d.showDone = $('#showDone').is(':checked');
-                        },
-            		},
-            		'bDestroy': true,
-            		'bFilter': false,
-            		'bLengthChange': false,
-    				'columnDefs': [
-                        { 'targets': 0, 'orderable': false },
-                        // { 'targets': 1, 'orderable': false },
-                        { 'targets': 2, 'orderable': false },
-                        { 'targets': 5, 'className': 'text-transno' },
-                        { 'targets': 7, 'className': 'text-limit' },
-                        { 'targets': 8, 'className': 'text-limit' },
-                        { 'targets': 9, 'className': 'text-limit' },
-                        { 'targets': 10, 'className': 'text-limit' },
-                        { 'targets': 11, 'className': 'text-limit' },
-                        { 'targets': 22, 'className': 'text-limit' },
-                        { 'targets': 23, 'className': 'text-limit' },
-                        { 'targets': 24, 'className': 'text-limit' },
-                        { 'targets': 25, 'className': 'text-limit' },
-                        { 'targets': 26, 'className': 'text-limit' },
-    				],
-					'fnDrawCallback': function() {
-					    $('input.check-action').iCheck({
-					        checkboxClass: 'icheckbox_square-blue control-checkbox',
-					        radioClass: 'iradio_square-blue control-radio',
-					        increaseArea: '20%', // Optional
-					    });
-						$('.check-all').iCheck('uncheck');
-						$('.check-action:checked').iCheck('uncheck');
-					},
-					'initComplete': function(settings, json) {
-					    $('input.check-action').iCheck({
-					        checkboxClass: 'icheckbox_square-blue control-checkbox',
-					        radioClass: 'iradio_square-blue control-radio',
-					        increaseArea: '20%', // Optional
-					    });
-						$('.check-all').iCheck('uncheck');
-						$('.check-action:checked').iCheck('uncheck');
-					},
-            		'language': {
-                        'lengthMenu': 'Display _MENU_ records per page',
-                        'zeroRecords': 'Nothing found - sorry',
-                        'info': 'Showing page _PAGE_ of _PAGES_',
-                        'infoEmpty': 'No records available',
-                        'processing': '<i class="fa fa-spin fa-circle-o-notch fa-3x fa-fw"></i>',
-            		},
-            		'order': [[2, 'desc']],
-            		'paging': true,
-            		'pageLength': 10,
-            		'processing': true,
-					// 'responsive': {
-				    //     details: {
-				    //         display: $.fn.dataTable.Responsive.display.modal({
-				    //             header: function (row) {
-				    //                 var data = row.data();
-				    //                 return 'Details for Order #'+data[2];
-				    //             },
-				    //             footer: function (row) {
-				    //                 return 'Details for Order';
-				    //             }
-				    //         }),
-				    //         renderer: $.fn.dataTable.Responsive.renderer.tableAll({
-				    //             tableClass: 'table',
-				    //         }),
-				    //     }
-				    // },
-                    'searching': true,
-            		'serverSide': true,
-            	});
-
-				$(document).on('click', '#orders td', function(e) {
-					e.preventDefault();
-					var self = $(this);
-					if (self.is(':first-child')) { return false; }
-					var row = self.closest('tr');
-					var box = row.find('td:first input[type="checkbox"]').iCheck('toggle');
-					if (box.is(':checked')) {
-						row.addClass('has-icheck');
-					} else {
-						row.removeClass('has-icheck');
-					}
-				});
-
-				$(document).on('ifChanged', '#orders .check-action', function(e) {
-					var self = $(this);
-					if (self.is(':checked')) {
-						self.closest('tr').addClass('has-icheck');
-					} else {
-						self.closest('tr').removeClass('has-icheck');
-					}
-				});
-
-				$(document).on('ifClicked', '.check-all', function(e) {
-					var self = $(this);
-					if (self.is(':checked')) {
-						$('.check-action:checked').iCheck('uncheck');
-					} else {
-						$('.check-action').not(':checked').iCheck('check');
-					}
-				});
-
-                $(document).on('change', '#showRemoved, #showDone', function(e) {
-                    $('#orders').DataTable().ajax.reload();
-                });
-
-                $(document).on('click', '#remOrder', function(e) {
-                    e.preventDefault();
-					var check = $('.check-action:checked');
-					var check_len = check.length;
-					if (check_len <= 0) { swal('Ooops!', 'Please select an order.', 'error'); return false; }
-					var check_arr = [];
-					$(check).each(function() {
-						check_arr.push($(this).attr('data-id'));
-					});
-					if (check_arr.length <= 0) { swal('Ooops!', 'Please select an order.', 'error'); return false; }
-					var content = (check_arr.length <= 1) ? 'Delete the order?' : 'Delete these selected orders?';
-					var contentSuccess = (check_arr.length <= 1) ? 'The order is deleted!' : 'The selected orders are deleted!';
-					var contentNone = (check_arr.length <= 1) ? 'This order is already deleted!' : 'These selected orders are already deleted!';
-                    swal({
-                        title: "Are you sure?",
-                        text: content,
-                        type: "warning",
-                        showCancelButton: true,
-                        confirmButtonColor: "#DD6B55",
-                        confirmButtonText: "Yes, proceed!",
-                        cancelButtonText: "No, cancel!",
-                        closeOnConfirm: false,
-                        closeOnCancel: true
-                    },
-                    function(isConfirm) {
-                        if (isConfirm) {
-                            $.ajax({
-                                url: "/admin/orders/remove",
-                                type: "POST",
-                                data: {
-									_token: $('meta[name="csrf-token"]').attr('content'),
-                                    ids: check_arr,
-                                },
-                                dataType: "JSON",
-								beforeSend: function() {
-									swal.close();
-									$.LoadingOverlay("show");
-								},
-								success: function(data) {
-									if (data.status) {
-										if (data.count > 0) {
-											swal('Good Job!', contentSuccess, 'success');
-											$('#orders').DataTable().ajax.reload();
-										} else {
-											swal('Wait!', contentNone, 'error');
-										}
-									} else {
-										swal('Ooops!', 'Something went wrong.', 'error');
-									}
-									$.LoadingOverlay("hide");
-								},
-								error: function(data) {
-									swal('Ooops!', 'Something went wrong.', 'error');
-									$.LoadingOverlay("hide");
-								}
-                            });
-                        }
-                    });
-                });
-
-                $(document).on('click', '#doneOrder', function(e) {
-                    e.preventDefault();
-					var check = $('.check-action:checked');
-					var check_len = check.length;
-					if (check_len <= 0) { swal('Ooops!', 'Please select an order.', 'error'); return false; }
-					var check_arr = [];
-					$(check).each(function() {
-						check_arr.push($(this).attr('data-id'));
-					});
-					if (check_arr.length <= 0) { swal('Ooops!', 'Please select an order.', 'error'); return false; }
-					var content = (check_arr.length <= 1) ? 'Flag the order as done!' : 'Flag these selected orders as done!';
-					var contentSuccess = (check_arr.length <= 1) ? 'The order is flagged as done!' : 'The selected orders are flagged as done!';
-					var contentNone = (check_arr.length <= 1) ? 'This order is already flagged as done!' : 'These selected orders are already flagged as done!';
-                    swal({
-                        title: "Are you sure?",
-                        text: content,
-                        type: "warning",
-                        showCancelButton: true,
-                        confirmButtonColor: "#DD6B55",
-                        confirmButtonText: "Yes, proceed!",
-                        cancelButtonText: "No, cancel!",
-                        closeOnConfirm: false,
-                        closeOnCancel: true
-                    },
-                    function(isConfirm) {
-                        if (isConfirm) {
-                            $.ajax({
-                                url: "/admin/orders/done",
-                                type: "POST",
-                                data: {
-									_token: $('meta[name="csrf-token"]').attr('content'),
-                                    ids: check_arr,
-                                },
-                                dataType: "JSON",
-								beforeSend: function() {
-									swal.close();
-									$.LoadingOverlay("show");
-								},
-								success: function(data) {
-									if (data.status) {
-										if (data.count > 0) {
-											swal('Good Job!', contentSuccess, 'success');
-											$('#orders').DataTable().ajax.reload();
-										} else {
-											swal('Wait!', contentNone, 'error');
-										}
-									} else {
-										swal('Ooops!', 'Something went wrong.', 'error');
-									}
-									$.LoadingOverlay("hide");
-								},
-								error: function(data) {
-									swal('Ooops!', 'Something went wrong.', 'error');
-									$.LoadingOverlay("hide");
-								}
-                            });
-                        }
-                    });
-				});
-
-				$(document).on('click', '#delOrder', function(e) {
-					swal({
-						title: "Are you sure?",
-						text: "You will not be able to recover this orders!",
-						type: "warning",
-						showCancelButton: true,
-						confirmButtonColor: "#DD6B55",
-						confirmButtonText: "Yes, delete!",
-						cancelButtonText: "No, cancel!",
-						closeOnConfirm: false,
-						closeOnCancel: true
-					},
-					function(isConfirm) {
-						if (isConfirm) {
-							$.ajax({
-								url: "/admin/orders/delete",
-								type: "POST",
-								data: {
-									_token: $('meta[name="csrf-token"]').attr('content'),
-								},
-								dataType: "JSON",
-								beforeSend: function() {
-									swal.close();
-									$.LoadingOverlay("show");
-								},
-								success: function(data) {
-									if (data.status) {
-										swal('Good Job!', 'Orders deleted.', 'success');
-										$('#orders').DataTable().ajax.reload();
-									} else {
-										swal('Ooops!', 'Something went wrong.', 'error');
-									}
-									$.LoadingOverlay("hide");
-								},
-								error: function(data) {
-									swal('Ooops!', 'Something went wrong.', 'error');
-									$.LoadingOverlay("hide");
-								}
-							});
-						}
-					});
-				});
-
-            });
         </script>
 @endsection
 
 @section('content')
     <div class="container">
-	    <h1>Cart Orders</h1>
+	    <h1>Order Details</h1>
 		<br>
 		<br>
 		<div class="row row-actions">
@@ -477,103 +197,34 @@
 		</div>
         <div class="row table-row">
 		  <div class="col-sm-12">
-			<table id="carts-orders" class="table table-bordered table-hover table-striped nowrap" cellspacing="0">
-                <thead>
-                    <tr>
-                        <!-- <th>Status</th> -->
-                        <th>Date Created</th>
-						 <th>Status</th>
-                        <th>Order ID</th>
-                        <th>Band Style</th>
-                        <th>Band Type</th>
-                        <th>Band Size</th>
-                        <th>Message Style</th>
-                        <th>Font</th>
-                        <th>Front Message</th>
-                        <th>Back Message</th>
-                        <th>Continuous Message</th>
-                        <th>Front Message StartClipart</th>
-                        <th>Front Message EndClipart</th>
-                        <th>Back Message StartClipart</th>
-                        <th>Back Message EndClipart</th>
-                        <th>Continuous Message StartClipart</th>
-                        <th>Continuous Message EndClipart</th>
-                        <th>Production Time</th>
-                        <th>Free Qty</th>
-                        <th>Delivery</th>
-                        <th>Individual Pack</th>
-                        <th>Keychain</th>
-                        <th>Digital Print</th>
-                        <th>Comments</th>
-                        <th>Price Production</th>
-                        <th>Price Delivery</th>
-                        <th>Price Invidual Pack</th>
-                        <th>Price Keychain</th>
-                        <th>Price Digital Print</th>
-                        <th>Price Back Message</th>
-						<th>Price Continuous Message</th>
-						<th>Price Logo</th>
-						<th>Price Color Split</th>
-						<th>Price Moulding Fee</th>
-						<th>Random Chr</th>
-						<th>Color Code</th>
-						<th>Qty</th>
-						<th>Unit Price</th>
-						<th>Total</th>
-						<th>Full Name</th>
-						<th>Phone</th>
-						<th>Email Ad</th>
-                        <!-- <th></th> -->
-                    </tr>
-                </thead>
-				@foreach($posts as $post)
-				<tr>
-				
-                        <td>  {{ $post->DateCreated}} </td> 
-						<td>  {{ $post->Status}} </td> 
-                        <td>  {{ $post->OrderID}} </td> 
-                        <td>  {{ $post->BandStyle}} </td> 
-                        <td>  {{ $post->BandType}} </td> 
-                        <td>  {{ $post->BandSize}} </td> 
-                        <td>  {{ $post->MessageStyle}} </td> 
-                        <td>  {{ $post->Font}} </td> 
-                        <td>  {{ $post->FrontMessage}} </td> 
-                        <td>  {{ $post->BackMessage}} </td> 
-                        <td>  {{ $post->ContinuousMessage}} </td> 
-                        <td>  {{ $post->FrontMessageStartClipart}} </td> 
-                        <td>  {{ $post->FrontMessageEndClipart}} </td> 
-                        <td>  {{ $post->BackMessageStartClipart}} </td> 
-                        <td>  {{ $post->BackMessageEndClipart}} </td> 
-                        <td>  {{ $post->ContinuousMessageStartClipart}} </td> 
-                        <td>  {{ $post->ContinuousEndClipart}} </td> 
-                        <td>  {{ $post->ProductionTime}} </td> 
-                        <td>  {{ $post->FreeQty}} </td> 
-                        <td>  {{ $post->Delivery}} </td> 
-                        <td>  {{ $post->Individual_Pack}} </td> 
-                        <td>  {{ $post->Keychain}} </td> 
-                        <td>  {{ $post->DigitalPrint}} </td> 
-                        <td>  {{ $post->Comments}} </td> 
-                        <td>  {{ $post->PriceProduction}} </td> 
-                        <td>  {{ $post->PriceDelivery}} </td> 
-                        <td>  {{ $post->PriceIndividual_Pack}} </td> 
-                        <td>  {{ $post->PriceKeychain}} </td> 
-                        <td>  {{ $post->PriceDigitalPrint}} </td> 
-                        <td>  {{ $post->PriceBackMessage}} </td> 
-						<td>  {{ $post->PriceContinuousMessage}} </td> 
-						<td>  {{ $post->PriceLogo}} </td> 
-						<td>  {{ $post->PriceColorSplit}} </td> 
-						<td>  {{ $post->PriceMouldingFee}} </td> 
-						<td>  {{ $post->RandomChr}} </td> 
-						<td>  {{ $post->arColors}} </td> 
-						<td>  {{ $post->Qty}} </td> 
-						<td>  {{ $post->UnitPrice}} </td> 
-						<td>  {{ $post->Total}} </td> 
-						<td>  {{ $post->FullName}} </td> 
-						<td>  {{ $post->PhoneNo}} </td> 
-						<td>  {{ $post->EmailAddress}} </td> 
-				</tr>
-				@endforeach
-            </table>
+          	<div style="text-align:left!important;padding:14px!important;">
+			   @foreach($posts as $post)
+			   	<p><span style="font-weight:bold">Order ID:</span> {{ $post->OrderID}}</p>
+			   	<p><span style="font-weight:bold">Date Created:</span> {{ $post->DateCreated}} </p>
+			   	<p><span style="font-weight:bold">Total Amount:</span> ${{ $post->Total}} </p>
+			   	<p><span style="font-weight:bold">Item Description:</span> {{ $post->BandStyle}}</p>
+			   			@if (($post->BandSize) == "0-25inch")
+							<p><span style="font-weight:bold">Band Size:</span> 1/4 Inch ({{ $post->BandSize}})</p>
+						@elseif (($post->BandSize) == "0-50inch")
+						    <p><span style="font-weight:bold">Band Size:</span> 1/2 Inch ({{ $post->BandSize}})</p>
+						@elseif (($post->BandSize) == "0-75inch")
+						  	<p><span style="font-weight:bold">Band Size:</span> 3/4 Inch ({{ $post->BandSize}})</p>
+						@elseif (($post->BandSize) == "1-00inch")
+						    <p><span style="font-weight:bold">Band Size:</span> 1 Inch {{ $post->BandSize}}</p>
+						@elseif (($post->BandSize) == "1-50inch")
+						    <p><span style="font-weight:bold">Band Size:</span> 1 1/2 Inch ({{ $post->BandSize}})</p>
+						@elseif (($post->BandSize) == "2-00inch")
+						   `<p><span style="font-weight:bold">Band Size:</span> 2 Inch ({{ $post->BandSize}})</p>
+						@endif
+				<p><span style="font-weight:bold">Band Color(s):</span> {{ $post->arColors}} </p>
+				<p></p>
+				<p><span style="font-weight:bold">Font:</span> {{ $post->Font}} </p>
+				<p><span style="font-weight:bold">Front Message:</span> {{ $post->FrontMessage}} </p>
+				<p><span style="font-weight:bold">Back Message:</span> {{ $post->BackMessage}} </p>
+				<p><span style="font-weight:bold">Continous Message:</span> {{ $post->ContinuousMessage}} </p>
+			   @endforeach
+		  	</div>
+		  	<!----  End Container -->
 		  </div>
         </div>
     </div>

@@ -395,7 +395,6 @@ $(document).ready(function() {
 
         // Load total amount.
         loadTotal(false);
-
     });
 
     $('body').on('keyup', '.wb-band-text', function(e) {
@@ -913,7 +912,6 @@ $(document).ready(function() {
         $('#modalWristbandColor').attr('data-style', customStyle);
         $('#modalWristbandColor').attr('data-type', customType);
         $('#modalWristbandColor').modal('show');
-
     });
 
     // Custom wristband color select event.
@@ -941,7 +939,6 @@ $(document).ready(function() {
             $(this).removeClass('active');
 
         }
-
     });
 
     // Clear all custom colors event.
@@ -1969,7 +1966,6 @@ function getSizeTitle(abbr)
             return "None";
             break;
     }
-
 }
 
 function getWBSizeTitle(abbr)
@@ -2004,7 +2000,6 @@ function getWBSizeTitle(abbr)
             return "None";
             break;
     }
-
 }
 
 function getTotal()
@@ -2482,7 +2477,6 @@ function getTotal()
 
     // Collection
     return $collection;
-
 }
 
 function loadColors($style, $size)
@@ -2591,7 +2585,6 @@ function loadCustomWristband($style, $type, $colors, $target)
         $($target).attr('src', link).animate({'opacity':'1'}, 1000);
         $($target).closest('.box-color').find('input').attr('ref-color', $colors);
     });
-
 }
 
 function loadFree()
@@ -2670,7 +2663,6 @@ function loadFree()
 
     // Get maximum quantity for keychains
     maxKeychain = total;
-
 }
 
 function loadPrices($style, $size)
@@ -2697,7 +2689,6 @@ function loadPrices($style, $size)
     $('#price_table .size').html($size_name.toUpperCase());
     $('#price_header').html(tblhead);
     $('#price_body').html(tblbody);
-
 }
 
 function loadSizes($style)
@@ -2738,7 +2729,6 @@ function loadSizes($style)
         $('#wb_size .iradio_square-green').removeClass('checked');
         $('#wb_size #wb_size_0-50inch input[type=radio].wb-size').prop('checked', true).closest('.iradio_square-green').addClass('checked');
     }
-
 }
 
 function loadTotal(loadProdShip)
@@ -3248,7 +3238,6 @@ function loadTotal(loadProdShip)
         $('#total-area .no-total').removeClass('hidden');
 
     }
-
 }
 
 function loadWristbands($style, $size)
@@ -3260,7 +3249,6 @@ function loadWristbands($style, $size)
     // check if $size is undefined.
     if(typeof $size == 'undefined')
         $size = $('#wb_size input[type=radio].wb-size:checked').val();
-
 }
 
 function loadPreview($style, $type, $colors, $font, $isFirst)

@@ -145,7 +145,7 @@ Route::group(['middleware' => 'admin'], function () {
     Route::get('/admin/images', 'AdminController@manageImages');
     Route::get('/admin/reset', 'AdminController@resetJSON');
     Route::get('/admin/orders', 'AdminController@manageOrders');
-	Route::get('/admin/cart-details', 'AdminController@manageCartOrders');
+	Route::get('/admin/cart-details/{order_id}', 'AdminController@manageCartOrders');
     Route::get('/admin/discounts', 'AdminController@manageDiscounts');
 
     // Admin price related actions

@@ -453,13 +453,13 @@
                     // Get proper total qty
 						$.ajax({
 							type: 'GET',
-							url: '/carts?order_id='+$order_id,
+							url: '/admin/cart-details/'+order_id,
 							data: { },
 							beforeSend: function() { },
 							success: function() { }
 						}).done(function(data) {
 							// Do something when everything is done.
-							$parent.prepend(data);
+							window.location='/admin/cart-details/'+order_id
 						});
                 });
 

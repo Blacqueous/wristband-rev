@@ -19,49 +19,18 @@ class Carts extends Model {
                 ->get();
     }
 	
-	public static function getCartOrders($data){
-        return DB::SELECT(DB::RAW("SELECT DateCreated,
-						Status,
-                        OrderID,
-                        BandStyle,
-                        BandType,
-                        BandSize,
-                        MessageStyle,
-                        Font,
-                        FrontMessage,
-                        BackMessage,
-                        ContinuousMessage,
-                        FrontMessageStartClipart,
-                        FrontMessageEndClipart,
-                        BackMessageStartClipart,
-                        BackMessageEndClipart,
-                        ContinuousMessageStartClipart,
-                        ContinuousEndClipart,
-                        ProductionTime,
-                        FreeQty,
-                        Delivery,
-                        Individual_Pack,
-                        Keychain,
-                        DigitalPrint,
-                        Comments,
-                        PriceProduction,
-                        PriceDelivery,
-                        PriceIndividual_Pack,
-                        PriceKeychain,
-                        PriceDigitalPrint,
-                        PriceBackMessage,
-						PriceContinuousMessage,
-						PriceLogo,
-						PriceColorSplit,
-						PriceMouldingFee,
-						RandomChr,
-						arColors,
-						Qty,
-						UnitPrice,
-						Total,
-						FullName,
-						PhoneNo,
-						EmailAddress FROM cart"));
+	public static function getCartOrders($id){
+        // check if all required variables are given.
+        if($order_id=null)
+            return false;
+
+        // get and return query.
+        return DB::select( DB::raw("SELECT *
+                                    FROM cart AS `c`
+                                    JOIN orders AS `o` ON `o`.id = `c`.OrderID
+                                    WHERE `o`.`id` = '$id'
+                                    ORDER BY `c`.`OrderID` ASC")
+                        );
     }
 	
     public function checkCartById($id=null)

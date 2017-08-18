@@ -46,6 +46,8 @@ class CartController extends Controller
 		$data = [
 			'items' => (Session::has('_cart')) ? Session::get('_cart') : []
 		];
+		// var_dump($data);
+		// die;
 		// Do something...
 		return view('cart', $data);
     }
@@ -266,6 +268,16 @@ class CartController extends Controller
 
 		$arrCart = $this->organizeCart($request->_token, $order_id, $request->bInfoFirstName." ".$request->bInfoLastName, $request->bInfoContactNo, $request->bInfoEmail);
 
+		foreach ($arrCart as $key => $value) {
+			unset($arrCart[$key]['_Name']);
+			unset($arrCart[$key]['_Size']);
+		}
+
+		$carts_model = new Carts();
+		$carts_model->insert($arrCart);
+var_dump($arrCart);
+die;
+
 		if (strtoupper($request->PaymentType) == "CC") {
 			$merchantAuthentication = new AnetAPI\MerchantAuthenticationType();
 			$merchantAuthentication->setName(App::make('config')->get('services.authorizenet.name'));
@@ -348,13 +360,6 @@ class CartController extends Controller
 					$orders_model = new Orders();
 					$orders_model->where('ID', $order_id)->update($data_order);
 
-					foreach ($arrCart as $key => $value) {
-						unset($arrCart[$key]['_Name']);
-						unset($arrCart[$key]['_Size']);
-					}
-
-					$carts_model = new Carts();
-					$carts_model->insert($arrCart);
 					Session::forget('_cart');
 					Session::forget('_paypal');
 					Session::flash('_checkout_success', true);
@@ -384,15 +389,10 @@ class CartController extends Controller
 			return redirect('/checkout')->withErrors(['message'=> $errMsg], 'checkout')->withInput();
 		} else {
 			// ### Payer
-			// A resource representing a Payer that funds a payment
-			// For paypal account payments, set payment method
-			// to 'paypal'.
 			$payer = new Payer();
 			$payer->setPaymentMethod("paypal");
 
 			// ### Itemized information
-			// (Optional) Lets you specify item wise
-			// information
 			$total = 0;
 			$items = [];
 			$all_prod = 0;
@@ -450,27 +450,18 @@ class CartController extends Controller
 			$itemList->setItems($items);
 
 			// ### Additional payment details
-			// Use this optional field to set additional
-			// payment information such as tax, shipping
-			// charges etc.
 			$details = new Details();
 			$details->setShipping($all_ship)
 				    ->setTax(0)
 				    ->setSubtotal($shipping_total);
 
 			// ### Amount
-			// Lets you specify a payment amount.
-			// You can also specify additional details
-			// such as shipping, tax.
 			$amount = new Amount();
 			$amount->setCurrency("USD")
 				   ->setTotal(number_format($all_total - $discount, 2))
 				   ->setDetails($details);
 
 			// ### Transaction
-			// A transaction defines the contract of a
-			// payment - what is the payment for and who
-			// is fulfilling it. 
 			$transaction = new Transaction();
 			$transaction->setAmount($amount)
 					    ->setItemList($itemList)
@@ -478,16 +469,12 @@ class CartController extends Controller
 					    ->setInvoiceNumber(uniqid());
 
 			// ### Redirect urls
-			// Set the urls that the buyer must be redirected to after 
-			// payment approval/ cancellation.
 			$baseUrl = URL::to('/');
 			$redirectUrls = new RedirectUrls();
 			$redirectUrls->setReturnUrl("$baseUrl/checkout/paypal?success=true")
 			    		 ->setCancelUrl("$baseUrl/checkout/paypal?success=false");
 
 			// ### Payment
-			// A Payment Resource; create one using
-			// the above types and intent set to 'sale'
 			$payment = new Payment();
 			$payment->setIntent("sale")
 				    ->setPayer($payer)
@@ -495,12 +482,6 @@ class CartController extends Controller
 				    ->setTransactions(array($transaction));
 
 			// ### Create Payment
-			// Create a payment by calling the 'create' method
-			// passing it a valid apiContext.
-			// (See bootstrap.php for more on `ApiContext`)
-			// The return object contains the state and the
-			// url to which the buyer must be redirected to
-			// for payment approval
 			$apiContext = new ApiContext(
 							new OAuthTokenCredential(
 								App::make('config')->get('services.paypal.client_id'),
@@ -530,7 +511,6 @@ class CartController extends Controller
 
 			return redirect('/checkout')->withErrors(['message'=> 'Something went wrong! Kindly try again.'], 'checkout')->withInput();
 		}
-
 	}
 
 	public function checkoutPaypal(Request $request)
@@ -546,12 +526,6 @@ class CartController extends Controller
 		if($request->success && $request->success == 'true') {
 
 			// ### Create Payment
-			// Create a payment by calling the 'create' method
-			// passing it a valid apiContext.
-			// (See bootstrap.php for more on `ApiContext`)
-			// The return object contains the state and the
-			// url to which the buyer must be redirected to
-			// for payment approval
 			$apiContext = new ApiContext(
 							new OAuthTokenCredential(
 								App::make('config')->get('services.paypal.client_id'),
@@ -560,23 +534,14 @@ class CartController extends Controller
 						);
 			$apiContext->setConfig(App::make('config')->get('services.paypal.settings'));
 
-		    // Get the payment Object by passing paymentId
-		    // payment id was previously stored in session in
-		    // CreatePaymentUsingPayPal.php
 		    $paymentId = $request->paymentId;
 		    $payment = Payment::get($paymentId, $apiContext);
 
 		    // ### Payment Execute
-		    // PaymentExecution object includes information necessary
-		    // to execute a PayPal account payment.
-		    // The payer_id is added to the request query parameters
-		    // when the user is redirected from paypal back to your site
 		    $execution = new PaymentExecution();
 		    $execution->setPayerId($request->PayerID);
 
 			// ### Itemized information
-			// (Optional) Lets you specify item wise
-			// information
 			$total = 0;
 			$priceAll = 0;
 			$addonAll = 0;
@@ -586,7 +551,7 @@ class CartController extends Controller
 
 			$order_id = Session::get('_paypal.order_id');
 			$paypalRequest = Session::get('_paypal.order_input');
-			$arrCart = $this->organizeCart($request->_token, $order_id, $request->bInfoFirstName." ".$request->bInfoLastName, $request->bInfoContactNo, $request->bInfoEmail);
+			// $arrCart = $this->organizeCart($request->_token, $order_id, $request->bInfoFirstName." ".$request->bInfoLastName, $request->bInfoContactNo, $request->bInfoEmail);
 
 			$ppcart = Session::get('_cart');
 			foreach ($ppcart as $value) {
@@ -608,10 +573,6 @@ class CartController extends Controller
 			$shipping_total = number_format($shipping_total, "2");
 
 			// ### Optional Changes to Amount
-			// If you wish to update the amount that you wish to charge the customer,
-			// based on the shipping address or any other reason, you could
-			// do that by passing the transaction object with just `amount` field in it.
-			// Here is the example on how we changed the shipping to $1 more than before.
 			$details = new Details();
 			$details->setShipping($all_ship)
 				    ->setTax(0)
@@ -652,13 +613,13 @@ class CartController extends Controller
 					$orders_model = new Orders();
 					$orders_model->where('ID', $order_id)->update($data_order);
 
-					foreach ($arrCart as $key => $value) {
-						unset($arrCart[$key]['_Name']);
-						unset($arrCart[$key]['_Size']);
-					}
+					// foreach ($arrCart as $key => $value) {
+					// 	unset($arrCart[$key]['_Name']);
+					// 	unset($arrCart[$key]['_Size']);
+					// }
 
-					$carts_model = new Carts();
-					$carts_model->insert($arrCart);
+					// $carts_model = new Carts();
+					// $carts_model->insert($arrCart);
 					Session::forget('_cart');
 					Session::forget('_paypal');
 					Session::flash('_checkout_success', true);
@@ -679,7 +640,6 @@ class CartController extends Controller
 
 		Session::put('_old_input', Session::get('_paypal.order_input'));
 		return redirect('/checkout')->withErrors(['message'=> 'Approval for PayPal checkout is cancelled. Kindly try again.'], 'checkout');
-
 	}
 
 	public function checkoutSuccess()
@@ -746,6 +706,7 @@ class CartController extends Controller
 			"arBackMessageEndClipart"			=> "",
 			"arContinuousMessageStartClipart"	=> "",
 			"arContinuousEndClipart"			=> "",
+			"arInfo"							=> "",
 			"arFree"							=> "",
 			"arKeychains"						=> "",
 			"arProduction"						=> "",
@@ -1020,6 +981,14 @@ class CartController extends Controller
 								}
 
 							}
+var_dump($item);
+die;
+							$arInfo = [
+								"Name" => ucwords(strtolower($item['title'])),
+								"Qty" => $item['qty'],
+								"FontColor" => ucwords(strtolower($item['font_title'])),
+								"CustomColors" => json_encode(explode(',', strtoupper($item['color'])))
+							];
 
 							$data_cart_item_attr[] = [
 								"_Name"			=> ucwords(strtolower($item['title'])),
@@ -1030,9 +999,8 @@ class CartController extends Controller
 								"Comments"		=> json_encode($comment), // JSON String ~ Comment
 								"FreeQty"		=> $arWristbands['quantity'], // Int ~ Free wristbands
 								"arFree"		=> json_encode(["wristbands"=> $arWristbands, "keychains"=> $arKeychains]), // JSON String ~ Free wristbands & keychains
+								"arInfo"		=> $arInfo, //json_encode($arInfo), // JSON String ~ Free wristbands & keychains
 								"arAddons"		=> json_encode($data_cart_item_addons), // JSON String ~ Addons
-								// "PriceMouldingFee"	=> $items['price_moldfee'],
-								// "arMoldingFee"		=> json_encode(['price'=> '', 'total'=> $items['price_moldfee']]), // JSON String ~ Molding Fee
 								"PriceMouldingFee"	=> $moldingFeePrice['price'],
 								"arMoldingFee"		=> json_encode($moldingFeePrice), // JSON String ~ Molding Fee
 							];
@@ -1041,7 +1009,8 @@ class CartController extends Controller
 
 					}
 				}
-
+var_dump($data_cart_item_attr);
+die;
 				foreach ($data_cart_item_attr as $value) {
 					// Compute add-ons
 					$itemAllPrice = 0;
