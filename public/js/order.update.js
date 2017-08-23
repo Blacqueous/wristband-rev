@@ -938,26 +938,67 @@ $(document).ready(function() {
     $('body').on('click', '#btnCustomSubmit', function(e) {
 
         var customColors = [];
+        var customColorNames = [];
 
         $('.field-'+customStyle+' input').each(function() {
             if( $(this).val().trim() && $(this).val().length > 0  ) {
                 customColors.push($(this).attr('ref-value').trim());
+                customColorNames.push($(this).val().trim().toLowerCase());
             }
         });
 
         if(customColors.length > 0) {
+
             loadCustomWristband(customStyle, customType, customColors.join(","), customImgTarget);
 
-            if(typeof items[customStyle] != "undefined") {
-                if(typeof items[customStyle][customIndex] != "undefined") {
-                    items[customStyle][customIndex]['color'] = customColors.join(",");
-                }
-            }
+            var inputElements = $('.custom-color-button[data-img-target="'+customImgTarget+'"]').closest('.box-color').find('input[name="quantity[]"]');
+            var hasChanged = false;
 
-            // reset wristband previews.
-            resetPreview();
-            // Load total amount.
-            loadTotal();
+            $.each(inputElements, function(inputKey, inputElement) {
+                var value = $(inputElement).val();
+                var qty = (value) ? parseInt(value) : 0;
+                if(qty > 0) {
+                    if(!hasChanged) { hasChanged = true; }
+                    // New behavior. Pretty much optimized.
+                    // Create variables to be used.
+                    var color = customColors.join(",");
+                        color = color.trim().toUpperCase().replace(/ /g, '');
+                    var size = $(inputElement).attr('ref-size');
+                    var style = $(inputElement).attr('ref-style');
+                    var title = $(inputElement).attr('ref-title');
+                    var type = $('input[type=radio].wb-style:checked').attr('data-style');
+                    // Generate an index using title.
+                    var idx = $(inputElement).attr('ref-index');
+                    var idx_size = "0";
+                    switch(size) {
+                        case 'yt':
+                            idx_size = "0";
+                            break;
+                        case 'md':
+                            idx_size = "1";
+                            break;
+                        case 'ad':
+                            idx_size = "2";
+                            break;
+                        case 'xs':
+                            idx_size = "3";
+                            break;
+                        case 'xl':
+                            idx_size = "4";
+                            break;
+                    }
+
+                    items["data"][style]['list'][idx][idx_size]["color"] = color; // Update color.
+                    items["data"][style]['list'][idx][idx_size]["colorCustom"] = customColorNames; // Add names of all custom colors.
+                }
+            });
+
+            if(hasChanged) {
+                // reset wristband previews.
+                resetPreview();
+                // Load free items.
+                loadFree();
+            }
         }
 
         // Do all item updates before closing modal.
@@ -3403,6 +3444,7 @@ function loadForm()
         // Reset item Object.
         items = _cart.items;
         itemKeys = [];
+        customItems = [];
 
         // Set fields
         $.each(items["data"], function(styleKey, styleVal) {
@@ -3427,35 +3469,45 @@ function loadForm()
                                 beforeSend: function() { },
                                 success: function() { }
                             }).done(function(data) {
-                                // Do something when everything is done.
-                                $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+itemVal['style']+"'] .main-color-content").prepend(data);
+                                if(customItems.indexOf(listKey) < 0) {
+                                    $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+itemVal['style']+"'] .main-color-content").prepend(data);
+                                    customItems.push(listKey);
+                                }
+
+                                newVal = parseFloat(itemVal['qty']);
+                                $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+itemVal['style']+"'] input[ref-size='"+itemVal['size']+"'][ref-style='"+itemVal['type']+"'][ref-index='"+listKey+"'][ref-color='"+itemVal['color'].split(',').join(', ')+"']").val(newVal);
+                                // Update font color.
+                                $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+itemVal['style']+"'] input[ref-size='"+itemVal['size']+"'][ref-style='"+itemVal['type']+"'][ref-index='"+listKey+"'][ref-color='"+itemVal['color'].split(',').join(', ')+"']").closest('.box-color-qty').find('.fntin').attr('ref-font-name', itemVal['font_title']);
+                                $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+itemVal['style']+"'] input[ref-size='"+itemVal['size']+"'][ref-style='"+itemVal['type']+"'][ref-index='"+listKey+"'][ref-color='"+itemVal['color'].split(',').join(', ')+"']").closest('.box-color-qty').find('.fntin').attr('ref-font-color', itemVal['font']);
+                                $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+itemVal['style']+"'] input[ref-size='"+itemVal['size']+"'][ref-style='"+itemVal['type']+"'][ref-index='"+listKey+"'][ref-color='"+itemVal['color'].split(',').join(', ')+"']").closest('.box-color-qty').find('.fntin').css({'background-color': '#' + itemVal['font']});
 
                                 // Check if view more section must open.
                                 if(itemVal['size'] == "xs" || itemVal['size'] == "xl") {
-                                    $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+itemVal['style']+"'] input[ref-size='"+itemVal['size']+"'][ref-style='"+itemVal['style']+"'][ref-index='"+listKey+"'][ref-color='"+itemVal['color'].split(',').join(', ')+"']").closest('.box-color').find('.view-more').removeClass('collapsed');
-                                    $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+itemVal['style']+"'] input[ref-size='"+itemVal['size']+"'][ref-style='"+itemVal['style']+"'][ref-index='"+listKey+"'][ref-color='"+itemVal['color'].split(',').join(', ')+"']").closest('.box-color').find('.view-more').attr('aria-expanded', 'true');
-                                    $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+itemVal['style']+"'] input[ref-size='"+itemVal['size']+"'][ref-style='"+itemVal['style']+"'][ref-index='"+listKey+"'][ref-color='"+itemVal['color'].split(',').join(', ')+"']").closest('.show-content').addClass('in');
-                                    $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+itemVal['style']+"'] input[ref-size='"+itemVal['size']+"'][ref-style='"+itemVal['style']+"'][ref-index='"+listKey+"'][ref-color='"+itemVal['color'].split(',').join(', ')+"']").closest('.show-content').removeAttr("style");
+                                    $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+itemVal['style']+"'] input[ref-size='"+itemVal['size']+"'][ref-style='"+itemVal['type']+"'][ref-index='"+listKey+"'][ref-color='"+itemVal['color'].split(',').join(', ')+"']").closest('.box-color').find('.view-more').removeClass('collapsed');
+                                    $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+itemVal['style']+"'] input[ref-size='"+itemVal['size']+"'][ref-style='"+itemVal['type']+"'][ref-index='"+listKey+"'][ref-color='"+itemVal['color'].split(',').join(', ')+"']").closest('.box-color').find('.view-more').attr('aria-expanded', 'true');
+                                    $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+itemVal['style']+"'] input[ref-size='"+itemVal['size']+"'][ref-style='"+itemVal['type']+"'][ref-index='"+listKey+"'][ref-color='"+itemVal['color'].split(',').join(', ')+"']").closest('.show-content').addClass('in');
+                                    $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+itemVal['style']+"'] input[ref-size='"+itemVal['size']+"'][ref-style='"+itemVal['type']+"'][ref-index='"+listKey+"'][ref-color='"+itemVal['color'].split(',').join(', ')+"']").closest('.show-content').removeAttr("style");
                                 }
                             });
                         } else {  // If normal...
                             // Update field indeces.
-                            $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='" + itemVal['style'] + "'] input[ref-style='" + itemVal['style'] + "'][ref-color='" + itemVal['color'].split(',').join(', ') + "']").attr('ref-index', listKey);
+                            $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+itemVal['style']+"'] input[ref-size='"+itemVal['size']+"'][ref-style='"+itemVal['style']+"'][ref-color='"+itemVal['color'].split(',').join(', ')+"']").attr('ref-index', listKey);
                             // Update field quantity.
-                            var newVal1 = $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='" + itemVal['style'] + "'] input[ref-size='" + itemVal['size'] + "'][ref-style='" + itemVal['style'] + "'][ref-index='" + listKey + "'][ref-color='" + itemVal['color'].split(',').join(', ') + "']").val();
-                                newVal1 = (newVal1 != "") ? parseFloat(newVal1) : 0;
+                            var newVal1 = $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+itemVal['style']+"'] input[ref-size='"+itemVal['size']+"'][ref-style='"+itemVal['style']+"'][ref-color='"+itemVal['color'].split(',').join(', ')+"']").val();
+                                newVal1 = (newVal1) ? parseFloat(newVal1) : 0;
+                                // newVal1 = (newVal1 != "" || typeof newVal1 != "undefined") ? 0 : parseFloat(newVal1);
                                 newVal = newVal1 + parseFloat(itemVal['qty']);
-                            $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+itemVal['style']+"'] input[ref-size='"+itemVal['size']+"'][ref-style='"+itemVal['style']+"'][ref-index='"+listKey+"'][ref-color='"+itemVal['color'].split(',').join(', ')+"']").val(newVal);
+                            $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+itemVal['style']+"'] input[ref-size='"+itemVal['size']+"'][ref-style='"+itemVal['style']+"'][ref-color='"+itemVal['color'].split(',').join(', ')+"']").val(newVal);
                             // Update font color.
-                            $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+itemVal['style']+"'] input[ref-size='"+itemVal['size']+"'][ref-style='"+itemVal['style']+"'][ref-index='"+listKey+"'][ref-color='"+itemVal['color'].split(',').join(', ')+"']").closest('.box-color-qty').find('.fntin').attr('ref-font-name', itemVal['font_title']);
-                            $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+itemVal['style']+"'] input[ref-size='"+itemVal['size']+"'][ref-style='"+itemVal['style']+"'][ref-index='"+listKey+"'][ref-color='"+itemVal['color'].split(',').join(', ')+"']").closest('.box-color-qty').find('.fntin').attr('ref-font-color', itemVal['font']);
-                            $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+itemVal['style']+"'] input[ref-size='"+itemVal['size']+"'][ref-style='"+itemVal['style']+"'][ref-index='"+listKey+"'][ref-color='"+itemVal['color'].split(',').join(', ')+"']").closest('.box-color-qty').find('.fntin').css({'background-color': '#' + itemVal['font']});
+                            $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+itemVal['style']+"'] input[ref-size='"+itemVal['size']+"'][ref-style='"+itemVal['style']+"'][ref-color='"+itemVal['color'].split(',').join(', ')+"']").closest('.box-color-qty').find('.fntin').attr('ref-font-name', itemVal['font_title']);
+                            $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+itemVal['style']+"'] input[ref-size='"+itemVal['size']+"'][ref-style='"+itemVal['style']+"'][ref-color='"+itemVal['color'].split(',').join(', ')+"']").closest('.box-color-qty').find('.fntin').attr('ref-font-color', itemVal['font']);
+                            $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+itemVal['style']+"'] input[ref-size='"+itemVal['size']+"'][ref-style='"+itemVal['style']+"'][ref-color='"+itemVal['color'].split(',').join(', ')+"']").closest('.box-color-qty').find('.fntin').css({'background-color': '#' + itemVal['font']});
                             // Check if view more section must open.
                             if(itemVal['size'] == "xs" || itemVal['size'] == "xl") {
-                                $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+itemVal['style']+"'] input[ref-size='"+itemVal['size']+"'][ref-style='"+itemVal['style']+"'][ref-index='"+listKey+"'][ref-color='"+itemVal['color'].split(',').join(', ')+"']").closest('.box-color').find('.view-more').removeClass('collapsed');
-                                $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+itemVal['style']+"'] input[ref-size='"+itemVal['size']+"'][ref-style='"+itemVal['style']+"'][ref-index='"+listKey+"'][ref-color='"+itemVal['color'].split(',').join(', ')+"']").closest('.box-color').find('.view-more').attr('aria-expanded', 'true');
-                                $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+itemVal['style']+"'] input[ref-size='"+itemVal['size']+"'][ref-style='"+itemVal['style']+"'][ref-index='"+listKey+"'][ref-color='"+itemVal['color'].split(',').join(', ')+"']").closest('.show-content').addClass('in');
-                                $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+itemVal['style']+"'] input[ref-size='"+itemVal['size']+"'][ref-style='"+itemVal['style']+"'][ref-index='"+listKey+"'][ref-color='"+itemVal['color'].split(',').join(', ')+"']").closest('.show-content').removeAttr("style");
+                                $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+itemVal['style']+"'] input[ref-size='"+itemVal['size']+"'][ref-style='"+itemVal['style']+"'][ref-color='"+itemVal['color'].split(',').join(', ')+"']").closest('.box-color').find('.view-more').removeClass('collapsed');
+                                $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+itemVal['style']+"'] input[ref-size='"+itemVal['size']+"'][ref-style='"+itemVal['style']+"'][ref-color='"+itemVal['color'].split(',').join(', ')+"']").closest('.box-color').find('.view-more').attr('aria-expanded', 'true');
+                                $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+itemVal['style']+"'] input[ref-size='"+itemVal['size']+"'][ref-style='"+itemVal['style']+"'][ref-color='"+itemVal['color'].split(',').join(', ')+"']").closest('.show-content').addClass('in');
+                                $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+itemVal['style']+"'] input[ref-size='"+itemVal['size']+"'][ref-style='"+itemVal['style']+"'][ref-color='"+itemVal['color'].split(',').join(', ')+"']").closest('.show-content').removeAttr("style");
                             }
                         }
                         var idx_size = "0";
@@ -3485,32 +3537,36 @@ function loadForm()
         }
         if(_cart.quantity > 100) {
             if(typeof free['key-chain'] != "undefined") {
-                $('#free-keychains').iCheck('check');
-                $('#dv-10-free-keychains').removeClass('hidden');
-                $('#dv-10-free-keychains .convert-container').removeClass('hidden');
-                $.each(free['key-chain']['items'], function(aKey, aValue) {
-                    $.each(aValue, function(bKey, bValue) {
-                        $.each(bValue, function(cKey, cValue) {
-                            if(typeof cValue != "object") {
-                                $("input[data-size='"+cValue['size']+"'][data-style='"+aKey+"'][data-font-color='"+cValue['font']+"'][data-color='"+bValue['color'].split(',').join(',')+"'].freekc").val(cValue['qty']);
-                            }
+                if(typeof free['key-chain']['items'] != "undefined") {
+                    $('#free-keychains').iCheck('check');
+                    $('#dv-10-free-keychains').removeClass('hidden');
+                    $('#dv-10-free-keychains .convert-container').removeClass('hidden');
+                    $.each(free['key-chain']['items'], function(aKey, aValue) {
+                        $.each(aValue, function(bKey, bValue) {
+                            $.each(bValue, function(cKey, cValue) {
+                                if(typeof cValue == "object") {
+                                    $("input[data-size='"+cValue['size']+"'][data-style='"+bValue['style']+"'][data-font-color='"+cValue['font']+"'][data-color='"+bValue['color'].split(',').join(',')+"'].freekc").val(cValue['qty']);
+                                }
+                            });
                         });
                     });
-                });
+                }
             }
             if(typeof free['wristbands'] != "undefined") {
-                $('#free-wristbands').iCheck('check');
-                $('#dv-100-free-wristbands').removeClass('hidden');
-                $('#dv-100-free-wristbands .convert-container').removeClass('hidden');
-                $.each(free['wristbands']['items'], function(aKey, aValue) {
-                    $.each(aValue, function(bKey, bValue) {
-                        $.each(bValue, function(cKey, cValue) {
-                            if(typeof cValue == "object") {
-                                $("input[data-size='"+cValue['size']+"'][data-style='"+aKey+"'][data-font-color='"+cValue['font']+"'][data-color='"+bValue['color'].split(',').join(',')+"'].freewb").val(cValue['qty']);
-                            }
+                if(typeof free['wristbands']['items'] != "undefined") {
+                    $('#free-wristbands').iCheck('check');
+                    $('#dv-100-free-wristbands').removeClass('hidden');
+                    $('#dv-100-free-wristbands .convert-container').removeClass('hidden');
+                    $.each(free['wristbands']['items'], function(aKey, aValue) {
+                        $.each(aValue, function(bKey, bValue) {
+                            $.each(bValue, function(cKey, cValue) {
+                                if(typeof cValue == "object") {
+                                    $("input[data-size='"+cValue['size']+"'][data-style='"+bValue['style']+"'][data-font-color='"+cValue['font']+"'][data-color='"+bValue['color'].split(',').join(',')+"'].freewb").val(cValue['qty']);
+                                }
+                            });
                         });
                     });
-                });
+                }
             }
         }
 

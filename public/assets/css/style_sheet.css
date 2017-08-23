@@ -1520,7 +1520,7 @@ input.form-control {
 
 
 	span.fig-fc {
-		left: 76px!important;
+		/*left: 76px!important;*/
 	}
 
 	#preview-pane #front-view, #preview-pane, #back-view, #insides-view ,#continue-view{
@@ -1625,7 +1625,7 @@ input.form-control {
 
 @media only screen and (min-width: 370px) and (max-width: 400px){
 	span.fig-fc {
-		left: 140px!important;
+		/*left: 140px!important;*/
 	}
 
 	.price-sidebar li {

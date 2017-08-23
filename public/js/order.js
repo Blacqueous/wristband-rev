@@ -952,26 +952,67 @@ $(document).ready(function() {
     $('body').on('click', '#btnCustomSubmit', function(e) {
 
         var customColors = [];
+        var customColorNames = [];
 
         $('.field-'+customStyle+' input').each(function() {
             if( $(this).val().trim() && $(this).val().length > 0  ) {
                 customColors.push($(this).attr('ref-value').trim());
+                customColorNames.push($(this).val().trim().toLowerCase());
             }
         });
 
         if(customColors.length > 0) {
+
             loadCustomWristband(customStyle, customType, customColors.join(","), customImgTarget);
 
-            if(typeof items[customStyle] != "undefined") {
-                if(typeof items[customStyle][customIndex] != "undefined") {
-                    items[customStyle][customIndex]['color'] = customColors.join(",");
-                }
-            }
+            var inputElements = $('.custom-color-button[data-img-target="'+customImgTarget+'"]').closest('.box-color').find('input[name="quantity[]"]');
+            var hasChanged = false;
 
-            // reset wristband previews.
-            resetPreview();
-            // Load total amount.
-            loadTotal();
+            $.each(inputElements, function(inputKey, inputElement) {
+                var value = $(inputElement).val();
+                var qty = (value) ? parseInt(value) : 0;
+                if(qty > 0) {
+                    if(!hasChanged) { hasChanged = true; }
+                    // New behavior. Pretty much optimized.
+                    // Create variables to be used.
+                    var color = customColors.join(",");
+                        color = color.trim().toUpperCase().replace(/ /g, '');
+                    var size = $(inputElement).attr('ref-size');
+                    var style = $(inputElement).attr('ref-style');
+                    var title = $(inputElement).attr('ref-title');
+                    var type = $('input[type=radio].wb-style:checked').attr('data-style');
+                    // Generate an index using title.
+                    var idx = $(inputElement).attr('ref-index');
+                    var idx_size = "0";
+                    switch(size) {
+                        case 'yt':
+                            idx_size = "0";
+                            break;
+                        case 'md':
+                            idx_size = "1";
+                            break;
+                        case 'ad':
+                            idx_size = "2";
+                            break;
+                        case 'xs':
+                            idx_size = "3";
+                            break;
+                        case 'xl':
+                            idx_size = "4";
+                            break;
+                    }
+
+                    items["data"][style]['list'][idx][idx_size]["color"] = color; // Update color.
+                    items["data"][style]['list'][idx][idx_size]["colorCustom"] = customColorNames; // Add names of all custom colors.
+                }
+            });
+
+            if(hasChanged) {
+                // reset wristband previews.
+                resetPreview();
+                // Load free items.
+                loadFree();
+            }
         }
 
         // Do all item updates before closing modal.
@@ -3238,6 +3279,7 @@ function loadTotal(loadProdShip)
         $('#total-area .no-total').removeClass('hidden');
 
     }
+console.log($collection);
 }
 
 function loadWristbands($style, $size)

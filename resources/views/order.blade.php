@@ -72,22 +72,20 @@
 					<div class="clearfix"></div>
 				</div>
 				<div class="wrist_style_container">
-					<div class="popup-order-gallery col-xs-12">
-						@foreach($styles as $key => $value)
-							<div id="wb_style_{{ $value['code'] }}" class="col-xs-6 col-md-3 prod prod-style js-style {{ ($value['code']==$style) ? 'active' : '' }}" style="margin-bottom:10px;">
-								<div class="zoom">
-									<a href="{{ $value['image'] }}" title="Printed Wristband"><img src="assets/images/src/zoom.png" class="galleryimg"></a>
-								</div>
-								<div class="box-thumb"><img src="{{ $value['image'] }}"></div>
-								<input class="wrist-style wb-style" data-style="{{ $value['code'] }}" name="wb-style" type="radio" value="{{ $value['code'] }}" {{ ($value['code']==$style) ? 'checked="checked"' : '' }} />
-								<br/>
-								<label for="wb-style">
-									<h2>{{ $value['name'] }}</h2>
-								</label>
+					@foreach($styles as $key => $value)
+						<div id="wb_style_{{ $value['code'] }}" class="col-xs-12 col-sm-6 col-md-4 col-lg-3 prod prod-style js-style {{ ($value['code']==$style) ? 'active' : '' }}">
+							<div class="zoom">
+								<a href="{{ $value['image'] }}" title="Printed Wristband"><img src="assets/images/src/zoom.png" class="galleryimg"></a>
 							</div>
-						@endforeach
-						<div class="clearfix"></div>
-					</div>
+							<div class="box-thumb"><img src="{{ $value['image'] }}"></div>
+							<input class="wrist-style wb-style" data-style="{{ $value['code'] }}" name="wb-style" type="radio" value="{{ $value['code'] }}" {{ ($value['code']==$style) ? 'checked="checked"' : '' }} />
+							<br/>
+							<label for="wb-style">
+								<h2>{{ $value['name'] }}</h2>
+							</label>
+						</div>
+					@endforeach
+					<div class="clearfix"></div>
 				</div>
 			</div>
 			<!-- END WRIST STYLES -->
@@ -165,30 +163,24 @@
 					<div class="clearfix"></div>
 				</div>
 				<div class="main-content-preview">
-
 					<div id="text-design" class="optional-messsage">
 						<h3>INPUT TEXT DESIGN MESSAGE</h3>
 					</div>
-
 					<div id="text-option" class="message-selection optional-messsage">
-						<div class="col-sm-4">
+						<div class="col-sm-4 text-left">
 							<input class="band-text-design wb-text-type" name="wb-message" type="radio" value="select-fb" name="text-select" checked="checked"/>
-							<label for="wb-message"> Front/Back Message</label>
+							<label for="wb-message">&nbsp;&nbsp;Front/Back Message</label>
 						</div>
-						<div class="col-sm-4">
+						<div class="col-sm-4 text-left">
 							<input class="band-text-design wb-text-type" name="wb-message" type="radio" value="select-c" name="text-select"/>
-							<label for="wb-message"> Continuous Message</label>
+							<label for="wb-message">&nbsp;&nbsp;Continuous Message</label>
 						</div>
 						<div class="clearfix"></div>
 					</div>
 					<div id="band-text" class="margin-div optional-messsage">
 						<div id="wb_text_outside_fb" class="wb-text-outside f-input">
 							<div class="col-sm-6">
-								<h4>
-									<span>
-										Front Message:
-									</span>
-								</h4>
+								<h4><span>Front Message :</span></h4>
 								<span class="note-m">* Maximum of 22 characters.</span>
 								<input class="band-text wb-band-text col-xs-12 text-center" data-preview="#wb_text_front_preview" id="wb_text_front" maxlength="22" ref-text="front" name="front-text" placeholder="Front Message" type="text" value="">
 
@@ -213,11 +205,7 @@
 								<div class="clearfix"></div>
 							</div>
 							<div class="col-sm-6">
-								<h4>
-									<span>
-										Back Message:
-									</span>
-								</h4>
+								<h4><span>Back Message :</span></h4>
 								<span class="note-m">* Maximum of 22 characters.</span>
 								<input class="band-text wb-band-text col-xs-12 text-center" data-preview="#wb_text_back_preview" id="wb_text_back" maxlength="22" ref-text="back" name="back-text" placeholder="Back Message" type="text" value="">
 								<!-- Clipart back start -->
@@ -252,11 +240,7 @@
 						</div>
 						<div id="wb_text_outside_c" class="wb-text-outside c-input hidden">
 							<div class="col-sm-12">
-								<h4>
-									<span>
-										Continuous Message:
-									</span>
-								</h4>
+								<h4><span>Continuous Message :</span></h4>
 								<span class="note-m">* Maximum of 50 characters.</span>
 								<input class="band-text wb-band-text col-xs-12 text-center" data-preview="#wb_text_continue_preview" id="wb_text_continue" maxlength="50" ref-text="continue" name="continue-text" placeholder="Continuous Message" type="text" value="">
 							</div>
@@ -278,7 +262,6 @@
 									<button type="button" class="btn btn-order clipartin col-xs-6" ref-code="none" ref-target="#clipart-cont-end"><i class="fa fa-folder-open"></i> Browse</button>
 									<label type="button" class="btn btn-order btn-file clipartup col-xs-6"><i class="fa fa-upload"></i> Upload<input id="clipartup_cont_end" class="clipart-fileupload" type="file" accept="image/*" ref-target="#clipart-cont-end"></label>
 								</div>
-
 								<a href="javascript:void(0)" id="rm_clip_cont_end" class="text-danger clipart-remove" ref-target="#clipart-cont-end">Remove</a>
 							</div>
 						</div>
@@ -286,11 +269,7 @@
 						<div class="clearfix"></div>
 						<div id="wb_text_inside" class="wb-text-inside i-input">
 							<div class="col-sm-12">
-								<h4>
-									<span>
-										Inside Message:
-									</span>
-								</h4>
+								<h4><span>Inside Message :</span></h4>
 								<span class="note-m">
 									* Maximum of 50 characters.<br/>
 									* Inside Message will be embossed with the same color of the inside of the band
@@ -301,6 +280,12 @@
 						</div>
 						<div class="clearfix"></div>
 					</div>
+					<div id="add-design" class="optional-messsage col-xs-12">
+						<h4><span>Select Font Style :</span></h4>
+						<button id="btn_font_style" class="btn-order pull-left" ref-font-style-code="arial-bold">Choose Font Style</button>
+						<div id="preview-textfont"><img src="/assets/images/src/fonts/Arialold.png"></div>
+					</div>
+					<div class="clearfix"></div>
 
 					<h3>PREVIEW</h3>
 
@@ -350,13 +335,6 @@
 					</div>
 				</div>
 				<!-- End preview pane -->
-				<div id="add-design" class="optional-messsage">
-					<!--<button>Clear</button>-->
-					<h3 style="text-align: left;">Select Font Style</h3>
-					<button id="btn_font_style" class="btn-order pull-left" ref-font-style-code="arial-bold">Choose Font Style</button>
-					<div id="preview-textfont"><img src="assets/images/src/fonts/Arialold.png"></div>
-					<div class="clearfix"></div>
-				</div>
 			</div>
 			<!-- END WRIST MESSAGE -->
 

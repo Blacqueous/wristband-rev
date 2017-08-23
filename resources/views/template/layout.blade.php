@@ -20,33 +20,25 @@
 		<link rel="icon" href="{{ URL::asset('../../favicon.ico') }}">
 		<meta name="google-site-verification" content="donyC2DWRFLJm-yUeDOoD9YnWD6PEBR9fU-sE5kggG0" />
 		<title>Custom Silicone Wristbands | Promotional Wristbands @yield('title')</title>
-
 		<!-- Bootstrap core CSS -->
 		<link href="{{ URL::asset('assets/css/bootstrap.min.css') }}" rel="stylesheet">
-
 		<!-- Font Awesome core CSS -->
 		<link href="{{ URL::asset('global/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet">
-
 		<!-- SweetAlert core CSS -->
 		<link href="{{ URL::asset('global/sweetalert.js/sweetalert.css') }}" rel="stylesheet">
-
 		<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
 		<link href="{{ URL::asset('assets/css/ie10-viewport-bug-workaround.css') }}" rel="stylesheet">
-
 		<!-- Custom styles for this template -->
 		<link href="{{ URL::asset('assets/css/style_sheet.css') }}" rel="stylesheet">
 		<link href="{{ URL::asset('assets/css/order.css') }}" rel="stylesheet">
 		<link href="{{ URL::asset('assets/css/font_style.css') }}" rel="stylesheet">
 		<link href="{{ URL::asset('assets/css/magnific-popup.css') }}" rel="stylesheet">
-
+		<link href="https://fonts.googleapis.com/css?family=Montserrat:400,500" rel="stylesheet">
 		<!-- Page custom added css styles. -->
         @section('css')
         @show
 
 		<script src="{{ URL::asset('js/jquery-3.1.1.min.js') }}"></script>
-
-		<!-- <link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet" type="text/css"> -->
-
 		<!-- BEGIN: Google Trusted Stores -->
         <script type="text/javascript">
             // var gts = gts || [];
@@ -70,80 +62,62 @@
 		<!-- <script type='text/javascript' data-cfasync='false'>window.purechatApi = { l: [], t: [], on: function () { this.l.push(arguments); } }; (function () { var done = false; var script = document.createElement('script'); script.async = true; script.type = 'text/javascript'; script.src = 'https://app.purechat.com/VisitorWidget/WidgetScript'; document.getElementsByTagName('HEAD').item(0).appendChild(script); script.onreadystatechange = script.onload = function (e) { if (!done && (!this.readyState || this.readyState == 'loaded' || this.readyState == 'complete')) { var w = new PCWidget({c: 'ff8c4d2b-032b-4f3f-9c29-8411120648ad', f: true }); done = true; } }; })();
 		</script> -->
 		<!-- END: Google Trusted Stores -->
-			<script>
-			  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-			  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-			  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-			  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
-			  ga('create', 'UA-90869436-1', 'auto');
-			  ga('send', 'pageview');
-
-			</script>
+		<script>
+		  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+		  ga('create', 'UA-90869436-1', 'auto');
+		  ga('send', 'pageview');
+		</script>
 	</head>
 
     <body>
-
 		<div class="loader-container">
 			<div id="loader-wrapper">
-				<div id="loader"></div>
+				<div class="loader-spin"><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div></div>
 				<div class="loader-section section-left"></div>
 				<div class="loader-section section-right"></div>
 			</div>
 		</div>
-
         @include('template.header')
-
         <div id="main">
             @section('content')
             @show
         </div>
-
  		<a href="#" id="back-to-top" title="Back to top"><span style="fnot-weight:bold;">&#8593;</span></a>
-
         @include('template.footer')
 
         <!-- Bootstrap core JavaScript
         ================================================== -->
         <!-- Placed at the end of the document so the pages load faster -->
-
         <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
-
         <!-- <script type="text/javascript" src="assets/docs/spectrum.js"></script> -->
         <script type='text/javascript' src="{{ URL::asset('assets/docs/toc.js') }}"></script>
         <script type="text/javascript" src="{{ URL::asset('assets/js/jquery.countdown.js') }}"></script>
         <script type="text/javascript" src="{{ URL::asset('assets/js/jquery.magnific-popup.min.js') }}"></script>
-
 		<script src="{{ URL::asset('global/bootstrap/js/bootstrap.min.js') }}"></script>
-
 		<script src="{{ URL::asset('global/sweetalert.js/sweetalert.min.js') }}"></script>
-
 		<script src="{{ URL::asset('js/angular.min.js') }}"></script>
         <script src="{{ URL::asset('js/jquery.blink.js') }}"></script>
-
         <!-- Javascript for wristband previews -->
         <!-- <script type="text/javascript" src="assets/js/canvg.js"></script>
         <script type="text/javascript" src="assets/js/stackblur.js"></script> -->
         <script type="text/javascript" src="{{ URL::asset('assets/js/preview.js') }}"></script>
         <script type="text/javascript" src="{{ URL::asset('assets/js/preview_band.js') }}"></script>
-
         <script type="text/javascript" src="{{ URL::asset('assets/js/promo-keychain-10.js') }}"></script>
-
         <!-- <script src="assets/js/main-2.js"></script> -->
         <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-
 		<!-- Page custom added javascripts. -->
         @section('js')
         @show
 
-        <script language="javascript">
+        <script type="text/javascript">
 
 			$(window).ready(function() {
 				$('body').addClass('loaded');
 				$('.loader-section').addClass('done');
-
 				$('[data-toggle="tooltip"]').tooltip();
-
 				if ($('#back-to-top').length) {
 					var scrollTrigger = 100, // px
 						backToTop = function () {
@@ -165,7 +139,6 @@
 							}, 700);
 						});
 				}
-
 			});
 
             $(function() {
@@ -175,9 +148,7 @@
             });
 
             $(document).ready(function() {
-
 				$(document).scrollTop(0);
-
                 $('.popup-order-gallery').magnificPopup({
                     delegate: 'a',
                     type: 'image',
@@ -196,13 +167,10 @@
                     }
                 });
             });
-
         </script>
 
         <script language="javascript">
-
             jQuery("#slideshow > div:gt(0)").hide();
-
             setInterval(function() {
                 jQuery('#slideshow > div:first')
                     .fadeOut(1000)
@@ -211,7 +179,6 @@
                     .end()
                     .appendTo('#slideshow');
             },  7000);
-
         </script>
 		
 		<!---Purechat---->

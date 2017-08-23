@@ -3,7 +3,7 @@
 
     <!-- content -->
     <div class="content">
-        <div id="tab_dual_reg" class="tab-pane js-color" data-value="0.01" data-color="Dual">
+        <div id="tab_dual_reg" class="tab-content tab-pane js-color" data-value="0.01" data-color="Dual">
             <h3>Dual Colors</h3>
 
             @if(isset($colors['dual']))
