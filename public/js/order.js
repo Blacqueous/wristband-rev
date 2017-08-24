@@ -242,8 +242,11 @@ $(document).ready(function() {
             // Create variables to be used.
             var color = $(this).attr('ref-color');
                 color = color.trim().toUpperCase().replace(/ /g, '');
+            var color_name = $(this).attr('ref-color-name');
+                color_name = color_name.trim().toUpperCase().replace(/ /g, '-');
             var font = $(this).closest('.box-color-qty').find('.fonttext .fntin').attr('ref-font-color');
             var font_name = $(this).closest('.box-color-qty').find('.fonttext .fntin').attr('ref-font-name');
+                font_name = font_name.trim().toUpperCase().replace(/ /g, '');
             var size = $(this).attr('ref-size');
             var style = $(this).attr('ref-style');
             var title = $(this).attr('ref-title');
@@ -305,6 +308,7 @@ $(document).ready(function() {
                 // Create WB color.
                 items["data"][style]['list'][idx][idx_size] = {
                     "color": color,
+                    "color_title": color_name,
                     "font": font,
                     "font_title": font_name,
                     "qty": qty,
@@ -317,9 +321,10 @@ $(document).ready(function() {
                 makePreview = true;
             } else {
                 items["data"][style]['list'][idx][idx_size]["color"] = color;
+                items["data"][style]['list'][idx][idx_size]["color_title"] = color_name;
                 items["data"][style]['list'][idx][idx_size]["qty"] = qty;
                 items["data"][style]['list'][idx][idx_size]["font"] = font;
-                items["data"][style]['list'][idx][idx_size]["font_title"] = font_name.toLowerCase();
+                items["data"][style]['list'][idx][idx_size]["font_title"] = font_name;
             }
 
             // Check if quantity is less than 0.
@@ -359,11 +364,9 @@ $(document).ready(function() {
             loadFree();
             // Load total amount.
             loadTotal();
-
         } else {
             // $(this).val("");
         }
-
     });
 
     $('body').on('ifClicked', '.wb-text-type', function(e) {
@@ -493,8 +496,8 @@ $(document).ready(function() {
                     break;
             }
 
-            items["data"][style]['list'][idx][idx_size]["font"] = font_color; // Update font color.
-            items["data"][style]['list'][idx][idx_size]["font_title"] = font_name.toLowerCase(); // Update font name.
+            items["data"][style]['list'][idx][idx_size]["font"] = font_color.toUpperCase(); // Update font color.
+            items["data"][style]['list'][idx][idx_size]["font_title"] = font_name.toUpperCase(); // Update font name.
 
             // reset wristband previews.
             resetPreview();
@@ -971,12 +974,18 @@ $(document).ready(function() {
             $.each(inputElements, function(inputKey, inputElement) {
                 var value = $(inputElement).val();
                 var qty = (value) ? parseInt(value) : 0;
+                var color = customColors.join(",");
+                    color = color.trim().toUpperCase().replace(/ /g, '');
+                var color_name = customColorNames.join(",");
+                    color_name = color_name.trim().toUpperCase().replace(/ /g, '-');
+                // Update all input fields
+                $(inputElement).attr('ref-color', color.toLowerCase());
+                $(inputElement).attr('ref-color-name', color_name.toLowerCase());
+                // Update only those with values.
                 if(qty > 0) {
                     if(!hasChanged) { hasChanged = true; }
                     // New behavior. Pretty much optimized.
                     // Create variables to be used.
-                    var color = customColors.join(",");
-                        color = color.trim().toUpperCase().replace(/ /g, '');
                     var size = $(inputElement).attr('ref-size');
                     var style = $(inputElement).attr('ref-style');
                     var title = $(inputElement).attr('ref-title');
@@ -1003,7 +1012,7 @@ $(document).ready(function() {
                     }
 
                     items["data"][style]['list'][idx][idx_size]["color"] = color; // Update color.
-                    items["data"][style]['list'][idx][idx_size]["colorCustom"] = customColorNames; // Add names of all custom colors.
+                    items["data"][style]['list'][idx][idx_size]["color_title"] = color_name; // Add names of all custom colors.
                 }
             });
 
@@ -1814,6 +1823,20 @@ function displayTotal($collection)
         $('#summary-table-molding-fee .qty').html( $collection.items.count );
         $('#summary-table-molding-fee .price').html( ($collection.molding_fee).formatMoney() );
         $('#summary-table-molding-fee .total').html( ($collection.items.price_all_moldfee).formatMoney() );
+        $('#summary-table-molding-fee #molding-fee-list').html("");
+        var mold_first = true;
+        if(typeof $collection.items != "undefined") {
+            if(typeof $collection.items.mold_list != "undefined") {
+                $.each($collection.items.mold_list, function(key, value) {
+                    if(mold_first) {
+                        $('#summary-table-molding-fee #molding-fee-list').append('<div class="col-xs-9 padding-left-25 list"><i class="fa fa-angle-right"></i><strike>'+getSizeTitle(value)+'</strike></div><div class="col-xs-3 text-right no-padding-right">-</div>');
+                        mold_first = false;
+                    } else {
+                        $('#summary-table-molding-fee #molding-fee-list').append('<div class="col-xs-9 padding-left-25 list"><i class="fa fa-angle-right"></i>'+getSizeTitle(value)+'</div><div class="col-xs-3 text-right no-padding-right">-</div>');
+                    }
+                });
+            }
+        }
     }
 
     if(typeof $collection.time_production != "undefined") {
@@ -1984,7 +2007,7 @@ function getSizeTitle(abbr)
 
     switch (abbr.toLowerCase()) {
         case "ad":
-            return "Large";
+            return "Adult";
             break;
 
         case "md":
@@ -1992,7 +2015,7 @@ function getSizeTitle(abbr)
             break;
 
         case "yt":
-            return "Small";
+            return "Youth";
             break;
 
         case "xs":
@@ -2004,7 +2027,7 @@ function getSizeTitle(abbr)
             break;
 
         default:
-            return "None";
+            return "Medium";
             break;
     }
 }
@@ -2089,9 +2112,6 @@ function getTotal()
 
         $collection['items']['data'][styleKey]['quantity'] = 0;
         $collection['items']['data'][styleKey]['price_addon'] = 0;
-        // $collection['items']['count'] += Object.keys(styleVal['list']).length;
-        // $collection['items']['price_all_moldfee'] += (Object.keys(styleVal['list']).length * molding_fee);
-        // $collection['items']['data'][styleKey]['price_moldfee'] = (Object.keys(styleVal['list']).length * molding_fee);
 
         $.each(styleVal['list'], function(listKey, listVal) {
 
@@ -2183,6 +2203,7 @@ function getTotal()
                         if(typeof addon_items[element.attr('data-style')][element.attr('data-index')] == "undefined") {
                             addon_items[element.attr('data-style')][element.attr('data-index')] = {
                                 color: items['data'][element.attr('data-style')]['list'][element.attr('data-index')][idx_size]['color'],
+                                color_title: items['data'][element.attr('data-style')]['list'][element.attr('data-index')][idx_size]['color_title'],
                                 size: {},
                                 style: items['data'][element.attr('data-style')]['list'][element.attr('data-index')][idx_size]['style'],
                                 title: items['data'][element.attr('data-style')]['list'][element.attr('data-index')][idx_size]['title'],
@@ -2191,7 +2212,7 @@ function getTotal()
                         }
                         addon_items[element.attr('data-style')][element.attr('data-index')]['size'][idx_size] = {
                             font: items['data'][element.attr('data-style')]['list'][element.attr('data-index')][idx_size]['font'],
-                            font_name: items['data'][element.attr('data-style')]['list'][element.attr('data-index')][idx_size]['font_name'],
+                            font_title: items['data'][element.attr('data-style')]['list'][element.attr('data-index')][idx_size]['font_title'],
                             qty: addon_qty,
                             size: items['data'][element.attr('data-style')]['list'][element.attr('data-index')][idx_size]['size']
                         };
@@ -2250,6 +2271,7 @@ function getTotal()
                     if(typeof addonKCitems[element.attr('data-style')][element.attr('data-index')] == "undefined") {
                         addonKCitems[element.attr('data-style')][element.attr('data-index')] = {
                             color: items['data'][element.attr('data-style')]['list'][element.attr('data-index')][idx_size]['color'],
+                            color_title: items['data'][element.attr('data-style')]['list'][element.attr('data-index')][idx_size]['color_title'],
                             size: {},
                             style: items['data'][element.attr('data-style')]['list'][element.attr('data-index')][idx_size]['style'],
                             title: items['data'][element.attr('data-style')]['list'][element.attr('data-index')][idx_size]['title'],
@@ -2258,7 +2280,7 @@ function getTotal()
                     }
                     addonKCitems[element.attr('data-style')][element.attr('data-index')]['size'][element.attr('data-size')] = {
                         font: items['data'][element.attr('data-style')]['list'][element.attr('data-index')][idx_size]['font'],
-                        font_name: items['data'][element.attr('data-style')]['list'][element.attr('data-index')][idx_size]['font_name'],
+                        font_title: items['data'][element.attr('data-style')]['list'][element.attr('data-index')][idx_size]['font_title'],
                         qty: addonKCqty,
                         size: items['data'][element.attr('data-style')]['list'][element.attr('data-index')][idx_size]['size']
                     };
@@ -2346,7 +2368,7 @@ function getTotal()
             if(typeof freeKCitems[element.attr('data-style')][element.attr('data-index')] == "undefined") {
                 freeKCitems[element.attr('data-style')][element.attr('data-index')] = {
                     color: items['data'][element.attr('data-style')]['list'][element.attr('data-index')][idx_size]['color'],
-                    size: {},
+                    color_title: items['data'][element.attr('data-style')]['list'][element.attr('data-index')][idx_size]['color_title'],
                     style: items['data'][element.attr('data-style')]['list'][element.attr('data-index')][idx_size]['style'],
                     title: items['data'][element.attr('data-style')]['list'][element.attr('data-index')][idx_size]['title'],
                     type: items['data'][element.attr('data-style')]['list'][element.attr('data-index')][idx_size]['type']
@@ -2354,7 +2376,7 @@ function getTotal()
             }
             freeKCitems[element.attr('data-style')][element.attr('data-index')][idx_size] = {
                 font: items['data'][element.attr('data-style')]['list'][element.attr('data-index')][idx_size]['font'],
-                font_name: items['data'][element.attr('data-style')]['list'][element.attr('data-index')][idx_size]['font_name'],
+                font_title: items['data'][element.attr('data-style')]['list'][element.attr('data-index')][idx_size]['font_title'],
                 qty: freeKCqty,
                 size: items['data'][element.attr('data-style')]['list'][element.attr('data-index')][idx_size]['size']
             };
@@ -2386,6 +2408,7 @@ function getTotal()
             if(typeof freeWBitems[element.attr('data-style')][element.attr('data-index')] == "undefined") {
                 freeWBitems[element.attr('data-style')][element.attr('data-index')] = {
                     color: items['data'][element.attr('data-style')]['list'][element.attr('data-index')][idx_size]['color'],
+                    color_title: items['data'][element.attr('data-style')]['list'][element.attr('data-index')][idx_size]['color_title'],
                     size: {},
                     style: items['data'][element.attr('data-style')]['list'][element.attr('data-index')][idx_size]['style'],
                     title: items['data'][element.attr('data-style')]['list'][element.attr('data-index')][idx_size]['title'],
@@ -2394,7 +2417,7 @@ function getTotal()
             }
             freeWBitems[element.attr('data-style')][element.attr('data-index')][idx_size] = {
                 font: items['data'][element.attr('data-style')]['list'][element.attr('data-index')][idx_size]['font'],
-                font_name: items['data'][element.attr('data-style')]['list'][element.attr('data-index')][idx_size]['font_name'],
+                font_title: items['data'][element.attr('data-style')]['list'][element.attr('data-index')][idx_size]['font_title'],
                 qty: freeWBqty,
                 size: items['data'][element.attr('data-style')]['list'][element.attr('data-index')][idx_size]['size']
             };
@@ -2651,7 +2674,7 @@ function loadFree()
                         html_wb += '<div class="col-xs-4 fwb-text-content">'+itemVal.title.toUpperCase()+'</div>';
                         html_wb += '<div class="col-xs-4 fwb-text-content">'+getSizeTitle(itemVal.size).toUpperCase()+'</div>';
                     html_wb += '</div>';
-                    html_wb += '<div class="align-right col-md-6 col-sm-12"><h4 class="fwb-text col-xs-12 hidden-md hidden-lg text-center fwb-text-hidden-header">INPUT QUANTITY</h4><input type="number" class="freewb col-xs-12" id="freewb-'+itemVal.style+'-'+itemVal.size+'-'+itemVal.color.split(",").join("-")+'" name="'+itemVal.style+'-'+itemVal.size+'-'+itemVal.color.split(",").join("-")+'-fwb" data-style="'+itemVal.style+'" data-color="'+itemVal.color+'" data-font-color="'+itemVal.font+'" data-name="'+itemVal.title+'" data-size="'+itemVal.size+'" data-index="'+listKey+'" placeholder="0" data-maxlength="3" /></div>';
+                    html_wb += '<div class="align-right col-md-6 col-sm-12"><h4 class="fwb-text col-xs-12 hidden-md hidden-lg text-center fwb-text-hidden-header">INPUT QUANTITY</h4><input type="number" class="freewb col-xs-12" id="freewb-'+itemVal.style+'-'+itemVal.size+'-'+itemVal.color.split(",").join("-")+'" name="'+itemVal.style+'-'+itemVal.size+'-'+itemVal.color.split(",").join("-")+'-fwb" data-style="'+itemVal.style+'" data-color="'+itemVal.color+'" data-color-name="'+itemVal.color_title+'" data-font-color="'+itemVal.font+'" data-font-name="'+itemVal.font_title+'" data-name="'+itemVal.title+'" data-size="'+itemVal.size+'" data-index="'+listKey+'" placeholder="0" data-maxlength="3" /></div>';
                     html_wb += '<div class="clearfix"></div>';
                     html_wb += '</li>';
 
@@ -2662,7 +2685,7 @@ function loadFree()
                         html_kc += '<div class="col-xs-4 fwb-text-content">'+itemVal.title.toUpperCase()+'</div>';
                         html_kc += '<div class="col-xs-4 fwb-text-content">'+getSizeTitle(itemVal.size).toUpperCase()+'</div>';
                     html_kc += '</div>';
-                    html_kc += '<div class="align-right col-md-6 col-sm-12"><h4 class="fwb-text col-xs-12 hidden-md hidden-lg text-center fwb-text-hidden-header">INPUT QUANTITY</h4><input type="number" class="freekc col-xs-12" id="freekc-'+itemVal.style+'-'+itemVal.size+'-'+itemVal.color.split(",").join("-")+'" name="'+itemVal.style+'-'+itemVal.size+'-'+itemVal.color.split(",").join("-")+'-fwb" data-style="'+itemVal.style+'" data-color="'+itemVal.color+'" data-font-color="'+itemVal.font+'" data-name="'+itemVal.title+'" data-size="'+itemVal.size+'" data-index="'+listKey+'" placeholder="0" data-maxlength="3" /></div>';
+                    html_kc += '<div class="align-right col-md-6 col-sm-12"><h4 class="fwb-text col-xs-12 hidden-md hidden-lg text-center fwb-text-hidden-header">INPUT QUANTITY</h4><input type="number" class="freekc col-xs-12" id="freekc-'+itemVal.style+'-'+itemVal.size+'-'+itemVal.color.split(",").join("-")+'" name="'+itemVal.style+'-'+itemVal.size+'-'+itemVal.color.split(",").join("-")+'-fwb" data-style="'+itemVal.style+'" data-color="'+itemVal.color+'" data-color-name="'+itemVal.color_title+'" data-font-color="'+itemVal.font+'" data-font-name="'+itemVal.font_title+'" data-name="'+itemVal.title+'" data-size="'+itemVal.size+'" data-index="'+listKey+'" placeholder="0" data-maxlength="3" /></div>';
                     html_kc += '<div class="clearfix"></div>';
                     html_kc += '</li>';
 
@@ -2673,7 +2696,7 @@ function loadFree()
                         html += '<div class="col-xs-4 fwb-text-content">'+itemVal.title.toUpperCase()+'</div>';
                         html += '<div class="col-xs-4 fwb-text-content">'+getSizeTitle(itemVal.size).toUpperCase()+'</div>';
                     html += '</div>';
-                    html += '<div class="align-right col-md-6 col-sm-12"><h4 class="fwb-text col-xs-12 hidden-md hidden-lg text-center fwb-text-hidden-header">INPUT QUANTITY</h4><input type="number" class="addonkc col-xs-12" id="freewb-'+itemVal.style+'-'+itemVal.size+'-'+itemVal.color.split(",").join("-")+'" name="'+itemVal.style+'-'+itemVal.size+'-'+itemVal.color.split(",").join("-")+'-fwb" data-style="'+itemVal.style+'" data-color="'+itemVal.color+'" data-font-color="'+itemVal.font+'" data-name="'+itemVal.title+'" data-size="'+itemVal.size+'" data-index="'+listKey+'" placeholder="0" data-maxlength="3" /></div>';
+                    html += '<div class="align-right col-md-6 col-sm-12"><h4 class="fwb-text col-xs-12 hidden-md hidden-lg text-center fwb-text-hidden-header">INPUT QUANTITY</h4><input type="number" class="addonkc col-xs-12" id="freewb-'+itemVal.style+'-'+itemVal.size+'-'+itemVal.color.split(",").join("-")+'" name="'+itemVal.style+'-'+itemVal.size+'-'+itemVal.color.split(",").join("-")+'-fwb" data-style="'+itemVal.style+'" data-color="'+itemVal.color+'" data-color-name="'+itemVal.color_title+'" data-font-color="'+itemVal.font+'" data-font-name="'+itemVal.font_title+'" data-name="'+itemVal.title+'" data-size="'+itemVal.size+'" data-index="'+listKey+'" placeholder="0" data-maxlength="3" /></div>';
                     html += '<div class="clearfix"></div>';
                     html += '</li>';
                 });
@@ -2815,12 +2838,9 @@ function loadTotal(loadProdShip)
 
     // Loop through all items
     $.each($collection['items']['data'], function(styleKey, styleVal) {
-
+    
         $collection['items']['data'][styleKey]['quantity'] = 0;
         $collection['items']['data'][styleKey]['price_addon'] = 0;
-        // $collection['items']['count'] += Object.keys(styleVal['list']).length;
-        // $collection['items']['price_all_moldfee'] += (Object.keys(styleVal['list']).length * molding_fee);
-        // $collection['items']['data'][styleKey]['price_moldfee'] = (Object.keys(styleVal['list']).length * molding_fee);
 
         $.each(styleVal['list'], function(listKey, listVal) {
 
@@ -3018,138 +3038,6 @@ function loadTotal(loadProdShip)
                 $collection.time_shipping.days = data.shipping[0].days;
                 $collection.time_shipping.price = data.shipping[0].price;
 
-                        // COMPUTE THE TOTAL PRICE
-                        $collection.total += $collection.quantity * $collection.price;
-                        $collection.total += $collection.items.price_all_addon;
-                        $collection.total += $collection.items.price_all_moldfee;
-
-                        if(typeof $collection.items['segmented'] != "undefined") {
-                            $collection.total += $collection.items['segmented'].price_total;
-                        }
-
-                        if(typeof $collection.items['swirl'] != "undefined") {
-                            $collection.total += $collection.items['swirl'].price_total;
-                        }
-
-                        if(typeof $collection.items['glow'] != "undefined") {
-                            $collection.total += $collection.items['glow'].price_total;
-                        }
-
-                        if(typeof $collection.time_production != "undefined") {
-                            $collection.total += $collection.time_production.price;
-                        }
-
-                        if(typeof $collection.time_shipping != "undefined") {
-                            $collection.total += $collection.time_shipping.price;
-                        }
-
-                        if (!$.isEmptyObject($collection.texts)) {
-
-                            if(typeof $collection.texts['front'] != "undefined") {
-                                $collection.total += $collection.texts['front'].total;
-                            }
-
-                            if(typeof $collection.texts['back'] != "undefined") {
-                                $collection.total += $collection.texts['back'].total;
-                            }
-
-                            if(typeof $collection.texts['continue'] != "undefined") {
-                                $collection.total += $collection.texts['continue'].total;
-                            }
-
-                            if(typeof $collection.texts['inside'] != "undefined") {
-                                $collection.total += $collection.texts['inside'].total;
-                            }
-                        }
-
-                        if(typeof $collection.clips != "undefined") {
-                            if (!$.isEmptyObject($collection.clips.logo)) {
-
-                                if(typeof $collection.clips.logo['front-start'] != "undefined") {
-                                    $collection.total += $collection.clips.logo['front-start'].total;
-                                }
-
-                                if(typeof $collection.clips.logo['front-end'] != "undefined") {
-                                    $collection.total += $collection.clips.logo['front-end'].total;
-                                }
-
-                                if(typeof $collection.clips.logo['back-start'] != "undefined") {
-                                    $collection.total += $collection.clips.logo['back-start'].total;
-                                }
-
-                                if(typeof $collection.clips.logo['back-end'] != "undefined") {
-                                    $collection.total += $collection.clips.logo['back-end'].total;
-                                }
-
-                                if(typeof $collection.clips.logo['cont-start'] != "undefined") {
-                                    $collection.total += $collection.clips.logo['cont-start'].total;
-                                }
-
-                                if(typeof $collection.clips.logo['cont-end'] != "undefined") {
-                                    $collection.total += $collection.clips.logo['cont-end'].total;
-                                }
-
-                                if(typeof $collection.clips.logo['front-center'] != "undefined") {
-                                    $collection.total += $collection.clips.logo['front-center'].total;
-                                }
-                            }
-                        }
-
-                        if (!$.isEmptyObject($collection.addon)) {
-
-                            if(typeof $collection.addon['3mm-thick'] != "undefined") {
-                                $collection.total += $collection.addon['3mm-thick'].total;
-                            }
-
-                            if(typeof $collection.addon['digital-proof'] != "undefined") {
-                                $collection.total += $collection.addon['digital-proof'].total;
-                            }
-
-                            if(typeof $collection.addon['eco-friendly'] != "undefined") {
-                                $collection.total += $collection.addon['eco-friendly'].total;
-                            }
-
-                            if(typeof $collection.addon['glitters'] != "undefined") {
-                                $collection.total += $collection.addon['glitters'].total;
-                            }
-
-                            if(typeof $collection.addon['individual'] != "undefined") {
-                                $collection.total += $collection.addon['individual'].total;
-                            }
-
-                            if(typeof $collection.addon['key-chain'] != "undefined") {
-                                $collection.total += $collection.addon['key-chain'].total;
-                            }
-                        }
-
-                        // if (!$.isEmptyObject($collection.free)) {
-                        //
-                        //     if(typeof $collection.free['key-chain'] != "undefined") {
-                        //         $collection.total += $collection.free['key-chain'];
-                        //     }
-                        //
-                        //     if(typeof $collection.free['wristbands'] != "undefined") {
-                        //         $collection.total += $collection.free['wristbands'];
-                        //     }
-                        // }
-
-                // Collection
-                displayTotal($collection);
-
-                $('#total-area .has-total').removeClass('hidden');
-                $('#total-area .no-total').addClass('hidden');
-    		});
-
-        } else {
-
-    		// Get selected production settings
-            var elementProd = $("#ProductionTime option:selected");
-            $collection.time_production.days = ( elementProd.val() != "" && !isNaN( parseInt(elementProd.val()) ) ) ? parseInt(elementProd.val()) : 0;
-            $collection.time_production.price = ( elementProd.attr("data-price") != "" && !isNaN( parseFloat(elementProd.attr("data-price")) ) ) ? parseFloat(elementProd.attr("data-price")) : 0;
-            var elementShip = $("#ShippingTime option:selected");
-            $collection.time_shipping.days = ( elementShip.val() != "" && !isNaN( parseInt(elementShip.val()) ) ) ? parseInt(elementShip.val()) : 0;
-            $collection.time_shipping.price = ( elementShip.attr("data-price") != "" && !isNaN( parseFloat(elementShip.attr("data-price")) ) ) ? parseFloat(elementShip.attr("data-price")) : 00;
-
                     // COMPUTE THE TOTAL PRICE
                     $collection.total += $collection.quantity * $collection.price;
                     $collection.total += $collection.items.price_all_addon;
@@ -3224,7 +3112,6 @@ function loadTotal(loadProdShip)
                             if(typeof $collection.clips.logo['front-center'] != "undefined") {
                                 $collection.total += $collection.clips.logo['front-center'].total;
                             }
-
                         }
                     }
 
@@ -3266,6 +3153,139 @@ function loadTotal(loadProdShip)
                     //     }
                     // }
 
+                // Collection
+                displayTotal($collection);
+
+                $('#total-area .has-total').removeClass('hidden');
+                $('#total-area .no-total').addClass('hidden');
+    		});
+
+        } else {
+
+    		// Get selected production settings
+            var elementProd = $("#ProductionTime option:selected");
+            $collection.time_production.days = ( elementProd.val() != "" && !isNaN( parseInt(elementProd.val()) ) ) ? parseInt(elementProd.val()) : 0;
+            $collection.time_production.price = ( elementProd.attr("data-price") != "" && !isNaN( parseFloat(elementProd.attr("data-price")) ) ) ? parseFloat(elementProd.attr("data-price")) : 0;
+            var elementShip = $("#ShippingTime option:selected");
+            $collection.time_shipping.days = ( elementShip.val() != "" && !isNaN( parseInt(elementShip.val()) ) ) ? parseInt(elementShip.val()) : 0;
+            $collection.time_shipping.price = ( elementShip.attr("data-price") != "" && !isNaN( parseFloat(elementShip.attr("data-price")) ) ) ? parseFloat(elementShip.attr("data-price")) : 00;
+
+                // COMPUTE THE TOTAL PRICE
+                $collection.total += $collection.quantity * $collection.price;
+                $collection.total += $collection.items.price_all_addon;
+                $collection.total += $collection.items.price_all_moldfee;
+
+                if(typeof $collection.items['segmented'] != "undefined") {
+                    $collection.total += $collection.items['segmented'].price_total;
+                }
+
+                if(typeof $collection.items['swirl'] != "undefined") {
+                    $collection.total += $collection.items['swirl'].price_total;
+                }
+
+                if(typeof $collection.items['glow'] != "undefined") {
+                    $collection.total += $collection.items['glow'].price_total;
+                }
+
+                if(typeof $collection.time_production != "undefined") {
+                    $collection.total += $collection.time_production.price;
+                }
+
+                if(typeof $collection.time_shipping != "undefined") {
+                    $collection.total += $collection.time_shipping.price;
+                }
+
+                if (!$.isEmptyObject($collection.texts)) {
+
+                    if(typeof $collection.texts['front'] != "undefined") {
+                        $collection.total += $collection.texts['front'].total;
+                    }
+
+                    if(typeof $collection.texts['back'] != "undefined") {
+                        $collection.total += $collection.texts['back'].total;
+                    }
+
+                    if(typeof $collection.texts['continue'] != "undefined") {
+                        $collection.total += $collection.texts['continue'].total;
+                    }
+
+                    if(typeof $collection.texts['inside'] != "undefined") {
+                        $collection.total += $collection.texts['inside'].total;
+                    }
+                }
+
+                if(typeof $collection.clips != "undefined") {
+                    if (!$.isEmptyObject($collection.clips.logo)) {
+
+                        if(typeof $collection.clips.logo['front-start'] != "undefined") {
+                            $collection.total += $collection.clips.logo['front-start'].total;
+                        }
+
+                        if(typeof $collection.clips.logo['front-end'] != "undefined") {
+                            $collection.total += $collection.clips.logo['front-end'].total;
+                        }
+
+                        if(typeof $collection.clips.logo['back-start'] != "undefined") {
+                            $collection.total += $collection.clips.logo['back-start'].total;
+                        }
+
+                        if(typeof $collection.clips.logo['back-end'] != "undefined") {
+                            $collection.total += $collection.clips.logo['back-end'].total;
+                        }
+
+                        if(typeof $collection.clips.logo['cont-start'] != "undefined") {
+                            $collection.total += $collection.clips.logo['cont-start'].total;
+                        }
+
+                        if(typeof $collection.clips.logo['cont-end'] != "undefined") {
+                            $collection.total += $collection.clips.logo['cont-end'].total;
+                        }
+
+                        if(typeof $collection.clips.logo['front-center'] != "undefined") {
+                            $collection.total += $collection.clips.logo['front-center'].total;
+                        }
+
+                    }
+                }
+
+                if (!$.isEmptyObject($collection.addon)) {
+
+                    if(typeof $collection.addon['3mm-thick'] != "undefined") {
+                        $collection.total += $collection.addon['3mm-thick'].total;
+                    }
+
+                    if(typeof $collection.addon['digital-proof'] != "undefined") {
+                        $collection.total += $collection.addon['digital-proof'].total;
+                    }
+
+                    if(typeof $collection.addon['eco-friendly'] != "undefined") {
+                        $collection.total += $collection.addon['eco-friendly'].total;
+                    }
+
+                    if(typeof $collection.addon['glitters'] != "undefined") {
+                        $collection.total += $collection.addon['glitters'].total;
+                    }
+
+                    if(typeof $collection.addon['individual'] != "undefined") {
+                        $collection.total += $collection.addon['individual'].total;
+                    }
+
+                    if(typeof $collection.addon['key-chain'] != "undefined") {
+                        $collection.total += $collection.addon['key-chain'].total;
+                    }
+                }
+
+                // if (!$.isEmptyObject($collection.free)) {
+                //
+                //     if(typeof $collection.free['key-chain'] != "undefined") {
+                //         $collection.total += $collection.free['key-chain'];
+                //     }
+                //
+                //     if(typeof $collection.free['wristbands'] != "undefined") {
+                //         $collection.total += $collection.free['wristbands'];
+                //     }
+                // }
+
             // Collection
             displayTotal($collection);
 
@@ -3279,7 +3299,7 @@ function loadTotal(loadProdShip)
         $('#total-area .no-total').removeClass('hidden');
 
     }
-console.log($collection);
+
 }
 
 function loadWristbands($style, $size)

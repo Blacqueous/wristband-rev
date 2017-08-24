@@ -149,6 +149,30 @@
     									<div class="col-xs-3 text-right">
     										${{ number_format($value['items']['count'] * $value['molding_fee'], 2) }}
     									</div>
+                                        <?php $mold_first = true; ?>
+                                        @if(isset($value['items']))
+                                            @if(isset($value['items']['mold_list']))
+                								<div id="molding-fee-list" class="col-xs-12 no-padding-left">
+                                                @foreach($value['items']['mold_list'] as $mold_key => $mold_value)
+                                                    <?php 
+                                                        switch ($mold_value) {
+                                                            case "ad": $mold_value = "Adult"; break;
+                                                            case "md": $mold_value = "Medium"; break;
+                                                            case "yt": $mold_value = "Youth"; break;
+                                                            case "xs": $mold_value = "Extra Small"; break;
+                                                            case "xl": $mold_value = "Extra Large"; break;
+                                                        }
+                                                    ?>
+                                                    @if($mold_first)
+                                                        <div class="col-xs-9 padding-left-25 list"><i class="fa fa-angle-right"></i><strike>{{ $mold_value }}</strike></div><div class="col-xs-3 text-right no-padding-right">-</div>
+                                                        <?php $mold_first = false; ?>
+                                                    @else
+                                                        <div class="col-xs-9 padding-left-25 list"><i class="fa fa-angle-right"></i>{{ $mold_value }}</div><div class="col-xs-3 text-right no-padding-right">-</div>
+                                                    @endif
+                                                @endforeach
+                                                </div>
+                                            @endif
+                                        @endif
     								</div>
                                     @endif
                                     @if(isset($value['time_production']))

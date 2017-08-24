@@ -187,7 +187,7 @@
 								<!-- Clipart front start -->
 								<div class="clip-sec col-xs-6 text-center">
 									<h5 style="margin-top:0px;">Front Start Clipart</h5>
-									<div class="btn-group col-xs-12">
+									<div class="btn-group col-xs-12 no-padding">
 										<button type="button" class="btn btn-order clipartin col-xs-6" ref-code="none" ref-target="#clipart-front-start"><i class="fa fa-folder-open"></i> Browse</button>
 										<label type="button" class="btn btn-order btn-file clipartup col-xs-6"><i class="fa fa-upload"></i> Upload<input id="clipartup_front_start" class="clipart-fileupload" type="file" accept="image/*" ref-target="#clipart-front-start"></label>
 									</div>
@@ -196,7 +196,7 @@
 								<!-- Clipart front end -->
 								<div class="clip-sec col-xs-6 text-center">
 									<h5 style="margin-top:0px;">Front End Clipart</h5>
-									<div class="btn-group col-xs-12">
+									<div class="btn-group col-xs-12 no-padding">
 										<button type="button" class="btn btn-order clipartin col-xs-6" ref-code="none" ref-target="#clipart-front-end"><i class="fa fa-folder-open"></i> Browse</button>
 										<label type="button" class="btn btn-order btn-file clipartup col-xs-6"><i class="fa fa-upload"></i> Upload<input id="clipartup_front_end" class="clipart-fileupload" type="file" accept="image/*" ref-target="#clipart-front-end"></label>
 									</div>
@@ -211,7 +211,7 @@
 								<!-- Clipart back start -->
 								<div class="clip-sec col-xs-6 text-center">
 									<h5 style="margin-top:0px;">Back Start Clipart</h5>
-									<div class="btn-group col-xs-12">
+									<div class="btn-group col-xs-12 no-padding">
 										<button type="button" class="btn btn-order clipartin col-xs-6" ref-code="none" ref-target="#clipart-back-start"><i class="fa fa-folder-open"></i> Browse</button>
 										<label type="button" class="btn btn-order btn-file clipartup col-xs-6"><i class="fa fa-upload"></i> Upload<input id="clipartup_back_start" class="clipart-fileupload" type="file" accept="image/*" ref-target="#clipart-back-start"></label>
 									</div>
@@ -220,7 +220,7 @@
 								<!-- Clipart back end -->
 								<div class="clip-sec col-xs-6 text-center">
 									<h5 style="margin-top:0px;">Back End Clipart</h5>
-									<div class="btn-group col-xs-12">
+									<div class="btn-group col-xs-12 no-padding">
 										<button type="button" class="btn btn-order clipartin col-xs-6" ref-code="none" ref-target="#clipart-back-end"><i class="fa fa-folder-open"></i> Browse</button>
 										<label type="button" class="btn btn-order btn-file clipartup col-xs-6"><i class="fa fa-upload"></i> Upload<input id="clipartup_back_end" class="clipart-fileupload" type="file" accept="image/*" ref-target="#clipart-back-end"></label>
 									</div>
@@ -231,7 +231,7 @@
 							<!-- Clipart figured center -->
 							<div id="clipart_front_center_btn" class="clip-sec col-xs-4 col-xs-offset-4 clip-fig text-center hidden">
 								<h5 style="margin-top:0px;">Figured Center Clipart</h5>
-								<div class="btn-group col-xs-12">
+								<div class="btn-group col-xs-12 no-padding">
 									<button type="button" class="btn btn-order clipartin col-xs-6" ref-code="none" ref-target="#clipart-front-center"><i class="fa fa-folder-open"></i> Browse</button>
 									<label type="button" class="btn btn-order btn-file clipartup col-xs-6"><i class="fa fa-upload"></i> Upload<input id="clipartup_front_center" class="clipart-fileupload" type="file" accept="image/*" ref-target="#clipart-front-center"></label>
 								</div>
@@ -248,7 +248,7 @@
 							<!-- Clipart continue start -->
 							<div class="clip-sec col-xs-4 col-xs-offset-1 text-center">
 								<h5 style="margin-top:0px;">Start Clipart</h5>
-								<div class="btn-group col-xs-12">
+								<div class="btn-group col-xs-12 no-padding">
 									<button type="button" class="btn btn-order clipartin col-xs-6" ref-code="none" ref-target="#clipart-cont-start"><i class="fa fa-folder-open"></i> Browse</button>
 									<label type="button" class="btn btn-order btn-file clipartup col-xs-6"><i class="fa fa-upload"></i> Upload<input id="clipartup_cont_start" class="clipart-fileupload" type="file" accept="image/*" ref-target="#clipart-cont-start"></label>
 								</div>
@@ -258,7 +258,7 @@
 							<!-- Clipart continue end -->
 							<div class="clip-sec col-xs-4 text-center">
 								<h5 style="margin-top:0px;">End Clipart</h5>
-								<div class="btn-group col-xs-12">
+								<div class="btn-group col-xs-12 no-padding">
 									<button type="button" class="btn btn-order clipartin col-xs-6" ref-code="none" ref-target="#clipart-cont-end"><i class="fa fa-folder-open"></i> Browse</button>
 									<label type="button" class="btn btn-order btn-file clipartup col-xs-6"><i class="fa fa-upload"></i> Upload<input id="clipartup_cont_end" class="clipart-fileupload" type="file" accept="image/*" ref-target="#clipart-cont-end"></label>
 								</div>
@@ -544,6 +544,8 @@
 									<div class="col-xs-3 text-right no-padding-right">
 										$<span class="total">0.00</span>
 									</div>
+									<!-- list -->
+									<div id="molding-fee-list" class="col-xs-12 no-padding-left"></div>
 								</div>
 								<div id="summary-table-production" class="summary-table-group summary-table-state hidden">
 									<div class="col-xs-9 no-padding-left">

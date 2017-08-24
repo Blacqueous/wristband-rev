@@ -21,25 +21,25 @@
                         </div>
                         <div class="col-xs-4 box-color-qty">
                             <label>Youth</label>
-                            <input ref-size="yt" ref-style="dual" ref-title="Custom (Dual)"  ref-color="ffffff,ffffff" ref-index="{{ $str }}" type="number" name="quantity[]" class="qtyin qtyin-yt-qty" placeholder="0" />
+                            <input ref-size="yt" ref-style="dual" ref-title="Custom (Dual)"  ref-color="ffffff,ffffff" ref-color-name="WHITE,WHITE" ref-index="{{ $str }}" type="number" name="quantity[]" class="qtyin qtyin-yt-qty" placeholder="0" />
                         </div>
                         <div class="col-xs-4 box-color-qty">
                             <label>Medium</label>
-                            <input ref-size="md" ref-style="dual" ref-title="Custom (Dual)"  ref-color="ffffff,ffffff" ref-index="{{ $str }}" type="number" name="quantity[]" class="qtyin qtyin-md-qty" placeholder="0" />
+                            <input ref-size="md" ref-style="dual" ref-title="Custom (Dual)"  ref-color="ffffff,ffffff" ref-color-name="WHITE,WHITE" ref-index="{{ $str }}" type="number" name="quantity[]" class="qtyin qtyin-md-qty" placeholder="0" />
                         </div>
                         <div class="col-xs-4 box-color-qty">
                             <label>Adult</label>
-                            <input ref-size="ad" ref-style="dual" ref-title="Custom (Dual)"  ref-color="ffffff,ffffff" ref-index="{{ $str }}" type="number" name="quantity[]" class="qtyin qtyin-ad-qty" placeholder="0" />
+                            <input ref-size="ad" ref-style="dual" ref-title="Custom (Dual)"  ref-color="ffffff,ffffff" ref-color-name="WHITE,WHITE" ref-index="{{ $str }}" type="number" name="quantity[]" class="qtyin qtyin-ad-qty" placeholder="0" />
                         </div>
                         <span class="view-more col-xs-12" data-toggle="collapse" data-target="#view_more_dual_{{ $str }}">View More Sizes</span>
                         <div id="view_more_dual_{{ $str }}" class="col-xs-12 show-content collapse">
                             <div class="col-xs-6 box-color-qty">
                                 <label>Extra Small</label>
-                                <input ref-size="xs" ref-style="dual" ref-title="Custom (Dual)"  ref-color="ffffff,ffffff" ref-index="{{ $str }}" type="number" name="quantity[]" class="qtyin qtyin-xs-qty" placeholder="0"/>
+                                <input ref-size="xs" ref-style="dual" ref-title="Custom (Dual)"  ref-color="ffffff,ffffff" ref-color-name="WHITE,WHITE" ref-index="{{ $str }}" type="number" name="quantity[]" class="qtyin qtyin-xs-qty" placeholder="0"/>
                             </div>
                             <div class="col-xs-6 box-color-qty">
                                 <label>Extra Large</label>
-                                <input ref-size="xl" ref-style="dual" ref-title="Custom (Dual)"  ref-color="ffffff,ffffff" ref-index="{{ $str }}" type="number" name="quantity[]" class="qtyin qtyin-xl-qty" placeholder="0"/>
+                                <input ref-size="xl" ref-style="dual" ref-title="Custom (Dual)"  ref-color="ffffff,ffffff" ref-color-name="WHITE,WHITE" ref-index="{{ $str }}" type="number" name="quantity[]" class="qtyin qtyin-xl-qty" placeholder="0"/>
                             </div>
                         </div>
                     </div>
@@ -57,25 +57,25 @@
                         </div>
                         <div class="col-xs-4 box-color-qty">
                             <label>Youth</label>
-                            <input ref-size="yt" ref-style="dual" ref-title="{{ $value['name'] }}" ref-color="@foreach($value['hex'] as $key => $val)@if($key!=0), @endif{{ $val }}@endforeach" ref-index="{{ $str }}" type="number" name="quantity[]" class="qtyin qtyin-yt-qty" placeholder="0" />
+                            <input ref-size="yt" ref-style="dual" ref-title="{{ $value['name'] }}" ref-color="@foreach($value['hex'] as $key => $val)@if($key!=0),@endif{{ $val }}@endforeach" ref-color-name="{{ strtoupper(str_replace(' ', '-', $value['name'])) }}" ref-index="{{ $str }}" type="number" name="quantity[]" class="qtyin qtyin-yt-qty" placeholder="0" />
                         </div>
                         <div class="col-xs-4 box-color-qty">
                             <label>Medium</label>
-                            <input ref-size="md" ref-style="dual" ref-title="{{ $value['name'] }}" ref-color="@foreach($value['hex'] as $key => $val)@if($key!=0), @endif{{ $val }}@endforeach" ref-index="{{ $str }}" type="number" name="quantity[]" class="qtyin qtyin-md-qty" placeholder="0" />
+                            <input ref-size="md" ref-style="dual" ref-title="{{ $value['name'] }}" ref-color="@foreach($value['hex'] as $key => $val)@if($key!=0),@endif{{ $val }}@endforeach" ref-color-name="{{ strtoupper(str_replace(' ', '-', $value['name'])) }}" ref-index="{{ $str }}" type="number" name="quantity[]" class="qtyin qtyin-md-qty" placeholder="0" />
                         </div>
                         <div class="col-xs-4 box-color-qty">
                             <label>Adult</label>
-                            <input ref-size="ad" ref-style="dual" ref-title="{{ $value['name'] }}" ref-color="@foreach($value['hex'] as $key => $val)@if($key!=0), @endif{{ $val }}@endforeach" ref-index="{{ $str }}" type="number" name="quantity[]" class="qtyin qtyin-ad-qty" placeholder="0" />
+                            <input ref-size="ad" ref-style="dual" ref-title="{{ $value['name'] }}" ref-color="@foreach($value['hex'] as $key => $val)@if($key!=0),@endif{{ $val }}@endforeach" ref-color-name="{{ strtoupper(str_replace(' ', '-', $value['name'])) }}" ref-index="{{ $str }}" type="number" name="quantity[]" class="qtyin qtyin-ad-qty" placeholder="0" />
                         </div>
                         <span class="view-more col-xs-12" data-toggle="collapse" data-target="#view_more_dual_{{ $str }}">View More Sizes</span>
                         <div id="view_more_dual_{{ $str }}" class="col-xs-12 show-content collapse">
                             <div class="col-xs-6 box-color-qty">
                                 <label>Extra Small</label>
-                                <input ref-size="xs" ref-style="dual" ref-title="{{ $value['name'] }}" ref-color="@foreach($value['hex'] as $key => $val)@if($key!=0), @endif{{ $val }}@endforeach" ref-index="{{ $str }}" type="number" name="quantity[]" class="qtyin qtyin-xs-qty" placeholder="0"/>
+                                <input ref-size="xs" ref-style="dual" ref-title="{{ $value['name'] }}" ref-color="@foreach($value['hex'] as $key => $val)@if($key!=0),@endif{{ $val }}@endforeach" ref-color-name="{{ strtoupper(str_replace(' ', '-', $value['name'])) }}" ref-index="{{ $str }}" type="number" name="quantity[]" class="qtyin qtyin-xs-qty" placeholder="0"/>
                             </div>
                             <div class="col-xs-6 box-color-qty">
                                 <label>Extra Large</label>
-                                <input ref-size="xl" ref-style="dual" ref-title="{{ $value['name'] }}" ref-color="@foreach($value['hex'] as $key => $val)@if($key!=0), @endif{{ $val }}@endforeach" ref-index="{{ $str }}" type="number" name="quantity[]" class="qtyin qtyin-xl-qty" placeholder="0"/>
+                                <input ref-size="xl" ref-style="dual" ref-title="{{ $value['name'] }}" ref-color="@foreach($value['hex'] as $key => $val)@if($key!=0),@endif{{ $val }}@endforeach" ref-color-name="{{ strtoupper(str_replace(' ', '-', $value['name'])) }}" ref-index="{{ $str }}" type="number" name="quantity[]" class="qtyin qtyin-xl-qty" placeholder="0"/>
                             </div>
                         </div>
                     </div>

@@ -30,7 +30,6 @@ $(window).ready(function() {
     loadColors();
     // Load wristband price list.
     loadPrices();
-
 });
 
 $(document).ready(function() {
@@ -244,8 +243,11 @@ $(document).ready(function() {
             // Create variables to be used.
             var color = $(this).attr('ref-color');
                 color = color.trim().toUpperCase().replace(/ /g, '');
+            var color_name = $(this).attr('ref-color-name');
+                color_name = color_name.trim().toUpperCase().replace(/ /g, '-');
             var font = $(this).closest('.box-color-qty').find('.fonttext .fntin').attr('ref-font-color');
             var font_name = $(this).closest('.box-color-qty').find('.fonttext .fntin').attr('ref-font-name');
+                font_name = font_name.trim().toUpperCase().replace(/ /g, '');
             var size = $(this).attr('ref-size');
             var style = $(this).attr('ref-style');
             var title = $(this).attr('ref-title');
@@ -285,7 +287,7 @@ $(document).ready(function() {
                 case 'dual':
                     dual_color = color.split(',');
                     font = dual_color[1];
-                    font_name = dual_color[1];
+                    font_name = dual_color[1].toUpperCase();
                     break;
             }
 
@@ -307,6 +309,7 @@ $(document).ready(function() {
                 // Create WB color.
                 items["data"][style]['list'][idx][idx_size] = {
                     "color": color,
+                    "color_title": color_name,
                     "font": font,
                     "font_title": font_name,
                     "qty": qty,
@@ -319,9 +322,10 @@ $(document).ready(function() {
                 makePreview = true;
             } else {
                 items["data"][style]['list'][idx][idx_size]["color"] = color;
+                items["data"][style]['list'][idx][idx_size]["color_title"] = color_name;
                 items["data"][style]['list'][idx][idx_size]["qty"] = qty;
                 items["data"][style]['list'][idx][idx_size]["font"] = font;
-                items["data"][style]['list'][idx][idx_size]["font_title"] = font_name.toLowerCase();
+                items["data"][style]['list'][idx][idx_size]["font_title"] = font_name;
             }
 
             // Check if quantity is less than 0.
@@ -397,7 +401,6 @@ $(document).ready(function() {
 
         // Load total amount.
         loadTotal(false);
-
     });
 
     $('body').on('keyup', '.wb-band-text', function(e) {
@@ -478,15 +481,14 @@ $(document).ready(function() {
             // Generate an index using title.
             var idx = inputElement.attr('ref-index');
 
-            items[style][idx]['size'][size]['font'] = font_color; // Update font color.
-            items[style][idx]['size'][size]['font_name'] = font_name.toLowerCase(); // Update font name.
+            items[style][idx]['size'][size]['font'] = font_color.toUpperCase(); // Update font color.
+            items[style][idx]['size'][size]['font_title'] = font_name.toUpperCase(); // Update font name.
 
             resetPreview();
 
         }
 
         $('#modalSelectColor').modal('hide');
-
     });
 
     $('body').on('click', '.clipartin', function(e) {
@@ -554,7 +556,6 @@ $(document).ready(function() {
 
         // Load total amount.
         loadTotal(false);
-
     });
 
     $('body').on('click', '.clipart-remove', function(e) {
@@ -594,7 +595,6 @@ $(document).ready(function() {
 
         // Load total amount.
         loadTotal(false);
-
     });
 
     $('body').on('click', '#btn_font_style', function(e) {
@@ -602,7 +602,6 @@ $(document).ready(function() {
         $('.font-style-selected').removeClass('active');
         $('.font-style-list-'+$(this).attr('ref-font-style-code')).addClass('active');
         $('#modalSelectFont').modal('show');
-
     });
 
     $('body').on('click', '.font-style-selected', function(e) {
@@ -617,7 +616,6 @@ $(document).ready(function() {
         $('#btn_font_style').attr('ref-font-style-code', code);
         $('#preview-textfont').html("<img src='" + image + "'>");
         $('#modalSelectFont').modal('hide');
-
     });
 
 	// Free checkbox EVENTs
@@ -657,7 +655,6 @@ $(document).ready(function() {
 
         // Load total amount.
         loadTotal(false);
-
     });
 
     // Free keychains input fields EVENTs
@@ -745,7 +742,6 @@ $(document).ready(function() {
         }
         // Load total amount.
         loadTotal(false);
-
     });
 
     // Initializes add-on array in every check/uncheck.
@@ -957,12 +953,18 @@ $(document).ready(function() {
             $.each(inputElements, function(inputKey, inputElement) {
                 var value = $(inputElement).val();
                 var qty = (value) ? parseInt(value) : 0;
+                var color = customColors.join(",");
+                    color = color.trim().toUpperCase().replace(/ /g, '');
+                var color_name = customColorNames.join(",");
+                    color_name = color_name.trim().toUpperCase().replace(/ /g, '-');
+                // Update all input fields
+                $(inputElement).attr('ref-color', color.toLowerCase());
+                $(inputElement).attr('ref-color-name', color_name.toLowerCase());
+                // Update only those with values.
                 if(qty > 0) {
                     if(!hasChanged) { hasChanged = true; }
                     // New behavior. Pretty much optimized.
                     // Create variables to be used.
-                    var color = customColors.join(",");
-                        color = color.trim().toUpperCase().replace(/ /g, '');
                     var size = $(inputElement).attr('ref-size');
                     var style = $(inputElement).attr('ref-style');
                     var title = $(inputElement).attr('ref-title');
@@ -989,7 +991,7 @@ $(document).ready(function() {
                     }
 
                     items["data"][style]['list'][idx][idx_size]["color"] = color; // Update color.
-                    items["data"][style]['list'][idx][idx_size]["colorCustom"] = customColorNames; // Add names of all custom colors.
+                    items["data"][style]['list'][idx][idx_size]["color_title"] = color_name; // Add names of all custom colors.
                 }
             });
 
@@ -1802,6 +1804,20 @@ function displayTotal($collection)
         $('#summary-table-molding-fee .qty').html( $collection.items.count );
         $('#summary-table-molding-fee .price').html( ($collection.molding_fee).formatMoney() );
         $('#summary-table-molding-fee .total').html( ($collection.items.price_all_moldfee).formatMoney() );
+        $('#summary-table-molding-fee #molding-fee-list').html("");
+        var mold_first = true;
+        if(typeof $collection.items != "undefined") {
+            if(typeof $collection.items.mold_list != "undefined") {
+                $.each($collection.items.mold_list, function(key, value) {
+                    if(mold_first) {
+                        $('#summary-table-molding-fee #molding-fee-list').append('<div class="col-xs-9 padding-left-25 list"><i class="fa fa-angle-right"></i><strike>'+getSizeTitle(value)+'</strike></div><div class="col-xs-3 text-right no-padding-right">-</div>');
+                        mold_first = false;
+                    } else {
+                        $('#summary-table-molding-fee #molding-fee-list').append('<div class="col-xs-9 padding-left-25 list"><i class="fa fa-angle-right"></i>'+getSizeTitle(value)+'</div><div class="col-xs-3 text-right no-padding-right">-</div>');
+                    }
+                });
+            }
+        }
     }
 
     if(typeof $collection.time_production != "undefined") {
@@ -1969,7 +1985,7 @@ function displayTotal($collection)
 
         if(typeof $collection.free['wristbands'] != "undefined") {
             if(typeof $collection.free['wristbands']['quantity'] != "undefined") {
-                var _wbq = parseInt($collection.free['key-chain']['quantity']);
+                var _wbq = parseInt($collection.free['wristbands']['quantity']);
                 if(!isNaN(_wbq) && _wbq>0) {
                     $('#summary-table-free').removeClass('hidden');
                     $('#summary-table-free #free-wristband').removeClass('hidden');
@@ -1988,7 +2004,6 @@ function displayTotal($collection)
 
 function getSizeTitle(abbr)
 {
-
     switch (abbr.toLowerCase()) {
         case "ad":
             return "Adult";
@@ -2014,7 +2029,6 @@ function getSizeTitle(abbr)
             return "None";
             break;
     }
-
 }
 
 function getWBSizeTitle(abbr)
@@ -2195,6 +2209,7 @@ function getTotal()
                         if(typeof addon_items[element.attr('data-style')][element.attr('data-index')] == "undefined") {
                             addon_items[element.attr('data-style')][element.attr('data-index')] = {
                                 color: items['data'][element.attr('data-style')]['list'][element.attr('data-index')][idx_size]['color'],
+                                color_title: items['data'][element.attr('data-style')]['list'][element.attr('data-index')][idx_size]['color_title'],
                                 size: {},
                                 style: items['data'][element.attr('data-style')]['list'][element.attr('data-index')][idx_size]['style'],
                                 title: items['data'][element.attr('data-style')]['list'][element.attr('data-index')][idx_size]['title'],
@@ -2203,7 +2218,7 @@ function getTotal()
                         }
                         addon_items[element.attr('data-style')][element.attr('data-index')]['size'][idx_size] = {
                             font: items['data'][element.attr('data-style')]['list'][element.attr('data-index')][idx_size]['font'],
-                            font_name: items['data'][element.attr('data-style')]['list'][element.attr('data-index')][idx_size]['font_name'],
+                            font_title: items['data'][element.attr('data-style')]['list'][element.attr('data-index')][idx_size]['font_title'],
                             qty: addon_qty,
                             size: items['data'][element.attr('data-style')]['list'][element.attr('data-index')][idx_size]['size']
                         };
@@ -2262,6 +2277,7 @@ function getTotal()
                     if(typeof addonKCitems[element.attr('data-style')][element.attr('data-index')] == "undefined") {
                         addonKCitems[element.attr('data-style')][element.attr('data-index')] = {
                             color: items['data'][element.attr('data-style')]['list'][element.attr('data-index')][idx_size]['color'],
+                            color_title: items['data'][element.attr('data-style')]['list'][element.attr('data-index')][idx_size]['color_title'],
                             size: {},
                             style: items['data'][element.attr('data-style')]['list'][element.attr('data-index')][idx_size]['style'],
                             title: items['data'][element.attr('data-style')]['list'][element.attr('data-index')][idx_size]['title'],
@@ -2270,7 +2286,7 @@ function getTotal()
                     }
                     addonKCitems[element.attr('data-style')][element.attr('data-index')]['size'][element.attr('data-size')] = {
                         font: items['data'][element.attr('data-style')]['list'][element.attr('data-index')][idx_size]['font'],
-                        font_name: items['data'][element.attr('data-style')]['list'][element.attr('data-index')][idx_size]['font_name'],
+                        font_title: items['data'][element.attr('data-style')]['list'][element.attr('data-index')][idx_size]['font_title'],
                         qty: addonKCqty,
                         size: items['data'][element.attr('data-style')]['list'][element.attr('data-index')][idx_size]['size']
                     };
@@ -2358,6 +2374,7 @@ function getTotal()
             if(typeof freeKCitems[element.attr('data-style')][element.attr('data-index')] == "undefined") {
                 freeKCitems[element.attr('data-style')][element.attr('data-index')] = {
                     color: items['data'][element.attr('data-style')]['list'][element.attr('data-index')][idx_size]['color'],
+                    color_title: items['data'][element.attr('data-style')]['list'][element.attr('data-index')][idx_size]['color_title'],
                     size: {},
                     style: items['data'][element.attr('data-style')]['list'][element.attr('data-index')][idx_size]['style'],
                     title: items['data'][element.attr('data-style')]['list'][element.attr('data-index')][idx_size]['title'],
@@ -2366,7 +2383,7 @@ function getTotal()
             }
             freeKCitems[element.attr('data-style')][element.attr('data-index')][idx_size] = {
                 font: items['data'][element.attr('data-style')]['list'][element.attr('data-index')][idx_size]['font'],
-                font_name: items['data'][element.attr('data-style')]['list'][element.attr('data-index')][idx_size]['font_name'],
+                font_title: items['data'][element.attr('data-style')]['list'][element.attr('data-index')][idx_size]['font_title'],
                 qty: freeKCqty,
                 size: items['data'][element.attr('data-style')]['list'][element.attr('data-index')][idx_size]['size']
             };
@@ -2398,6 +2415,7 @@ function getTotal()
             if(typeof freeWBitems[element.attr('data-style')][element.attr('data-index')] == "undefined") {
                 freeWBitems[element.attr('data-style')][element.attr('data-index')] = {
                     color: items['data'][element.attr('data-style')]['list'][element.attr('data-index')][idx_size]['color'],
+                    color_title: items['data'][element.attr('data-style')]['list'][element.attr('data-index')][idx_size]['color_title'],
                     size: {},
                     style: items['data'][element.attr('data-style')]['list'][element.attr('data-index')][idx_size]['style'],
                     title: items['data'][element.attr('data-style')]['list'][element.attr('data-index')][idx_size]['title'],
@@ -2406,7 +2424,7 @@ function getTotal()
             }
             freeWBitems[element.attr('data-style')][element.attr('data-index')][idx_size] = {
                 font: items['data'][element.attr('data-style')]['list'][element.attr('data-index')][idx_size]['font'],
-                font_name: items['data'][element.attr('data-style')]['list'][element.attr('data-index')][idx_size]['font_name'],
+                font_title: items['data'][element.attr('data-style')]['list'][element.attr('data-index')][idx_size]['font_title'],
                 qty: freeWBqty,
                 size: items['data'][element.attr('data-style')]['list'][element.attr('data-index')][idx_size]['size']
             };
@@ -3451,6 +3469,7 @@ function loadForm()
             $.each(styleVal['list'], function(listKey, listVal) {
                 $.each(listVal, function(itemKey, itemVal) {
                     if(typeof itemVal !== "undefined" && typeof itemVal == "object") {
+
                         // Fix titles
                         wbTitle = itemVal.title.toLowerCase();
                         // If item is customized,
@@ -3462,7 +3481,7 @@ function loadForm()
                             // Get template
                             $.ajax({
                                 type: 'GET',
-                                url: '/getTemplateCustomWristband?id=' + listKey + '&type=' + itemVal['type'] + '&style=' + _cart.style + '&image=' + _img + '&color=' + itemVal['color'].split(',').join(', '),
+                                url: '/getTemplateCustomWristband?id=' + listKey + '&type=' + itemVal['style'] + '&style=' + itemVal['type'] + '&image=' + _img + '&color=' + itemVal['color'].split(',').join(',') + '&color_title=' + itemVal['color_title'].split(',').join(','),
                                 data: {
                                     items: JSON.stringify(itemVal['size'])
                                 },
@@ -3475,39 +3494,39 @@ function loadForm()
                                 }
 
                                 newVal = parseFloat(itemVal['qty']);
-                                $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+itemVal['style']+"'] input[ref-size='"+itemVal['size']+"'][ref-style='"+itemVal['type']+"'][ref-index='"+listKey+"'][ref-color='"+itemVal['color'].split(',').join(', ')+"']").val(newVal);
+                                $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+itemVal['style']+"'] input[ref-size='"+itemVal['size']+"'][ref-style='"+itemVal['style']+"'][ref-index='"+listKey+"'][ref-color='"+itemVal['color'].split(',').join(',')+"']").val(newVal);
                                 // Update font color.
-                                $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+itemVal['style']+"'] input[ref-size='"+itemVal['size']+"'][ref-style='"+itemVal['type']+"'][ref-index='"+listKey+"'][ref-color='"+itemVal['color'].split(',').join(', ')+"']").closest('.box-color-qty').find('.fntin').attr('ref-font-name', itemVal['font_title']);
-                                $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+itemVal['style']+"'] input[ref-size='"+itemVal['size']+"'][ref-style='"+itemVal['type']+"'][ref-index='"+listKey+"'][ref-color='"+itemVal['color'].split(',').join(', ')+"']").closest('.box-color-qty').find('.fntin').attr('ref-font-color', itemVal['font']);
-                                $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+itemVal['style']+"'] input[ref-size='"+itemVal['size']+"'][ref-style='"+itemVal['type']+"'][ref-index='"+listKey+"'][ref-color='"+itemVal['color'].split(',').join(', ')+"']").closest('.box-color-qty').find('.fntin').css({'background-color': '#' + itemVal['font']});
+                                $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+itemVal['style']+"'] input[ref-size='"+itemVal['size']+"'][ref-style='"+itemVal['style']+"'][ref-index='"+listKey+"'][ref-color='"+itemVal['color'].split(',').join(',')+"']").closest('.box-color-qty').find('.fntin').attr('ref-font-name', itemVal['font_title']);
+                                $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+itemVal['style']+"'] input[ref-size='"+itemVal['size']+"'][ref-style='"+itemVal['style']+"'][ref-index='"+listKey+"'][ref-color='"+itemVal['color'].split(',').join(',')+"']").closest('.box-color-qty').find('.fntin').attr('ref-font-color', itemVal['font']);
+                                $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+itemVal['style']+"'] input[ref-size='"+itemVal['size']+"'][ref-style='"+itemVal['style']+"'][ref-index='"+listKey+"'][ref-color='"+itemVal['color'].split(',').join(',')+"']").closest('.box-color-qty').find('.fntin').css({'background-color': '#' + itemVal['font']});
 
                                 // Check if view more section must open.
                                 if(itemVal['size'] == "xs" || itemVal['size'] == "xl") {
-                                    $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+itemVal['style']+"'] input[ref-size='"+itemVal['size']+"'][ref-style='"+itemVal['type']+"'][ref-index='"+listKey+"'][ref-color='"+itemVal['color'].split(',').join(', ')+"']").closest('.box-color').find('.view-more').removeClass('collapsed');
-                                    $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+itemVal['style']+"'] input[ref-size='"+itemVal['size']+"'][ref-style='"+itemVal['type']+"'][ref-index='"+listKey+"'][ref-color='"+itemVal['color'].split(',').join(', ')+"']").closest('.box-color').find('.view-more').attr('aria-expanded', 'true');
-                                    $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+itemVal['style']+"'] input[ref-size='"+itemVal['size']+"'][ref-style='"+itemVal['type']+"'][ref-index='"+listKey+"'][ref-color='"+itemVal['color'].split(',').join(', ')+"']").closest('.show-content').addClass('in');
-                                    $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+itemVal['style']+"'] input[ref-size='"+itemVal['size']+"'][ref-style='"+itemVal['type']+"'][ref-index='"+listKey+"'][ref-color='"+itemVal['color'].split(',').join(', ')+"']").closest('.show-content').removeAttr("style");
+                                    $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+itemVal['style']+"'] input[ref-size='"+itemVal['size']+"'][ref-style='"+itemVal['style']+"'][ref-index='"+listKey+"'][ref-color='"+itemVal['color'].split(',').join(',')+"']").closest('.box-color').find('.view-more').removeClass('collapsed');
+                                    $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+itemVal['style']+"'] input[ref-size='"+itemVal['size']+"'][ref-style='"+itemVal['style']+"'][ref-index='"+listKey+"'][ref-color='"+itemVal['color'].split(',').join(',')+"']").closest('.box-color').find('.view-more').attr('aria-expanded', 'true');
+                                    $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+itemVal['style']+"'] input[ref-size='"+itemVal['size']+"'][ref-style='"+itemVal['style']+"'][ref-index='"+listKey+"'][ref-color='"+itemVal['color'].split(',').join(',')+"']").closest('.show-content').addClass('in');
+                                    $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+itemVal['style']+"'] input[ref-size='"+itemVal['size']+"'][ref-style='"+itemVal['style']+"'][ref-index='"+listKey+"'][ref-color='"+itemVal['color'].split(',').join(',')+"']").closest('.show-content').removeAttr("style");
                                 }
                             });
                         } else {  // If normal...
                             // Update field indeces.
-                            $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+itemVal['style']+"'] input[ref-size='"+itemVal['size']+"'][ref-style='"+itemVal['style']+"'][ref-color='"+itemVal['color'].split(',').join(', ')+"']").attr('ref-index', listKey);
+                            $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+itemVal['style']+"'] input[ref-size='"+itemVal['size']+"'][ref-style='"+itemVal['style']+"'][ref-color='"+itemVal['color'].split(',').join(',')+"']").attr('ref-index', listKey);
                             // Update field quantity.
-                            var newVal1 = $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+itemVal['style']+"'] input[ref-size='"+itemVal['size']+"'][ref-style='"+itemVal['style']+"'][ref-color='"+itemVal['color'].split(',').join(', ')+"']").val();
+                            var newVal1 = $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+itemVal['style']+"'] input[ref-size='"+itemVal['size']+"'][ref-style='"+itemVal['style']+"'][ref-color='"+itemVal['color'].split(',').join(',')+"']").val();
                                 newVal1 = (newVal1) ? parseFloat(newVal1) : 0;
                                 // newVal1 = (newVal1 != "" || typeof newVal1 != "undefined") ? 0 : parseFloat(newVal1);
                                 newVal = newVal1 + parseFloat(itemVal['qty']);
-                            $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+itemVal['style']+"'] input[ref-size='"+itemVal['size']+"'][ref-style='"+itemVal['style']+"'][ref-color='"+itemVal['color'].split(',').join(', ')+"']").val(newVal);
+                            $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+itemVal['style']+"'] input[ref-size='"+itemVal['size']+"'][ref-style='"+itemVal['style']+"'][ref-color='"+itemVal['color'].split(',').join(',')+"']").val(newVal);
                             // Update font color.
-                            $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+itemVal['style']+"'] input[ref-size='"+itemVal['size']+"'][ref-style='"+itemVal['style']+"'][ref-color='"+itemVal['color'].split(',').join(', ')+"']").closest('.box-color-qty').find('.fntin').attr('ref-font-name', itemVal['font_title']);
-                            $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+itemVal['style']+"'] input[ref-size='"+itemVal['size']+"'][ref-style='"+itemVal['style']+"'][ref-color='"+itemVal['color'].split(',').join(', ')+"']").closest('.box-color-qty').find('.fntin').attr('ref-font-color', itemVal['font']);
-                            $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+itemVal['style']+"'] input[ref-size='"+itemVal['size']+"'][ref-style='"+itemVal['style']+"'][ref-color='"+itemVal['color'].split(',').join(', ')+"']").closest('.box-color-qty').find('.fntin').css({'background-color': '#' + itemVal['font']});
+                            $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+itemVal['style']+"'] input[ref-size='"+itemVal['size']+"'][ref-style='"+itemVal['style']+"'][ref-color='"+itemVal['color'].split(',').join(',')+"']").closest('.box-color-qty').find('.fntin').attr('ref-font-name', itemVal['font_title']);
+                            $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+itemVal['style']+"'] input[ref-size='"+itemVal['size']+"'][ref-style='"+itemVal['style']+"'][ref-color='"+itemVal['color'].split(',').join(',')+"']").closest('.box-color-qty').find('.fntin').attr('ref-font-color', itemVal['font']);
+                            $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+itemVal['style']+"'] input[ref-size='"+itemVal['size']+"'][ref-style='"+itemVal['style']+"'][ref-color='"+itemVal['color'].split(',').join(',')+"']").closest('.box-color-qty').find('.fntin').css({'background-color': '#' + itemVal['font']});
                             // Check if view more section must open.
                             if(itemVal['size'] == "xs" || itemVal['size'] == "xl") {
-                                $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+itemVal['style']+"'] input[ref-size='"+itemVal['size']+"'][ref-style='"+itemVal['style']+"'][ref-color='"+itemVal['color'].split(',').join(', ')+"']").closest('.box-color').find('.view-more').removeClass('collapsed');
-                                $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+itemVal['style']+"'] input[ref-size='"+itemVal['size']+"'][ref-style='"+itemVal['style']+"'][ref-color='"+itemVal['color'].split(',').join(', ')+"']").closest('.box-color').find('.view-more').attr('aria-expanded', 'true');
-                                $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+itemVal['style']+"'] input[ref-size='"+itemVal['size']+"'][ref-style='"+itemVal['style']+"'][ref-color='"+itemVal['color'].split(',').join(', ')+"']").closest('.show-content').addClass('in');
-                                $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+itemVal['style']+"'] input[ref-size='"+itemVal['size']+"'][ref-style='"+itemVal['style']+"'][ref-color='"+itemVal['color'].split(',').join(', ')+"']").closest('.show-content').removeAttr("style");
+                                $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+itemVal['style']+"'] input[ref-size='"+itemVal['size']+"'][ref-style='"+itemVal['style']+"'][ref-color='"+itemVal['color'].split(',').join(',')+"']").closest('.box-color').find('.view-more').removeClass('collapsed');
+                                $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+itemVal['style']+"'] input[ref-size='"+itemVal['size']+"'][ref-style='"+itemVal['style']+"'][ref-color='"+itemVal['color'].split(',').join(',')+"']").closest('.box-color').find('.view-more').attr('aria-expanded', 'true');
+                                $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+itemVal['style']+"'] input[ref-size='"+itemVal['size']+"'][ref-style='"+itemVal['style']+"'][ref-color='"+itemVal['color'].split(',').join(',')+"']").closest('.show-content').addClass('in');
+                                $(".wb-color-type:not(.hidden) .tab-content .tab-pane[data-color-style='"+itemVal['style']+"'] input[ref-size='"+itemVal['size']+"'][ref-style='"+itemVal['style']+"'][ref-color='"+itemVal['color'].split(',').join(',')+"']").closest('.show-content').removeAttr("style");
                             }
                         }
                         var idx_size = "0";

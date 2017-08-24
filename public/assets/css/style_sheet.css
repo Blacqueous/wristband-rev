@@ -1258,7 +1258,7 @@ input.form-control {
 	}
 
 	.band-text {
-		width: 298px!important;
+		width: 100% !important;
 		padding: 4px;
 	}
 
@@ -1528,7 +1528,7 @@ input.form-control {
 	}
 
 	.band-text {
-		width: 262px!important;
+		width: 100% !important;
 		padding: 4px;
 	}
 

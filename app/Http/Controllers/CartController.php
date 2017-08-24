@@ -46,9 +46,6 @@ class CartController extends Controller
 		$data = [
 			'items' => (Session::has('_cart')) ? Session::get('_cart') : []
 		];
-		// var_dump($data);
-		// die;
-		// Do something...
 		return view('cart', $data);
     }
 
@@ -275,8 +272,6 @@ class CartController extends Controller
 
 		$carts_model = new Carts();
 		$carts_model->insert($arrCart);
-var_dump($arrCart);
-die;
 
 		if (strtoupper($request->PaymentType) == "CC") {
 			$merchantAuthentication = new AnetAPI\MerchantAuthenticationType();
@@ -359,6 +354,8 @@ die;
 
 					$orders_model = new Orders();
 					$orders_model->where('ID', $order_id)->update($data_order);
+					$orders_model = new Carts();
+					$orders_model->where('OrderID', $order_id)->update(["Status"=>1]);
 
 					Session::forget('_cart');
 					Session::forget('_paypal');
@@ -612,14 +609,9 @@ die;
 
 					$orders_model = new Orders();
 					$orders_model->where('ID', $order_id)->update($data_order);
+					$orders_model = new Carts();
+					$orders_model->where('OrderID', $order_id)->update(["Status"=>1]);
 
-					// foreach ($arrCart as $key => $value) {
-					// 	unset($arrCart[$key]['_Name']);
-					// 	unset($arrCart[$key]['_Size']);
-					// }
-
-					// $carts_model = new Carts();
-					// $carts_model->insert($arrCart);
 					Session::forget('_cart');
 					Session::forget('_paypal');
 					Session::flash('_checkout_success', true);
@@ -657,7 +649,7 @@ die;
 
 		$data_cart_default = [
 			"DateCreated"						=> date('Y-m-d H:i:s'),
-			"Status"							=> "1",
+			"Status"							=> "0",
 			"OrderID"							=> $order_id,
 			"TempToken"							=> $token,
 			"BandStyle"							=> "",
@@ -721,6 +713,7 @@ die;
 		];
 
 		$data = [];
+		$customCount = 0;
 
 		// Organize cart data
 		$cart_list = Session::get('_cart');
@@ -753,7 +746,6 @@ die;
 
 				foreach ($items['list'] as $variantsKey => $variants) {
 
-
 					foreach ($variants as $key => $item) {
 
 						if (is_array($item)) {
@@ -763,23 +755,51 @@ die;
 							if($has_molding_fee) {
 								$moldingFee = new MoldingFee();
 								$moldingFee = $moldingFee->getJSONPrice()[0];
-								$moldingFeePrice['price'] = count($variants) * $moldingFee;
+								$moldingFeePrice['price'] = (count($variants)-1) * $moldingFee;
 								$has_molding_fee = false;
 							}
 
+							if (strpos(strtolower($item['title']), "custom") !== false) { $customCount++; }
+
 							$comment = ["font_color"=> strtoupper($item['font']), "font_name"=> ucwords(strtolower($item['font_title'])), "size"=> strtolower($item['size'])];
-							$arKeychains = ["quantity" => 0];
-							$arWristbands = ["quantity" => 0];
+							$arKeychains = ["data"=> [], "total"=> 0];
+							$arWristbands = ["data"=> [], "total"=> 0];
 
 							if (isset($list['free'])) {
-
 								if (isset($list['free']['key-chain'])) {
 									if (isset($list['free']['key-chain']['items'])) {
 										if (isset($list['free']['key-chain']['items'][$stylesKey])) {
 											if (isset($list['free']['key-chain']['items'][$stylesKey][$variantsKey])) {
 												if (isset($list['free']['key-chain']['items'][$stylesKey][$variantsKey][$key])) {
-													$arKeychainsQty = $list['free']['key-chain']['items'][$stylesKey][$variantsKey][$key]['qty'];
-													$arKeychains = ["quantity"=> $arKeychainsQty];
+													$arFreeKCKey = $list['free']['key-chain']['items'][$stylesKey][$variantsKey];
+													$arFreeKCData = $list['free']['key-chain']['items'][$stylesKey][$variantsKey][$key];
+													$nameFreeKCTitle = ucwords(strtolower(str_replace('-', ' ', $arFreeKCKey['color_title'])));
+													$nameFreeKCTitle = str_replace(',', ', ', $nameFreeKCTitle);
+													$nameFreeKCTitle = ucwords($nameFreeKCTitle);
+													$nameFreeKCTitle = str_replace(', ', ',', $nameFreeKCTitle);
+													$nameFreeKCSize = "Medium";
+													switch ($arFreeKCData['size']) {
+														case 'yt': $nameFreeKCSize = "Youth"; break;
+														case 'md': $nameFreeKCSize = "Medium"; break;
+														case 'ad': $nameFreeKCSize = "Adult"; break;
+														case 'xs': $nameFreeKCSize = "ExtraSmall"; break;
+														case 'xl': $nameFreeKCSize = "ExtraLarge"; break;
+														default: $nameFreeKCSize = "Medium"; break;
+													}
+													if (strpos(strtolower($arFreeKCKey['title']), "custom") !== false) {
+														$nameFreeKCName = $nameFreeKCSize."_".$arFreeKCKey['style']."_Custom"."_".$customCount;
+													} else {
+														$nameFreeKCName = $nameFreeKCSize."_".$arFreeKCKey['style']."_".str_replace(' ', '', $nameFreeKCTitle);
+													}
+													$arKeychains["total"] += $arFreeKCData['qty'];
+													$arKeychains["data"] = [
+														"Name" => $nameFreeKCName,
+														"Qty" => $arFreeKCData['qty'],
+														"FontColor" => ucwords(strtolower($arFreeKCData['font_title'])),
+														"FontHexColor" => $arFreeKCData['font'],
+														"CustomColors" => json_encode(explode(',', $nameFreeKCTitle)),
+														"CustomHexColors" => json_encode(explode(',', $arFreeKCKey['color']))
+													];
 												}
 											}
 										}
@@ -791,19 +811,44 @@ die;
 										if (isset($list['free']['wristbands']['items'][$stylesKey])) {
 											if (isset($list['free']['wristbands']['items'][$stylesKey][$variantsKey])) {
 												if (isset($list['free']['wristbands']['items'][$stylesKey][$variantsKey][$key])) {
-													$arWristbandsQty = $list['free']['wristbands']['items'][$stylesKey][$variantsKey][$key]['qty'];
-													$arWristbands = ["quantity"=> $arWristbandsQty];
+													$arFreeWBKey = $list['free']['wristbands']['items'][$stylesKey][$variantsKey];
+													$arFreeWBData = $list['free']['wristbands']['items'][$stylesKey][$variantsKey][$key];
+													$nameFreeWBTitle = ucwords(strtolower(str_replace('-', ' ', $arFreeWBKey['color_title'])));
+													$nameFreeWBTitle = str_replace(',', ', ', $nameFreeWBTitle);
+													$nameFreeWBTitle = ucwords($nameFreeWBTitle);
+													$nameFreeWBTitle = str_replace(', ', ',', $nameFreeWBTitle);
+													$nameFreeWBSize = "Medium";
+													switch ($arFreeWBData['size']) {
+														case 'yt': $nameFreeWBSize = "Youth"; break;
+														case 'md': $nameFreeWBSize = "Medium"; break;
+														case 'ad': $nameFreeWBSize = "Adult"; break;
+														case 'xs': $nameFreeWBSize = "ExtraSmall"; break;
+														case 'xl': $nameFreeWBSize = "ExtraLarge"; break;
+														default: $nameFreeWBSize = "Medium"; break;
+													}
+													if (strpos(strtolower($arFreeWBKey['title']), "custom") !== false) {
+														$nameFreeWBName = $nameFreeWBSize."_".$arFreeWBKey['style']."_Custom"."_".$customCount;
+													} else {
+														$nameFreeWBName = $nameFreeWBSize."_".$arFreeWBKey['style']."_".str_replace(' ', '', $nameFreeWBTitle);
+													}
+													$arWristbands["total"] += $arFreeWBData['qty'];
+													$arWristbands["data"] = [
+														"Name" => $nameFreeWBName,
+														"Qty" => $arFreeWBData['qty'],
+														"FontColor" => ucwords(strtolower($arFreeWBData['font_title'])),
+														"FontHexColor" => $arFreeWBData['font'],
+														"CustomColors" => json_encode(explode(',', $nameFreeWBTitle)),
+														"CustomHexColors" => json_encode(explode(',', $arFreeWBKey['color']))
+													];
 												}
 											}
 										}
 									}
 								}
-
 							}
 
 							// Message
 							if (isset($list['texts'])) {
-
 								if (isset($list['texts']['continue'])) {
 									$data_cart_default_band['MessageStyle'] = "continuous";
 									$data_cart_default_band['ContinuousMessage'] = $list['texts']['continue']['text'];
@@ -814,7 +859,6 @@ die;
 									$data_cart_default_band['arContinuousMessage'] = json_encode($arrMessage);
 									$data_cart_default_band['PriceContinuousMessage'] = json_encode($arrMessage['total']);
 								}
-
 								if (isset($list['texts']['front'])) {
 									$data_cart_default_band['MessageStyle'] = "front_back";
 									$data_cart_default_band['FrontMessage'] = $list['texts']['front']['text'];
@@ -824,7 +868,6 @@ die;
 										$arrMessage['total'] = $arrMessage['price'] * $arrMessage['quantity'];
 									$data_cart_default_band['arFrontMessage'] = json_encode($arrMessage);
 								}
-
 								if (isset($list['texts']['back'])) {
 									$data_cart_default_band['MessageStyle'] = "front_back";
 									$data_cart_default_band['BackMessage'] = $list['texts']['back']['text'];
@@ -835,7 +878,6 @@ die;
 									$data_cart_default_band['arBackMessage'] = json_encode($arrMessage);
 									$data_cart_default_band['PriceBackMessage'] = json_encode($arrMessage['total']);
 								}
-
 								if (isset($list['texts']['inside'])) {
 									// Reconstruct array
 										$arrMessage = $list['texts']['inside'];
@@ -843,14 +885,11 @@ die;
 										$arrMessage['total'] = $arrMessage['price'] * $arrMessage['quantity'];
 									$data_cart_default_band['arInsideMessage'] = json_encode($arrMessage);
 								}
-
 							}
 
 							// Clipart
 							if (isset($list['clips'])) {
-
 								if (isset($list['clips']['logo'])) {
-
 									if (isset($list['clips']['logo']['front-end'])) {
 										$arrImage = $list['clips']['logo']['front-end'];
 										$arrImage['quantity'] = $item['qty'];
@@ -858,7 +897,6 @@ die;
 										$data_cart_default_band['FrontMessageEndClipart'] = $arrImage['image'];
 										$data_cart_default_band['arFrontMessageEndClipart'] = json_encode($arrImage);
 									}
-
 									if (isset($list['clips']['logo']['front-start'])) {
 										$arrImage = $list['clips']['logo']['front-start'];
 										$arrImage['quantity'] = $item['qty'];
@@ -866,7 +904,6 @@ die;
 										$data_cart_default_band['FrontMessageStartClipart'] = $arrImage['image'];
 										$data_cart_default_band['arFrontMessageStartClipart'] = json_encode($arrImage);
 									}
-
 									if (isset($list['clips']['logo']['back-end'])) {
 										$arrImage = $list['clips']['logo']['back-end'];
 										$arrImage['quantity'] = $item['qty'];
@@ -874,7 +911,6 @@ die;
 										$data_cart_default_band['BackMessageEndClipart'] = $arrImage['image'];
 										$data_cart_default_band['arBackMessageEndClipart'] = json_encode($arrImage);
 									}
-
 									if (isset($list['clips']['logo']['back-start'])) {
 										$arrImage = $list['clips']['logo']['back-start'];
 										$arrImage['quantity'] = $item['qty'];
@@ -882,7 +918,6 @@ die;
 										$data_cart_default_band['BackMessageStartClipart'] = $arrImage['image'];
 										$data_cart_default_band['arBackMessageStartClipart'] = json_encode($arrImage);
 									}
-
 									if (isset($list['clips']['logo']['cont-end'])) {
 										$arrImage = $list['clips']['logo']['cont-end'];
 										$arrImage['quantity'] = $item['qty'];
@@ -890,7 +925,6 @@ die;
 										$data_cart_default_band['ContinuousEndClipart'] = $arrImage['image'];
 										$data_cart_default_band['arContinuousEndClipart'] = json_encode($arrImage);
 									}
-
 									if (isset($list['clips']['logo']['cont-start'])) {
 										$arrImage = $list['clips']['logo']['cont-start'];
 										$arrImage['quantity'] = $item['qty'];
@@ -898,14 +932,11 @@ die;
 										$data_cart_default_band['ContinuousMessageStartClipart'] = $arrImage['image'];
 										$data_cart_default_band['arContinuousMessageStartClipart'] = json_encode($arrImage);
 									}
-
 								}
-
 							}
 
 							// Addons
 							if (isset($list['addon'])) {
-
 								// 3mm Thick
 								if (isset($list['addon']['3mm-thick'])) {
 									$arrAddonBand = $list['addon']['3mm-thick'];
@@ -915,7 +946,6 @@ die;
 									// Set arAddons values
 									$data_cart_item_addons['3mmThick'] = $arrAddonBand;
 								}
-
 								// Digital Print / Digital Proof
 								if (isset($list['addon']['digital-proof'])) {
 									$arrAddonBand = $list['addon']['digital-proof'];
@@ -928,7 +958,6 @@ die;
 									// Set arAddons values
 									$data_cart_item_addons['DigitalPrint'] = $arrAddonBand;
 								}
-
 								// Eco Friendly Addon
 								if (isset($list['addon']['eco-friendly'])) {
 									$arrAddonBand = $list['addon']['eco-friendly'];
@@ -938,7 +967,6 @@ die;
 									// Set arAddons values
 									$data_cart_item_addons['Ecofriendly'] = $arrAddonBand;
 								}
-
 								// Individual Pack Addon
 								if (isset($list['addon']['individual'])) {
 									$arrAddonBand = $list['addon']['individual'];
@@ -951,7 +979,6 @@ die;
 									// Set arAddons values
 									$data_cart_item_addons['Individual_Pack'] = $arrAddonBand;
 								}
-
 								// Glitters Addon
 								if (isset($list['addon']['glitters'])) {
 									$arrAddonBand = $list['addon']['glitters'];
@@ -961,74 +988,117 @@ die;
 									// Set arAddons values
 									$data_cart_item_addons['Glitters'] = $arrAddonBand;
 								}
-
 								// Keychain Addon
 								if (isset($list['addon']['key-chain'])) {
-									$arrAddonBand = $list['addon']['key-chain'];
-									// Update values for individual items
-									if ($arrAddonBand['all'] == 'true') {
-										$arrAddonBand['quantity'] = $item['qty'];
+									$arrAddonKeychain = $list['addon']['key-chain'];
+									$arrAddonKeychainQty = 0;
+									$arrAddonKeychainPrice = $arrAddonKeychain['price'];
+									if ($arrAddonKeychain['all'] == 'true') { // Update values for individual items
+										$arrAddonKeychainQty = $item['qty'];
 									} else {
-										$arrAddonBand['quantity'] = $arrAddonBand['items'][$item['style']][$variantsKey]['size'][$item['size']]['qty'];
+										$arrAddonKeychainQty = $arrAddonKeychain['items'][$item['style']][$variantsKey]['size'][$item['size']]['qty'];
 									}
-									$arrAddonBand['total'] = $arrAddonBand['quantity'] * $arrAddonBand['price'];
+									$arrAddonKeychainTotal = $arrAddonKeychainQty * $arrAddonKeychainPrice;
 									// Set values
-									$data_cart_default_band['Keychain'] = $arrAddonBand['quantity'];
-									$data_cart_default_band['PriceKeychain'] = $arrAddonBand['price'];
+									$data_cart_default_band['Keychain'] = $arrAddonKeychainQty;
+									$data_cart_default_band['PriceKeychain'] = $arrAddonKeychainPrice;
+									$nameAddonKeychainTitle = ucwords(strtolower(str_replace('-', ' ', $item['color_title'])));
+									$nameAddonKeychainTitle = str_replace(',', ', ', $nameAddonKeychainTitle);
+									$nameAddonKeychainTitle = ucwords($nameAddonKeychainTitle);
+									$nameAddonKeychainTitle = str_replace(', ', ',', $nameAddonKeychainTitle);
+									$nameAddonKeychainSize = "Medium";
+									switch ($item['size']) {
+										case 'yt': $nameAddonKeychainSize = "Youth"; break;
+										case 'md': $nameAddonKeychainSize = "Medium"; break;
+										case 'ad': $nameAddonKeychainSize = "Adult"; break;
+										case 'xs': $nameAddonKeychainSize = "ExtraSmall"; break;
+										case 'xl': $nameAddonKeychainSize = "ExtraLarge"; break;
+										default: $nameAddonKeychainSize = "Medium"; break;
+									}
+									if (strpos(strtolower($item['title']), "custom") !== false) {
+										$arrAddonKeychainName = $nameAddonKeychainSize."_".$item['style']."_Custom"."_".$customCount;
+									} else {
+										$arrAddonKeychainName = $nameAddonKeychainSize."_".$item['style']."_".str_replace(' ', '', $nameAddonKeychainTitle);
+									}
 									// Set arAddons values
-									unset($arrAddonBand['items']);
-									$data_cart_item_addons['Keychain'] = $arrAddonBand;
+									unset($arrAddonKeychain['items']);
+									$data_cart_item_addons['Keychain'] = [
+										"total" => $arrAddonKeychainTotal,
+										"price" => $arrAddonKeychainPrice,
+										"Qty" => $arrAddonKeychainQty,
+										"Name" => $arrAddonKeychainName,
+										"FontColor" => ucwords(strtolower($item['font_title'])),
+										"FontHexColor" => $item['font'],
+										"CustomColors" => json_encode(explode(',', $nameAddonKeychainTitle)),
+										"CustomHexColors" => json_encode(explode(',', $item['color']))
+									];
 								}
-
 							}
-var_dump($item);
-die;
+
+							$nameSize = "Medium";
+							switch ($item['size']) {
+								case 'yt': $nameSize = "Youth"; break;
+								case 'md': $nameSize = "Medium"; break;
+								case 'ad': $nameSize = "Adult"; break;
+								case 'xs': $nameSize = "ExtraSmall"; break;
+								case 'xl': $nameSize = "ExtraLarge"; break;
+								default: $nameSize = "Medium"; break;
+							}
+
+							$arInfoName = strtolower(str_replace('-', ' ', $item['color_title']));
+							$arInfoName = str_replace(',', ', ', $arInfoName);
+							$arInfoName = ucwords($arInfoName);
+							$arInfoName = str_replace(', ', ',', $arInfoName);
+
+							if (strpos(strtolower($item['title']), "custom") !== false) {
+								$name = $nameSize."_".$item['style']."_Custom"."_".$customCount;
+							} else {
+								$name = $nameSize."_".$item['style']."_".str_replace(' ', '', $arInfoName);
+							}
+
 							$arInfo = [
-								"Name" => ucwords(strtolower($item['title'])),
+								"Name" => $name,
 								"Qty" => $item['qty'],
 								"FontColor" => ucwords(strtolower($item['font_title'])),
-								"CustomColors" => json_encode(explode(',', strtoupper($item['color'])))
+								"FontHexColor" => $item['font'],
+								"CustomColors" => json_encode(explode(',', $arInfoName)),
+								"CustomHexColors" => json_encode(explode(',', $item['color']))
 							];
 
 							$data_cart_item_attr[] = [
-								"_Name"			=> ucwords(strtolower($item['title'])),
-								"_Size"			=> strtolower($item['size']),
-								"BandType"		=> $item['type'],
-								"arColors"		=> json_encode(explode(',', strtoupper($item['color']))), // JSON String ~ Color
-								"Qty"			=> $item['qty'], // String ~ Quantity
-								"Comments"		=> json_encode($comment), // JSON String ~ Comment
-								"FreeQty"		=> $arWristbands['quantity'], // Int ~ Free wristbands
-								"arFree"		=> json_encode(["wristbands"=> $arWristbands, "keychains"=> $arKeychains]), // JSON String ~ Free wristbands & keychains
-								"arInfo"		=> $arInfo, //json_encode($arInfo), // JSON String ~ Free wristbands & keychains
-								"arAddons"		=> json_encode($data_cart_item_addons), // JSON String ~ Addons
+								"_Name"				=> ucwords(strtolower($item['title'])),
+								"_Size"				=> strtolower($item['size']),
+								"BandType"			=> $item['style'],
+								"arColors"			=> json_encode(explode(',', strtoupper($item['color']))), // JSON String ~ Color
+								"Qty"				=> $item['qty'], // String ~ Quantity
+								"Comments"			=> json_encode($comment), // JSON String ~ Comment
+								"FreeQty"			=> $arWristbands['total'] + $arKeychains['total'], // Int ~ Free wristbands
+								"arFree"			=> json_encode(["wristbands"=> $arWristbands, "keychains"=> $arKeychains]), // JSON String ~ Free wristbands & keychains
+								"arInfo"			=> json_encode($arInfo), // JSON String ~ Free wristbands & keychains
+								"arAddons"			=> json_encode($data_cart_item_addons), // JSON String ~ Addons
 								"PriceMouldingFee"	=> $moldingFeePrice['price'],
 								"arMoldingFee"		=> json_encode($moldingFeePrice), // JSON String ~ Molding Fee
 							];
-
 						}
-
 					}
 				}
-var_dump($data_cart_item_attr);
-die;
-				foreach ($data_cart_item_attr as $value) {
-					// Compute add-ons
-					$itemAllPrice = 0;
 
+				foreach ($data_cart_item_attr as $value) {
+					// Prepare add-ons computation
+					$itemAllPrice = 0;
+					// Compute add-ons
 					foreach (json_decode($value['arAddons'], true) as $addval) {
 						$itemAllPrice += $addval['total'];
 					}
-
+					// Compute prices
 					$itemTotalPrice = $value['Qty'] * $list['price'];
 					$itemAddonsPrice = $value['Qty'] * $items['price_addon'];
 					$itemMoldingFee = $value["PriceMouldingFee"];
-
 					// Total computation
 					$data_cart_item['UnitPrice'] = $itemTotalPrice + $itemAddonsPrice + $itemAllPrice;
 					$data_cart_item['Total'] = $itemTotalPrice + $itemAddonsPrice + $itemAllPrice + $itemMoldingFee;
 					$data_cart[] = array_merge($data_cart_item, $value);
 				}
-
 			}
 
 			// Last thing to do. Merge everything...
