@@ -390,6 +390,7 @@ $(document).ready(function() {
 
         // Load total amount.
         loadTotal(false);
+
     });
 
     $('body').on('keyup', '.wb-band-text', function(e) {
@@ -897,6 +898,7 @@ $(document).ready(function() {
         $('#modalWristbandColor').attr('data-style', customStyle);
         $('#modalWristbandColor').attr('data-type', customType);
         $('#modalWristbandColor').modal('show');
+
     });
 
     // Custom wristband color select event.
@@ -924,6 +926,7 @@ $(document).ready(function() {
             $(this).removeClass('active');
 
         }
+
     });
 
     // Clear all custom colors event.
@@ -2027,7 +2030,7 @@ function getSizeTitle(abbr)
 
     switch (abbr.toLowerCase()) {
         case "ad":
-            return "Adult";
+            return "Large";
             break;
 
         case "md":
@@ -2035,7 +2038,7 @@ function getSizeTitle(abbr)
             break;
 
         case "yt":
-            return "Youth";
+            return "Small";
             break;
 
         case "xs":
@@ -2047,9 +2050,10 @@ function getSizeTitle(abbr)
             break;
 
         default:
-            return "Medium";
+            return "None";
             break;
     }
+
 }
 
 function getWBSizeTitle(abbr)
@@ -2084,6 +2088,7 @@ function getWBSizeTitle(abbr)
             return "None";
             break;
     }
+
 }
 
 function getTotal()
@@ -2669,6 +2674,7 @@ function loadCustomWristband($style, $type, $colors, $target)
         $($target).attr('src', link).animate({'opacity':'1'}, 1000);
         $($target).closest('.box-color').find('input').attr('ref-color', $colors);
     });
+
 }
 
 function loadFree()
@@ -2694,7 +2700,7 @@ function loadFree()
                         html_wb += '<div class="col-xs-4 fwb-text-content">'+itemVal.title.toUpperCase()+'</div>';
                         html_wb += '<div class="col-xs-4 fwb-text-content">'+getSizeTitle(itemVal.size).toUpperCase()+'</div>';
                     html_wb += '</div>';
-                    html_wb += '<div class="align-right col-md-6 col-sm-12"><h4 class="fwb-text col-xs-12 hidden-md hidden-lg text-center fwb-text-hidden-header">INPUT QUANTITY</h4><input type="number" class="freewb col-xs-12" id="freewb-'+itemVal.style+'-'+itemVal.size+'-'+itemVal.color.split(",").join("-")+'" name="'+itemVal.style+'-'+itemVal.size+'-'+itemVal.color.split(",").join("-")+'-fwb" data-style="'+itemVal.style+'" data-color="'+itemVal.color+'" data-color-name="'+itemVal.color_title+'" data-font-color="'+itemVal.font+'" data-font-name="'+itemVal.font_title+'" data-name="'+itemVal.title+'" data-size="'+itemVal.size+'" data-index="'+listKey+'" placeholder="0" data-maxlength="3" /></div>';
+                    html_wb += '<div class="align-right col-md-6 col-sm-12"><h4 class="fwb-text col-xs-12 hidden-md hidden-lg text-center fwb-text-hidden-header">INPUT QUANTITY</h4><input type="number" class="freewb col-xs-12" id="freewb-'+itemVal.style+'-'+itemVal.size+'-'+itemVal.color.split(",").join("-")+'" name="'+itemVal.style+'-'+itemVal.size+'-'+itemVal.color.split(",").join("-")+'-fwb" data-style="'+itemVal.style+'" data-color="'+itemVal.color+'" data-font-color="'+itemVal.font+'" data-name="'+itemVal.title+'" data-size="'+itemVal.size+'" data-index="'+listKey+'" placeholder="0" data-maxlength="3" /></div>';
                     html_wb += '<div class="clearfix"></div>';
                     html_wb += '</li>';
 
@@ -2705,7 +2711,7 @@ function loadFree()
                         html_kc += '<div class="col-xs-4 fwb-text-content">'+itemVal.title.toUpperCase()+'</div>';
                         html_kc += '<div class="col-xs-4 fwb-text-content">'+getSizeTitle(itemVal.size).toUpperCase()+'</div>';
                     html_kc += '</div>';
-                    html_kc += '<div class="align-right col-md-6 col-sm-12"><h4 class="fwb-text col-xs-12 hidden-md hidden-lg text-center fwb-text-hidden-header">INPUT QUANTITY</h4><input type="number" class="freekc col-xs-12" id="freekc-'+itemVal.style+'-'+itemVal.size+'-'+itemVal.color.split(",").join("-")+'" name="'+itemVal.style+'-'+itemVal.size+'-'+itemVal.color.split(",").join("-")+'-fwb" data-style="'+itemVal.style+'" data-color="'+itemVal.color+'" data-color-name="'+itemVal.color_title+'" data-font-color="'+itemVal.font+'" data-font-name="'+itemVal.font_title+'" data-name="'+itemVal.title+'" data-size="'+itemVal.size+'" data-index="'+listKey+'" placeholder="0" data-maxlength="3" /></div>';
+                    html_kc += '<div class="align-right col-md-6 col-sm-12"><h4 class="fwb-text col-xs-12 hidden-md hidden-lg text-center fwb-text-hidden-header">INPUT QUANTITY</h4><input type="number" class="freekc col-xs-12" id="freekc-'+itemVal.style+'-'+itemVal.size+'-'+itemVal.color.split(",").join("-")+'" name="'+itemVal.style+'-'+itemVal.size+'-'+itemVal.color.split(",").join("-")+'-fwb" data-style="'+itemVal.style+'" data-color="'+itemVal.color+'" data-font-color="'+itemVal.font+'" data-name="'+itemVal.title+'" data-size="'+itemVal.size+'" data-index="'+listKey+'" placeholder="0" data-maxlength="3" /></div>';
                     html_kc += '<div class="clearfix"></div>';
                     html_kc += '</li>';
 
@@ -2716,7 +2722,7 @@ function loadFree()
                         html += '<div class="col-xs-4 fwb-text-content">'+itemVal.title.toUpperCase()+'</div>';
                         html += '<div class="col-xs-4 fwb-text-content">'+getSizeTitle(itemVal.size).toUpperCase()+'</div>';
                     html += '</div>';
-                    html += '<div class="align-right col-md-6 col-sm-12"><h4 class="fwb-text col-xs-12 hidden-md hidden-lg text-center fwb-text-hidden-header">INPUT QUANTITY</h4><input type="number" class="addonkc col-xs-12" id="freewb-'+itemVal.style+'-'+itemVal.size+'-'+itemVal.color.split(",").join("-")+'" name="'+itemVal.style+'-'+itemVal.size+'-'+itemVal.color.split(",").join("-")+'-fwb" data-style="'+itemVal.style+'" data-color="'+itemVal.color+'" data-color-name="'+itemVal.color_title+'" data-font-color="'+itemVal.font+'" data-font-name="'+itemVal.font_title+'" data-name="'+itemVal.title+'" data-size="'+itemVal.size+'" data-index="'+listKey+'" placeholder="0" data-maxlength="3" /></div>';
+                    html += '<div class="align-right col-md-6 col-sm-12"><h4 class="fwb-text col-xs-12 hidden-md hidden-lg text-center fwb-text-hidden-header">INPUT QUANTITY</h4><input type="number" class="addonkc col-xs-12" id="freewb-'+itemVal.style+'-'+itemVal.size+'-'+itemVal.color.split(",").join("-")+'" name="'+itemVal.style+'-'+itemVal.size+'-'+itemVal.color.split(",").join("-")+'-fwb" data-style="'+itemVal.style+'" data-color="'+itemVal.color+'" data-font-color="'+itemVal.font+'" data-name="'+itemVal.title+'" data-size="'+itemVal.size+'" data-index="'+listKey+'" placeholder="0" data-maxlength="3" /></div>';
                     html += '<div class="clearfix"></div>';
                     html += '</li>';
                 });
@@ -2747,6 +2753,7 @@ function loadFree()
 
     // Get maximum quantity for keychains
     maxKeychain = total;
+
 }
 
 function loadPrices($style, $size)
@@ -2773,6 +2780,7 @@ function loadPrices($style, $size)
     $('#price_table .size').html($size_name.toUpperCase());
     $('#price_header').html(tblhead);
     $('#price_body').html(tblbody);
+
 }
 
 function loadSizes($style)
@@ -2813,6 +2821,7 @@ function loadSizes($style)
         $('#wb_size .iradio_square-green').removeClass('checked');
         $('#wb_size #wb_size_0-50inch input[type=radio].wb-size').prop('checked', true).closest('.iradio_square-green').addClass('checked');
     }
+
 }
 
 function loadTotal(loadProdShip)
@@ -2858,9 +2867,12 @@ function loadTotal(loadProdShip)
 
     // Loop through all items
     $.each($collection['items']['data'], function(styleKey, styleVal) {
-    
+
         $collection['items']['data'][styleKey]['quantity'] = 0;
         $collection['items']['data'][styleKey]['price_addon'] = 0;
+        // $collection['items']['count'] += Object.keys(styleVal['list']).length;
+        // $collection['items']['price_all_moldfee'] += (Object.keys(styleVal['list']).length * molding_fee);
+        // $collection['items']['data'][styleKey]['price_moldfee'] = (Object.keys(styleVal['list']).length * molding_fee);
 
         $.each(styleVal['list'], function(listKey, listVal) {
 
@@ -3058,6 +3070,138 @@ function loadTotal(loadProdShip)
                 $collection.time_shipping.days = data.shipping[0].days;
                 $collection.time_shipping.price = data.shipping[0].price;
 
+                        // COMPUTE THE TOTAL PRICE
+                        $collection.total += $collection.quantity * $collection.price;
+                        $collection.total += $collection.items.price_all_addon;
+                        $collection.total += $collection.items.price_all_moldfee;
+
+                        if(typeof $collection.items['segmented'] != "undefined") {
+                            $collection.total += $collection.items['segmented'].price_total;
+                        }
+
+                        if(typeof $collection.items['swirl'] != "undefined") {
+                            $collection.total += $collection.items['swirl'].price_total;
+                        }
+
+                        if(typeof $collection.items['glow'] != "undefined") {
+                            $collection.total += $collection.items['glow'].price_total;
+                        }
+
+                        if(typeof $collection.time_production != "undefined") {
+                            $collection.total += $collection.time_production.price;
+                        }
+
+                        if(typeof $collection.time_shipping != "undefined") {
+                            $collection.total += $collection.time_shipping.price;
+                        }
+
+                        if (!$.isEmptyObject($collection.texts)) {
+
+                            if(typeof $collection.texts['front'] != "undefined") {
+                                $collection.total += $collection.texts['front'].total;
+                            }
+
+                            if(typeof $collection.texts['back'] != "undefined") {
+                                $collection.total += $collection.texts['back'].total;
+                            }
+
+                            if(typeof $collection.texts['continue'] != "undefined") {
+                                $collection.total += $collection.texts['continue'].total;
+                            }
+
+                            if(typeof $collection.texts['inside'] != "undefined") {
+                                $collection.total += $collection.texts['inside'].total;
+                            }
+                        }
+
+                        if(typeof $collection.clips != "undefined") {
+                            if (!$.isEmptyObject($collection.clips.logo)) {
+
+                                if(typeof $collection.clips.logo['front-start'] != "undefined") {
+                                    $collection.total += $collection.clips.logo['front-start'].total;
+                                }
+
+                                if(typeof $collection.clips.logo['front-end'] != "undefined") {
+                                    $collection.total += $collection.clips.logo['front-end'].total;
+                                }
+
+                                if(typeof $collection.clips.logo['back-start'] != "undefined") {
+                                    $collection.total += $collection.clips.logo['back-start'].total;
+                                }
+
+                                if(typeof $collection.clips.logo['back-end'] != "undefined") {
+                                    $collection.total += $collection.clips.logo['back-end'].total;
+                                }
+
+                                if(typeof $collection.clips.logo['cont-start'] != "undefined") {
+                                    $collection.total += $collection.clips.logo['cont-start'].total;
+                                }
+
+                                if(typeof $collection.clips.logo['cont-end'] != "undefined") {
+                                    $collection.total += $collection.clips.logo['cont-end'].total;
+                                }
+
+                                if(typeof $collection.clips.logo['front-center'] != "undefined") {
+                                    $collection.total += $collection.clips.logo['front-center'].total;
+                                }
+                            }
+                        }
+
+                        if (!$.isEmptyObject($collection.addon)) {
+
+                            if(typeof $collection.addon['3mm-thick'] != "undefined") {
+                                $collection.total += $collection.addon['3mm-thick'].total;
+                            }
+
+                            if(typeof $collection.addon['digital-proof'] != "undefined") {
+                                $collection.total += $collection.addon['digital-proof'].total;
+                            }
+
+                            if(typeof $collection.addon['eco-friendly'] != "undefined") {
+                                $collection.total += $collection.addon['eco-friendly'].total;
+                            }
+
+                            if(typeof $collection.addon['glitters'] != "undefined") {
+                                $collection.total += $collection.addon['glitters'].total;
+                            }
+
+                            if(typeof $collection.addon['individual'] != "undefined") {
+                                $collection.total += $collection.addon['individual'].total;
+                            }
+
+                            if(typeof $collection.addon['key-chain'] != "undefined") {
+                                $collection.total += $collection.addon['key-chain'].total;
+                            }
+                        }
+
+                        // if (!$.isEmptyObject($collection.free)) {
+                        //
+                        //     if(typeof $collection.free['key-chain'] != "undefined") {
+                        //         $collection.total += $collection.free['key-chain'];
+                        //     }
+                        //
+                        //     if(typeof $collection.free['wristbands'] != "undefined") {
+                        //         $collection.total += $collection.free['wristbands'];
+                        //     }
+                        // }
+
+                // Collection
+                displayTotal($collection);
+
+                $('#total-area .has-total').removeClass('hidden');
+                $('#total-area .no-total').addClass('hidden');
+    		});
+
+        } else {
+
+    		// Get selected production settings
+            var elementProd = $("#ProductionTime option:selected");
+            $collection.time_production.days = ( elementProd.val() != "" && !isNaN( parseInt(elementProd.val()) ) ) ? parseInt(elementProd.val()) : 0;
+            $collection.time_production.price = ( elementProd.attr("data-price") != "" && !isNaN( parseFloat(elementProd.attr("data-price")) ) ) ? parseFloat(elementProd.attr("data-price")) : 0;
+            var elementShip = $("#ShippingTime option:selected");
+            $collection.time_shipping.days = ( elementShip.val() != "" && !isNaN( parseInt(elementShip.val()) ) ) ? parseInt(elementShip.val()) : 0;
+            $collection.time_shipping.price = ( elementShip.attr("data-price") != "" && !isNaN( parseFloat(elementShip.attr("data-price")) ) ) ? parseFloat(elementShip.attr("data-price")) : 00;
+
                     // COMPUTE THE TOTAL PRICE
                     $collection.total += $collection.quantity * $collection.price;
                     $collection.total += $collection.items.price_all_addon;
@@ -3132,6 +3276,7 @@ function loadTotal(loadProdShip)
                             if(typeof $collection.clips.logo['front-center'] != "undefined") {
                                 $collection.total += $collection.clips.logo['front-center'].total;
                             }
+
                         }
                     }
 
@@ -3173,139 +3318,6 @@ function loadTotal(loadProdShip)
                     //     }
                     // }
 
-                // Collection
-                displayTotal($collection);
-
-                $('#total-area .has-total').removeClass('hidden');
-                $('#total-area .no-total').addClass('hidden');
-    		});
-
-        } else {
-
-    		// Get selected production settings
-            var elementProd = $("#ProductionTime option:selected");
-            $collection.time_production.days = ( elementProd.val() != "" && !isNaN( parseInt(elementProd.val()) ) ) ? parseInt(elementProd.val()) : 0;
-            $collection.time_production.price = ( elementProd.attr("data-price") != "" && !isNaN( parseFloat(elementProd.attr("data-price")) ) ) ? parseFloat(elementProd.attr("data-price")) : 0;
-            var elementShip = $("#ShippingTime option:selected");
-            $collection.time_shipping.days = ( elementShip.val() != "" && !isNaN( parseInt(elementShip.val()) ) ) ? parseInt(elementShip.val()) : 0;
-            $collection.time_shipping.price = ( elementShip.attr("data-price") != "" && !isNaN( parseFloat(elementShip.attr("data-price")) ) ) ? parseFloat(elementShip.attr("data-price")) : 00;
-
-                // COMPUTE THE TOTAL PRICE
-                $collection.total += $collection.quantity * $collection.price;
-                $collection.total += $collection.items.price_all_addon;
-                $collection.total += $collection.items.price_all_moldfee;
-
-                if(typeof $collection.items['segmented'] != "undefined") {
-                    $collection.total += $collection.items['segmented'].price_total;
-                }
-
-                if(typeof $collection.items['swirl'] != "undefined") {
-                    $collection.total += $collection.items['swirl'].price_total;
-                }
-
-                if(typeof $collection.items['glow'] != "undefined") {
-                    $collection.total += $collection.items['glow'].price_total;
-                }
-
-                if(typeof $collection.time_production != "undefined") {
-                    $collection.total += $collection.time_production.price;
-                }
-
-                if(typeof $collection.time_shipping != "undefined") {
-                    $collection.total += $collection.time_shipping.price;
-                }
-
-                if (!$.isEmptyObject($collection.texts)) {
-
-                    if(typeof $collection.texts['front'] != "undefined") {
-                        $collection.total += $collection.texts['front'].total;
-                    }
-
-                    if(typeof $collection.texts['back'] != "undefined") {
-                        $collection.total += $collection.texts['back'].total;
-                    }
-
-                    if(typeof $collection.texts['continue'] != "undefined") {
-                        $collection.total += $collection.texts['continue'].total;
-                    }
-
-                    if(typeof $collection.texts['inside'] != "undefined") {
-                        $collection.total += $collection.texts['inside'].total;
-                    }
-                }
-
-                if(typeof $collection.clips != "undefined") {
-                    if (!$.isEmptyObject($collection.clips.logo)) {
-
-                        if(typeof $collection.clips.logo['front-start'] != "undefined") {
-                            $collection.total += $collection.clips.logo['front-start'].total;
-                        }
-
-                        if(typeof $collection.clips.logo['front-end'] != "undefined") {
-                            $collection.total += $collection.clips.logo['front-end'].total;
-                        }
-
-                        if(typeof $collection.clips.logo['back-start'] != "undefined") {
-                            $collection.total += $collection.clips.logo['back-start'].total;
-                        }
-
-                        if(typeof $collection.clips.logo['back-end'] != "undefined") {
-                            $collection.total += $collection.clips.logo['back-end'].total;
-                        }
-
-                        if(typeof $collection.clips.logo['cont-start'] != "undefined") {
-                            $collection.total += $collection.clips.logo['cont-start'].total;
-                        }
-
-                        if(typeof $collection.clips.logo['cont-end'] != "undefined") {
-                            $collection.total += $collection.clips.logo['cont-end'].total;
-                        }
-
-                        if(typeof $collection.clips.logo['front-center'] != "undefined") {
-                            $collection.total += $collection.clips.logo['front-center'].total;
-                        }
-
-                    }
-                }
-
-                if (!$.isEmptyObject($collection.addon)) {
-
-                    if(typeof $collection.addon['3mm-thick'] != "undefined") {
-                        $collection.total += $collection.addon['3mm-thick'].total;
-                    }
-
-                    if(typeof $collection.addon['digital-proof'] != "undefined") {
-                        $collection.total += $collection.addon['digital-proof'].total;
-                    }
-
-                    if(typeof $collection.addon['eco-friendly'] != "undefined") {
-                        $collection.total += $collection.addon['eco-friendly'].total;
-                    }
-
-                    if(typeof $collection.addon['glitters'] != "undefined") {
-                        $collection.total += $collection.addon['glitters'].total;
-                    }
-
-                    if(typeof $collection.addon['individual'] != "undefined") {
-                        $collection.total += $collection.addon['individual'].total;
-                    }
-
-                    if(typeof $collection.addon['key-chain'] != "undefined") {
-                        $collection.total += $collection.addon['key-chain'].total;
-                    }
-                }
-
-                // if (!$.isEmptyObject($collection.free)) {
-                //
-                //     if(typeof $collection.free['key-chain'] != "undefined") {
-                //         $collection.total += $collection.free['key-chain'];
-                //     }
-                //
-                //     if(typeof $collection.free['wristbands'] != "undefined") {
-                //         $collection.total += $collection.free['wristbands'];
-                //     }
-                // }
-
             // Collection
             displayTotal($collection);
 
@@ -3331,6 +3343,7 @@ function loadWristbands($style, $size)
     // check if $size is undefined.
     if(typeof $size == 'undefined')
         $size = $('#wb_size input[type=radio].wb-size:checked').val();
+
 }
 
 function loadPreview($style, $type, $colors, $font, $isFirst)
@@ -3441,3 +3454,184 @@ Number.prototype.formatMoney = function(c, d, t) {
     j = (j = i.length) > 3 ? j % 3 : 0;
     return s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");
 };
+
+    // Submit to quote
+    $('body').on('click', '#submitQuote', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        // Fill submit type
+        $("#submit_order_type").val($(this).attr("data-submit-type"));
+        // Clear fields
+        $("#submit_order_email").val("");
+        $("#submit_order_fullname").val("").focus();
+        // Make sure fields are enabled
+        $("#submit_order_fullname, #submit_order_email").prop("disabled", false);
+        // Display buttons
+        $("#modal-confirm-submit .confirm-footer-buttons").show();
+        $("#modal-confirm-submit .confirm-footer-loader").hide();
+        // Display confirmation popup modal
+        $("#modal-confirm-submit").modal("show");
+
+    });
+
+
+    // Actually submit email quote
+    $("body").on("click", "#submitCnfEmail", function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        // Check if all fields has value
+        if($("#submit_order_fullname").val().length > 0 && $("#submit_order_email").val().length > 0) {
+            // Get order data
+            var collectionData = getTotal();
+            var showMessage = true;
+            // $form_data.append('data', JSON.stringify(collectionData));
+            var name = $("#submit_order_fullname").val();
+            var mail = $("#submit_order_email").val();
+
+            $.ajax({
+                type: 'POST',
+                url: '/quote/send',
+                dataType: 'json',
+                data: {
+                    data : collectionData,
+                    email: {'name':name,'mail':mail},
+                    '_token': $('meta[name="csrf-token"]').attr('content')
+                },
+                beforeSend: function() {
+                    $("#submit_order_fullname, #submit_order_email").prop("disabled", true);
+                    $("#modal-confirm-submit .confirm-footer-buttons").hide();
+                    $("#modal-confirm-submit .confirm-footer-loader").show();
+                },
+                success: function(data) {},
+            });
+
+			$("#modal-confirm-submit .confirm-footer-loader").hide();
+			$("#modal-confirm-submit").hide();
+			showPopupMessageEmail("Success","Your Message has been sent. Thank you for contacting us");
+
+        } else { // If no,
+            // Show error message
+            showPopupMessage("Error", "Kindly fill-up all fields.");
+            // Make sure fields are enabled
+            $("#submit_order_fullname, #submit_order_email").prop("disabled", false);
+            // Display buttons
+            $("#modal-confirm-submit .confirm-footer-buttons").show();
+            $("#modal-confirm-submit .confirm-footer-loader").hide();
+            return false;
+        }
+    });
+
+	// Actually submit email quote
+    $("body").on("click", "#submitCnfEmailPO", function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        // Check if all fields has value
+        if($("#submit_order_fullname").val().length > 0 && $("#submit_order_email").val().length > 0) {
+            // Get order data
+            var collectionData = getTotal();
+            var showMessage = true;
+            // $form_data.append('data', JSON.stringify(collectionData));
+            var name = $("#submit_order_fullname").val();
+            var mail = $("#submit_order_email").val();
+
+            $.ajax({
+                type: 'POST',
+                url: '/schoolpo/send',
+                dataType: 'json',
+                data: {
+                    data : collectionData,
+                    email: {'name':name,'mail':mail},
+                    '_token': $('meta[name="csrf-token"]').attr('content')
+                },
+                beforeSend: function() {
+                    $("#submit_order_fullname, #submit_order_email").prop("disabled", true);
+                    $("#modal-confirm-submit .confirm-footer-buttons").hide();
+                    $("#modal-confirm-submit .confirm-footer-loader").show();
+                },
+                success: function(data) {},
+            });
+
+			$("#modal-confirm-submit .confirm-footer-loader").hide();
+			$("#modal-confirm-submit").hide();
+			showPopupMessageEmail("Success","Your Message has been sent. Thank you for contacting us");
+
+        } else { // If no,
+            // Show error message
+            showPopupMessageEmail("Error", "Kindly fill-up all fields.");
+            // Make sure fields are enabled
+            $("#submit_order_fullname, #submit_order_email").prop("disabled", false);
+            // Display buttons
+            $("#modal-confirm-submit .confirm-footer-buttons").show();
+            $("#modal-confirm-submit .confirm-footer-loader").hide();
+            return false;
+        }
+    });
+
+	// Actually submit email quote
+    $("body").on("click", "#submitCnfEmailDigital", function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        // Check if all fields has value
+        if($("#submit_order_fullname").val().length > 0 && $("#submit_order_email").val().length > 0) {
+            // Get order data
+            var collectionData = getTotal();
+            var showMessage = true;
+            // $form_data.append('data', JSON.stringify(collectionData));
+            var name = $("#submit_order_fullname").val();
+            var mail = $("#submit_order_email").val();
+
+            $.ajax({
+                type: 'POST',
+                url: '/digitaldesign/send',
+                dataType: 'json',
+                data: {
+                    data : collectionData,
+                    email: {'name':name,'mail':mail},
+                    '_token': $('meta[name="csrf-token"]').attr('content')
+                },
+                beforeSend: function() {
+                    $("#submit_order_fullname, #submit_order_email").prop("disabled", true);
+                    $("#modal-confirm-submit .confirm-footer-buttons").hide();
+                    $("#modal-confirm-submit .confirm-footer-loader").show();
+                },
+                success: function(data) {},
+            });
+
+			$("#modal-confirm-submit .confirm-footer-loader").hide();
+			$("#modal-confirm-submit").hide();
+			showPopupMessageEmail("Success","Your Message has been sent. Thank you for contacting us");
+
+        } else { // If no,
+            // Show error message
+            showPopupMessageEmail("Error", "Kindly fill-up all fields.");
+            // Make sure fields are enabled
+            $("#submit_order_fullname, #submit_order_email").prop("disabled", false);
+            // Display buttons
+            $("#modal-confirm-submit .confirm-footer-buttons").show();
+            $("#modal-confirm-submit .confirm-footer-loader").hide();
+            return false;
+        }
+    });
+
+    // popup message
+    function showPopupMessage(_title, _content) {
+        $("#modal-message-title").html(_title);
+        $("#modal-message-content").html(_content);
+        $("#modal-message").modal("show");
+    }
+
+	 // popup message
+    function showPopupMessageEmail(_title, _content) {
+        $("#modal-message-title").html(_title);
+        $("#modal-message-content").html(_content);
+        $("#modal-message-email").modal("show");
+    }
+
+	$(".close-buttonmail-modal").on("click", function(e) {
+		$("#modal-confirm-submit .confirm-footer-loader").hide();
+		location.reload();
+	});

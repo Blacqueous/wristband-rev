@@ -132,7 +132,7 @@ class ViewController extends Controller
 		$data['prices'] = $price->getJSONPrice();
 		$data['addons'] = $price->getJSONAddOn();
 
-        return view('quote', $data);
+        return view('order_quote', $data);
 	}
 
 

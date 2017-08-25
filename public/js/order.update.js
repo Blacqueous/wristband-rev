@@ -247,7 +247,7 @@ $(document).ready(function() {
                 color_name = color_name.trim().toUpperCase().replace(/ /g, '-');
             var font = $(this).closest('.box-color-qty').find('.fonttext .fntin').attr('ref-font-color');
             var font_name = $(this).closest('.box-color-qty').find('.fonttext .fntin').attr('ref-font-name');
-                font_name = font_name.trim().toUpperCase().replace(/ /g, '');
+                font_name = (typeof font_name !== "undefined") ? font_name.trim().toUpperCase().replace(/ /g, '=') : "BLACK";
             var size = $(this).attr('ref-size');
             var style = $(this).attr('ref-style');
             var title = $(this).attr('ref-title');
@@ -257,37 +257,29 @@ $(document).ready(function() {
             // Determines if a preview is to be made
             var makePreview = true;
             // Generate an index using title.
-                var idx = $(this).attr('ref-index');
-                var idx_size = "0";
-                switch(size) {
-                    case 'yt':
-                        idx_size = "0";
-                        break;
-                    case 'md':
-                        idx_size = "1";
-                        break;
-                    case 'ad':
-                        idx_size = "2";
-                        break;
-                    case 'xs':
-                        idx_size = "3";
-                        break;
-                    case 'xl':
-                        idx_size = "4";
-                        break;
-                }
+            var idx = $(this).attr('ref-index');
+            var idx_size = "0";
+            switch(size) {
+                case 'yt': idx_size = "0"; break;
+                case 'md': idx_size = "1"; break;
+                case 'ad': idx_size = "2"; break;
+                case 'xs': idx_size = "3"; break;
+                case 'xl': idx_size = "4"; break;
+            }
 
             switch(type) {
                 case 'embossed':
                 case 'debossed':
                 case 'blank':
                     font = '000000';
+                    font_name = 'BLACK';
                     break;
                 case 'dual-layer':
                 case 'dual':
                     dual_color = color.split(',');
-                    font = dual_color[1];
-                    font_name = dual_color[1].toUpperCase();
+                    dual_color_name = color_name.split(',');
+                    font = (typeof dual_color[1] !== "undefined") ? dual_color[1].toUpperCase() : dual_color[0].toUpperCase();
+                    font_name = (typeof dual_color_name[1] !== "undefined") ? dual_color_name[1].trim().toUpperCase().replace(/ /g, '-') : dual_color_name[0].trim().toUpperCase().replace(/ /g, '-');
                     break;
             }
 
@@ -308,10 +300,10 @@ $(document).ready(function() {
             if (typeof items["data"][style]['list'][idx][idx_size] == "undefined") {
                 // Create WB color.
                 items["data"][style]['list'][idx][idx_size] = {
-                    "color": color,
-                    "color_title": color_name,
-                    "font": font,
-                    "font_title": font_name,
+                    "color": color.toUpperCase(),
+                    "color_title": color_name.toUpperCase(),
+                    "font": font.toUpperCase(),
+                    "font_title": font_name.toUpperCase(),
                     "qty": qty,
                     "size": size,
                     "style": style,
@@ -321,11 +313,11 @@ $(document).ready(function() {
                 // Flag to reate preview for new items
                 makePreview = true;
             } else {
-                items["data"][style]['list'][idx][idx_size]["color"] = color;
-                items["data"][style]['list'][idx][idx_size]["color_title"] = color_name;
+                items["data"][style]['list'][idx][idx_size]["color"] = color.toUpperCase();
+                items["data"][style]['list'][idx][idx_size]["color_title"] = color_name.toUpperCase();
                 items["data"][style]['list'][idx][idx_size]["qty"] = qty;
-                items["data"][style]['list'][idx][idx_size]["font"] = font;
-                items["data"][style]['list'][idx][idx_size]["font_title"] = font_name;
+                items["data"][style]['list'][idx][idx_size]["font"] = font.toUpperCase();
+                items["data"][style]['list'][idx][idx_size]["font_title"] = font_name.toUpperCase();
             }
 
             // Check if quantity is less than 0.
@@ -459,7 +451,7 @@ $(document).ready(function() {
 
         var inputElement = fontElement.closest('.box-color-qty').find('input[name="quantity[]"]');
         var font_color = $(this).attr('ref-color');
-        var font_name = $(this).attr('ref-name');
+        var font_name = $(this).attr('ref-name').trim().toUpperCase().replace(/ /g, '-');
         var value = inputElement.val();
         var qty = (value) ? parseInt(value) : 0;
 
@@ -480,11 +472,22 @@ $(document).ready(function() {
             var type = $('input[type=radio].wb-style:checked').attr('data-style');
             // Generate an index using title.
             var idx = inputElement.attr('ref-index');
+            var idx_size = "0";
+            switch(size) {
+                case 'yt': idx_size = "0"; break;
+                case 'md': idx_size = "1"; break;
+                case 'ad': idx_size = "2"; break;
+                case 'xs': idx_size = "3"; break;
+                case 'xl': idx_size = "4"; break;
+            }
 
-            items[style][idx]['size'][size]['font'] = font_color.toUpperCase(); // Update font color.
-            items[style][idx]['size'][size]['font_title'] = font_name.toUpperCase(); // Update font name.
+            items["data"][style]['list'][idx][idx_size]["font"] = font_color.toUpperCase(); // Update font color.
+            items["data"][style]['list'][idx][idx_size]["font_title"] = font_name.toUpperCase(); // Update font name.
 
+            // reset wristband previews.
             resetPreview();
+            // Load free items.
+            loadFree();
 
         }
 
@@ -629,11 +632,11 @@ $(document).ready(function() {
             // Check and create the object.
             switch ($(this).attr('data-code')) {
                 case "free-keychains":
-                    free['key-chain'] = 0;
+                    free['key-chain'] = { 'items': {}, 'quantity': 0 };
                     $('.freekc').val(''); // Clear free fields.
                     break;
                 case "free-wristbands":
-                    free['wristbands'] = 0;
+                    free['wristbands'] = { 'items': {}, 'quantity': 0 };
                     $('.freewb').val(''); // Clear free fields.
                     break;
             }
@@ -687,12 +690,12 @@ $(document).ready(function() {
                         element = $(element);
                         total += (element.val().trim() == "") ? 0 : parseInt(element.val().trim());
                     });
-                    free['key-chain'] = total;
+                    free['key-chain']['quantity'] = total;
                 // $('#modal-10-free-keychains').modal('show');
                 toastr.error('', '<h5>Total quantity must not be over 10 pieces.</h5>');
             } else {
                 // Set value for free
-                free['key-chain'] = total;
+                free['key-chain']['quantity'] = total;
             }
 
         }
@@ -731,12 +734,12 @@ $(document).ready(function() {
                         element = $(element);
                         total += (element.val().trim() == "") ? 0 : parseInt(element.val().trim());
                     });
-                    free['wristbands'] = total;
+                    free['wristbands']['quantity'] = total;
                 // $('#modal-100-free-wristbands').modal('show');
                 toastr.error('', '<h5>Total quantity must not be over 100 pieces.</h5>');
             } else {
                 // Set value for free
-                free['wristbands'] = total;
+                free['wristbands']['quantity'] = total;
             }
 
         }
@@ -957,6 +960,23 @@ $(document).ready(function() {
                     color = color.trim().toUpperCase().replace(/ /g, '');
                 var color_name = customColorNames.join(",");
                     color_name = color_name.trim().toUpperCase().replace(/ /g, '-');
+                var font = $(inputElement).closest('.box-color-qty').find('.fonttext .fntin').attr('ref-font-color');
+                var font_name = $(inputElement).closest('.box-color-qty').find('.fonttext .fntin').attr('ref-font-name');
+                    font_name = (typeof font_name !== "undefined") ? font_name.trim().toUpperCase().replace(/ /g, '-') : "WHITE";
+                var type = $('input[type=radio].wb-style:checked').attr('data-style');
+                switch(type) {
+                    case 'embossed':
+                    case 'debossed':
+                    case 'blank':
+                        font = '000000';
+                        font_name = 'BLACK';
+                        break;
+                    case 'dual-layer':
+                    case 'dual':
+                        font = (typeof customColors[1] !== "undefined") ? customColors[1].toUpperCase()  : customColors[0].toUpperCase() ;
+                        font_name = (typeof customColorNames[1] !== "undefined") ? customColorNames[1].trim().toUpperCase().replace(/ /g, '-') : customColorNames[0].trim().toUpperCase().replace(/ /g, '-');
+                        break;
+                }
                 // Update all input fields
                 $(inputElement).attr('ref-color', color.toLowerCase());
                 $(inputElement).attr('ref-color-name', color_name.toLowerCase());
@@ -990,8 +1010,10 @@ $(document).ready(function() {
                             break;
                     }
 
-                    items["data"][style]['list'][idx][idx_size]["color"] = color; // Update color.
-                    items["data"][style]['list'][idx][idx_size]["color_title"] = color_name; // Add names of all custom colors.
+                    items["data"][style]['list'][idx][idx_size]["color"] = color.toUpperCase(); // Update color.
+                    items["data"][style]['list'][idx][idx_size]["color_title"] = color_name.toUpperCase(); // Add names of all custom colors.
+                    items["data"][style]['list'][idx][idx_size]["font"] = font.toUpperCase(); // Update font color.
+                    items["data"][style]['list'][idx][idx_size]["font_title"] = font_name.toUpperCase(); // Add names of all custom font color.
                 }
             });
 
@@ -3164,7 +3186,7 @@ function loadTotal(loadProdShip)
                             }
                         }
 
-                        // if (!$.isEmptyObject($collection.free)) {
+                        // 
                         //
                         //     if(typeof $collection.free['key-chain'] != "undefined") {
                         //         $collection.total += $collection.free['key-chain'];
@@ -3554,7 +3576,8 @@ function loadForm()
         } else {
             free = {};
         }
-        if(_cart.quantity > 100) {
+
+        if(_cart.quantity >= 100) {
             if(typeof free['key-chain'] != "undefined") {
                 if(typeof free['key-chain']['items'] != "undefined") {
                     $('#free-keychains').iCheck('check');
