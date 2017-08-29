@@ -19,7 +19,7 @@
 			const addon_json = JSON.parse('<?php echo(json_encode($addons)); ?>');
 			const molding_fee = JSON.parse('<?php echo(json_encode($molding_fee)); ?>');
 		</script>
-		<script src="js/submitEmail.js"></script>
+		<script src="js/order.submitEmail.js"></script>
 		<!-- Additional .js plugins -->
 		<script src="global/iCheck/icheck.min.js"></script>
 		<script src="global/unveil.js/jquery.unveil.js"></script>
@@ -163,22 +163,20 @@
 					<div class="clearfix"></div>
 				</div>
 				<div class="wrist_style_container">
-					<div class="popup-order-gallery col-xs-12">
-						@foreach($styles as $key => $value)
-							<div id="wb_style_{{ $value['code'] }}" class="col-xs-6 col-md-3 prod prod-style js-style {{ ($value['code']==$style) ? 'active' : '' }}" style="margin-bottom:10px;">
-								<div class="zoom">
-									<a href="{{ $value['image'] }}" title="Printed Wristband"><img src="assets/images/src/zoom.png" class="galleryimg"></a>
-								</div>
-								<div class="box-thumb"><img src="{{ $value['image'] }}"></div>
-								<input class="wrist-style wb-style" data-style="{{ $value['code'] }}" name="wb-style" type="radio" value="{{ $value['code'] }}" {{ ($value['code']==$style) ? 'checked="checked"' : '' }} />
-								<br/>
-								<label for="wb-style">
-									<h2>{{ $value['name'] }}</h2>
-								</label>
+					@foreach($styles as $key => $value)
+						<div id="wb_style_{{ $value['code'] }}" class="col-xs-12 col-sm-6 col-md-4 col-lg-3 prod prod-style js-style {{ ($value['code']==$style) ? 'active' : '' }}">
+							<div class="zoom">
+								<a href="{{ $value['image'] }}" title="Printed Wristband"><img src="assets/images/src/zoom.png" class="galleryimg"></a>
 							</div>
-						@endforeach
-						<div class="clearfix"></div>
-					</div>
+							<div class="box-thumb"><img src="{{ $value['image'] }}"></div>
+							<input class="wrist-style wb-style" data-style="{{ $value['code'] }}" name="wb-style" type="radio" value="{{ $value['code'] }}" {{ ($value['code']==$style) ? 'checked="checked"' : '' }} />
+							<br/>
+							<label for="wb-style">
+								<h2>{{ $value['name'] }}</h2>
+							</label>
+						</div>
+					@endforeach
+					<div class="clearfix"></div>
 				</div>
 			</div>
 			<!-- END WRIST STYLES -->
@@ -286,7 +284,7 @@
 								<!-- Clipart front start -->
 								<div class="clip-sec col-xs-6 text-center">
 									<h5 style="margin-top:0px;">Front Start Clipart</h5>
-									<div class="btn-group col-xs-12">
+									<div class="btn-group col-xs-12 no-padding">
 										<button type="button" class="btn btn-order clipartin col-xs-6" ref-code="none" ref-target="#clipart-front-start"><i class="fa fa-folder-open"></i> Browse</button>
 										<label type="button" class="btn btn-order btn-file clipartup col-xs-6"><i class="fa fa-upload"></i> Upload<input id="clipartup_front_start" class="clipart-fileupload" type="file" accept="image/*" ref-target="#clipart-front-start"></label>
 									</div>
@@ -295,7 +293,7 @@
 								<!-- Clipart front end -->
 								<div class="clip-sec col-xs-6 text-center">
 									<h5 style="margin-top:0px;">Front End Clipart</h5>
-									<div class="btn-group col-xs-12">
+									<div class="btn-group col-xs-12 no-padding">
 										<button type="button" class="btn btn-order clipartin col-xs-6" ref-code="none" ref-target="#clipart-front-end"><i class="fa fa-folder-open"></i> Browse</button>
 										<label type="button" class="btn btn-order btn-file clipartup col-xs-6"><i class="fa fa-upload"></i> Upload<input id="clipartup_front_end" class="clipart-fileupload" type="file" accept="image/*" ref-target="#clipart-front-end"></label>
 									</div>
@@ -314,7 +312,7 @@
 								<!-- Clipart back start -->
 								<div class="clip-sec col-xs-6 text-center">
 									<h5 style="margin-top:0px;">Back Start Clipart</h5>
-									<div class="btn-group col-xs-12">
+									<div class="btn-group col-xs-12 no-padding">
 										<button type="button" class="btn btn-order clipartin col-xs-6" ref-code="none" ref-target="#clipart-back-start"><i class="fa fa-folder-open"></i> Browse</button>
 										<label type="button" class="btn btn-order btn-file clipartup col-xs-6"><i class="fa fa-upload"></i> Upload<input id="clipartup_back_start" class="clipart-fileupload" type="file" accept="image/*" ref-target="#clipart-back-start"></label>
 									</div>
@@ -323,7 +321,7 @@
 								<!-- Clipart back end -->
 								<div class="clip-sec col-xs-6 text-center">
 									<h5 style="margin-top:0px;">Back End Clipart</h5>
-									<div class="btn-group col-xs-12">
+									<div class="btn-group col-xs-12 no-padding">
 										<button type="button" class="btn btn-order clipartin col-xs-6" ref-code="none" ref-target="#clipart-back-end"><i class="fa fa-folder-open"></i> Browse</button>
 										<label type="button" class="btn btn-order btn-file clipartup col-xs-6"><i class="fa fa-upload"></i> Upload<input id="clipartup_back_end" class="clipart-fileupload" type="file" accept="image/*" ref-target="#clipart-back-end"></label>
 									</div>
@@ -334,7 +332,7 @@
 							<!-- Clipart figured center -->
 							<div id="clipart_front_center_btn" class="clip-sec col-xs-4 col-xs-offset-4 clip-fig text-center hidden">
 								<h5 style="margin-top:0px;">Figured Center Clipart</h5>
-								<div class="btn-group col-xs-12">
+								<div class="btn-group col-xs-12 no-padding">
 									<button type="button" class="btn btn-order clipartin col-xs-6" ref-code="none" ref-target="#clipart-front-center"><i class="fa fa-folder-open"></i> Browse</button>
 									<label type="button" class="btn btn-order btn-file clipartup col-xs-6"><i class="fa fa-upload"></i> Upload<input id="clipartup_front_center" class="clipart-fileupload" type="file" accept="image/*" ref-target="#clipart-front-center"></label>
 								</div>
@@ -355,7 +353,7 @@
 							<!-- Clipart continue start -->
 							<div class="clip-sec col-xs-4 col-xs-offset-1 text-center">
 								<h5 style="margin-top:0px;">Start Clipart</h5>
-								<div class="btn-group col-xs-12">
+								<div class="btn-group col-xs-12 no-padding">
 									<button type="button" class="btn btn-order clipartin col-xs-6" ref-code="none" ref-target="#clipart-cont-start"><i class="fa fa-folder-open"></i> Browse</button>
 									<label type="button" class="btn btn-order btn-file clipartup col-xs-6"><i class="fa fa-upload"></i> Upload<input id="clipartup_cont_start" class="clipart-fileupload" type="file" accept="image/*" ref-target="#clipart-cont-start"></label>
 								</div>
@@ -365,7 +363,7 @@
 							<!-- Clipart continue end -->
 							<div class="clip-sec col-xs-4 text-center">
 								<h5 style="margin-top:0px;">End Clipart</h5>
-								<div class="btn-group col-xs-12">
+								<div class="btn-group col-xs-12 no-padding">
 									<button type="button" class="btn btn-order clipartin col-xs-6" ref-code="none" ref-target="#clipart-cont-end"><i class="fa fa-folder-open"></i> Browse</button>
 									<label type="button" class="btn btn-order btn-file clipartup col-xs-6"><i class="fa fa-upload"></i> Upload<input id="clipartup_cont_end" class="clipart-fileupload" type="file" accept="image/*" ref-target="#clipart-cont-end"></label>
 								</div>
@@ -391,6 +389,12 @@
 						</div>
 						<div class="clearfix"></div>
 					</div>
+					<div id="add-design" class="optional-messsage col-xs-12">
+						<h4><span>Select Font Style :</span></h4>
+						<button id="btn_font_style" class="btn-order pull-left" ref-font-style-code="arial-bold">Choose Font Style</button>
+						<div id="preview-textfont"><img src="/assets/images/src/fonts/Arialold.png"></div>
+					</div>
+					<div class="clearfix"></div>
 
 					<h3>PREVIEW</h3>
 
@@ -438,14 +442,6 @@
 						<div id="preview-pill-selection">
 						</div>
 					</div>
-				</div>
-				<!-- End preview pane -->
-				<div id="add-design" class="optional-messsage">
-					<!--<button>Clear</button>-->
-					<h3 style="text-align: left;">Select Font Style</h3>
-					<button id="btn_font_style" class="btn-order pull-left" ref-font-style-code="arial-bold">Choose Font Style</button>
-					<div id="preview-textfont"><img src="assets/images/src/fonts/Arialold.png"></div>
-					<div class="clearfix"></div>
 				</div>
 			</div>
 			<!-- END WRIST MESSAGE -->
@@ -656,6 +652,8 @@
 									<div class="col-xs-3 text-right no-padding-right">
 										$<span class="total">0.00</span>
 									</div>
+									<!-- list -->
+									<div id="molding-fee-list" class="col-xs-12 no-padding-left"></div>
 								</div>
 								<div id="summary-table-production" class="summary-table-group summary-table-state hidden">
 									<div class="col-xs-9 no-padding-left">

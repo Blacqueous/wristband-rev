@@ -1,7 +1,7 @@
 
 @extends('template.layout')
 
-@section('title', ' - School PO')
+@section('title', ' - Digital Design')
 
 @section('css')
 <!-- Order page custom stylesheet -->
@@ -19,7 +19,7 @@
 			const addon_json = JSON.parse('<?php echo(json_encode($addons)); ?>');
 			const molding_fee = JSON.parse('<?php echo(json_encode($molding_fee)); ?>');
 		</script>
-		<script src="js/submitEmail.js"></script>
+		<script src="js/order.submitEmail.js"></script>
 		<!-- Additional .js plugins -->
 		<script src="global/iCheck/icheck.min.js"></script>
 		<script src="global/unveil.js/jquery.unveil.js"></script>
@@ -35,98 +35,6 @@
 @endsection
 
 @section('content')
-<div class="container school_po_content">
-	<p>
-	<b>Step 1:</b> Fill up and select the appropriate option of your order details. Once done entering all the details, click Submit My PO button below.<br>
-
-	<b>Step 2:</b> You will received an email confirmation that we already received your PO and will be under review.<br>
-
-	<b>Step 3:</b> Reply to that same email with your shipping and billing address. Also attach a signed W9 form.<br>
-
-	<b>Step 4:</b> A representative will reply back with a sample design for your approval and confirm the order details. Credit Cards, Check, and Paypal are the available methods of payment.<br>
-	<b>Additional Information:</b><br>
-
-	<b>1.</b> Terms: NET 15<br>
-
-	<b>2.</b> Orders that are not paid 15 days after delivery will be charged collection fee of 20% on top of the original order amount.<br>
-
-	<b>3.</b>  <a class="terms-popup" href="#">View Terms and Conditions</a>
-	<p>
-</div>
-<div id="terms-conditions-popup" class="modal fade" role="dialog">
-	<div class="modal-dialog">
-		<!-- Modal content-->
-		<div class="modal-content terms-center">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal">&times;</button>
-				<h4 class="modal-title">Terms and Conditions</h4>
-			</div>
-			<div class="modal-body">
-				<p>
-					<span style="font-weight:bold;color:#008c94;">ORDERING PROCESS<br></span>
-					There are several ways on how a customer can place an order for wristbands; online, phone, email and chat. Once a successful order was placed, customer will receive 2 separate emails. First email is the official receipt of the payment. This certifies that the payment went through successfully. Second email will be the official confirmation email which includes all the details of the order, shipping address and sample proof. To guarantee time of delivery, the digital proof, as well as the shipping address will be auto-approved if we didn’t get a response within 8 hours. Production and shipping timeframe will only begin upon approval of the digital proof or as the 8 hour allotted approval time collapsed.
-					<br><br>
-					<span style="font-weight:bold;color:#008c94;">PAYMENT METHOD<br></span>
-					Payment should be process in full amount in order for production to commence. We accept payment in the form of major credit cards namely; VISA, MasterCard, American Express, Discover. We also accept payment through PayPal and Checks. We will not accept any other forms of payment other than mentioned above. We do not offer any type of credit terms nor we ship orders COD. We will not ship any order unless the full payment was settled. Purchase Orders can be used only upon approval of the company. We will not be held responsible for any delays in order processing due to payments that are being declined or unclear.
-					<br><br>
-					<span style="font-weight:bold;color:#008c94;">SHIPPING AND HANDLING<br></span>
-					Our products are made and shipped to all parts of the globe. We prefer using DHL and USPS as our shipping couriers. Although there might be some instances that our products will be ship via UPS, Fed Ex or other shipping couriers depending on the circumstances.
-					We ship in 2 different ways, standard or ground and rush or freight shipping. Under ground or normal shipping, we can only estimate, not guaranteed, the date that the product will arrive since that the shipping companies themselves do not offer guarantees for ground or normal shipping. Rush Shipping on the other hand will guarantee that the order will be delivered on or before your specified date after production commenced date.
-					All shipping timeframe is counted as “Business Days”. We do not ship on Weekends and Holidays.
-					Promotional Wristband will not be held liable for any delays in delivery, lost package and damaged products, cause by 3rd party shipping couriers.
-					In the event that we received a returned shipment due to incorrect address, customer not available for delivery or customer refuses delivery, there will be a fixed $20.00 re-shipping fee.
-					<br><br>
-					<span style="font-weight:bold;color:#008c94;">INTERNATIONAL SHIPPING<br></span>
-					Counting of shipping time does not include the time that the package might be delayed going through respective countries customs. Promotional Wristband will not be held liable for any delays that might occur due to customs policies. Other countries, usually incur additional charges, such as tax, duties and other fees associated with customs. These charges mentioned above will be a sole responsibility of the recipient. It is advisable to get an estimate of what these charges might be before placing an order that will be ship outside United States of America.
-					<br><br>
-					<span style="font-weight:bold;color:#008c94;">ARTWORK/PROOF<br></span>
-					Proof being emailed to the customer is a mere illustration on how the bands may look like once produced. The actual wristbands produced may not represent exactly the same as the proof since this is only a digital mock-up.
-					<br><br>
-					<span style="font-weight:bold;color:#008c94;">PRODUCTION QUALITY<br></span>
-					Our bracelets are made out of 100% pure silicone. Any order lower than 100 pieces will be produced through laser engraved, applicable for Debossed wristbands only.
-					There will be an instance wherein a logo/clipart is not possible for Debossing , in this case, we tend to make the logo/clipart to be silk screen printed on the bands. Such adjustment is with the consent and approval of the customer. The printing on the printed type of wristbands may fade eventually but it it expected to last for 2-3 moths, depending on the usage and exposure to different variables that may fasten the fading of the print.
-					Regarding mixing 2 different colors, there might be a small hint of a 3rd color that may appear on the swirl and segmented colors. This is something that cannot be controlled due to production method.
-					For Inside Message, a default message consisting of our website and contact details will be embossed inside the bands unless the customer request to have it removed or replaced with their customized message.
-					<br><br>
-					<span style="font-weight:bold;color:#008c94;">REPRODUCTION<br></span>
-					Once an order was produced that it incurred a mistake, we will be glad to reproduce the bands provided that such mistake occurred on our end. Such reproduction will be absolutely free of charge. Customer is required to notify the company within 7 days upon receipt of the product or else the reproduction entitlement will be invalid.
-					<br><br>
-					<span style="font-weight:bold;color:#008c94;">REPEAT ORDERS OR RE-ORDERS<br></span>
-					If the customer wishes to repeat the order that he/she previously placed, we will try replicating such order as accurate as possible so it will look exactly the same as the previous order. Although since we are using new molds each time an order is placed, there might be a possibility that the repeat order may not bear the exact color of the wristbands, font size and ink color as in the first or original order.
-					<br><br>
-					<span style="font-weight:bold;color:#008c94;">CANCELLATION AND REFUND<br></span>
-					Once production had commenced, an order is no longer possible for cancellation. Any type of changes or modifications, with the artwork and the details of the order will no longer be accommodated.
-					If the customer wants to cancel an order that is Not yet in production, 15% of the total order amount will apply as a cancellation fee, due to processing fees and other card fees.
-					If the customer wants to cancel an order that is Already in production, 70% of the total order amount will apply as a cancellation fee, this is due to the cost of the molds and supplies that was used.
-					In an event that there is a delay in delivery, in which the customer paid for rush shipping for the wristbands to arrive on time, then the company will issue a refund. The amount to be refunded is the difference between the rush shipping fee and the standard shipping fee that the customer paid.
-					All refunds are being forwarded and handled by Promotional Wristband billing department and subject for approval after thorough investigation.
-					Processing of refunds will take 48-72 hours after such refund request has been approved. Billing department only operates during weekdays.
-					Refunds may reflect in various ways depending on method of payment.
-					<br><br>
-					<span style="font-weight:bold;color:#008c94;">RETURN POLICY<br></span>
-					The product we produced is customized in nature, thus we do not accept returns. As what was stated above, the artwork/proof being sent to the customer is considered approved after 24 hours upon receipt. Producing the incorrect bracelet size, color, or design on the bands does not entitle a return privilege. In the event that the error occurred on our end, then such order will be reproduced without additional cost.
-					<br><br>
-					<span style="font-weight:bold;color:#008c94;">COPYRIGHT AND INFRINGEMENT<br></span>
-					Promotional Wristband will not be held liable for any type or class of copyright and infringement cases.
-					Logo, clipart, and the like should be solely checked by the customer before using it. Customer must make sure that such usage of the aforementioned designs will not incur copyright and infringement issues.
-					It is the duty of the customer to ensure that the wristbands will not, in any way, infringe any other company’s rights.
-					<br><br>
-					<span style="font-weight:bold;color:#008c94;">CHANGING AND UPDATING TERMS AND CONDITIONS<br></span>
-					Promotional Wristband has the discretion to perform changes, modifications and updates to this terms and conditions at any time. Once occurred, a notification will be shown on the home page of the Site. Users acknowledge and agree their responsibility to frequently review and become aware of the any modifications or updates to these policies and terms.
-					<br><br>
-					<span style="font-weight:bold;color:#008c94;">USERS ACCEPTANCE OF THIS POLICY AND TERMS<br></span>
-					By interacting with the Site, you, as categorized as User, signify your acceptance of this terms and conditions. If you disagree to this policy, we discourage usage or interacting with the Site. Continue to use the Site will be considered as a manifestation of your acceptance to this policy and any changes or updates occurred.
-					<br>
-				</p>
-				<div class="clearfix"></div>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-default modal-close" data-dismiss="modal" style="padding:10px 15px;">Close</button>
-			</div>
-		</div>
-		<!-- End Modal Content -->
-	</div>
-</div>
 	<div id="main-page-content">
 		<div class="container">
 			<!-- Container start-->
@@ -163,22 +71,20 @@
 					<div class="clearfix"></div>
 				</div>
 				<div class="wrist_style_container">
-					<div class="popup-order-gallery col-xs-12">
-						@foreach($styles as $key => $value)
-							<div id="wb_style_{{ $value['code'] }}" class="col-xs-6 col-md-3 prod prod-style js-style {{ ($value['code']==$style) ? 'active' : '' }}" style="margin-bottom:10px;">
-								<div class="zoom">
-									<a href="{{ $value['image'] }}" title="Printed Wristband"><img src="assets/images/src/zoom.png" class="galleryimg"></a>
-								</div>
-								<div class="box-thumb"><img src="{{ $value['image'] }}"></div>
-								<input class="wrist-style wb-style" data-style="{{ $value['code'] }}" name="wb-style" type="radio" value="{{ $value['code'] }}" {{ ($value['code']==$style) ? 'checked="checked"' : '' }} />
-								<br/>
-								<label for="wb-style">
-									<h2>{{ $value['name'] }}</h2>
-								</label>
+					@foreach($styles as $key => $value)
+						<div id="wb_style_{{ $value['code'] }}" class="col-xs-12 col-sm-6 col-md-4 col-lg-3 prod prod-style js-style {{ ($value['code']==$style) ? 'active' : '' }}">
+							<div class="zoom">
+								<a href="{{ $value['image'] }}" title="Printed Wristband"><img src="assets/images/src/zoom.png" class="galleryimg"></a>
 							</div>
-						@endforeach
-						<div class="clearfix"></div>
-					</div>
+							<div class="box-thumb"><img src="{{ $value['image'] }}"></div>
+							<input class="wrist-style wb-style" data-style="{{ $value['code'] }}" name="wb-style" type="radio" value="{{ $value['code'] }}" {{ ($value['code']==$style) ? 'checked="checked"' : '' }} />
+							<br/>
+							<label for="wb-style">
+								<h2>{{ $value['name'] }}</h2>
+							</label>
+						</div>
+					@endforeach
+					<div class="clearfix"></div>
 				</div>
 			</div>
 			<!-- END WRIST STYLES -->
@@ -286,7 +192,7 @@
 								<!-- Clipart front start -->
 								<div class="clip-sec col-xs-6 text-center">
 									<h5 style="margin-top:0px;">Front Start Clipart</h5>
-									<div class="btn-group col-xs-12">
+									<div class="btn-group col-xs-12 no-padding">
 										<button type="button" class="btn btn-order clipartin col-xs-6" ref-code="none" ref-target="#clipart-front-start"><i class="fa fa-folder-open"></i> Browse</button>
 										<label type="button" class="btn btn-order btn-file clipartup col-xs-6"><i class="fa fa-upload"></i> Upload<input id="clipartup_front_start" class="clipart-fileupload" type="file" accept="image/*" ref-target="#clipart-front-start"></label>
 									</div>
@@ -295,7 +201,7 @@
 								<!-- Clipart front end -->
 								<div class="clip-sec col-xs-6 text-center">
 									<h5 style="margin-top:0px;">Front End Clipart</h5>
-									<div class="btn-group col-xs-12">
+									<div class="btn-group col-xs-12 no-padding">
 										<button type="button" class="btn btn-order clipartin col-xs-6" ref-code="none" ref-target="#clipart-front-end"><i class="fa fa-folder-open"></i> Browse</button>
 										<label type="button" class="btn btn-order btn-file clipartup col-xs-6"><i class="fa fa-upload"></i> Upload<input id="clipartup_front_end" class="clipart-fileupload" type="file" accept="image/*" ref-target="#clipart-front-end"></label>
 									</div>
@@ -314,7 +220,7 @@
 								<!-- Clipart back start -->
 								<div class="clip-sec col-xs-6 text-center">
 									<h5 style="margin-top:0px;">Back Start Clipart</h5>
-									<div class="btn-group col-xs-12">
+									<div class="btn-group col-xs-12 no-padding">
 										<button type="button" class="btn btn-order clipartin col-xs-6" ref-code="none" ref-target="#clipart-back-start"><i class="fa fa-folder-open"></i> Browse</button>
 										<label type="button" class="btn btn-order btn-file clipartup col-xs-6"><i class="fa fa-upload"></i> Upload<input id="clipartup_back_start" class="clipart-fileupload" type="file" accept="image/*" ref-target="#clipart-back-start"></label>
 									</div>
@@ -323,7 +229,7 @@
 								<!-- Clipart back end -->
 								<div class="clip-sec col-xs-6 text-center">
 									<h5 style="margin-top:0px;">Back End Clipart</h5>
-									<div class="btn-group col-xs-12">
+									<div class="btn-group col-xs-12 no-padding">
 										<button type="button" class="btn btn-order clipartin col-xs-6" ref-code="none" ref-target="#clipart-back-end"><i class="fa fa-folder-open"></i> Browse</button>
 										<label type="button" class="btn btn-order btn-file clipartup col-xs-6"><i class="fa fa-upload"></i> Upload<input id="clipartup_back_end" class="clipart-fileupload" type="file" accept="image/*" ref-target="#clipart-back-end"></label>
 									</div>
@@ -334,7 +240,7 @@
 							<!-- Clipart figured center -->
 							<div id="clipart_front_center_btn" class="clip-sec col-xs-4 col-xs-offset-4 clip-fig text-center hidden">
 								<h5 style="margin-top:0px;">Figured Center Clipart</h5>
-								<div class="btn-group col-xs-12">
+								<div class="btn-group col-xs-12 no-padding">
 									<button type="button" class="btn btn-order clipartin col-xs-6" ref-code="none" ref-target="#clipart-front-center"><i class="fa fa-folder-open"></i> Browse</button>
 									<label type="button" class="btn btn-order btn-file clipartup col-xs-6"><i class="fa fa-upload"></i> Upload<input id="clipartup_front_center" class="clipart-fileupload" type="file" accept="image/*" ref-target="#clipart-front-center"></label>
 								</div>
@@ -355,7 +261,7 @@
 							<!-- Clipart continue start -->
 							<div class="clip-sec col-xs-4 col-xs-offset-1 text-center">
 								<h5 style="margin-top:0px;">Start Clipart</h5>
-								<div class="btn-group col-xs-12">
+								<div class="btn-group col-xs-12 no-padding">
 									<button type="button" class="btn btn-order clipartin col-xs-6" ref-code="none" ref-target="#clipart-cont-start"><i class="fa fa-folder-open"></i> Browse</button>
 									<label type="button" class="btn btn-order btn-file clipartup col-xs-6"><i class="fa fa-upload"></i> Upload<input id="clipartup_cont_start" class="clipart-fileupload" type="file" accept="image/*" ref-target="#clipart-cont-start"></label>
 								</div>
@@ -365,7 +271,7 @@
 							<!-- Clipart continue end -->
 							<div class="clip-sec col-xs-4 text-center">
 								<h5 style="margin-top:0px;">End Clipart</h5>
-								<div class="btn-group col-xs-12">
+								<div class="btn-group col-xs-12 no-padding">
 									<button type="button" class="btn btn-order clipartin col-xs-6" ref-code="none" ref-target="#clipart-cont-end"><i class="fa fa-folder-open"></i> Browse</button>
 									<label type="button" class="btn btn-order btn-file clipartup col-xs-6"><i class="fa fa-upload"></i> Upload<input id="clipartup_cont_end" class="clipart-fileupload" type="file" accept="image/*" ref-target="#clipart-cont-end"></label>
 								</div>
@@ -391,6 +297,12 @@
 						</div>
 						<div class="clearfix"></div>
 					</div>
+					<div id="add-design" class="optional-messsage col-xs-12">
+						<h4><span>Select Font Style :</span></h4>
+						<button id="btn_font_style" class="btn-order pull-left" ref-font-style-code="arial-bold">Choose Font Style</button>
+						<div id="preview-textfont"><img src="/assets/images/src/fonts/Arialold.png"></div>
+					</div>
+					<div class="clearfix"></div>
 
 					<h3>PREVIEW</h3>
 
@@ -438,14 +350,6 @@
 						<div id="preview-pill-selection">
 						</div>
 					</div>
-				</div>
-				<!-- End preview pane -->
-				<div id="add-design" class="optional-messsage">
-					<!--<button>Clear</button>-->
-					<h3 style="text-align: left;">Select Font Style</h3>
-					<button id="btn_font_style" class="btn-order pull-left" ref-font-style-code="arial-bold">Choose Font Style</button>
-					<div id="preview-textfont"><img src="assets/images/src/fonts/Arialold.png"></div>
-					<div class="clearfix"></div>
 				</div>
 			</div>
 			<!-- END WRIST MESSAGE -->
@@ -656,6 +560,8 @@
 									<div class="col-xs-3 text-right no-padding-right">
 										$<span class="total">0.00</span>
 									</div>
+									<!-- list -->
+									<div id="molding-fee-list" class="col-xs-12 no-padding-left"></div>
 								</div>
 								<div id="summary-table-production" class="summary-table-group summary-table-state hidden">
 									<div class="col-xs-9 no-padding-left">
@@ -898,7 +804,7 @@
 						<div class="modal-footer">
 							<div class="confirm-footer-buttons">
 								<button type="button" class="btn btn-default modal-close" data-dismiss="modal">CANCEL</button>
-								<button type='submit' class="btn btn-submit" id="submitCnfEmailPO">CONTINUE</button>
+								<button type='submit' class="btn btn-submit" id="submitCnfEmailDigital">SUBMIT</button>
 							</div>
 							<div class="confirm-footer-loader" style="color:#325277;display:none;font-size:20px;padding:16px 22px;text-transform:uppercase;">
 								<span>SUBMITTING...</span>

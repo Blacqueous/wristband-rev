@@ -168,7 +168,7 @@ class ViewController extends Controller
 		$data['prices'] = $price->getJSONPrice();
 		$data['addons'] = $price->getJSONAddOn();
 
-        return view('schoolpo', $data);
+        return view('order_schoolpo', $data);
 	}
 
 	public function pageDigitalDesign()
@@ -203,20 +203,20 @@ class ViewController extends Controller
 		$data['prices'] = $price->getJSONPrice();
 		$data['addons'] = $price->getJSONAddOn();
 
-        return view('digitaldesign', $data);
+        return view('order_digitaldesign', $data);
 	}
 
 
 	public function mailTest(Request $request)
 	{
-		$data = $request->data;
+		$data = $this->organizeMailData($request->data);
 		$emailItems = $request->email;
 		$email = $emailItems['mail'];
 		$name = $emailItems['name'];
-		$emailData = array('name'=>$name, 'email'=> $email, 'items'=> $data);
+		$emailData = array('name' => $name, 'email'=> $email, 'items'=> $data);
 		$emails = [$email,'sales@promotionalwristband.com'];
 
-		Mail::send('mailtemp',$emailData, function ($message) use ($emails) {
+		Mail::send('mailtemp', $emailData, function ($message) use ($emails) {
             $message->from('sales@promotionalwristband.com', 'Request Quote');
             $message->to($emails, 'Promotional Wristband')->subject('Request a Quote');
          });
@@ -226,34 +226,34 @@ class ViewController extends Controller
 
 	public function mailTestSchoolpo(Request $request)
 	{
-		$data = $request->data;
+		$data = $this->organizeMailData($request->data);
 		$emailItems = $request->email;
 		$email = $emailItems['mail'];
 		$name = $emailItems['name'];
 		$emailData = array('name'=>$name, 'email'=> $email, 'items'=> $data);
 		$emails = [$email,'sales@promotionalwristband.com'];
 
-		Mail::send('schoolpotemp',$emailData, function ($message) use ($emails) {
-            $message->from('sales@promotionalwristband.com', 'School PO Request');
-            $message->to($emails, 'Promotional Wristband')->subject('School PO Request');
-         });
+		// Mail::send('schoolpotemp',$emailData, function ($message) use ($emails) {
+        //     $message->from('sales@promotionalwristband.com', 'School PO Request');
+        //     $message->to($emails, 'Promotional Wristband')->subject('School PO Request');
+        //  });
 
 		return view('/schoolpotemp', $emailData);
 	}
 
 	public function mailTestDigital(Request $request)
 	{
-		$data = $request->data;
+		$data = $this->organizeMailData($request->data);
 		$emailItems = $request->email;
 		$email = $emailItems['mail'];
 		$name = $emailItems['name'];
 		$emailData = array('name'=>$name, 'email'=> $email, 'items'=> $data);
 		$emails = [$email,'sales@promotionalwristband.com'];
 
-		Mail::send('digitaltemp',$emailData, function ($message) use ($emails) {
-            $message->from('sales@promotionalwristband.com', 'Digital Design Request');
-            $message->to($emails, 'Promotional Wristband')->subject('Digital Design Request');
-         });
+		// Mail::send('digitaltemp',$emailData, function ($message) use ($emails) {
+        //     $message->from('sales@promotionalwristband.com', 'Digital Design Request');
+        //     $message->to($emails, 'Promotional Wristband')->subject('Digital Design Request');
+        //  });
 
 		return view('/digitaltemp', $emailData);
 	}
@@ -326,6 +326,221 @@ class ViewController extends Controller
 				break;
 		}
 
+	}
+
+	private function organizeMailData($data=[])
+	{
+		if (empty($data)) { return false; }
+
+		$dataCart = [
+			"OrderNo" => 0,
+			"TotalAmount" => $data["total"],
+			"ItemDesc" => ucwords(strtolower(str_replace("-", " ", trim($data["style"]))))." Wristband",
+			"BandSize" => $this->getWristbandsSizeName($data["size"]),
+			"BandColors" => [],
+			"Font" => "",
+			"MessageFront" => (isset($data["texts"]["front"]["text"])) ? $data["texts"]["front"]["text"] : "",
+			"MessageBack" => (isset($data["texts"]["back"]["text"])) ? $data["texts"]["back"]["text"] : "",
+			"MessageInside" => (isset($data["texts"]["inside"]["text"])) ? $data["texts"]["inside"]["text"] : "",
+			"MessageContinuous" => (isset($data["texts"]["continue"]["text"])) ? $data["texts"]["continue"]["text"] : "",
+			"FreeWristband" => [],
+			"FreeKeychain" => [],
+			"ProductionTime" => $data["time_production"]["days"]." Days",
+			"ShippingTime" => $data["time_shipping"]["days"]." Days",
+		];
+
+		$classFont = new FontList();
+		$classFont = $classFont->getFonts();
+		foreach ($classFont as $key => $value) {
+			if ($value["code"] == $data["fonts"]) {
+				$dataCart["Font"] = $value["name"];
+			}
+		}
+
+		$customCount = 0;
+
+		foreach ($data['items']['data'] as $stylesKey => $items) {
+
+			$data_cart_item_attr = [];
+			$data_cart_item_addons = [];
+			$item_qty = 0;
+
+			foreach ($items['list'] as $variantsKey => $variants) {
+
+				foreach ($variants as $key => $item) {
+
+					if (is_array($item)) {
+
+						$itemNameSize = "Medium";
+						switch ($item['size']) {
+							case 'yt': $itemNameSize = "Youth"; break;
+							case 'md': $itemNameSize = "Medium"; break;
+							case 'ad': $itemNameSize = "Adult"; break;
+							case 'xs': $itemNameSize = "ExtraSmall"; break;
+							case 'xl': $itemNameSize = "ExtraLarge"; break;
+							default: $itemNameSize = "Medium"; break;
+						}
+
+						$itemNameColor = strtolower(str_replace('-', ' ', $item['color_title']));
+						$itemNameColor = str_replace(',', ', ', $itemNameColor);
+						$itemNameColor = ucwords($itemNameColor);
+						$itemNameColor = str_replace(', ', ',', $itemNameColor);
+
+						$isCustom = false;
+
+						if (strpos(strtolower($item['title']), "custom") !== false) {
+							$name = $itemNameSize."_".$item['style']."_Custom"."_".++$customCount;
+							$isCustom = true;
+						} else {
+							$name = $itemNameSize."_".$item['style']."_".str_replace(' ', '', $itemNameColor);
+						}
+
+						if ($isCustom) {
+							$dataCart["BandColors"][] = [
+								"Name" => $name,
+								"Qty" => $item['qty'],
+								"FontColor" => ucwords(strtolower(str_replace("-", " ", $item["font_title"]))),
+								"CustomColors" => json_encode(explode(",", $itemNameColor))
+							];
+						} else {
+							$dataCart["BandColors"][] = [
+								"Name" => $name,
+								"Qty" => $item['qty'],
+								"FontColor" => ucwords(strtolower(str_replace("-", " ", $item["font_title"])))
+							];
+						}
+					}
+				}
+			}
+		}
+
+		$customCount = 0;
+
+		foreach ($data['free']['wristbands'] as $freeKeyType => $freeType) {
+			if (is_array($freeType) || is_object($value)) {
+				foreach ($freeType as $freeKeyItems => $freeItems) {
+					foreach ($freeItems as $freeKeyItem => $freeItem) {
+
+						foreach ($freeItem as $key => $item) {
+							if (is_array($item) || is_object($item)) {
+		
+								$itemNameSize = "Medium";
+								switch ($item['size']) {
+									case 'yt': $itemNameSize = "Youth"; break;
+									case 'md': $itemNameSize = "Medium"; break;
+									case 'ad': $itemNameSize = "Adult"; break;
+									case 'xs': $itemNameSize = "ExtraSmall"; break;
+									case 'xl': $itemNameSize = "ExtraLarge"; break;
+									default: $itemNameSize = "Medium"; break;
+								}
+		
+								$itemNameColor = strtolower(str_replace('-', ' ', $freeItem['color_title']));
+								$itemNameColor = str_replace(',', ', ', $itemNameColor);
+								$itemNameColor = ucwords($itemNameColor);
+								$itemNameColor = str_replace(', ', ',', $itemNameColor);
+		
+								$isCustom = false;
+		
+								if (strpos(strtolower($freeItem['title']), "custom") !== false) {
+									$name = $itemNameSize."_".$freeItem['style']."_Custom"."_".++$customCount;
+									$isCustom = true;
+								} else {
+									$name = $itemNameSize."_".$freeItem['style']."_".str_replace(' ', '', $itemNameColor);
+								}
+		
+								if ($isCustom) {
+									$dataCart["FreeWristband"][] = [
+										"Name" => $name,
+										"Qty" => $item['qty'],
+										"FontColor" => ucwords(strtolower(str_replace("-", " ", $item["font_title"]))),
+										"CustomColors" => json_encode(explode(',', $itemNameColor))
+									];
+								} else {
+									$dataCart["FreeWristband"][] = [
+										"Name" => $name,
+										"Qty" => $item['qty'],
+										"FontColor" => ucwords(strtolower(str_replace("-", " ", $item["font_title"])))
+									];
+								}
+
+							}
+						}
+					}
+				}
+			}
+		}
+
+		$customCount = 0;
+
+		foreach ($data['free']['key-chain'] as $freeKeyType => $freeType) {
+			if (is_array($freeType) || is_object($value)) {
+				foreach ($freeType as $freeKeyItems => $freeItems) {
+					foreach ($freeItems as $freeKeyItem => $freeItem) {
+
+						foreach ($freeItem as $key => $item) {
+							if (is_array($item) || is_object($item)) {
+		
+								$itemNameSize = "Medium";
+								switch ($item['size']) {
+									case 'yt': $itemNameSize = "Youth"; break;
+									case 'md': $itemNameSize = "Medium"; break;
+									case 'ad': $itemNameSize = "Adult"; break;
+									case 'xs': $itemNameSize = "ExtraSmall"; break;
+									case 'xl': $itemNameSize = "ExtraLarge"; break;
+									default: $itemNameSize = "Medium"; break;
+								}
+		
+								$itemNameColor = strtolower(str_replace('-', ' ', $freeItem['color_title']));
+								$itemNameColor = str_replace(',', ', ', $itemNameColor);
+								$itemNameColor = ucwords($itemNameColor);
+								$itemNameColor = str_replace(', ', ',', $itemNameColor);
+		
+								$isCustom = false;
+		
+								if (strpos(strtolower($freeItem['title']), "custom") !== false) {
+									$name = $itemNameSize."_".$freeItem['style']."_Custom"."_".++$customCount;
+									$isCustom = true;
+								} else {
+									$name = $itemNameSize."_".$freeItem['style']."_".str_replace(' ', '', $itemNameColor);
+								}
+		
+								if ($isCustom) {
+									$dataCart["FreeKeychain"][] = [
+										"Name" => $name,
+										"Qty" => $item['qty'],
+										"FontColor" => ucwords(strtolower(str_replace("-", " ", $item["font_title"]))),
+										"CustomColors" => json_encode(explode(',', $itemNameColor))
+									];
+								} else {
+									$dataCart["FreeKeychain"][] = [
+										"Name" => $name,
+										"Qty" => $item['qty'],
+										"FontColor" => ucwords(strtolower(str_replace("-", " ", $item["font_title"])))
+									];
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+
+		return $dataCart;
+	}
+
+	private function getWristbandsSizeName($size="")
+	{
+		$name = "";
+		switch($size) {
+			case '0-25inch': $name = "1/4 inch (0.25 in)"; break;
+			case '0-50inch': $name = "1/2 inch (0.50 in)"; break;
+			case '0-75inch': $name = "3/4 inch (0.75 in)"; break;
+			case '1-00inch': $name = "1 inch (1.00 in)"; break;
+			case '1-50inch': $name = "1 1/2 inch (1.50 in)"; break;
+			case '2-00inch': $name = "2 inch (2.00 in)"; break;
+			default: $name = "1/2 inch (0.50 in)"; break;
+		}
+		return $name;
 	}
 
 }

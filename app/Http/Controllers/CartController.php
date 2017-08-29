@@ -797,9 +797,7 @@ class CartController extends Controller
 														"Name" => $nameFreeKCName,
 														"Qty" => $arFreeKCData['qty'],
 														"FontColor" => ucwords(strtolower($arFreeKCData['font_title'])),
-														// "FontHexColor" => $arFreeKCData['font'],
 														"CustomColors" => json_encode(explode(',', $nameFreeKCTitle)),
-														// "CustomHexColors" => json_encode(explode(',', $arFreeKCKey['color']))
 													];
 												}
 											}
@@ -837,9 +835,7 @@ class CartController extends Controller
 														"Name" => $nameFreeWBName,
 														"Qty" => $arFreeWBData['qty'],
 														"FontColor" => ucwords(strtolower($arFreeWBData['font_title'])),
-														// "FontHexColor" => $arFreeWBData['font'],
 														"CustomColors" => json_encode(explode(',', $nameFreeWBTitle)),
-														// "CustomHexColors" => json_encode(explode(',', $arFreeWBKey['color']))
 													];
 												}
 											}
@@ -1029,9 +1025,7 @@ class CartController extends Controller
 										"Qty" => $arrAddonKeychainQty,
 										"Name" => $arrAddonKeychainName,
 										"FontColor" => ucwords(strtolower($item['font_title'])),
-										// "FontHexColor" => $item['font'],
 										"CustomColors" => json_encode(explode(',', $nameAddonKeychainTitle)),
-										// "CustomHexColors" => json_encode(explode(',', $item['color']))
 									];
 								}
 							}
@@ -1061,9 +1055,7 @@ class CartController extends Controller
 								"Name" => $name,
 								"Qty" => $item['qty'],
 								"FontColor" => ucwords(strtolower($item['font_title'])),
-								// "FontHexColor" => $item['font'],
 								"CustomColors" => json_encode(explode(',', $arInfoName)),
-								// "CustomHexColors" => json_encode(explode(',', $item['color']))
 							];
 
 							$data_cart_item_attr[] = [
