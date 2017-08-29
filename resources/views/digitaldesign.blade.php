@@ -19,7 +19,7 @@
 			const addon_json = JSON.parse('<?php echo(json_encode($addons)); ?>');
 			const molding_fee = JSON.parse('<?php echo(json_encode($molding_fee)); ?>');
 		</script>
-		<script src="js/ordersubmitEmail.js"></script>
+		<script src="js/submitEmail.js"></script>
 		<!-- Additional .js plugins -->
 		<script src="global/iCheck/icheck.min.js"></script>
 		<script src="global/unveil.js/jquery.unveil.js"></script>
