@@ -233,10 +233,10 @@ class ViewController extends Controller
 		$emailData = array('name'=>$name, 'email'=> $email, 'items'=> $data);
 		$emails = [$email,'sales@promotionalwristband.com'];
 
-		// Mail::send('schoolpotemp',$emailData, function ($message) use ($emails) {
-        //     $message->from('sales@promotionalwristband.com', 'School PO Request');
-        //     $message->to($emails, 'Promotional Wristband')->subject('School PO Request');
-        //  });
+		Mail::send('schoolpotemp',$emailData, function ($message) use ($emails) {
+            $message->from('sales@promotionalwristband.com', 'School PO Request');
+            $message->to($emails, 'Promotional Wristband')->subject('School PO Request');
+         });
 
 		return view('/schoolpotemp', $emailData);
 	}
@@ -250,10 +250,10 @@ class ViewController extends Controller
 		$emailData = array('name'=>$name, 'email'=> $email, 'items'=> $data);
 		$emails = [$email,'sales@promotionalwristband.com'];
 
-		// Mail::send('digitaltemp',$emailData, function ($message) use ($emails) {
-        //     $message->from('sales@promotionalwristband.com', 'Digital Design Request');
-        //     $message->to($emails, 'Promotional Wristband')->subject('Digital Design Request');
-        //  });
+		Mail::send('digitaltemp',$emailData, function ($message) use ($emails) {
+            $message->from('sales@promotionalwristband.com', 'Digital Design Request');
+            $message->to($emails, 'Promotional Wristband')->subject('Digital Design Request');
+         });
 
 		return view('/digitaltemp', $emailData);
 	}
