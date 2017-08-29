@@ -198,31 +198,86 @@
         <div class="row table-row">
 		  <div class="col-sm-12">
           	<div style="text-align:left!important;padding:14px!important;">
-			   @foreach($posts as $post)
-			   	<p><span style="font-weight:bold">Order ID:</span> {{ $post->OrderID}}</p>
-			   	<p><span style="font-weight:bold">Date Created:</span> {{ $post->DateCreated}} </p>
-			   	<p><span style="font-weight:bold">Total Amount:</span> ${{ $post->Total}} </p>
-			   	<p><span style="font-weight:bold">Item Description:</span> {{ $post->BandStyle}}</p>
-			   			@if (($post->BandSize) == "0-25inch")
-							<p><span style="font-weight:bold">Band Size:</span> 1/4 Inch ({{ $post->BandSize}})</p>
-						@elseif (($post->BandSize) == "0-50inch")
-						    <p><span style="font-weight:bold">Band Size:</span> 1/2 Inch ({{ $post->BandSize}})</p>
-						@elseif (($post->BandSize) == "0-75inch")
-						  	<p><span style="font-weight:bold">Band Size:</span> 3/4 Inch ({{ $post->BandSize}})</p>
-						@elseif (($post->BandSize) == "1-00inch")
-						    <p><span style="font-weight:bold">Band Size:</span> 1 Inch {{ $post->BandSize}}</p>
-						@elseif (($post->BandSize) == "1-50inch")
-						    <p><span style="font-weight:bold">Band Size:</span> 1 1/2 Inch ({{ $post->BandSize}})</p>
-						@elseif (($post->BandSize) == "2-00inch")
-						   `<p><span style="font-weight:bold">Band Size:</span> 2 Inch ({{ $post->BandSize}})</p>
-						@endif
-				<p><span style="font-weight:bold">Band Color(s):</span> {{ $post->arColors}} </p>
-				<p></p>
-				<p><span style="font-weight:bold">Font:</span> {{ $post->Font}} </p>
-				<p><span style="font-weight:bold">Front Message:</span> {{ $post->FrontMessage}} </p>
-				<p><span style="font-weight:bold">Back Message:</span> {{ $post->BackMessage}} </p>
-				<p><span style="font-weight:bold">Continous Message:</span> {{ $post->ContinuousMessage}} </p>
+			 
+			   @foreach(array_slice($posts, 0, 1) as $post)
+			 
+					<p><span style="font-weight:bold">Order ID:</span> {{ $post->OrderID}}</p>
+					<p><span style="font-weight:bold">Date Created:</span> {{ $post->DateCreated}} </p>
+					<p><span style="font-weight:bold">Item Description:</span> {{ $post->BandStyle}}</p>
+							@if (($post->BandSize) == "0-25inch")
+								<p><span style="font-weight:bold">Band Size:</span> 1/4 Inch ({{ $post->BandSize}})</p>
+							@elseif (($post->BandSize) == "0-50inch")
+								<p><span style="font-weight:bold">Band Size:</span> 1/2 Inch ({{ $post->BandSize}})</p>
+							@elseif (($post->BandSize) == "0-75inch")
+								<p><span style="font-weight:bold">Band Size:</span> 3/4 Inch ({{ $post->BandSize}})</p>
+							@elseif (($post->BandSize) == "1-00inch")
+								<p><span style="font-weight:bold">Band Size:</span> 1 Inch {{ $post->BandSize}}</p>
+							@elseif (($post->BandSize) == "1-50inch")
+								<p><span style="font-weight:bold">Band Size:</span> 1 1/2 Inch ({{ $post->BandSize}})</p>
+							@elseif (($post->BandSize) == "2-00inch")
+							   `<p><span style="font-weight:bold">Band Size:</span> 2 Inch ({{ $post->BandSize}})</p>
+							@endif
+					<p></p>
+					<p><span style="font-weight:bold">Font:</span> {{ $post->Font}} </p>
+					<p><span style="font-weight:bold">Front Message:</span> {{ $post->FrontMessage}} </p>
+					<p><span style="font-weight:bold">Back Message:</span> {{ $post->BackMessage}} </p>
+					<p><span style="font-weight:bold">Continuous Message:</span> {{ $post->ContinuousMessage}} </p>
+					<p><span style="font-weight:bold">Font:</span> {{ $post->Font}} </p>
+					<p><span style="font-weight:bold">Front Message Start Clipart:</span> {{ $post->FrontMessageStartClipart}} </p>
+					<p><span style="font-weight:bold">Front Message End Clipart:</span> {{ $post->FrontMessageEndClipart}} </p>
+					<p><span style="font-weight:bold">Back Message Start Clipart:</span> {{ $post->BackMessageStartClipart}} </p>
+					<p><span style="font-weight:bold">Back Message End Clipart:</span> {{ $post->BackMessageEndClipart}} </p>
+					<p><span style="font-weight:bold">Continuous Message Start Clipart:</span> {{ $post->ContinuousMessageStartClipart}} </p>
+					<p><span style="font-weight:bold">Continuous Message End Clipart:</span> {{ $post->ContinuousEndClipart}} </p>						
 			   @endforeach
+			   <p></p>
+			   <p><span style="font-weight:bold">Band Style and Color(s):</span> <br />
+			   @foreach($posts as $post)
+				<?php 
+				$data = json_decode($post->arInfo, true);
+					echo "Name:"; print_r($data['Name']); echo "  Qty:"; print_r($data['Qty']);
+	
+				?>
+
+				</p>
+			   @endforeach
+			   <br /><br />
+			    @foreach(array_slice($posts, 0, 1) as $post)
+				<p><span style="font-weight:bold">Add Ons:</span></p>
+					{{ $post->arAddons}}
+				<br /><br />
+				<p><span style="font-weight:bold">Free Wristbands:</span></p>
+				 @foreach($posts as $post)
+					<?php $data = json_decode($post->arFree, true);  
+						  print_r($data['wristbands']['data']['Name']); echo " - Qty:"; print_r($data['wristbands']['data']['Qty']); echo "<br />"; 
+					?>
+					
+				 @endforeach
+				 <p></p>
+				<p><span style="font-weight:bold">Free Keychains:</span></p>
+				@foreach($posts as $post)
+					<?php $data = json_decode($post->arFree, true);  
+						  print_r($data['keychains']['data']['Name']); echo " - Qty:"; print_r($data['keychains']['data']['Qty']); echo "<br />"; 
+					?>
+				 @endforeach</p>
+				<br />
+				
+				<p><span style="font-weight:bold">Shipping Details:</span></p>
+				<p><span style="font-weight:bold">Production:</span>{{ $post->arProduction}} </p>
+			    <p><span style="font-weight:bold">Shipping:</span>{{ $post->arShipping}} </p>
+			    <p><span style="font-weight:bold">Full Name:</span>{{ $post->ShipFirstName}} {{ $post->ShipLastName}}</p>
+				<p><span style="font-weight:bold">Email Address:</span>{{ $post->EmailAddress}} </p>
+				<p><span style="font-weight:bold">Address 1:</span>{{ $post->ShipAddress}} </p>
+				<p><span style="font-weight:bold">Address 2:</span>{{ $post->ShipAddress2}} </p>
+				<p><span style="font-weight:bold">City:</span>{{ $post->ShipCity}} </p>
+				<p><span style="font-weight:bold">Zipcode:</span>{{ $post->ShipZipCode}} </p>
+				<p><span style="font-weight:bold">State:</span>{{ $post->ShipState}} </p>
+				<p><span style="font-weight:bold">Country:</span>{{ $post->ShipCountry}} </p>
+				
+				
+			   @endforeach
+			   
+			   
 		  	</div>
 		  	<!----  End Container -->
 		  </div>
