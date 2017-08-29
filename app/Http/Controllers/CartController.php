@@ -222,6 +222,7 @@ class CartController extends Controller
 			"FirstName"			=> $request->bInfoFirstName,
 			"LastName"			=> $request->bInfoLastName,
 			"EmailAddress"		=> $request->bInfoEmail,
+			"Total"				=> $this->getCartGrandTotal(),
 			"PaymentMethod"		=> (strtoupper($request->PaymentType) == "CC") ? 'authnet' : 'paypal',
 			"Paid"				=> "0",
 			"PaidDate"			=> "",
@@ -796,9 +797,9 @@ class CartController extends Controller
 														"Name" => $nameFreeKCName,
 														"Qty" => $arFreeKCData['qty'],
 														"FontColor" => ucwords(strtolower($arFreeKCData['font_title'])),
-														"FontHexColor" => $arFreeKCData['font'],
+														// "FontHexColor" => $arFreeKCData['font'],
 														"CustomColors" => json_encode(explode(',', $nameFreeKCTitle)),
-														"CustomHexColors" => json_encode(explode(',', $arFreeKCKey['color']))
+														// "CustomHexColors" => json_encode(explode(',', $arFreeKCKey['color']))
 													];
 												}
 											}
@@ -836,9 +837,9 @@ class CartController extends Controller
 														"Name" => $nameFreeWBName,
 														"Qty" => $arFreeWBData['qty'],
 														"FontColor" => ucwords(strtolower($arFreeWBData['font_title'])),
-														"FontHexColor" => $arFreeWBData['font'],
+														// "FontHexColor" => $arFreeWBData['font'],
 														"CustomColors" => json_encode(explode(',', $nameFreeWBTitle)),
-														"CustomHexColors" => json_encode(explode(',', $arFreeWBKey['color']))
+														// "CustomHexColors" => json_encode(explode(',', $arFreeWBKey['color']))
 													];
 												}
 											}
@@ -1028,9 +1029,9 @@ class CartController extends Controller
 										"Qty" => $arrAddonKeychainQty,
 										"Name" => $arrAddonKeychainName,
 										"FontColor" => ucwords(strtolower($item['font_title'])),
-										"FontHexColor" => $item['font'],
+										// "FontHexColor" => $item['font'],
 										"CustomColors" => json_encode(explode(',', $nameAddonKeychainTitle)),
-										"CustomHexColors" => json_encode(explode(',', $item['color']))
+										// "CustomHexColors" => json_encode(explode(',', $item['color']))
 									];
 								}
 							}
@@ -1060,9 +1061,9 @@ class CartController extends Controller
 								"Name" => $name,
 								"Qty" => $item['qty'],
 								"FontColor" => ucwords(strtolower($item['font_title'])),
-								"FontHexColor" => $item['font'],
+								// "FontHexColor" => $item['font'],
 								"CustomColors" => json_encode(explode(',', $arInfoName)),
-								"CustomHexColors" => json_encode(explode(',', $item['color']))
+								// "CustomHexColors" => json_encode(explode(',', $item['color']))
 							];
 
 							$data_cart_item_attr[] = [
@@ -1147,6 +1148,19 @@ class CartController extends Controller
 		}
 
 		return $data;
+	}
+
+	private function getCartGrandTotal()
+	{
+		$gtotal = 0;
+
+		$cart_list = Session::get('_cart');
+
+		foreach ($cart_list as $key => $list) {
+			$gtotal += $list['total'];
+		}
+
+		return $gtotal;
 	}
 
 	private function getWristbandsSizeName($size="")
