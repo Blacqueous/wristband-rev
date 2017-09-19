@@ -198,9 +198,8 @@
         <div class="row table-row">
 		  <div class="col-sm-12">
           	<div style="text-align:left!important;padding:14px!important;">
-			 
 			   @foreach(array_slice($posts, 0, 1) as $post)
-			 
+			  
 					<p><span style="font-weight:bold">Order ID:</span> {{ $post->OrderID}}</p>
 					<p><span style="font-weight:bold">Date Created:</span> {{ $post->DateCreated}} </p>
 					<p><span style="font-weight:bold">Item Description:</span> {{ $post->BandStyle}}</p>
@@ -234,37 +233,139 @@
 			   <p><span style="font-weight:bold">Band Style and Color(s):</span> <br />
 			   @foreach($posts as $post)
 				<?php 
-				$data = json_decode($post->arInfo, true);
-					echo "Name:"; print_r($data['Name']); echo "  Qty:"; print_r($data['Qty']);
-	
+					$data = json_decode($post->arInfo, true);
+					echo "Name: "; print_r($data['Name']); echo "<br />";
+					$string = array('[',']','"');
+					echo "Custom Solid/Pantone Color: ";print_r(str_replace($string,"",$data['CustomColors'])); echo "<br />";
+					echo "Font Color: "; print_r($data['FontColor']); echo "<br />";
+					echo "Qty: "; print_r($data['Qty']); echo "<br />";
 				?>
 
 				</p>
 			   @endforeach
 			   <br /><br />
 			    @foreach(array_slice($posts, 0, 1) as $post)
+		
 				<p><span style="font-weight:bold">Add Ons:</span></p>
-					{{ $post->arAddons}}
+					<?php $data = json_decode($post->arAddons, true);
+						if(isset($data['3mmThick'])){
+							echo "3mm Thick: ";
+							echo "Price:";print_r($data['3mmThick']['price']);echo " | ";
+							echo "Qty: ";print_r($data['3mmThick']['quantity']);echo " | ";
+							echo "Total: ";print_r($data['3mmThick']['total']);echo "<br />";
+						}	
+						
+					    if(isset($data['DigitalPrint'])){
+							echo "Digital Print: ";
+							echo "Price: ";print_r($data['DigitalPrint']['price']);echo " | ";
+							echo "Qty: ";print_r($data['DigitalPrint']['quantity']);echo " | ";
+							echo "Total: ";print_r($data['DigitalPrint']['total']);echo "<br />";
+						}	
+													
+						if(isset($data['Ecofriendly'])){
+							echo "Eco friendly: ";
+							echo "Price: ";print_r($data['Ecofriendly']['price']);echo " | ";
+							echo "Qty: ";print_r($data['Ecofriendly']['quantity']);echo " | ";
+							echo "Total: ";print_r($data['Ecofriendly']['total']);echo "<br />";
+						}
+						
+						if(isset($data['Individual_Pack'])){
+							echo "Individual Pack: ";
+							echo "Price: ";print_r($data['Individual_Pack']['price']);echo " | ";
+							echo "Qty: ";print_r($data['Individual_Pack']['quantity']);echo " | ";
+							echo "Total: ";print_r($data['Individual_Pack']['total']);echo "<br />";
+						}
+						
+						if(isset($data['Glitters'])){
+							echo "Glitters: ";
+							echo "Price: ";print_r($data['Glitters']['price']);echo " | ";
+							echo "Qty: ";print_r($data['Glitters']['quantity']);echo " | ";
+							echo "Total: ";print_r($data['Glitters']['total']);echo "<br />";
+						}
+						
+						if(isset($data['Keychain'])){
+							echo "Converted to Keychain/s: ";
+							echo "Price: ";print_r($data['Keychain']['price']);echo " | ";
+							echo "Qty: ";print_r($data['Keychain']['Qty']);echo " | ";
+							echo "Total: ";print_r($data['Keychain']['total']);echo "<br /><br />";
+						}
+					?>
+					
+					
 				<br /><br />
 				<p><span style="font-weight:bold">Free Wristbands:</span></p>
 				 @foreach($posts as $post)
-					<?php $data = json_decode($post->arFree, true);  
-						  print_r($data['wristbands']['data']['Name']); echo " - Qty:"; print_r($data['wristbands']['data']['Qty']); echo "<br />"; 
+					<?php $data = json_decode($post->arFree, true);
+						if(isset($data['wristbands']['data']['Name'])){
+							echo "Name: ";print_r($data['wristbands']['data']['Name']);echo "<br />";
+						}
+						
+						if(isset($data['wristbands']['data']['CustomColors'])){
+							$string = array('[',']','"');
+							echo "Custom Solid/Pantone Color: ";print_r(str_replace($string,"",$data['wristbands']['data']['CustomColors']));echo "<br />";
+						}
+						
+						if(isset($data['wristbands']['data']['FontColor'])){
+							echo "Font Color: ";print_r($data['wristbands']['data']['FontColor']);echo "<br />";
+						}
+						
+						if(isset($data['wristbands']['data']['Qty'])){
+							echo "Qty: ";print_r($data['wristbands']['data']['Qty']);echo "<br /><br />";
+						}						
+						 
 					?>
 					
 				 @endforeach
 				 <p></p>
 				<p><span style="font-weight:bold">Free Keychains:</span></p>
 				@foreach($posts as $post)
-					<?php $data = json_decode($post->arFree, true);  
-						  print_r($data['keychains']['data']['Name']); echo " - Qty:"; print_r($data['keychains']['data']['Qty']); echo "<br />"; 
+					<?php $data = json_decode($post->arFree, true); 
+			
+						if(isset($data['keychains']['data']['Name'])){
+							echo "Name: ";print_r($data['keychains']['data']['Name']);echo "<br />";
+						}
+						
+						if(isset($data['keychains']['data']['CustomColors'])){
+							$string = array('[',']','"');
+							echo "Custom Solid/Pantone Color: ";print_r(str_replace($string,"",$data['keychains']['data']['CustomColors']));echo "<br />";
+						}
+						
+						if(isset($data['keychains']['data']['FontColor'])){
+							echo "Font Color: ";print_r($data['keychains']['data']['FontColor']);echo "<br />";
+						}
+						
+						if(isset($data['keychains']['data']['Qty'])){
+							echo "Qty: ";print_r($data['keychains']['data']['Qty']);echo "<br /><br />";
+						}
+
 					?>
-				 @endforeach</p>
-				<br />
+				 @endforeach
+
+				<p><span style="font-weight:bold;font-size:18px;color:#00516f">Payment Info</span></p>
+				<p><span style="font-weight:bold">Payment Method: </span>{{ $post->PaymentMethod }} </p>
 				
-				<p><span style="font-weight:bold">Shipping Details:</span></p>
-				<p><span style="font-weight:bold">Production:</span>{{ $post->arProduction}} </p>
-			    <p><span style="font-weight:bold">Shipping:</span>{{ $post->arShipping}} </p>
+				<?php 
+				    if($post->PaymentMethod=="paypal"){
+						echo "Transaction ID: ";print_r($post->TransNo);echo "<br />";
+						echo "Paypal Email: ";print_r($post->PaypalEmail);echo "<br />";
+					}else{
+						echo "Authorize Transaction ID: ";print_r($post->AuthorizeTransID);echo "<br />";
+					}
+				?>
+				<br /><br />
+				<p><span style="font-weight:bold;font-size:18px;color:#00516f">Shipping Details</span></p>
+				<p><span style="font-weight:bold">Production:</span><br />
+						<?php $data1 = json_decode($post->arProduction, true); 
+							echo "Days: ";print_r($data1['days']);echo "<br />";
+							echo "Price: ";print_r($data1['price']);echo "<br />";
+						?>
+				</p>
+			    <p><span style="font-weight:bold">Shipping:</span><br />
+						<?php $data2 = json_decode($post->arShipping, true); 
+							echo "Days: ";print_r($data2['days']);echo "<br />";
+							echo "Price: ";print_r($data2['price']);echo "<br />";
+						?>
+				</p>
 			    <p><span style="font-weight:bold">Full Name:</span>{{ $post->ShipFirstName}} {{ $post->ShipLastName}}</p>
 				<p><span style="font-weight:bold">Email Address:</span>{{ $post->EmailAddress}} </p>
 				<p><span style="font-weight:bold">Address 1:</span>{{ $post->ShipAddress}} </p>
@@ -273,7 +374,7 @@
 				<p><span style="font-weight:bold">Zipcode:</span>{{ $post->ShipZipCode}} </p>
 				<p><span style="font-weight:bold">State:</span>{{ $post->ShipState}} </p>
 				<p><span style="font-weight:bold">Country:</span>{{ $post->ShipCountry}} </p>
-				
+				<p><span style="font-weight:bold">Total Amount: </span>{{ $post->Total}} </p>
 				
 			   @endforeach
 			   
