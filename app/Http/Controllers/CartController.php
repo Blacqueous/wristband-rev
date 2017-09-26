@@ -264,6 +264,15 @@ class CartController extends Controller
 			return redirect('/checkout')->withErrors(['message'=> 'Something went wrong! Kindly try again.'], 'checkout')->withInput();
 		}
 
+		$orderNum = $this->generateOrderNumber($order_id);
+
+		if (!$orderNum) {
+			return redirect('/checkout')->withErrors(['message'=> 'Something went wrong! Kindly try again.'], 'checkout')->withInput();
+		}
+
+		// Update with generated order number
+		$orders->where('ID', $order_id)->update(["OrderNumber"=> $orderNum]);
+
 		$arrCart = $this->organizeCart($request->_token, $order_id, $request->bInfoFirstName." ".$request->bInfoLastName, $request->bInfoContactNo, $request->bInfoEmail);
 
 		foreach ($arrCart as $key => $value) {
@@ -343,6 +352,7 @@ class CartController extends Controller
 				
 				if (($tresponse != null) && ($tresponse->getResponseCode()=="1") ) {
 					$data_order['AuthorizeTransID'] = $tresponse->getTransId();
+					$data_order['TransNo'] = $tresponse->getTransId();
 					$data_order['Status'] = 1;
 					$data_order['Paid'] = 1;
 					$data_order['PaidDate'] = date('Y-m-d H:i:s');
@@ -352,6 +362,7 @@ class CartController extends Controller
 					$data_order['DeliveryCharge'] = $shipping['total'];
 					$data_order['DaysProduction'] = $production['days'];
 					$data_order['ProductionCharge'] = $production['total'];
+					$data_order['PaymentRemarks'] = "Paid using Credit Card through Authorize.Net";
 
 					$orders_model = new Orders();
 					$orders_model->where('ID', $order_id)->update($data_order);
@@ -606,6 +617,7 @@ class CartController extends Controller
 						"DeliveryCharge" => $shipping['total'],
 						"DaysProduction" => $production['days'],
 						"ProductionCharge" => $production['total'],
+						"PaymentRemarks" => "Paid using Paypal"
 					];
 
 					$orders_model = new Orders();
@@ -643,6 +655,22 @@ class CartController extends Controller
 			}
 		}
 		return redirect('/');
+	}
+
+	private function generateOrderNumber($order_id)
+	{
+		if(!is_numeric($order_id)) { return false; }
+
+		$zeros = "";
+		if(strlen($order_id) === 1) {
+			$zeros = "000";
+		} else if(strlen($order_id) === 2) {
+			$zeros = "00";
+		} else if(strlen($order_id) === 3) {
+			$zeros = "0";
+		}
+
+		return "PW0".$zeros.$order_id;
 	}
 
 	private function organizeCart($token, $order_id, $full_name, $phone_num, $email)
