@@ -663,11 +663,11 @@ class CartController extends Controller
 
 		$zeros = "";
 		if(strlen($order_id) === 1) {
-			$zeros = "000";
+			$zeros = "0077";
 		} else if(strlen($order_id) === 2) {
-			$zeros = "00";
+			$zeros = "007";
 		} else if(strlen($order_id) === 3) {
-			$zeros = "0";
+			$zeros = "07";
 		}
 
 		return "PW0".$zeros.$order_id;

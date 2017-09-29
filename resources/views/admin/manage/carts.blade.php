@@ -200,9 +200,10 @@
           	<div style="text-align:left!important;padding:14px!important;">
 			   @foreach(array_slice($posts, 0, 1) as $post)
 			  
-					<p><span style="font-weight:bold">Order ID:</span> {{ $post->OrderID}}</p>
+					<!---<p><span style="font-weight:bold">Order ID:</span> {{ $post->OrderID}}</p>---->
+					<p><span style="font-weight:bold">Order Number:</span> {{ $post->OrderNumber}}</p>
 					<p><span style="font-weight:bold">Date Created:</span> {{ $post->DateCreated}} </p>
-					<p><span style="font-weight:bold">Item Description:</span> {{ $post->BandStyle}}</p>
+					<p><span style="font-weight:bold">Item Description: </span> {{ $post->BandStyle}}</p>
 							@if (($post->BandSize) == "0-25inch")
 								<p><span style="font-weight:bold">Band Size:</span> 1/4 Inch ({{ $post->BandSize}})</p>
 							@elseif (($post->BandSize) == "0-50inch")
@@ -246,7 +247,7 @@
 			   <br /><br />
 			    @foreach(array_slice($posts, 0, 1) as $post)
 		
-				<p><span style="font-weight:bold">Add Ons:</span></p>
+				<p><span style="font-weight:bold;font-size:18px;color:#00516f">Add Ons</span></p>
 					<?php $data = json_decode($post->arAddons, true);
 						if(isset($data['3mmThick'])){
 							echo "3mm Thick: ";
@@ -340,7 +341,7 @@
 
 					?>
 				 @endforeach
-
+                <br />
 				<p><span style="font-weight:bold;font-size:18px;color:#00516f">Payment Info</span></p>
 				<p><span style="font-weight:bold">Payment Method: </span>{{ $post->PaymentMethod }} </p>
 				
@@ -353,6 +354,18 @@
 					}
 				?>
 				<br /><br />
+				<p><span style="font-weight:bold;font-size:18px;color:#00516f">Billing Info</span></p>
+				<p><span style="font-weight:bold">Full Name:</span> {{ $post->FirstName}} {{ $post->LastName}}</p>
+				<p><span style="font-weight:bold">Email:</span> {{ $post->EmailAddress}}</p>
+				<p><span style="font-weight:bold">Phone:</span> {{ $post->Phone}}</p>
+				<p><span style="font-weight:bold">Address:</span> {{ $post->Address}}</p>
+				<p><span style="font-weight:bold">Address2:</span> {{ $post->Address2}}</p>
+				<p><span style="font-weight:bold">City:</span> {{ $post->City}}</p>
+				<p><span style="font-weight:bold">State:</span> {{ $post->State}}</p>
+				<p><span style="font-weight:bold">ZipCode:</span> {{ $post->ZipCode}}</p>
+				<p><span style="font-weight:bold">Country:</span> {{ $post->Country}}</p>
+				<br /><br />
+				
 				<p><span style="font-weight:bold;font-size:18px;color:#00516f">Shipping Details</span></p>
 				<p><span style="font-weight:bold">Production:</span><br />
 						<?php $data1 = json_decode($post->arProduction, true); 
@@ -366,15 +379,15 @@
 							echo "Price: ";print_r($data2['price']);echo "<br />";
 						?>
 				</p>
-			    <p><span style="font-weight:bold">Full Name:</span>{{ $post->ShipFirstName}} {{ $post->ShipLastName}}</p>
-				<p><span style="font-weight:bold">Email Address:</span>{{ $post->EmailAddress}} </p>
-				<p><span style="font-weight:bold">Address 1:</span>{{ $post->ShipAddress}} </p>
-				<p><span style="font-weight:bold">Address 2:</span>{{ $post->ShipAddress2}} </p>
-				<p><span style="font-weight:bold">City:</span>{{ $post->ShipCity}} </p>
-				<p><span style="font-weight:bold">Zipcode:</span>{{ $post->ShipZipCode}} </p>
-				<p><span style="font-weight:bold">State:</span>{{ $post->ShipState}} </p>
-				<p><span style="font-weight:bold">Country:</span>{{ $post->ShipCountry}} </p>
-				<p><span style="font-weight:bold">Total Amount: </span>{{ $post->Total}} </p>
+			    <p><span style="font-weight:bold">Full Name:</span> {{ $post->ShipFirstName}} {{ $post->ShipLastName}}</p>
+				<p><span style="font-weight:bold">Email Address:</span> {{ $post->EmailAddress}} </p>
+				<p><span style="font-weight:bold">Address 1:</span> {{ $post->ShipAddress}} </p>
+				<p><span style="font-weight:bold">Address 2:</span> {{ $post->ShipAddress2}} </p>
+				<p><span style="font-weight:bold">City: </span> {{ $post->ShipCity}} </p>
+				<p><span style="font-weight:bold">Zipcode:</span> {{ $post->ShipZipCode}} </p>
+				<p><span style="font-weight:bold">State:</span> {{ $post->ShipState}} </p>
+				<p><span style="font-weight:bold">Country:</span> {{ $post->ShipCountry}} </p>
+				<p><span style="font-weight:bold">Total Amount:</span> <span style="font-size:17px;color:#ff0000">{{ $post->Total}}</span> </p>
 				
 			   @endforeach
 			   
