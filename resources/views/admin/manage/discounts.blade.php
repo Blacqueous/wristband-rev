@@ -227,7 +227,10 @@
 				});
 
 				$(document).on('change.bfhdatepicker', '.bfh-datepicker[data-name="DateStart"]', function(e) {
-console.log('YOW!');
+                    // var minDate = $("#addDiscountForm input[name='DateStart']").val();
+                    var minDate = $(this).find("input").val();
+                    console.log(minDate);
+                    $(".bfh-datepicker[data-name='DateEnd']").data("min", minDate);
 				});
 
             });
@@ -270,39 +273,40 @@ console.log('YOW!');
 				<button type="button" class="close" data-dismiss="modal">&times;</button>
 				<h4 class="modal-title pull-left">Add Discount Code</h4>
 			</div>
+            <form id="addDiscountForm" action="/admin/discounts/add" method="post">
 			<div class="modal-body">
-				<form class="" action="/admin/discounts/add" method="post">
-					<div class="form-horizontal">
-						<div class="form-group">
-							<label for="addCode" class="conrol-label col-md-3 text-left">Code</label>
-							<div class="col-md-9">
-								<input type="text" class="form-control" id="addCode" name="Code" value="">
-							</div>
-						</div>
-						<div class="form-group">
-							<label for="addPercentage" class="conrol-label col-md-3 text-left">Percentage</label>
-							<div class="col-md-9">
-								<input type="text" class="form-control bfh-number" id="addPercentage" name="Percentage" data-buttons="false" data-max="100" data-wrap="true" value="">
-							</div>
-						</div>
-						<div class="form-group">
-							<label for="addDateStart" class="conrol-label col-md-3 text-left">Date Start</label>
-							<div class="col-md-9">
-								<input type="text" class="form-control datepicker" id="addDateStart" name="DateStart" value="">
-							</div>
-						</div>
-						<div class="form-group">
-							<label for="addDateEnd" class="conrol-label col-md-3 text-left">Date End</label>
-							<div class="col-md-9">
-								<input type="text" class="form-control datepicker" id="addDateEnd" name="DateEnd" value="">
-							</div>
+				<div class="form-horizontal">
+					<div class="form-group">
+						<label for="addCode" class="conrol-label col-md-3 text-left">Code</label>
+						<div class="col-md-9">
+							<input type="text" class="form-control" id="addCode" name="Code" value="">
 						</div>
 					</div>
-				</form>
+					<div class="form-group">
+						<label for="addPercentage" class="conrol-label col-md-3 text-left">Percentage</label>
+						<div class="col-md-9">
+							<input type="text" class="form-control bfh-number" id="addPercentage" name="Percentage" data-buttons="false" data-max="100" data-wrap="true" value="">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="addDateStart" class="conrol-label col-md-3 text-left">Date Start</label>
+						<div class="col-md-9">
+                            <div class="bfh-datepicker" data-format="y-m-d" data-min="today" data-name="DateStart" data-close="false"></div>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="addDateEnd" class="conrol-label col-md-3 text-left">Date End</label>
+						<div class="col-md-9">
+                            <div class="bfh-datepicker" data-format="y-m-d" data-min="today" data-name="DateEnd" data-close="false"></div>
+						</div>
+					</div>
+				</div>
 			</div>
 			<div class="modal-footer">
+				<button type="submit" class="btn btn-success">Submit</button>
 				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 			</div>
+			</form>
 		</div>
 	</div>
 </div>	
