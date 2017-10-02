@@ -49,10 +49,19 @@ $(document).ready(function(e) {
         if ($(this).val().length <= 0) { return false; }
         var discount = ($(this).val().toUpperCase() == "SAVE10") ? total * 0.10 : 0;
             // discount = discount.toFixed(2);
+		
         $('.form-discount-total .form-total-value span').html(parseFloat(discount).formatMoney(2, '.', ','));
         var grand_total = total - discount;
             // grand_total = grand_total.toFixed(2);
         $('.form-grand-total .form-total-value span').html(parseFloat(grand_total).formatMoney(2, '.', ','));
+		
+		 var discountCode = $(this).val();
+		
+		if(discountCode != 'SAVE10'){
+			$( ".promo_error" ).show( "slow" );
+		}else{
+			$( ".promo_error" ).hide( "slow" );
+		}
     });
     
     $(document).on('ifChecked', 'input[name="PaymentType"]', function(e) {
