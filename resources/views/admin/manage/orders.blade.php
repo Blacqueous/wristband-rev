@@ -496,6 +496,7 @@
                     <tr>
                         <th><input type='checkbox' class='check-all'/></th>
                         <!-- <th>Status</th> -->
+						<th></th>
                         <th>ID</th>
                         <th>Paid</th>
                         <th>Payment Type</th>
@@ -526,7 +527,6 @@
                         <th>Shipping Zip Code</th>
                         <th>Shipping Country</th>
                         <th>IP Address</th>
-                        <th></th>
                     </tr>
                 </thead>
             </table>

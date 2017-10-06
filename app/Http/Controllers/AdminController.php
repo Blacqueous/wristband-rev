@@ -1026,6 +1026,7 @@ class AdminController extends Controller
             $data[] = [
                 "<input type='checkbox' class='check-action' data-id='".$value->ID."'/>",
                 // $paymentStatus,
+				"<button class='show-cart btn btn-default pull-right' data-order-id='".$value->ID."'><i class='fa fa-shopping-cart'></i> Show Cart</button>",
                 $value->ID,
                 ($value->Paid) ? "<i class='fa fa-check text-success'></i>" : "<i class='fa fa-times text-danger'></i>",
                 $paymentMethod,
@@ -1056,7 +1057,6 @@ class AdminController extends Controller
                 $value->ShipZipCode,
                 $value->ShipCountry,
                 "<i>".$value->IPAddress."</i>",
-                "<button class='show-cart btn btn-default pull-right' data-order-id='".$value->ID."'><i class='fa fa-shopping-cart'></i> Show Cart</button>",
             ];
         }
 		$output = [

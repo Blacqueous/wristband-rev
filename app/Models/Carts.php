@@ -26,9 +26,9 @@ class Carts extends Model {
 
         // get and return query.
         return DB::select( DB::raw("SELECT *
-                                    FROM orders AS `c`
-                                    JOIN cart AS `o` ON `o`.OrderID = `c`.id
-                                    WHERE `o`.`OrderID` = '$id'
+                                    FROM cart AS `c`
+                                    JOIN orders AS `o` ON `o`.id = `c`.OrderID
+                                    WHERE `o`.`ID` = '$id'
                                     ORDER BY `c`.`id` ASC")
                         );
     }
