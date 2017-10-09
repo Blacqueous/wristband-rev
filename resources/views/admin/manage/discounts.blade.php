@@ -128,7 +128,19 @@
         <script src="{{ URL::asset('global/jquery-form-validator/jquery.validate.min.js') }}"></script>
         <script src="{{ URL::asset('global/jquery-form-validator/additional-methods.min.js') }}"></script>
         <script type="text/javascript">
+            var _message;
+            var _table;
+
             $(document).ready(function() {
+                _message = $('input#_message');
+
+                if (typeof _message !== "undefined" && _message.length > 0) {
+                    if (_message.val() === "error") {
+                        swal("Error", "Something went wrong!", "error");
+                    } else {
+                        swal("Success", "Save done.", "success");
+                    }
+                }
 
 				$('input.check-all').iCheck({
 					checkboxClass: 'icheckbox_square-blue control-checkbox',
@@ -136,7 +148,7 @@
 					increaseArea: '20%', // optional
 				});
 
-                $('#discounts').DataTable({
+                _table = $('#discounts').DataTable({
             		'ajax': {
             			'url': '/admin/discounts/list',
             			'data': function(d) {},
@@ -229,8 +241,81 @@
 				$(document).on('change.bfhdatepicker', '.bfh-datepicker[data-name="DateStart"]', function(e) {
                     // var minDate = $("#addDiscountForm input[name='DateStart']").val();
                     var minDate = $(this).find("input").val();
-                    console.log(minDate);
                     $(".bfh-datepicker[data-name='DateEnd']").data("min", minDate);
+				});
+
+				$(document).on('click', 'button#delDiscount', function(e) {
+                    var id_list = [];
+                    $('table#discounts .check-action:checked').each(function(key, element) {
+                        id_list.push($(element).attr('data-id'));
+                    });
+                    $.ajax({
+                        url: "/admin/discounts/delete",
+                        type: "POST",
+                        dataType: 'JSON',
+                        data: {
+                            _token:	"{{ csrf_token() }}",
+                            id_list: id_list
+                        },
+                        beforeSend: function() {
+                            $("button").prop("disabled", true);
+                        },
+                        success: function(data) {
+                            if (data.status) {
+                                if (id_list.length > 1) {
+                                    swal("Deleted", "Discounts successfully deleted.", "success");
+                                } else {
+                                    swal("Deleted", "Discount successfully deleted.", "success");
+                                }
+                            } else {
+                                swal("Error", "Something went wrong!", "error");
+                            }
+                            _table.ajax.reload();
+                            $("button").prop("disabled", false);
+                        },
+                        error: function(data) {
+                            $("button").prop("disabled", false);
+                        }
+                    }).done(function(data) {
+                        $("button").prop("disabled", false);
+                    });
+				});
+
+				$(document).on('click', 'button#updDiscount', function(e) {
+                    var id_list = [];
+                    $('table#discounts .check-action:checked').each(function(key, element) {
+                        id_list.push($(element).attr('data-id'));
+                    });
+                    $.ajax({
+                        url: "/admin/discounts/updateStatus",
+                        type: "POST",
+                        dataType: 'JSON',
+                        data: {
+                            _token:	"{{ csrf_token() }}",
+                            id_list: id_list
+                        },
+                        beforeSend: function() {
+                            $("button").prop("disabled", true);
+                        },
+                        success: function(data) {
+                            if (data.status) {
+                                if (id_list.length > 1) {
+                                    swal("Updated", "Discounts successfully updated.", "success");
+                                } else {
+                                    swal("Updated", "Discount successfully updated.", "success");
+                                }
+                            } else {
+                                swal("Error", "Something went wrong!", "error");
+                            }
+                            _table.ajax.reload();
+                            $("button").prop("disabled", false);
+                        },
+                        error: function(data) {
+                            $("button").prop("disabled", false);
+                        }
+                    }).done(function(data) {
+                        $("button").prop("disabled", false);
+                    });
 				});
 
             });
@@ -238,6 +323,9 @@
 @endsection
 
 @section('content')
+@if(Session::has('status'))
+<input type="hidden" id="_message" value="{{Session::get('status')}}">
+@endif
 <div class="container">
     <h1>Manage Discount Codes</h1>
 	<br>
@@ -274,28 +362,29 @@
 				<h4 class="modal-title pull-left">Add Discount Code</h4>
 			</div>
             <form id="addDiscountForm" action="/admin/discounts/add" method="post">
+            <input type="hidden" name="_token" value="{{ csrf_token() }}">
 			<div class="modal-body">
 				<div class="form-horizontal">
 					<div class="form-group">
-						<label for="addCode" class="conrol-label col-md-3 text-left">Code</label>
+						<label for="Code" class="conrol-label col-md-3 text-left">Code</label>
 						<div class="col-md-9">
 							<input type="text" class="form-control" id="addCode" name="Code" value="">
 						</div>
 					</div>
 					<div class="form-group">
-						<label for="addPercentage" class="conrol-label col-md-3 text-left">Percentage</label>
+						<label for="Percentage" class="conrol-label col-md-3 text-left">Percentage</label>
 						<div class="col-md-9">
 							<input type="text" class="form-control bfh-number" id="addPercentage" name="Percentage" data-buttons="false" data-max="100" data-wrap="true" value="">
 						</div>
 					</div>
 					<div class="form-group">
-						<label for="addDateStart" class="conrol-label col-md-3 text-left">Date Start</label>
+						<label for="DateStart" class="conrol-label col-md-3 text-left">Date Start</label>
 						<div class="col-md-9">
                             <div class="bfh-datepicker" data-format="y-m-d" data-min="today" data-name="DateStart" data-close="false"></div>
 						</div>
 					</div>
 					<div class="form-group">
-						<label for="addDateEnd" class="conrol-label col-md-3 text-left">Date End</label>
+						<label for="DateEnd" class="conrol-label col-md-3 text-left">Date End</label>
 						<div class="col-md-9">
                             <div class="bfh-datepicker" data-format="y-m-d" data-min="today" data-name="DateEnd" data-close="false"></div>
 						</div>

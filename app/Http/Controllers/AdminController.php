@@ -31,6 +31,7 @@ use Illuminate\Support\Facades\Input;
 use Response;
 use Session;
 use Storage;
+use Validator;
 
 class AdminController extends Controller
 {
@@ -82,6 +83,69 @@ class AdminController extends Controller
     public function manageDiscounts()
     {
         return view('admin.manage.discounts', []);
+    }
+
+    public function manageDiscountsAdd(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'Code' => 'required|unique:discounts|min:4|max:255',
+            'Percentage' => 'required|integer|numeric',
+            'DateStart' => 'required|date',
+            'DateEnd' => 'required|date',
+        ]);
+
+        if ($request->Percentage < 0 || $request->Percentage > 100) {
+            Session::flash('status', 'error');
+            return redirect('/admin/discounts');
+        }
+
+        if (!$validator->fails()) {
+            $discounts = new Discounts();
+            $discounts->Code = strtoupper($request->Code);
+            $discounts->Percentage = $request->Percentage;
+            $discounts->DateStart = date('Y-m-d 00:00:00', strtotime($request->DateStart));
+            $discounts->DateEnd = date('Y-m-d 23:59:59', strtotime($request->DateEnd));
+            if ($discounts->save()) {
+    			Session::flash('status', 'success');
+                return redirect('/admin/discounts');
+            }
+        }
+
+        Session::flash('status', 'error');
+        return redirect('/admin/discounts');
+    }
+
+    public function manageDiscountsDelete(Request $request)
+    {
+        if (Discounts::whereIn('id', $request->id_list)->delete()) {
+            return json_encode([ 'status' => true ]);
+        }
+        return json_encode([ 'status' => false ]);
+    }
+
+    public function manageDiscountsUpdateStatus(Request $request)
+    {
+        $status = false;
+        foreach ($request->id_list as $key => $value) {
+            $discount = Discounts::find($value);
+            $updStatus = ($discount->Status === 1) ? 0 : 1;
+            if (Discounts::where('id', $value)->update(['Status' => $updStatus])) {
+                $status = true;
+            } else {
+                $status = true;
+            }
+        }
+        return json_encode([ 'status' => $status ]);
+    }
+
+    public function getDiscountsVerify(Request $request)
+    {
+        if (!empty($request->code)) {
+            if ($discount = Discounts::where('Code', strtoupper($request->code))->get()->first()) {
+                return json_encode([ 'status' => true, 'percentage' => number_format(($discount->Percentage / 100), 2) ]);
+            }
+        }
+        return json_encode([ 'status' => false ]);
     }
 
     // Reset JSON --------------------------------------------------------------

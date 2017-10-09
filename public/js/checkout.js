@@ -1,4 +1,6 @@
 
+var _xhr = null;
+
 $(document).ready(function(e) {
 
     // init iCheck
@@ -42,26 +44,90 @@ $(document).ready(function(e) {
         var grand_total = total - discount;
             // grand_total = grand_total.toFixed(2);
         $('.form-grand-total .form-total-value span').html(parseFloat(grand_total).formatMoney(2, '.', ','));
+
+        var discountCode = $(this).val();
+
+        if(_xhr && _xhr.readyState != 4) {
+            _xhr.abort();
+        }
+
+        _xhr = $.ajax({
+            url: "/discounts/verify",
+            type: "POST",
+            dataType: 'JSON',
+            data: {
+                _token:	$('meta[name="csrf-token"]').attr('content'),
+                code: discountCode
+            },
+            beforeSend: function() {
+                $('#form_checkout button[type="submit"]').prop('disabled', true);
+            },
+            success: function(data) {
+                if (data.status) {
+                    var discount = (total * data.percentage);
+        			$( ".promo_error" ).hide( "slow" );
+                } else {
+                    var discount = 0;
+        			$( ".promo_error" ).show( "slow" );
+                }
+            
+                $('.form-discount-total .form-total-value span').html(parseFloat(discount).formatMoney(2, '.', ','));
+                var grand_total = total - discount;
+                $('.form-grand-total .form-total-value span').html(parseFloat(grand_total).formatMoney(2, '.', ','));
+
+                $('#form_checkout button[type="submit"]').prop('disabled', false);
+            },
+            error: function(data) {
+                $('#form_checkout button[type="submit"]').prop('disabled', false);
+            }
+        }).done(function(data) {
+            $('#form_checkout button[type="submit"]').prop('disabled', false);
+        });
     });
     
     $(document).on('blur', 'input[name="DiscountCode"]', function(e) {
         $('.form-sub-total .form-total-value span').html(parseFloat(total).formatMoney(2, '.', ','));
         if ($(this).val().length <= 0) { return false; }
-        var discount = ($(this).val().toUpperCase() == "SAVE10") ? total * 0.10 : 0;
-            // discount = discount.toFixed(2);
-		
-        $('.form-discount-total .form-total-value span').html(parseFloat(discount).formatMoney(2, '.', ','));
-        var grand_total = total - discount;
-            // grand_total = grand_total.toFixed(2);
-        $('.form-grand-total .form-total-value span').html(parseFloat(grand_total).formatMoney(2, '.', ','));
-		
-		 var discountCode = $(this).val();
-		
-		if(discountCode != 'SAVE10'){
-			$( ".promo_error" ).show( "slow" );
-		}else{
-			$( ".promo_error" ).hide( "slow" );
-		}
+
+        var discountCode = $(this).val();
+
+        if(_xhr && _xhr.readyState != 4) {
+            _xhr.abort();
+        }
+
+        _xhr = $.ajax({
+            url: "/discounts/verify",
+            type: "POST",
+            dataType: 'JSON',
+            data: {
+                _token:	$('meta[name="csrf-token"]').attr('content'),
+                code: discountCode
+            },
+            beforeSend: function() {
+                $('#form_checkout button[type="submit"]').prop('disabled', true);
+            },
+            success: function(data) {
+                if (data.status) {
+                    var discount = (total * data.percentage);
+        			$( ".promo_error" ).hide( "slow" );
+                } else {
+                    var discount = 0;
+        			$( ".promo_error" ).show( "slow" );
+                }
+            
+                $('.form-discount-total .form-total-value span').html(parseFloat(discount).formatMoney(2, '.', ','));
+                var grand_total = total - discount;
+                $('.form-grand-total .form-total-value span').html(parseFloat(grand_total).formatMoney(2, '.', ','));
+                
+                $('#form_checkout button[type="submit"]').prop('disabled', false);
+            },
+            error: function(data) {
+                $('#form_checkout button[type="submit"]').prop('disabled', false);
+            }
+        }).done(function(data) {
+            $('#form_checkout button[type="submit"]').prop('disabled', false);
+        });
+
     });
     
     $(document).on('ifChecked', 'input[name="PaymentType"]', function(e) {

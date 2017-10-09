@@ -147,6 +147,9 @@ Route::group(['middleware' => 'admin'], function () {
     Route::get('/admin/orders', 'AdminController@manageOrders');
 	Route::get('/admin/cart-details/{order_id}', 'AdminController@manageCartOrders');
     Route::get('/admin/discounts', 'AdminController@manageDiscounts');
+    Route::post('/admin/discounts/add', 'AdminController@manageDiscountsAdd');
+    Route::post('/admin/discounts/delete', 'AdminController@manageDiscountsDelete');
+    Route::post('/admin/discounts/updateStatus', 'AdminController@manageDiscountsUpdateStatus');
 
     // Admin price related actions
     Route::post('/admin/prices/uploadWB', 'AdminController@uploadPricesWB');
@@ -190,5 +193,6 @@ Route::group(['middleware' => 'admin'], function () {
 
     // Admin discounts related actions
     Route::get('/admin/discounts/list', 'AdminController@getDiscounts');
+    Route::post('/discounts/verify', 'AdminController@getDiscountsVerify');
 
 });

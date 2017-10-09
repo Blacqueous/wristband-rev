@@ -6,6 +6,7 @@ use App;
 use App\Http\Controllers\Controller;
 use App\Models\AddOns;
 use App\Models\Carts;
+use App\Models\Discounts;
 use App\Models\MoldingFee;
 use App\Models\Orders;
 use App\Models\Prices;
@@ -319,10 +320,10 @@ class CartController extends Controller
 			}
 			$discount = 0;
 			if (!empty($request->DiscountCode)) {
-				if (strtoupper($request->DiscountCode) == "SAVE10") {
-					$discount = $total * 0.10;
+	            if ($discountModel = Discounts::where('Code', strtoupper($request->DiscountCode))->get()->first()) {
+					$discount = $total * (number_format(($discountModel->Percentage / 100), 2));
 					$discount = number_format($discount, "2");
-				}
+	            }
 			}
 
 			// Create a transaction
@@ -428,11 +429,15 @@ class CartController extends Controller
 
 			$all_total = $total + $all_ship + $all_prod;
 			$discount = 0;
+			$discountPercent = 0;
 			if (!empty($request->DiscountCode)) {
-				if (strtoupper($request->DiscountCode) == "SAVE10") {
-					$discount = $all_total * 0.10;
+	            if ($discountModel = Discounts::where('Code', strtoupper($request->DiscountCode))->get()->first()) {
+					$discount = $total * (number_format(($discountModel->Percentage / 100), 2));
 					$discount = number_format($discount, "2");
-				}
+					$discount_ship = $all_ship * (number_format(($discountModel->Percentage / 100), 2));
+					$discount_ship = number_format($discount_ship, "2");
+					$discount += $discount_ship;
+	            }
 			}
 			$shipping_total = ($all_total - $discount) - $all_ship;
 			$shipping_total = number_format($shipping_total, "2");
@@ -573,10 +578,13 @@ class CartController extends Controller
 			$all_total = $total + $all_ship + $all_prod;
 			$discount = 0;
 			if (!empty($paypalRequest['DiscountCode'])) {
-				if (strtoupper($paypalRequest['DiscountCode']) == "SAVE10") {
-					$discount = $all_total * 0.10;
+	            if ($discountModel = Discounts::where('Code', strtoupper($paypalRequest['DiscountCode']))->get()->first()) {
+					$discount = $total * (number_format(($discountModel->Percentage / 100), 2));
 					$discount = number_format($discount, "2");
-				}
+					$discount_ship = $all_ship * (number_format(($discountModel->Percentage / 100), 2));
+					$discount_ship = number_format($discount_ship, "2");
+					$discount += $discount_ship;
+	            }
 			}
 			$shipping_total = ($all_total - $discount) - $all_ship;
 			$shipping_total = number_format($shipping_total, "2");
