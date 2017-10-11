@@ -235,8 +235,11 @@
 							<p><span style="font-weight:bold">Back Message End Clipart:</span> {{ $post->BackMessageEndClipart}} </p>
 							<p><span style="font-weight:bold">Continuous Message Start Clipart:</span> {{ $post->ContinuousMessageStartClipart}} </p>
 							<p><span style="font-weight:bold">Continuous Message End Clipart:</span> {{ $post->ContinuousEndClipart}} </p>	
-										   <p></p>
-						   <p><span style="font-weight:bold">Band Style and Color(s):</span> <br />
+				    </div>
+                    	<br />				
+			   @endforeach
+			   <p><span style="font-weight:bold;font-size:18px;color:#00516f">Band Style and Color(s)</span></p>
+			   @foreach($posts as $post)
 							<?php 
 								$data = json_decode($post->arInfo, true);
 								echo "Name: "; print_r($data['Name']); echo "<br />";
@@ -245,7 +248,12 @@
 								echo "Font Solid/Pantone Color: "; print_r($data['FontColor']); echo "<br />";
 								echo "Qty: "; print_r($data['Qty']); echo "<br />";
 							?>
-							</p>			
+							</p>
+				 @endforeach
+			   
+			    @foreach(array_slice($posts, 0, 1) as $post)
+				<br /><p><span style="font-weight:bold;font-size:18px;color:#00516f">Shipping Details</span></p>
+				<p></p>			
 							<p><span style="font-weight:bold">Production:</span><br />
 									<?php $data1 = json_decode($post->arProduction, true); 
 										echo "Days: ";print_r($data1['days']);echo "<br />";
@@ -259,14 +267,8 @@
 									?>
 							</p>
 						   <br /><br />
-				    </div>
-                    	<br />				
-			   @endforeach
-
-			   
-			    @foreach(array_slice($posts, 0, 1) as $post)
 		
-				<p><span style="font-weight:bold;font-size:18px;color:#00516f">Add Ons</span></p>
+				<br /><p><span style="font-weight:bold;font-size:18px;color:#00516f">Add Ons</span></p>
 					<?php $data = json_decode($post->arAddons, true);
 						if(isset($data['3mmThick'])){
 							echo "3mm Thick: ";
