@@ -29,7 +29,22 @@ class Carts extends Model {
                                     FROM cart AS `c`
                                     JOIN orders AS `o` ON `o`.id = `c`.OrderID
                                     WHERE `o`.`ID` = '$id'
-                                    ORDER BY `c`.`id` ASC")
+									ORDER BY `c`.`RandomChr` ASC")
+                        );
+    }
+	
+	public static function getCartOrdersDetails($id){
+        // check if all required variables are given.
+        if($order_id=null)
+            return false;
+
+        // get and return query.
+        return DB::select( DB::raw("SELECT *
+										FROM cart AS `c`
+										JOIN orders AS `o` ON `o`.`id` = `c`.OrderID
+										WHERE `o`.`id` = '$id'
+										GROUP BY `c`.`RandomChr`
+										ORDER BY `c`.`RandomChr` ASC")
                         );
     }
 	

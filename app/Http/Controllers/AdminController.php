@@ -75,7 +75,8 @@ class AdminController extends Controller
     {
         $id = $request->route('order_id');
 		$posts = Carts::getCartOrders($id);
-        return view('admin.manage.carts')->with(['posts' => $posts]);;
+		$detail = Carts::getCartOrdersDetails($id);
+        return view('admin.manage.carts')->with(compact('posts','detail'));
     }
 
     // Manage discounts --------------------------------------------------------

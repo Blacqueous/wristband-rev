@@ -177,6 +177,7 @@
 	    <h1>Order Details</h1>
 		<br>
 		<br>
+		<?php //print_r($detail);?>
 		<div class="row row-actions">
             <div class="pull-left">
     		
@@ -207,34 +208,41 @@
 				@endforeach
 				<br />
 				<p><span style="font-weight:bold;font-size:18px;color:#00516f">Order Item Details</span></p>
-				@foreach($posts as $post)
-					<div style="margin-left:20px;"><p><span style="font-weight:bold">Item Description: </span> {{ $post->BandStyle}}</p></div>
+				@foreach($detail as $details)
+					<div style="margin-left:20px;"><p><span style="font-weight:bold">Item Description: </span> {{ $details->BandStyle}}</p></div>
 					<div class="item-carts-details" style="margin-left:34px">
-							@if (($post->BandSize) == "0-25inch")
-								<p><span style="font-weight:bold">Band Size:</span> 1/4 Inch ({{ $post->BandSize}})</p>
-							@elseif (($post->BandSize) == "0-50inch")
-								<p><span style="font-weight:bold">Band Size:</span> 1/2 Inch ({{ $post->BandSize}})</p>
-							@elseif (($post->BandSize) == "0-75inch")
-								<p><span style="font-weight:bold">Band Size:</span> 3/4 Inch ({{ $post->BandSize}})</p>
-							@elseif (($post->BandSize) == "1-00inch")
-								<p><span style="font-weight:bold">Band Size:</span> 1 Inch {{ $post->BandSize}}</p>
-							@elseif (($post->BandSize) == "1-50inch")
-								<p><span style="font-weight:bold">Band Size:</span> 1 1/2 Inch ({{ $post->BandSize}})</p>
-							@elseif (($post->BandSize) == "2-00inch")
-							   `<p><span style="font-weight:bold">Band Size:</span> 2 Inch ({{ $post->BandSize}})</p>
+							@if (($details->BandSize) == "0-25inch")
+								<p><span style="font-weight:bold">Band Size:</span> 1/4 Inch ({{ $details->BandSize}})</p>
+							@elseif (($details->BandSize) == "0-50inch")
+								<p><span style="font-weight:bold">Band Size:</span> 1/2 Inch ({{ $details->BandSize}})</p>
+							@elseif (($details->BandSize) == "0-75inch")
+								<p><span style="font-weight:bold">Band Size:</span> 3/4 Inch ({{ $details->BandSize}})</p>
+							@elseif (($details->BandSize) == "1-00inch")
+								<p><span style="font-weight:bold">Band Size:</span> 1 Inch {{ $details->BandSize}}</p>
+							@elseif (($details->BandSize) == "1-50inch")
+								<p><span style="font-weight:bold">Band Size:</span> 1 1/2 Inch ({{ $details->BandSize}})</p>
+							@elseif (($details->BandSize) == "2-00inch")
+							   `<p><span style="font-weight:bold">Band Size:</span> 2 Inch ({{ $details->BandSize}})</p>
 							@endif
 							<p></p>
+							<p><span style="font-weight:bold">Font:</span> {{ $details->Font}} </p>
+							<p><span style="font-weight:bold">Front Message:</span> {{ $details->FrontMessage}} </p>
+							<p><span style="font-weight:bold">Back Message:</span> {{ $details->BackMessage}} </p>
+							<p><span style="font-weight:bold">Inside Message:</span> 
+							     <?php 
+									$data = json_decode($details->arInsideMessage, true);
+									echo " "; print_r($data['text']);
+								 ?>
+
+							</p>
+							<p><span style="font-weight:bold">Continuous Message:</span> {{ $details->ContinuousMessage}} </p>
 							<p><span style="font-weight:bold">Font:</span> {{ $post->Font}} </p>
-							<p><span style="font-weight:bold">Front Message:</span> {{ $post->FrontMessage}} </p>
-							<p><span style="font-weight:bold">Back Message:</span> {{ $post->BackMessage}} </p>
-							<p><span style="font-weight:bold">Continuous Message:</span> {{ $post->ContinuousMessage}} </p>
-							<p><span style="font-weight:bold">Font:</span> {{ $post->Font}} </p>
-							<p><span style="font-weight:bold">Front Message Start Clipart:</span> {{ $post->FrontMessageStartClipart}} </p>
-							<p><span style="font-weight:bold">Front Message End Clipart:</span> {{ $post->FrontMessageEndClipart}} </p>
-							<p><span style="font-weight:bold">Back Message Start Clipart:</span> {{ $post->BackMessageStartClipart}} </p>
-							<p><span style="font-weight:bold">Back Message End Clipart:</span> {{ $post->BackMessageEndClipart}} </p>
-							<p><span style="font-weight:bold">Continuous Message Start Clipart:</span> {{ $post->ContinuousMessageStartClipart}} </p>
-							<p><span style="font-weight:bold">Continuous Message End Clipart:</span> {{ $post->ContinuousEndClipart}} </p>	
+							<p><span style="font-weight:bold">Front Message Start Clipart:</span> {{ $details->FrontMessageStartClipart}} </p>
+							<p><span style="font-weight:bold">Front Message End Clipart:</span> {{ $details->FrontMessageEndClipart}} </p>
+							<p><span style="font-weight:bold">Back Message Start Clipart:</span> {{ $details->BackMessageStartClipart}} </p>
+							<p><span style="font-weight:bold">Back Message End Clipart:</span> {{ $details->BackMessageEndClipart}} </p>
+							<p><span style="font-weight:bold">Continuous Message Start Clipart:</span> {{ $details->ContinuousMessageStartClipart}} </p>
+							<p><span style="font-weight:bold">Continuous Message End Clipart:</span> {{ $details->ContinuousEndClipart}} </p>	
 				    </div>
                     	<br />				
 			   @endforeach
