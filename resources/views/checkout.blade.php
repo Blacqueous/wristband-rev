@@ -387,28 +387,49 @@
                         </div>
 
                         <div class="form-total">
+
+                            <?php
+                                $discount_name = "";
+                                $discount_price = "0.00";
+                                $sub_total = 0;
+                                foreach ($breakdown["items"] as $value) {
+                                    if (strtoupper($value["name"]) == "DISCOUNT") {
+                                        $discount_name = $value["name"];
+                                        $discount_price = $value["price_positive"];
+                                    } else {
+                                        $sub_total += $value["price"];
+                                    }
+                                }
+                                $sub_total += $breakdown["details"]["shipping"];
+                                $sub_total = ($sub_total > 0) ? $sub_total : "0.00";
+                            ?>
+    
                             <div class="form-group form-sub-total">
                                 <div class="form-total-title col-md-6">Sub Total:</div>
                                 <div class="form-total-value col-md-6">
-                                    $<span>{{ number_format($total, 2, '.', ',') }}</span>
+                                    $<span>{{ $sub_total }}</span>
                                 </div>
                                 <div class="clearfix"></div>
                             </div>
+    
                             <div class="form-group form-discount-total">
                                 <div class="form-total-title col-md-6">Discount:</div>
                                 <div class="form-total-value col-md-6">
-                                    - $<span>{{ number_format(0, 2, '.', ',') }}</span>
+                                    -$<span>{{ $discount_price }}</span>
                                 </div>
                                 <div class="clearfix"></div>
                             </div>
+
                             <hr/>
+
                             <div class="form-group form-grand-total">
-                                <div class="form-total-title col-md-6">Grand Total:</div>
+                                <div class="form-total-title col-md-6"><strong>Grand Total:</strong></div>
                                 <div class="form-total-value grand-total col-md-6">
-                                    $<span>{{ number_format($total, 2, '.', ',') }}</span>
+                                    $<span>{{ $breakdown["amount"]["total"] }}</span>
                                 </div>
                                 <div class="clearfix"></div>
                             </div>
+
                         </div>
             
                         <div class="form-action">

@@ -193,6 +193,8 @@ Route::group(['middleware' => 'admin'], function () {
 
     // Admin discounts related actions
     Route::get('/admin/discounts/list', 'AdminController@getDiscounts');
-    Route::post('/discounts/verify', 'AdminController@getDiscountsVerify');
 
 });
+
+Route::post('/discounts/verify', 'CartController@getDiscountsVerify');
+

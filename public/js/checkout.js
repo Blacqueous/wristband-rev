@@ -38,12 +38,6 @@ $(document).ready(function(e) {
     $(document).on('keyup', 'input[name="DiscountCode"]', function(e) {
         $('.form-sub-total .form-total-value span').html(parseFloat(total).formatMoney(2, '.', ','));
         if ($(this).val().length <= 0) { return false; }
-        var discount = ($(this).val().toUpperCase() == "SAVE10") ? total * 0.10 : 0;
-            // discount = discount.toFixed(2);
-        $('.form-discount-total .form-total-value span').html(parseFloat(discount).formatMoney(2, '.', ','));
-        var grand_total = total - discount;
-            // grand_total = grand_total.toFixed(2);
-        $('.form-grand-total .form-total-value span').html(parseFloat(grand_total).formatMoney(2, '.', ','));
 
         var discountCode = $(this).val();
 
@@ -63,6 +57,7 @@ $(document).ready(function(e) {
                 $('#form_checkout button[type="submit"]').prop('disabled', true);
             },
             success: function(data) {
+
                 if (data.status) {
                     var discount = (total * data.percentage);
         			$( ".promo_error" ).hide( "slow" );
@@ -70,10 +65,52 @@ $(document).ready(function(e) {
                     var discount = 0;
         			$( ".promo_error" ).show( "slow" );
                 }
-            
-                $('.form-discount-total .form-total-value span').html(parseFloat(discount).formatMoney(2, '.', ','));
-                var grand_total = total - discount;
-                $('.form-grand-total .form-total-value span').html(parseFloat(grand_total).formatMoney(2, '.', ','));
+
+                var html = "";
+                var discount_name = "";
+                var discount_price = "0.00";
+                var sub_total = 0;
+
+                $.each(data.breakdown.items, function(key, value) {
+                    if(value.name.toUpperCase() == "DISCOUNT") {
+                        discount_name = value.name;
+                        discount_price = value.price_positive;
+                    } else {
+                        // html += '<div class="form-group form-sub-total-items">';
+                        // html += '    <div class="form-total-title col-md-6">'+value.name+'</div>';
+                        // html += '    <div class="form-total-value col-md-6">';
+                        // html += '        $<span>'+value.price+'</span>';
+                        // html += '    </div>';
+                        // html += '    <div class="clearfix"></div>';
+                        // html += '</div>';
+                        sub_total = parseFloat(sub_total) + parseFloat(value.price);
+                    }
+                });
+
+                // html += '<div class="form-group form-sub-total-items">';
+                // html += '    <div class="form-total-title col-md-6">Shipping</div>';
+                // html += '    <div class="form-total-value col-md-6">';
+                // html += '        $<span>'+data.breakdown.details.total+'</span>';
+                // html += '    </div>';
+                // html += '    <div class="clearfix"></div>';
+                // html += '</div>';
+                sub_total = parseFloat(sub_total) + parseFloat(data.breakdown.details.total);
+                // $('.form-sub-total .form-total-value span').html(sub_total);
+                $('.form-sub-total .form-total-value span').html(data.breakdown.total);
+
+                // if(discount_name.length > 0) {
+                    // html += '<div class="form-group form-sub-total-items">';
+                    // html += '    <div class="form-total-title col-md-6">'+discount_name+'</div>';
+                    // html += '    <div class="form-total-value col-md-6">';
+                    // html += '        -$<span>'+discount_price+'</span>';
+                    // html += '    </div>';
+                    // html += '    <div class="clearfix"></div>';
+                    // html += '</div>';
+                    $('.form-discount-total .form-total-value span').html(discount_price);
+                // }
+
+                // $('.form-sub-total-items').html(html);
+                $('.form-grand-total .form-total-value span').html(data.breakdown.amount.total);
 
                 $('#form_checkout button[type="submit"]').prop('disabled', false);
             },
@@ -107,6 +144,7 @@ $(document).ready(function(e) {
                 $('#form_checkout button[type="submit"]').prop('disabled', true);
             },
             success: function(data) {
+
                 if (data.status) {
                     var discount = (total * data.percentage);
         			$( ".promo_error" ).hide( "slow" );
@@ -114,11 +152,53 @@ $(document).ready(function(e) {
                     var discount = 0;
         			$( ".promo_error" ).show( "slow" );
                 }
-            
-                $('.form-discount-total .form-total-value span').html(parseFloat(discount).formatMoney(2, '.', ','));
-                var grand_total = total - discount;
-                $('.form-grand-total .form-total-value span').html(parseFloat(grand_total).formatMoney(2, '.', ','));
-                
+
+                var html = "";
+                var discount_name = "";
+                var discount_price = "0.00";
+                var sub_total = 0;
+
+                $.each(data.breakdown.items, function(key, value) {
+                    if(value.name.toUpperCase() == "DISCOUNT") {
+                        discount_name = value.name;
+                        discount_price = value.price_positive;
+                    } else {
+                        // html += '<div class="form-group form-sub-total-items">';
+                        // html += '    <div class="form-total-title col-md-6">'+value.name+'</div>';
+                        // html += '    <div class="form-total-value col-md-6">';
+                        // html += '        $<span>'+value.price+'</span>';
+                        // html += '    </div>';
+                        // html += '    <div class="clearfix"></div>';
+                        // html += '</div>';
+                        sub_total = parseFloat(sub_total) + parseFloat(value.price);
+                    }
+                });
+
+                // html += '<div class="form-group form-sub-total-items">';
+                // html += '    <div class="form-total-title col-md-6">Shipping</div>';
+                // html += '    <div class="form-total-value col-md-6">';
+                // html += '        $<span>'+data.breakdown.details.total+'</span>';
+                // html += '    </div>';
+                // html += '    <div class="clearfix"></div>';
+                // html += '</div>';
+                sub_total = parseFloat(sub_total) + parseFloat(data.breakdown.details.total);
+                // $('.form-sub-total .form-total-value span').html(sub_total);
+                $('.form-sub-total .form-total-value span').html(data.breakdown.total);
+
+                // if(discount_name.length > 0) {
+                    // html += '<div class="form-group form-sub-total-items">';
+                    // html += '    <div class="form-total-title col-md-6">'+discount_name+'</div>';
+                    // html += '    <div class="form-total-value col-md-6">';
+                    // html += '        -$<span>'+discount_price+'</span>';
+                    // html += '    </div>';
+                    // html += '    <div class="clearfix"></div>';
+                    // html += '</div>';
+                    $('.form-discount-total .form-total-value span').html(discount_price);
+                // }
+
+                // $('.form-sub-total-items').html(html);
+                $('.form-grand-total .form-total-value span').html(data.breakdown.amount.total);
+
                 $('#form_checkout button[type="submit"]').prop('disabled', false);
             },
             error: function(data) {
