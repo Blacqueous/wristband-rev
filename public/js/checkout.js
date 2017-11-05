@@ -74,7 +74,7 @@ $(document).ready(function(e) {
                 $.each(data.breakdown.items, function(key, value) {
                     if(value.name.toUpperCase() == "DISCOUNT") {
                         discount_name = value.name;
-                        discount_price = value.price_positive;
+                        discount_price = value.total_discount;
                     } else {
                         // html += '<div class="form-group form-sub-total-items">';
                         // html += '    <div class="form-total-title col-md-6">'+value.name+'</div>';
@@ -161,7 +161,7 @@ $(document).ready(function(e) {
                 $.each(data.breakdown.items, function(key, value) {
                     if(value.name.toUpperCase() == "DISCOUNT") {
                         discount_name = value.name;
-                        discount_price = value.price_positive;
+                        discount_price = value.total_discount;
                     } else {
                         // html += '<div class="form-group form-sub-total-items">';
                         // html += '    <div class="form-total-title col-md-6">'+value.name+'</div>';

@@ -395,7 +395,7 @@
                                 foreach ($breakdown["items"] as $value) {
                                     if (strtoupper($value["name"]) == "DISCOUNT") {
                                         $discount_name = $value["name"];
-                                        $discount_price = $value["price_positive"];
+                                        $discount_price = $value["overall_discount"];
                                     } else {
                                         $sub_total += $value["price"];
                                     }

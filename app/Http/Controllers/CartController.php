@@ -409,8 +409,7 @@ class CartController extends Controller
 			$ppcart = Session::get('_cart');
 
 			$breakdown = $this->generateBreakDown($ppcart, $request->DiscountCode);
-var_dump($breakdown);
-die;
+
 			foreach ($breakdown["items"] as $value) {
 				$item = new Item();
 				$item->setName($value["name"])
@@ -419,19 +418,16 @@ die;
 					 ->setPrice($value["price"]);
 				$items[] = $item;
 			}
-var_dump($items);
+
 			$itemList = new ItemList();
 			$itemList->setItems($items);
-var_dump($breakdown["details"]["shipping"]);
-var_dump($breakdown["details"]["subtotal"]);
+
 			// ### Additional payment details
 			$details = new Details();
 			$details->setShipping($breakdown["details"]["shipping"])
 				    ->setTax($breakdown["details"]["tax"])
 				    ->setSubtotal($breakdown["details"]["subtotal"]);
-var_dump($breakdown["amount"]["total"]);
-var_dump($breakdown["total"]);
-die;
+
 			// ### Amount
 			$amount = new Amount();
 			$amount->setCurrency($breakdown["amount"]["currency"])
@@ -466,11 +462,10 @@ die;
 							)
 			            );
 			$apiContext->setConfig(App::make('config')->get('services.paypal.settings'));
-var_dump($apiContext);
-var_dump("here");
-die;
+
 			try {
 			    $payment->create($apiContext);
+
 				if ($payment->getState() == "created") {
 					$paypal_data = [
 						"order_id" => $order_id,
@@ -520,51 +515,26 @@ die;
 		    $execution = new PaymentExecution();
 		    $execution->setPayerId($request->PayerID);
 
-			// ### Itemized information
-			$total = 0;
-			$priceAll = 0;
-			$addonAll = 0;
-			$items = [];
-			$all_prod = 0;
-			$all_ship = 0;
-
 			$order_id = Session::get('_paypal.order_id');
 			$paypalRequest = Session::get('_paypal.order_input');
-			// $arrCart = $this->organizeCart($request->_token, $order_id, $request->bInfoFirstName." ".$request->bInfoLastName, $request->bInfoContactNo, $request->bInfoEmail);
 
 			$ppcart = Session::get('_cart');
-			foreach ($ppcart as $value) {
-				$price = $value['total'] - ($value['time_production']['price'] + $value['time_shipping']['price']);
-				$total += $price;
-				$all_prod += $value['time_production']['price'];
-				$all_ship += $value['time_shipping']['price'];
-			}
 
-			$all_total = $total + $all_ship + $all_prod;
-			$discount = 0;
-			if (!empty($paypalRequest['DiscountCode'])) {
-	            if ($discountModel = Discounts::where('Code', strtoupper($paypalRequest['DiscountCode']))->get()->first()) {
-					$discount = $total * (number_format(($discountModel->Percentage / 100), 2));
-					$discount = number_format($discount, "2");
-					$discount_ship = $all_ship * (number_format(($discountModel->Percentage / 100), 2));
-					$discount_ship = number_format($discount_ship, "2");
-					$discount += $discount_ship;
-	            }
-			}
-			$shipping_total = ($all_total - $discount) - $all_ship;
-			$shipping_total = number_format($shipping_total, "2");
+			$breakdown = $this->generateBreakDown($ppcart, $paypalRequest['DiscountCode']);
 
-			// ### Optional Changes to Amount
+			// ### Additional payment details
 			$details = new Details();
-			$details->setShipping($all_ship)
-				    ->setTax(0)
-				    ->setSubtotal($shipping_total);
+			$details->setShipping($breakdown["details"]["shipping"])
+				    ->setTax($breakdown["details"]["tax"])
+				    ->setSubtotal($breakdown["details"]["subtotal"]);
 
+			// ### Amount
 			$amount = new Amount();
-			$amount->setCurrency("USD")
-				   ->setTotal(number_format($all_total - $discount, 2))
+			$amount->setCurrency($breakdown["amount"]["currency"])
+				   ->setTotal($breakdown["amount"]["total"])
 				   ->setDetails($details);
-
+			
+			// ### Transaction
 			$transaction = new Transaction();
 			$transaction->setAmount($amount);
 
@@ -572,6 +542,7 @@ die;
 			$execution->addTransaction($transaction);
 
 			try {
+
 			    // Execute the payment
 			    // (See bootstrap.php for more on `ApiContext`)
 			    $result = $payment->execute($execution, $apiContext);
@@ -1212,23 +1183,30 @@ die;
 	{
 		$count = 0;
 		$items = [];
+		$overall_discount = 0;
 		$overall_prod = 0;
 		$overall_ship = 0;
-		$total = 0;
+		$overall_items = 0;
+		$overall_total = 0;
+		$shipping_subtotal = 0;
 		$cart = (isset($cart) ? $cart : (Session::has("_cart") ? Session::get("_cart") : []));
 
 		foreach ($cart as $value) {
+
 			$overall_prod += $value['time_production']['price'];
 			$overall_ship += $value['time_shipping']['price'];
+
 			$price = $value['total'] - ($value['time_production']['price'] + $value['time_shipping']['price']);
-			$total += $price;
-			$name = "Order #" . ++$count;
+
 			$items[] = [
-				"name" => $name,
+				"name" => "Order #" . ++$count,
 				"currency" => "USD",
 				"quantity" => 1,
 				"price" => number_format($price, 2)
 			];
+
+			$overall_total += $price;
+
 		}
 
 		// For production price, if any
@@ -1239,63 +1217,59 @@ die;
 			"price" => number_format($overall_prod, 2)
 		];
 
-		$total += number_format($overall_prod, 2);
+		$overall_items = $overall_total + $overall_prod;
+		$overall_total = $overall_total + $overall_ship + $overall_prod;
 
-		$overall_total = $total + $overall_ship + $overall_prod;
+		// FOR DISCOUNT
 		$discount = 0;
 		$discount_ship = 0;
 
 		if (!empty($discountCode)) {
 			if ($discountModel = Discounts::where('Code', strtoupper($discountCode))->get()->first()) {
-				$discount = $total * ($discountModel->Percentage / 100);
+
+				$discount = $overall_items * ($discountModel->Percentage / 100);
 				$discount = number_format($discount, "2");
+
 				$discount_ship = $overall_ship * ($discountModel->Percentage / 100);
 				$discount_ship = number_format($discount_ship, "2");
-				$discount += $discount_ship;
+
+				$overall_discount = $discount + $discount_ship;
+
 			}
 		}
 
-		$shipping_total = ($overall_total - $discount) - $overall_ship;
-		$shipping_total = number_format($shipping_total, "2");
+		if ($overall_discount > 0) { // If has discount
 
-		if ($discount > 0) {
-			// For discount, if any
 			$items[] = [
 				"name" => "Discount",
 				"currency" => "USD",
 				"quantity" => 1,
-				"price" => "-" . number_format($discount, 2),
-				"price_positive" => number_format($discount, 2)
+				"price" => "-" . number_format($overall_discount, 2),
+				"total_discount" => number_format($overall_discount, 2)
 			];
 
-			$details = [
-				"shipping" => number_format(($overall_ship - $discount_ship), 2),
-				"tax" => 0,
-				"subtotal" => $shipping_total,
-				"total" => number_format($overall_ship, 2)
-			];
-		} else { // Additional payment details
-			$details = [
-				"shipping" => number_format($overall_ship, 2),
-				"tax" => 0,
-				"subtotal" => $shipping_total,
-				"total" => number_format($overall_ship, 2)
-			];
 		}
 
+		// FOR SHIPPING
+		$shipping_total = $overall_ship;
 
-		$total += number_format($overall_ship, 2);
-
-		// Payment amount
-		$amount = [
-			"currency" => "USD",
-			"total" => number_format($total - $discount, 2),
+		$details = [
+			"shipping" => number_format($shipping_total, 2),
+			"tax" => 0,
+			"subtotal" => number_format(($overall_total - $overall_discount) - $shipping_total, 2), // Grand total - discount total
+			"total" => number_format($overall_ship, 2)
 		];
 
-		$total = number_format($total, 2);
+		// FOR AMOUNT
+		$amount = [
+			"currency" => "USD",
+			"total" => number_format(($overall_total - $overall_discount), 2),
+		];
+
+		$overall_total = number_format($overall_total, 2);
 
 		return [
-			"total" => $total,
+			"total" => $overall_total,
 			"items" => $items,
 			"details" => $details,
 			"amount" => $amount
