@@ -209,7 +209,7 @@
 				<br />
 				<p><span style="font-weight:bold;font-size:18px;color:#00516f">Order Item Details</span></p>
 				@foreach($detail as $details)
-					<div style="margin-left:20px;"><p><span style="font-weight:bold">Item Description: </span> {{ $details->BandStyle}}</p></div>
+					<div style="margin-left:20px;"><p><span style="font-weight:bold;color: #DC8510;">Item Description: </span> {{ $details->BandStyle}}</p></div>
 					<div class="item-carts-details" style="margin-left:34px">
 							@if (($details->BandSize) == "0-25inch")
 								<p><span style="font-weight:bold">Band Size:</span> 1/4 Inch ({{ $details->BandSize}})</p>
@@ -247,6 +247,7 @@
                     	<br />				
 			   @endforeach
 			   <p><span style="font-weight:bold;font-size:18px;color:#00516f">Band Style and Color(s)</span></p>
+			   <div style="margin-left:20px;">
 			   @foreach($posts as $post)
 							<?php 
 								$data = json_decode($post->arInfo, true);
@@ -258,26 +259,29 @@
 							?>
 							</p>
 				 @endforeach
+				 </div>
 			   
-			    @foreach(array_slice($posts, 0, 1) as $post)
+			    
+				@foreach($detail as $details)
 				<br /><p><span style="font-weight:bold;font-size:18px;color:#00516f">Shipping Details</span></p>
-				<p></p>			
+				<div style="margin-left:20px;"><p><span style="font-weight:bold;color: #DC8510;">Item Description: </span> {{ $details->BandStyle}}</p>
+				<p></p>	
+						
 							<p><span style="font-weight:bold">Production:</span><br />
-									<?php $data1 = json_decode($post->arProduction, true); 
+									<?php $data1 = json_decode($details->arProduction, true); 
 										echo "Days: ";print_r($data1['days']);echo "<br />";
 										echo "Price: $";print_r($data1['price']);echo "<br />";
 									?>
 							</p>
 							<p><span style="font-weight:bold">Shipping:</span><br />
-									<?php $data2 = json_decode($post->arShipping, true); 
+									<?php $data2 = json_decode($details->arShipping, true); 
 										echo "Days: ";print_r($data2['days']);echo "<br />";
 										echo "Price: $";print_r($data2['price']);echo "<br />";
 									?>
 							</p>
-						   <br /><br />
-		
+				
 				<br /><p><span style="font-weight:bold;font-size:18px;color:#00516f">Add Ons</span></p>
-					<?php $data = json_decode($post->arAddons, true);
+					<?php $data = json_decode($details->arAddons, true);
 						if(isset($data['3mmThick'])){
 							echo "3mm Thick: ";
 							echo "Price: $";print_r($data['3mmThick']['price']);echo " | ";
@@ -322,10 +326,10 @@
 					?>
 					
 					
-				<br /><br />
+				<br />
 				<p><span style="font-weight:bold">Free Wristbands:</span></p>
-				 @foreach($posts as $post)
-					<?php $data = json_decode($post->arFree, true);
+				
+					<?php $data = json_decode($details->arFree, true);
 						if(isset($data['wristbands']['data']['Name'])){
 							echo "Name: ";print_r($data['wristbands']['data']['Name']);echo "<br />";
 						}
@@ -345,11 +349,9 @@
 						 
 					?>
 					
-				 @endforeach
-				 <p></p>
 				<p><span style="font-weight:bold">Free Keychains:</span></p>
-				@foreach($posts as $post)
-					<?php $data = json_decode($post->arFree, true); 
+				
+					<?php $data = json_decode($details->arFree, true); 
 			
 						if(isset($data['keychains']['data']['Name'])){
 							echo "Name: ";print_r($data['keychains']['data']['Name']);echo "<br />";
@@ -369,41 +371,51 @@
 						}
 
 					?>
-				 @endforeach
-                <br />
-				<p><span style="font-weight:bold;font-size:18px;color:#00516f">Payment Info</span></p>
-				<p><span style="font-weight:bold">Payment Method: </span>{{ $post->PaymentMethod }} </p>
+				</div>
+				@endforeach
 				
-				<?php 
-				    if($post->PaymentMethod=="paypal"){
-						echo "Transaction ID: ";print_r($post->TransNo);echo "<br />";
-						echo "Paypal Email: ";print_r($post->PaypalEmail);echo "<br />";
-					}else{
-						echo "Authorize Transaction ID: ";print_r($post->AuthorizeTransID);echo "<br />";
-					}
-				?>
+				@foreach(array_slice($posts, 0, 1) as $post)
+                <br /><br />
+				<p><span style="font-weight:bold;font-size:18px;color:#00516f">Payment Info</span></p>
+				<div style="margin-left:20px;">
+					<p><span style="font-weight:bold">Payment Method: </span>{{ $post->PaymentMethod }} </p>
+					
+					<?php 
+						if($post->PaymentMethod=="paypal"){
+							echo "Transaction ID: ";print_r($post->TransNo);echo "<br />";
+							echo "Paypal Email: ";print_r($post->PaypalEmail);echo "<br />";
+						}else{
+							echo "Authorize Transaction ID: ";print_r($post->AuthorizeTransID);echo "<br />";
+						}
+					?>
+				</div>
 				<br /><br />
 				<p><span style="font-weight:bold;font-size:18px;color:#00516f">Billing Info</span></p>
-				<p><span style="font-weight:bold">Full Name:</span> {{ $post->FirstName}} {{ $post->LastName}}</p>
-				<p><span style="font-weight:bold">Email:</span> {{ $post->EmailAddress}}</p>
-				<p><span style="font-weight:bold">Phone:</span> {{ $post->Phone}}</p>
-				<p><span style="font-weight:bold">Address:</span> {{ $post->Address}}</p>
-				<p><span style="font-weight:bold">Address2:</span> {{ $post->Address2}}</p>
-				<p><span style="font-weight:bold">City:</span> {{ $post->City}}</p>
-				<p><span style="font-weight:bold">State:</span> {{ $post->State}}</p>
-				<p><span style="font-weight:bold">ZipCode:</span> {{ $post->ZipCode}}</p>
-				<p><span style="font-weight:bold">Country:</span> {{ $post->Country}}</p>
-				<br /><br />
-											<p><span style="font-weight:bold;font-size:18px;color:#00516f">Shipping Info</span></p>
-			    <p><span style="font-weight:bold">Full Name:</span> {{ $post->ShipFirstName}} {{ $post->ShipLastName}}</p>
-				<p><span style="font-weight:bold">Email Address:</span> {{ $post->EmailAddress}} </p>
-				<p><span style="font-weight:bold">Address 1:</span> {{ $post->ShipAddress}} </p>
-				<p><span style="font-weight:bold">Address 2:</span> {{ $post->ShipAddress2}} </p>
-				<p><span style="font-weight:bold">City: </span> {{ $post->ShipCity}} </p>
-				<p><span style="font-weight:bold">Zipcode:</span> {{ $post->ShipZipCode}} </p>
-				<p><span style="font-weight:bold">State:</span> {{ $post->ShipState}} </p>
-				<p><span style="font-weight:bold">Country:</span> {{ $post->ShipCountry}} </p>
-				<p><span style="font-weight:bold">Total Amount:</span> $<span style="font-size:17px;color:#ff0000">{{ $post->Total}}</span> </p>
+				<div style="margin-left:20px;">
+					<p><span style="font-weight:bold">Full Name:</span> {{ $post->FirstName}} {{ $post->LastName}}</p>
+					<p><span style="font-weight:bold">Email:</span> {{ $post->EmailAddress}}</p>
+					<p><span style="font-weight:bold">Phone:</span> {{ $post->Phone}}</p>
+					<p><span style="font-weight:bold">Address:</span> {{ $post->Address}}</p>
+					<p><span style="font-weight:bold">Address2:</span> {{ $post->Address2}}</p>
+					<p><span style="font-weight:bold">City:</span> {{ $post->City}}</p>
+					<p><span style="font-weight:bold">State:</span> {{ $post->State}}</p>
+					<p><span style="font-weight:bold">ZipCode:</span> {{ $post->ZipCode}}</p>
+					<p><span style="font-weight:bold">Country:</span> {{ $post->Country}}</p>
+					<br /><br />
+				</div>
+				
+				<p><span style="font-weight:bold;font-size:18px;color:#00516f">Shipping Info</span></p>
+				<div style="margin-left:20px;">
+					<p><span style="font-weight:bold">Full Name:</span> {{ $post->ShipFirstName}} {{ $post->ShipLastName}}</p>
+					<p><span style="font-weight:bold">Email Address:</span> {{ $post->EmailAddress}} </p>
+					<p><span style="font-weight:bold">Address 1:</span> {{ $post->ShipAddress}} </p>
+					<p><span style="font-weight:bold">Address 2:</span> {{ $post->ShipAddress2}} </p>
+					<p><span style="font-weight:bold">City: </span> {{ $post->ShipCity}} </p>
+					<p><span style="font-weight:bold">Zipcode:</span> {{ $post->ShipZipCode}} </p>
+					<p><span style="font-weight:bold">State:</span> {{ $post->ShipState}} </p>
+					<p><span style="font-weight:bold">Country:</span> {{ $post->ShipCountry}} </p>
+					<p><span style="font-weight:bold">Total Amount:</span> $<span style="font-size:17px;color:#ff0000">{{ $post->Total}}</span> </p>
+				</div>	
 			   @endforeach
 		  	</div>
 		  	<!----  End Container -->
