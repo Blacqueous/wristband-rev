@@ -76,13 +76,6 @@ $(document).ready(function(e) {
                         discount_name = value.name;
                         discount_price = value.total_discount;
                     } else {
-                        // html += '<div class="form-group form-sub-total-items">';
-                        // html += '    <div class="form-total-title col-md-6">'+value.name+'</div>';
-                        // html += '    <div class="form-total-value col-md-6">';
-                        // html += '        $<span>'+value.price+'</span>';
-                        // html += '    </div>';
-                        // html += '    <div class="clearfix"></div>';
-                        // html += '</div>';
                         sub_total = parseFloat(sub_total) + parseFloat(value.price);
                     }
                 });
@@ -112,7 +105,10 @@ $(document).ready(function(e) {
                 // $('.form-sub-total-items').html(html);
                 $('.form-grand-total .form-total-value span').html(data.breakdown.amount.total);
 
+                $('input[name="DiscountPercent"]').val(data.breakdown.discountPercent);
+
                 $('#form_checkout button[type="submit"]').prop('disabled', false);
+
             },
             error: function(data) {
                 $('#form_checkout button[type="submit"]').prop('disabled', false);
@@ -198,6 +194,8 @@ $(document).ready(function(e) {
 
                 // $('.form-sub-total-items').html(html);
                 $('.form-grand-total .form-total-value span').html(data.breakdown.amount.total);
+
+                $('input[name="DiscountPercent"]').val(data.breakdown.discountPercent);
 
                 $('#form_checkout button[type="submit"]').prop('disabled', false);
             },

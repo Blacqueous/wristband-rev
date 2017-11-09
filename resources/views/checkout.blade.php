@@ -74,7 +74,6 @@
     <form id="form_checkout" class="form-checkout" action="/checkout/submit" method="post" data-toggle="validator">
 
         <input type="hidden" name="_token" value="{{ csrf_token() }}">
-        <input type="hidden" name="DiscountPercent" value="{{ csrf_token() }}">
 
         <div class="row">
 
@@ -260,6 +259,7 @@
                             <div class="form-group">
                                 <div class="control-input col-md-12 no-padding">
                                     <input type="text" class="form-control form-discount" id="DiscountCode" name="DiscountCode" value="<?php echo isset($data['SAVE10']) ? $data['SAVE10'] : ''; ?>" placeholder="Promo Code">
+                                    <input type="hidden" name="DiscountPercent" value="0">
 									<div class="promo_error" style="color:red; font-size:10px;text-transform: uppercase;display:none;">The promo code you enter is invalid</div>
                                 </div>
                                 <div class="clearfix"></div>

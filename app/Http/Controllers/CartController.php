@@ -257,7 +257,7 @@ class CartController extends Controller
 			"RandomChr"			=> "",
 			"IPAddress"			=> $request->ip()
 		];
-		
+
 		// Insert new order
 		$orders = new Orders();
 		$order_id = $orders->insertOrder($data_order);
@@ -1223,6 +1223,8 @@ class CartController extends Controller
 		// FOR DISCOUNT
 		$discount = 0;
 		$discount_ship = 0;
+		$discountPercent = 0;
+		$discountTrueCode = "";
 
 		if (!empty($discountCode)) {
 			if ($discountModel = Discounts::where('Code', strtoupper($discountCode))->get()->first()) {
@@ -1234,6 +1236,9 @@ class CartController extends Controller
 				$discount_ship = number_format($discount_ship, "2");
 
 				$overall_discount = $discount + $discount_ship;
+
+				$discountTrueCode = $discountCode;
+				$discountPercent = $discountModel->Percentage;
 
 			}
 		}
@@ -1272,7 +1277,9 @@ class CartController extends Controller
 			"total" => $overall_total,
 			"items" => $items,
 			"details" => $details,
-			"amount" => $amount
+			"amount" => $amount,
+			"discountCode" => $discountTrueCode,
+			"discountPercent" => $discountPercent
 		];
 
 	}
