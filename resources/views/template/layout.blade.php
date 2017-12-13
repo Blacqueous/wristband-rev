@@ -6,8 +6,6 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta name="csrf-token" content="{{ csrf_token() }}"/>
 		<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-		<meta name="title" content="Custom Wristbands" />
-		<meta name="description" content="Wristbands, silicone wristbands, rubber bracelets, silicone bracelets.">
 		<meta name="robots" content="all, index, follow"/>
 		<meta name="googlebot" content="index, follow, archive"/>
 		<meta name="Slurp" content="index, follow, archive"/>
@@ -19,7 +17,8 @@
 		<meta name="ICBM" content="40.663857, -74.223181"/>
 		<link rel="icon" href="{{ URL::asset('../../favicon.ico') }}">
 		<meta name="google-site-verification" content="donyC2DWRFLJm-yUeDOoD9YnWD6PEBR9fU-sE5kggG0" />
-		<title>Custom Silicone Wristbands | Promotional Wristbands @yield('title')</title>
+		<title>@yield('title') Promotional Wristbands</title>
+		<meta name="description" content="@yield('description')">
 		<!-- Bootstrap core CSS -->
 		<link href="{{ URL::asset('assets/css/bootstrap.min.css') }}" rel="stylesheet">
 		<!-- Font Awesome core CSS -->

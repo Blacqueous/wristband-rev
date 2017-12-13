@@ -1,7 +1,8 @@
 
 @extends('template.layout')
 
-@section('title', ' - Prices')
+@section('title', 'Custom Tubular Lanyard |')
+@section('description', 'We are your ultimate resource for all your lanyard needs! Purchase custom tubular lanyards for school, businesses, and other organizations!')
 
 @section('css')
 <style>

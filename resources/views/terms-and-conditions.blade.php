@@ -1,7 +1,7 @@
 
 @extends('template.layout')
 
-@section('title', ' - Terms and Conditions')
+@section('title', 'Terms and Conditions -')
 
 @section('css')
 @endsection

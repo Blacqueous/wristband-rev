@@ -1,7 +1,8 @@
 
 @extends('template.layout')
 
-@section('title', ' - Order Now')
+@section('title', 'Order Wristbands Online |')
+@section('description', 'Order wristbands online—we provide a convenient setup that allows you to select style, color, quantity, size, and customized message with ease.')
 
 @section('css')
 <!-- Order page custom stylesheet -->

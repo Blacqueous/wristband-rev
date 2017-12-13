@@ -114,7 +114,7 @@
 						</li>
 						<li class="menu-item menu-item-type-post_type"><a href="{{ URL::to('/gallery') }}">Photo Gallery</a></li>
 						<li class="menu-item menu-item-type-post_type"><a href="{{ URL::to('/contact') }}">Contact Us</a></li>
-						<li class="menu-item menu-item-type-post_type"><a class="live-chat" href="#">Live Chat</a>
+						<li class="menu-item menu-item-type-post_type"><a class="live-chat" href="/blog">Blog</a>
 							<!-- <script type='text/javascript' data-cfasync='false'>window.purechatApi = { l: [], t: [], on: function () { this.l.push(arguments); } }; (function () { var done = false; var script = document.createElement('script'); script.async = true; script.type = 'text/javascript'; script.src = 'https://app.purechat.com/VisitorWidget/WidgetScript'; document.getElementsByTagName('HEAD').item(0).appendChild(script); script.onreadystatechange = script.onload = function (e) { if (!done && (!this.readyState || this.readyState == 'loaded' || this.readyState == 'complete')) { var w = new PCWidget({c: 'ff8c4d2b-032b-4f3f-9c29-8411120648ad', f: true }); done = f; } }; })();</script> -->
 						</li>
 							<div class="clearfix"></div>

@@ -1,7 +1,8 @@
 
 @extends('template.layout')
 
-@section('title', ' - Product')
+@section('title', 'Dual Layer Wristbands |')
+@section('description', 'We provide dual layer wristbands! Offering an attractive glossy texture, they have different colors on the outside an inside of the band.')
 
 @section('css')
 <style>
@@ -86,9 +87,9 @@
 					</tr>
 					<tr>
 						<td>
-							30
+							50
 						</td>
-							@foreach($prices['dual-layer']['30'] as $key => $value)
+							@foreach($prices['dual-layer']['50'] as $key => $value)
 
 							@if($key=='0-50inch')
 								<td>{{ $value }}</td>

@@ -1,7 +1,7 @@
 
 @extends('template.layout')
 
-@section('title', ' - Cliparts')
+@section('title', 'Cliparts -')
 
 @section('css')
 <style>

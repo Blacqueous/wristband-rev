@@ -1,7 +1,8 @@
 
 @extends('template.layout')
 
-@section('title', ' - Prices')
+@section('title', 'Debossed Wristbands | Debossed Silicone Wristbands |')
+@section('description', 'You’ve probably heard of the Livestrong bracelets—the most popular kind there are! We provide such debossed silicone wristbands to our clients.')
 
 @section('css')
 <style>
@@ -85,9 +86,9 @@
 					</tr>
 					<tr>
 						<td>
-							30
+							50
 						</td>
-							@foreach($prices['debossed']['30'] as $key => $value)
+							@foreach($prices['debossed']['50'] as $key => $value)
 								<td>{{ $value }}</td>
 							@endforeach
 					</tr>

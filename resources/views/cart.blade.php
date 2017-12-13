@@ -1,7 +1,7 @@
 
 @extends('template.layout')
 
-@section('title', ' - Cart')
+@section('title', 'Cart -')
 
 @section('css')
 <!-- Toastr Notification plugin -->

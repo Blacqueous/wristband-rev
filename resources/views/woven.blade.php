@@ -1,7 +1,8 @@
 
 @extends('template.layout')
 
-@section('title', ' - Prices')
+@section('title', 'Custom Woven Lanyard |')
+@section('description', 'Polyester, nylon, tubular, woven lanyards available for customization—get your brand or logo printed, perfect for carrying badges and cards!')
 
 @section('css')
 <style>

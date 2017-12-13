@@ -1,7 +1,7 @@
 
 @extends('template.layout')
 
-@section('title', ' - Return Policy')
+@section('title', 'Return Policy -')
 
 @section('css')
 @endsection

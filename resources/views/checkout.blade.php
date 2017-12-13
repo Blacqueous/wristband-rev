@@ -1,7 +1,7 @@
 
 @extends('template.layout')
 
-@section('title', ' - Checkout')
+@section('title', 'Checkout -')
 
 @section('css')
 <!-- Additional CSS plugins -->

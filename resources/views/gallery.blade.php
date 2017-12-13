@@ -1,7 +1,7 @@
 
 @extends('template.layout')
 
-@section('title', ' - Gallery')
+@section('title', 'Gallery -')
 
 @section('css')
 <style>

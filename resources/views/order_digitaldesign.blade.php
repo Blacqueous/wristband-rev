@@ -1,7 +1,7 @@
 
 @extends('template.layout')
 
-@section('title', ' - Digital Design')
+@section('title', 'Digital Design -')
 
 @section('css')
 <!-- Order page custom stylesheet -->

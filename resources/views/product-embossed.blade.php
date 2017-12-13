@@ -1,7 +1,8 @@
 
 @extends('template.layout')
 
-@section('title', ' - Product')
+@section('title', 'Custom Embossed Wristbands |')
+@section('description', 'Custom embossed wristbands offer designs or messages that are raised or elevated while being the same color as the wristband. Get them here!')
 
 @section('css')
 <style>
@@ -85,9 +86,9 @@
 					</tr>
 					<tr>
 						<td>
-							30
+							50
 						</td>
-							@foreach($prices['embossed']['30'] as $key => $value)
+							@foreach($prices['embossed']['50'] as $key => $value)
 								<td>{{ $value }}</td>
 							@endforeach
 					</tr>

@@ -1,7 +1,8 @@
 
 @extends('template.layout')
 
-@section('title', ' - Product')
+@section('title', 'Figured Wristbands |')
+@section('description', 'Bring attention to your company, school, or organizational logo with the use of the uniquely eye-catching design of figured wristbands!')
 
 @section('css')
 <style>
@@ -89,9 +90,9 @@
 					</tr>
 					<tr>
 						<td>
-							30
+							50
 						</td>
-							@foreach($prices['figured']['30'] as $key => $value)
+							@foreach($prices['figured']['50'] as $key => $value)
 								@if($key=='0-50inch')
 								<td>{{ $value }}</td>
 							@elseif($key=='0-75inch')

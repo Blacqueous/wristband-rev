@@ -1,7 +1,8 @@
 
 @extends('template.layout')
 
-@section('title', ' - Welcome')
+@section('title', 'Custom Silicone Wristbands |')
+@section('description', 'Wristbands, silicone wristbands, rubber bracelets, silicone bracelets.')
 
 @section('css')
 @endsection
@@ -90,7 +91,7 @@
                 <a href="/schoolpo"><img src="assets/images/src/PO.jpg"></a>
             </div>
             <div class="col-md-4">
-                <a href="/digitaldesign"><img src="assets/images/src/Digital_Design.jpg"></a>
+                <a href="/digital-design"><img src="assets/images/src/Digital_Design.jpg"></a>
             </div>
             <div class="col-md-4">
                 <a href="#"><img src="assets/images/src/Rush_Shipping.jpg"></a>
@@ -155,13 +156,13 @@
             <div class="clearfix"></div>
             <div class="container content-main">
                 <p>
-                    <span class="header-texttitle">Promotional Wristbands</span> is an American company based in Elizabeth, New Jersey that produces top of the line, eco-friendly custom silicone wristbands. Custom silicone wristbands are perfect for different events such as Team Building Activities, Trade Shows, Business Conferences, Theme Parties, Birthdays, Anniversaries, Family Events and many more. Custom silicone wristbands are also a great way of promoting various awareness, information, and charity campaigns. Silicone wristbands are also one popular item being sold as merchandise at concerts &amp; sporting events worldwide
+                    <span class="header-texttitle">Promotional Wristbands</span> is an American company based in Elizabeth, New Jersey that produces top of the line, eco-friendly custom silicone wristbands for sale. Custom silicone wristbands are perfect as custom event wristbands for different occasions such as Team Building Activities, Trade Shows, Business Conferences, Theme Parties, Birthdays, Anniversaries, Family Events and many more. These wristbands can also be used as promotional wristbands, as they are also a great way of promoting various awareness, information, and charity campaigns. Silicone wristbands are also one popular item being sold as merchandise at concerts & sporting events worldwide. From colored wristbands for personal wear to official festival wristbands, the uses of our custom-made wristbands are vast and varied!
                 </p>
                 <p>
                     Promotional Wristbands offer the cheapest yet high quality customized silicone wristbands in the market. These wristbands come in different types like those that are printed, debossed, embossed, or color filled that can be personally customized based on your preference.
                 </p>
                 <p>
-                    We guarantee that our wristband production will be done with dedication and proficiency regardless of the amount of your order. All orders should be treated equally, whether it is few or millions of customized silicone wristbands. With our competent and reliable Sales, Production and Customer Service teams, we assure that orders are properly handled and delivered to our customers on time.
+                    We guarantee that the process of production of creating your wristbands will be done with dedication and proficiency regardless of the amount of your order. All orders should be treated equally, whether it is few or millions of customized silicone wristbands. With our competent and reliable Sales, Production and Customer Service teams, we assure that orders are properly handled and delivered to our customers on time.
                 </p>
             </div>
             <div class="container">
@@ -372,7 +373,7 @@
 				<div class="frame-box">
 				  <p style="padding-top:10px;padding-bottom:10px;color:#5A5A5A;">Subscribe now to receive promotions and special offers.</p>
 					<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-					<form id="emf-form" target="_self" enctype="multipart/form-data" method="post" action="http://www.emailmeform.com/builder/form/qvRh20DO854wLsb684ba0f">
+					<form id="emf-form" target="_self" enctype="multipart/form-data" method="post" action="http://www.emailmeform.com/builder/form/H8619NgvsxYuFO22m638">
 					<table style="text-align:left;" cellpadding="2" cellspacing="0" border="0" bgcolor="transparent">
 						<tr>
 							<td style="" colspan="2">
@@ -388,6 +389,35 @@
 							<td width="35%" id="td_element_field_1" style=""><input placeholder="Enter Email" id="element_1" name="element_1" class="validate[required,custom[email]] form-control" value="" size="20" type="text" /><div style="padding-bottom:8px;color:#ffffff;"><small><font face="Arial"></font></small></div>
 							</td>
 						</tr>
+						<tr>
+							<td colspan="2" align="center">
+								<script type="text/javascript">
+										var RecaptchaOptions = {
+											theme: 'custom',
+											custom_theme_widget: 'emf-recaptcha_widget'
+										};
+								</script>
+								<div id='emf-recaptcha_widget' style='display:none'>
+								<div id='recaptcha_image'></div>
+								<div id='recaptcha_controls'>
+								<a title='Get a new challenge' href="javascript:Recaptcha.reload()"><img src='//assets.emailmeform.com/images/recaptcha_refresh.png?RU1GLTAyLTI5' alt='Get a new challenge'></a><!--
+											--><a title='Get an audio challenge' href="javascript:Recaptcha.switch_type('audio')" class='recaptcha_only_if_image'><img src='//assets.emailmeform.com/images/recaptcha_audio.png?RU1GLTAyLTI5' alt='Get an audio challenge'></a><!--
+											--><a title='Get a visual challenge' href="javascript:Recaptcha.switch_type('image')" class='recaptcha_only_if_audio'><img src='//assets.emailmeform.com/images/recaptcha_image.png?RU1GLTAyLTI5' alt='Get a visual challenge'></a><!--
+											--><a title='Help' href="javascript:Recaptcha.showhelp()"><img alt='Help' src='//assets.emailmeform.com/images/recaptcha_help.png?RU1GLTAyLTI5'></a>
+								</div>
+								<img id='recaptcha_logo' style='' src='https://www.google.com/recaptcha/api/img/clean/logo.png'>
+								<input type='text' id='recaptcha_response_field' name='recaptcha_response_field' 
+											placeholder='Type the text'>
+								</div>
+								<script type="text/javascript" src="https://www.google.com/recaptcha/api/challenge?k=6LchicQSAAAAAGksQmNaDZMw3aQITPqZEsX77lT9"></script>
+								<noscript>
+								<iframe src="https://www.google.com/recaptcha/api/noscript?k=6LchicQSAAAAAGksQmNaDZMw3aQITPqZEsX77lT9" height="300" width="500" frameborder="0"></iframe><br/>
+								<textarea name="recaptcha_challenge_field" rows="3" cols="40"></textarea>
+								<input type="hidden" name="recaptcha_response_field" value="manual_challenge"/>
+								</noscript>
+							</td>
+						</tr>
+						<div style="padding-bottom:8px;color:#ffffff;"><small><font face="Arial"></font></small></div>
 						<tr valign="top">
 							<td id="td_element_label_0" style="" align="left"></td>
 							<td td width="30%" colspan="2" align="left">

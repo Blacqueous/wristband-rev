@@ -1,7 +1,7 @@
 
 @extends('template.layout')
 
-@section('title', ' - Prices')
+@section('title', 'Prices -')
 
 @section('css')
 <style>

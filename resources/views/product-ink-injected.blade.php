@@ -1,7 +1,8 @@
 
 @extends('template.layout')
 
-@section('title', ' - Product')
+@section('title', 'Ink Injected Wristbands |')
+@section('description', 'We provide you with top quality custom made ink injected wristbands with customized designs and lettering to suit your preferences!')
 
 @section('css')
 <style>
@@ -85,9 +86,9 @@
 					</tr>
 					<tr>
 						<td>
-							30
+							50
 						</td>
-							@foreach($prices['ink-injected']['30'] as $key => $value)
+							@foreach($prices['ink-injected']['50'] as $key => $value)
 								<td>{{ $value }}</td>
 							@endforeach
 					</tr>

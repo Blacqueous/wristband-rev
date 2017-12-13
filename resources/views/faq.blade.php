@@ -1,7 +1,7 @@
 
 @extends('template.layout')
 
-@section('title', ' - FAQ')
+@section('title', 'FAQ -')
 
 @section('css')
 @endsection

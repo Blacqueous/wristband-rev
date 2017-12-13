@@ -1,7 +1,8 @@
 
 @extends('template.layout')
 
-@section('title', ' - Prices')
+@section('title', 'Nylon Lanyard |')
+@section('description', 'Nylon lanyards offer a shine and durability that’s hard to beat. Get your customized lanyards online from Promotional Wristbands!')
 
 @section('css')
 <style>

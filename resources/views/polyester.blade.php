@@ -1,7 +1,8 @@
 
 @extends('template.layout')
 
-@section('title', ' - Prices')
+@section('title', 'Polyester Lanyard | Imprinted Polyester Lanyard |')
+@section('description', 'You can get polyester lanyard imprinted with your school, organization, or business name and logo, perfect for carrying cards and badges.')
 
 @section('css')
 <style>

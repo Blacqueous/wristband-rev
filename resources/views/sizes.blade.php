@@ -1,7 +1,7 @@
 
 @extends('template.layout')
 
-@section('title', ' - Sizes Chart')
+@section('title', 'Sizes Chart -')
 
 @section('css')
 <style>

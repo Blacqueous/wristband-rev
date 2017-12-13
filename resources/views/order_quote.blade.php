@@ -1,7 +1,7 @@
 
 @extends('template.layout')
 
-@section('title', ' - Quote')
+@section('title', 'Quote -')
 
 @section('css')
 <!-- Order page custom stylesheet -->

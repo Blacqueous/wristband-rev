@@ -1,7 +1,7 @@
 
 @extends('template.layout')
 
-@section('title', ' - Fonts')
+@section('title', 'Fonts -')
 
 @section('css')
 <style>

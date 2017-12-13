@@ -1,7 +1,7 @@
 
 @extends('template.layout')
 
-@section('title', ' - School PO')
+@section('title', 'School PO -')
 
 @section('css')
 <!-- Order page custom stylesheet -->

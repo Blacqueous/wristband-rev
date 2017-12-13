@@ -1,7 +1,7 @@
 
 @extends('template.layout')
 
-@section('title', ' - Order Now')
+@section('title', 'Order Now -')
 
 @section('css')
 <!-- Order page custom stylesheet -->

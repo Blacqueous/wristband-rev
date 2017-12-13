@@ -1,7 +1,7 @@
 
 @extends('template.layout')
 
-@section('title', ' - Success!')
+@section('title', 'Success! -')
 
 @section('css')
 <!-- Additional CSS styles -->

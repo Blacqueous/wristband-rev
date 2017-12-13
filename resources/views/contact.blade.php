@@ -1,7 +1,7 @@
 
 @extends('template.layout')
 
-@section('title', ' - Contact Us')
+@section('title', 'Contact Us -')
 
 @section('css')
 <style>
@@ -26,7 +26,7 @@
 		<div class="contact-content">
 			<p><span class="fa fa-search">1-800-989-0440</span></p>
 			<p><span class="fa-text">sales@promotionalwristband.com</span></p>
-			<iframe width="100%" height="424" allowTransparency="true" frameborder="0" scrolling="no" style="border:none" src="http://www.emailmeform.com/builder/embed/cBQbMf7y9a35"><a href="http://www.emailmeform.com/builder/embed/cBQbMf7y9a35">Fill out form.</a></iframe>
+			<iframe width="100%" height="581" allowTransparency="true" frameborder="0" scrolling="no" style="border:none" src="https://www.emailmeform.com/builder/embed/X20e5dc71VC280i5J"><a href="https://www.emailmeform.com/builder/embed/X20e5dc71VC280i5J">Fill out form.</a></iframe>
 			<div class="clearfix"></div>		  
 		</div>
 		<div class="clearfix"></div>
