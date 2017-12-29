@@ -35,6 +35,7 @@
 	<!-- END: Google Trusted Stores -->
 
 @endsection
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <header>
 <?php if (url()->current() == "http://promotionalwristband.com/order"){ ?>
 	<div id="promotion" class="promotion">
@@ -53,6 +54,15 @@
                     <div id="hour-img">Monday - Friday | 11am - 8pm EST</div>
                     <span class="span-search"><i class="fa fa-search"></i> 1-800-989-0440</span>
                     <p><span class="fa-text">sales@promotionalwristband.com</span></p>
+                    <div id="">
+                    	<!-- Add font awesome icons -->
+						<a href="https://www.facebook.com/promotionalwristbands/" class="fa fa-facebook"></a>
+						<a href="https://twitter.com/promowristband" class="fa fa-twitter"></a>
+						<a href="https://www.instagram.com/promowristband/" class="fa fa-instagram"></a>
+						<a href="https://www.pinterest.com/promowristband/" class="fa fa-pinterest"></a>
+						<a href="https://plus.google.com/116353545536928054232?hl=en" class="fa fa-google"></a>
+						<div class="clearfix"></div>
+                    </div>
     			</div>
                 <style>
                     .button-wrapper + .tooltip > .tooltip-inner { color: #04adb7; font-family: 'Varela Round', sans-serif!important; font-size: 14px; padding: 10px 15px; }

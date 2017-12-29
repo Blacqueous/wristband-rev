@@ -53,7 +53,7 @@ Route::get('/quote', 'ViewController@pageQuote');
 
 Route::get('/schoolpo', 'ViewController@pageSchoolPO');
 
-Route::get('/digitaldesign', 'ViewController@pageDigitalDesign');
+Route::get('/digital-design', 'ViewController@pageDigitalDesign');
 
 Route::get('/product', function () { return redirect('/'); });
 
