@@ -33,7 +33,7 @@ class Carts extends Model {
                         );
     }
 	
-	public static function getCartOrdersDetails($id){
+	public static function getCartOrdersDetails($id) {
         // check if all required variables are given.
         if($order_id=null)
             return false;
@@ -46,6 +46,19 @@ class Carts extends Model {
 										GROUP BY `c`.`RandomChr`
 										ORDER BY `c`.`RandomChr` ASC")
                         );
+    }
+	
+	public function getCartsByOrderId($id=null)
+    {
+        // check if all required variables are given.
+        if($order_id=null)
+            return false;
+
+        // Get and return query.
+    	return DB::table($this->table)
+                ->select('*')
+                ->where('OrderID', '=', $id)
+                ->get();
     }
 	
     public function checkCartById($id=null)

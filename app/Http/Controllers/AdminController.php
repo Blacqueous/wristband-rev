@@ -75,8 +75,142 @@ class AdminController extends Controller
     {
         $id = $request->route('order_id');
 		$posts = Carts::getCartOrders($id);
-		$detail = Carts::getCartOrdersDetails($id);
+		$detail = $this->getCartOrdersDetails($id);
+
         return view('admin.manage.carts')->with(compact('posts','detail'));
+    }
+
+    public function getCartOrdersDetails($id=null)
+    {
+        if (is_null($id)) {
+            return [];
+        }
+
+        $cart = new Carts();
+        $carts = $cart->getCartsByOrderId($id);
+
+        $merged_carts = [];
+
+        foreach ($carts as $key => $value) {
+
+            if(!isset($merged_carts[$value->RandomChr])) {
+                $merged_carts[$value->RandomChr] = [
+                    "ID" => $value->ID,
+                    "DateCreated" => $value->DateCreated,
+                    "Status" => $value->Status,
+                    "OrderID" => $value->OrderID,
+                    "TempToken" => $value->TempToken,
+                    "BandStyle" => $value->BandStyle,
+                    "BandType" => $value->BandType,
+                    "BandSize" => $value->BandSize,
+                    "MessageStyle" => $value->MessageStyle,
+                    "Font" => $value->Font,
+                    "FrontMessage" => $value->FrontMessage,
+                    "BackMessage" => $value->BackMessage,
+                    "ContinuousMessage" => $value->ContinuousMessage,
+                    "FrontMessageStartClipart" => $value->FrontMessageStartClipart,
+                    "FrontMessageEndClipart" => $value->FrontMessageEndClipart,
+                    "BackMessageStartClipart" => $value->BackMessageStartClipart,
+                    "BackMessageEndClipart" => $value->BackMessageEndClipart,
+                    "ContinuousMessageStartClipart" => $value->ContinuousMessageStartClipart,
+                    "ContinuousEndClipart" => $value->ContinuousEndClipart,
+                    "ProductionTime" => $value->ProductionTime,
+                    "FreeQty" => $value->FreeQty,
+                    "Delivery" => $value->Delivery,
+                    "Individual_Pack" => $value->Individual_Pack,
+                    "Keychain" => $value->Keychain,
+                    "DigitalPrint" => $value->DigitalPrint,
+                    "Comments" => $value->Comments,
+                    "PriceProduction" => $value->PriceProduction,
+                    "PriceDelivery" => $value->PriceDelivery,
+                    "PriceIndividual_Pack" => $value->PriceIndividual_Pack,
+                    "PriceKeychain" => $value->PriceKeychain,
+                    "PriceDigitalPrint" => $value->PriceDigitalPrint,
+                    "PriceBackMessage" => $value->PriceBackMessage,
+                    "PriceContinuousMessage" => $value->PriceContinuousMessage,
+                    "PriceLogo" => $value->PriceLogo,
+                    "PriceColorSplit" => $value->PriceColorSplit,
+                    "PriceMouldingFee" => $value->PriceMouldingFee,
+                    "RandomChr" => $value->RandomChr,
+                    "newCart" => $value->newCart,
+                    "arColors" => $value->arColors,
+                    "arAddons" => [],
+                    "arMoldingFee" => $value->arMoldingFee,
+                    "arFrontMessage" => $value->arFrontMessage,
+                    "arBackMessage" => $value->arBackMessage,
+                    "arContinuousMessage" => $value->arContinuousMessage,
+                    "arInsideMessage" => $value->arInsideMessage,
+                    "arFrontMessageStartClipart" => $value->arFrontMessageStartClipart,
+                    "arFrontMessageEndClipart" => $value->arFrontMessageEndClipart,
+                    "arBackMessageStartClipart" => $value->arBackMessageStartClipart,
+                    "arBackMessageEndClipart" => $value->arBackMessageEndClipart,
+                    "arContinuousMessageStartClipart" => $value->arContinuousMessageStartClipart,
+                    "arContinuousEndClipart" => $value->arContinuousEndClipart,
+                    "arInfo" => $value->arInfo,
+                    "arFree" => [],
+                    "arKeychains" => $value->arKeychains,
+                    "arProduction" => $value->arProduction,
+                    "arShipping" => $value->arShipping,
+                    "Qty" => $value->Qty,
+                    "UnitPrice" => $value->UnitPrice,
+                    "Total" => $value->Total,
+                    "FullName" => $value->FullName,
+                    "PhoneNo" => $value->PhoneNo,
+                    "DateQuote" => $value->DateQuote,
+                    "EmailAddress" => $value->EmailAddress
+                ];
+            }
+
+            // For add-ons
+            $AddOns = json_decode($value->arAddons, true);
+
+            foreach ($AddOns as $keyAO => $valAO) {
+
+                // Set price
+                if (isset($valAO['price'])) {
+                    if (!isset($merged_carts[$value->RandomChr]["arAddons"][$keyAO]['price'])) {
+                        $merged_carts[$value->RandomChr]["arAddons"][$keyAO]['price'] = $valAO['price'];
+                    }
+                }
+
+                // Set quantity
+                if (isset($valAO['quantity'])) {
+                    if (!isset($merged_carts[$value->RandomChr]["arAddons"][$keyAO]['quantity'])) {
+                        $merged_carts[$value->RandomChr]["arAddons"][$keyAO]['quantity'] = $valAO['quantity'];
+                    } else {
+                        $merged_carts[$value->RandomChr]["arAddons"][$keyAO]['quantity'] += $valAO['quantity'];
+                    }
+                }
+
+                // Set Qty
+                if (isset($valAO['Qty'])) {
+                    if (!isset($merged_carts[$value->RandomChr]["arAddons"][$keyAO]['Qty'])) {
+                        $merged_carts[$value->RandomChr]["arAddons"][$keyAO]['Qty'] = $valAO['Qty'];
+                    } else {
+                        $merged_carts[$value->RandomChr]["arAddons"][$keyAO]['Qty'] += $valAO['Qty'];
+                    }
+                }
+
+                // Set total
+                if (isset($valAO['total'])) {
+                    if (!isset($merged_carts[$value->RandomChr]["arAddons"][$keyAO]['total'])) {
+                        $merged_carts[$value->RandomChr]["arAddons"][$keyAO]['total'] = $valAO['total'];
+                    } else {
+                        $merged_carts[$value->RandomChr]["arAddons"][$keyAO]['total'] += $valAO['total'];
+                    }
+                }
+
+            }
+
+            // For free
+            if (isset($merged_carts[$value->RandomChr]["arFree"])) {
+                $merged_carts[$value->RandomChr]["arFree"][] = $value->arFree;
+            }
+
+        }
+
+        return $merged_carts;
+
     }
 
     // Manage discounts --------------------------------------------------------

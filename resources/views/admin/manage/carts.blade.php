@@ -209,40 +209,40 @@
 				<br />
 				<p><span style="font-weight:bold;font-size:18px;color:#00516f">Order Item Details</span></p>
 				@foreach($detail as $details)
-					<div style="margin-left:20px;"><p><span style="font-weight:bold;color: #DC8510;">Item Description: </span> {{ $details->BandStyle}}</p></div>
+					<div style="margin-left:20px;"><p><span style="font-weight:bold;color: #DC8510;">Item Description: </span> {{ $details['BandStyle']}}</p></div>
 					<div class="item-carts-details" style="margin-left:34px">
-							@if (($details->BandSize) == "0-25inch")
-								<p><span style="font-weight:bold">Band Size:</span> 1/4 Inch ({{ $details->BandSize}})</p>
-							@elseif (($details->BandSize) == "0-50inch")
-								<p><span style="font-weight:bold">Band Size:</span> 1/2 Inch ({{ $details->BandSize}})</p>
-							@elseif (($details->BandSize) == "0-75inch")
-								<p><span style="font-weight:bold">Band Size:</span> 3/4 Inch ({{ $details->BandSize}})</p>
-							@elseif (($details->BandSize) == "1-00inch")
-								<p><span style="font-weight:bold">Band Size:</span> 1 Inch {{ $details->BandSize}}</p>
-							@elseif (($details->BandSize) == "1-50inch")
-								<p><span style="font-weight:bold">Band Size:</span> 1 1/2 Inch ({{ $details->BandSize}})</p>
-							@elseif (($details->BandSize) == "2-00inch")
-							   `<p><span style="font-weight:bold">Band Size:</span> 2 Inch ({{ $details->BandSize}})</p>
+							@if (($details['BandSize']) == "0-25inch")
+								<p><span style="font-weight:bold">Band Size:</span> 1/4 Inch ({{ $details['BandSize']}})</p>
+							@elseif (($details['BandSize']) == "0-50inch")
+								<p><span style="font-weight:bold">Band Size:</span> 1/2 Inch ({{ $details['BandSize']}})</p>
+							@elseif (($details['BandSize']) == "0-75inch")
+								<p><span style="font-weight:bold">Band Size:</span> 3/4 Inch ({{ $details['BandSize']}})</p>
+							@elseif (($details['BandSize']) == "1-00inch")
+								<p><span style="font-weight:bold">Band Size:</span> 1 Inch {{ $details['BandSize']}}</p>
+							@elseif (($details['BandSize']) == "1-50inch")
+								<p><span style="font-weight:bold">Band Size:</span> 1 1/2 Inch ({{ $details['BandSize']}})</p>
+							@elseif (($details['BandSize']) == "2-00inch")
+							   `<p><span style="font-weight:bold">Band Size:</span> 2 Inch ({{ $details['BandSize']}})</p>
 							@endif
 							<p></p>
-							<p><span style="font-weight:bold">Font:</span> {{ $details->Font}} </p>
-							<p><span style="font-weight:bold">Front Message:</span> {{ $details->FrontMessage}} </p>
-							<p><span style="font-weight:bold">Back Message:</span> {{ $details->BackMessage}} </p>
+							<p><span style="font-weight:bold">Font:</span> {{ $details['Font']}} </p>
+							<p><span style="font-weight:bold">Front Message:</span> {{ $details['FrontMessage']}} </p>
+							<p><span style="font-weight:bold">Back Message:</span> {{ $details['BackMessage']}} </p>
 							<p><span style="font-weight:bold">Inside Message:</span> 
 							     <?php 
-									$data = json_decode($details->arInsideMessage, true);
+									$data = json_decode($details['arInsideMessage'], true);
 									echo " "; print_r($data['text']);
 								 ?>
 
 							</p>
-							<p><span style="font-weight:bold">Continuous Message:</span> {{ $details->ContinuousMessage}} </p>
+							<p><span style="font-weight:bold">Continuous Message:</span> {{ $details['ContinuousMessage']}} </p>
 							<p><span style="font-weight:bold">Font:</span> {{ $post->Font}} </p>
-							<p><span style="font-weight:bold">Front Message Start Clipart:</span> {{ $details->FrontMessageStartClipart}} </p>
-							<p><span style="font-weight:bold">Front Message End Clipart:</span> {{ $details->FrontMessageEndClipart}} </p>
-							<p><span style="font-weight:bold">Back Message Start Clipart:</span> {{ $details->BackMessageStartClipart}} </p>
-							<p><span style="font-weight:bold">Back Message End Clipart:</span> {{ $details->BackMessageEndClipart}} </p>
-							<p><span style="font-weight:bold">Continuous Message Start Clipart:</span> {{ $details->ContinuousMessageStartClipart}} </p>
-							<p><span style="font-weight:bold">Continuous Message End Clipart:</span> {{ $details->ContinuousEndClipart}} </p>	
+							<p><span style="font-weight:bold">Front Message Start Clipart:</span> {{ $details['FrontMessageStartClipart']}} </p>
+							<p><span style="font-weight:bold">Front Message End Clipart:</span> {{ $details['FrontMessageEndClipart']}} </p>
+							<p><span style="font-weight:bold">Back Message Start Clipart:</span> {{ $details['BackMessageStartClipart']}} </p>
+							<p><span style="font-weight:bold">Back Message End Clipart:</span> {{ $details['BackMessageEndClipart']}} </p>
+							<p><span style="font-weight:bold">Continuous Message Start Clipart:</span> {{ $details['ContinuousMessageStartClipart']}} </p>
+							<p><span style="font-weight:bold">Continuous Message End Clipart:</span> {{ $details['ContinuousEndClipart']}} </p>	
 				    </div>
                     	<br />				
 			   @endforeach
@@ -264,59 +264,59 @@
 			    
 				@foreach($detail as $details)
 				<br /><p><span style="font-weight:bold;font-size:18px;color:#00516f">Shipping Details</span></p>
-				<div style="margin-left:20px;"><p><span style="font-weight:bold;color: #DC8510;">Item Description: </span> {{ $details->BandStyle}}</p>
+				<div style="margin-left:20px;"><p><span style="font-weight:bold;color: #DC8510;">Item Description: </span> {{ $details['BandStyle']}}</p>
 				<p></p>	
 						
 							<p><span style="font-weight:bold">Production:</span><br />
-									<?php $data1 = json_decode($details->arProduction, true); 
+									<?php $data1 = json_decode($details['arProduction'], true); 
 										echo "Days: ";print_r($data1['days']);echo "<br />";
 										echo "Price: $";print_r($data1['price']);echo "<br />";
 									?>
 							</p>
 							<p><span style="font-weight:bold">Shipping:</span><br />
-									<?php $data2 = json_decode($details->arShipping, true); 
+									<?php $data2 = json_decode($details['arShipping'], true); 
 										echo "Days: ";print_r($data2['days']);echo "<br />";
 										echo "Price: $";print_r($data2['price']);echo "<br />";
 									?>
 							</p>
 				
 				<br /><p><span style="font-weight:bold;font-size:18px;color:#00516f">Add Ons</span></p>
-					<?php $data = json_decode($details->arAddons, true);
+					<?php $data = $details['arAddons'];
 						if(isset($data['3mmThick'])){
 							echo "3mm Thick: ";
 							echo "Price: $";print_r($data['3mmThick']['price']);echo " | ";
 							echo "Qty: ";print_r($data['3mmThick']['quantity']);echo " | ";
 							echo "Total: $";print_r($data['3mmThick']['total']);echo "<br />";
 						}	
-						
+
 					    if(isset($data['DigitalPrint'])){
 							echo "Digital Print: ";
 							echo "Price: $";print_r($data['DigitalPrint']['price']);echo " | ";
 							echo "Qty: ";print_r($data['DigitalPrint']['quantity']);echo " | ";
 							echo "Total: $";print_r($data['DigitalPrint']['total']);echo "<br />";
 						}	
-													
+
 						if(isset($data['Ecofriendly'])){
 							echo "Eco friendly: ";
 							echo "Price: $";print_r($data['Ecofriendly']['price']);echo " | ";
 							echo "Qty: ";print_r($data['Ecofriendly']['quantity']);echo " | ";
 							echo "Total: $";print_r($data['Ecofriendly']['total']);echo "<br />";
 						}
-						
+
 						if(isset($data['Individual_Pack'])){
 							echo "Individual Pack: ";
 							echo "Price: $";print_r($data['Individual_Pack']['price']);echo " | ";
 							echo "Qty: ";print_r($data['Individual_Pack']['quantity']);echo " | ";
 							echo "Total: $";print_r($data['Individual_Pack']['total']);echo "<br />";
 						}
-						
+
 						if(isset($data['Glitters'])){
 							echo "Glitters: ";
 							echo "Price: $";print_r($data['Glitters']['price']);echo " | ";
 							echo "Qty: ";print_r($data['Glitters']['quantity']);echo " | ";
 							echo "Total: $";print_r($data['Glitters']['total']);echo "<br />";
 						}
-						
+
 						if(isset($data['Keychain'])){
 							echo "Converted to Keychain/s: ";
 							echo "Price: $";print_r($data['Keychain']['price']);echo " | ";
@@ -325,51 +325,59 @@
 						}
 					?>
 					
-					
 				<br />
 				<p><span style="font-weight:bold">Free Wristbands:</span></p>
 				
-					<?php $data = json_decode($details->arFree, true);
-						if(isset($data['wristbands']['data']['Name'])){
-							echo "Name: ";print_r($data['wristbands']['data']['Name']);echo "<br />";
-						}
-						
-						if(isset($data['wristbands']['data']['CustomColors'])){
-							$string = array('[',']','"');
-							echo "Custom Solid/Pantone Color: ";print_r(str_replace($string,"",$data['wristbands']['data']['CustomColors']));echo "<br />";
-						}
-						
-						if(isset($data['wristbands']['data']['FontColor'])){
-							echo "Font Color: ";print_r($data['wristbands']['data']['FontColor']);echo "<br />";
-						}
-						
-						if(isset($data['wristbands']['data']['Qty'])){
-							echo "Qty: ";print_r($data['wristbands']['data']['Qty']);echo "<br /><br />";
-						}						
-						 
+					<?php 
+                        foreach ($details['arFree'] as $key => $value) {
+
+                            $data = json_decode($value, true);
+
+    						if(isset($data['wristbands']['data']['Name'])){
+    							echo "Name: ";print_r($data['wristbands']['data']['Name']);echo "<br />";
+    						}
+
+    						if(isset($data['wristbands']['data']['CustomColors'])){
+    							$string = array('[',']','"');
+    							echo "Custom Solid/Pantone Color: ";print_r(str_replace($string,"",$data['wristbands']['data']['CustomColors']));echo "<br />";
+    						}
+
+    						if(isset($data['wristbands']['data']['FontColor'])){
+    							echo "Font Color: ";print_r($data['wristbands']['data']['FontColor']);echo "<br />";
+    						}
+
+    						if(isset($data['wristbands']['data']['Qty'])){
+    							echo "Qty: ";print_r($data['wristbands']['data']['Qty']);echo "<br /><br />";
+    						}						
+
+                        }
 					?>
 					
 				<p><span style="font-weight:bold">Free Keychains:</span></p>
 				
-					<?php $data = json_decode($details->arFree, true); 
-			
-						if(isset($data['keychains']['data']['Name'])){
-							echo "Name: ";print_r($data['keychains']['data']['Name']);echo "<br />";
-						}
-						
-						if(isset($data['keychains']['data']['CustomColors'])){
-							$string = array('[',']','"');
-							echo "Custom Solid/Pantone Color: ";print_r(str_replace($string,"",$data['keychains']['data']['CustomColors']));echo "<br />";
-						}
-						
-						if(isset($data['keychains']['data']['FontColor'])){
-							echo "Font Color: ";print_r($data['keychains']['data']['FontColor']);echo "<br />";
-						}
-						
-						if(isset($data['keychains']['data']['Qty'])){
-							echo "Qty: ";print_r($data['keychains']['data']['Qty']);echo "<br /><br />";
-						}
+					<?php
+                        foreach ($details['arFree'] as $key => $value) {
 
+                            $data = json_decode($value, true);
+
+    						if(isset($data['keychains']['data']['Name'])){
+    							echo "Name: ";print_r($data['keychains']['data']['Name']);echo "<br />";
+    						}
+
+    						if(isset($data['keychains']['data']['CustomColors'])){
+    							$string = array('[',']','"');
+    							echo "Custom Solid/Pantone Color: ";print_r(str_replace($string,"",$data['keychains']['data']['CustomColors']));echo "<br />";
+    						}
+
+    						if(isset($data['keychains']['data']['FontColor'])){
+    							echo "Font Color: ";print_r($data['keychains']['data']['FontColor']);echo "<br />";
+    						}
+
+    						if(isset($data['keychains']['data']['Qty'])){
+    							echo "Qty: ";print_r($data['keychains']['data']['Qty']);echo "<br /><br />";
+    						}
+
+                        }
 					?>
 				</div>
 				@endforeach

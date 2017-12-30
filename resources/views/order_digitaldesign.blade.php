@@ -561,7 +561,7 @@
 										$<span class="total">0.00</span>
 									</div>
 									<!-- list -->
-									<div id="molding-fee-list" class="col-xs-12 no-padding-left"></div>
+									<div id="molding-fee-list" class="col-xs-12 no-padding"></div>
 								</div>
 								<div id="summary-table-production" class="summary-table-group summary-table-state hidden">
 									<div class="col-xs-9 no-padding-left">
