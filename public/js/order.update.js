@@ -1856,11 +1856,17 @@ function displayTotal($collection)
 
     if (!$.isEmptyObject($collection.texts)) {
         $('#summary-table-text').removeClass('hidden');
-
         if(typeof $collection.texts['front'] != "undefined") {
             $('#summary-table-text #text-front').removeClass('hidden');
             $('#summary-table-text #text-front .qty').html( $collection.quantity );
-            $('#summary-table-text #text-front .price').html( ($collection.texts['front'].price).formatMoney() );
+            if($collection.texts['front'].price==0)
+            {
+                $('#summary-table-text #text-front .price').html( ($collection.texts['front'].price));
+            }
+            else{
+                $('#summary-table-text #text-front .price').html( ($collection.texts['front'].price).formatMoney() );
+            }
+            
             $('#summary-table-text #text-front .total').html( ($collection.texts['front'].total).formatMoney() );
         }
 
