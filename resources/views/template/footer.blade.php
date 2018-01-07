@@ -25,12 +25,13 @@
         <div id="footer-text">
             <p>Monday - Friday | 11am - 8pm EST</p>
             <p>Customer Service 1-800-989-0440</p>
-			<p><a href="https://www.facebook.com/promotionalwristbands/" target="_blank"><img width="222" height="auto" src="assets/images/fb.png" /></a>
+			<p><a href="https://www.facebook.com/promotionalwristbands/" target="_blank"><img width="222" height="auto" src="https://promotionalwristband.com/assets/images/fb.png" /></a>
         </div>
         <div class="clearfix"></div>
         <div class="site-info">
             <p>Copyright. All Rights Reserved &copy; <?php echo date("Y"); ?> Promotional Wristbands</p>
         <div class="clearfix"></div>
     </div>
-    <script type='text/javascript' data-cfasync='false'>window.purechatApi = { l: [], t: [], on: function () { this.l.push(arguments); } }; (function () { var done = false; var script = document.createElement('script'); script.async = true; script.type = 'text/javascript'; script.src = 'https://app.purechat.com/VisitorWidget/WidgetScript'; document.getElementsByTagName('HEAD').item(0).appendChild(script); script.onreadystatechange = script.onload = function (e) { if (!done && (!this.readyState || this.readyState == 'loaded' || this.readyState == 'complete')) { var w = new PCWidget({c: 'ff40693c-72dc-4584-ae8c-da48382a8d96', f: true }); done = true; } }; })();</script>
+    <script type='text/javascript' data-cfasync='false'>window.purechatApi = { l: [], t: [], on: function () { this.l.push(arguments); } }; (function () { var done = false; var script = document.createElement('script'); script.async = true; script.type = 'text/javascript'; script.src = 'https://app.purechat.com/VisitorWidget/WidgetScript'; document.getElementsByTagName('HEAD').item(0).appendChild(script); script.onreadystatechange = script.onload = function (e) { if (!done && (!this.readyState || this.readyState == 'loaded' || this.readyState == 'complete')) { var w = new PCWidget({c: 'ff40693c-72dc-4584-ae8c-da48382a8d96', f: true }); done = true; } }; })();
+    </script>
 </footer>

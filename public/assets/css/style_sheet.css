@@ -962,13 +962,15 @@ input.form-control {
 	margin:0 auto
 }
 
+a.fa {
+    padding: 8px;
+    width: 30px;
+}
+
 .fa {
-  padding: 8px;
   font-size: 15px;
-  width: 30px;
   text-align: center;
   text-decoration: none;
-  margin: 5px 2px;
 }
 
 .fa:hover {

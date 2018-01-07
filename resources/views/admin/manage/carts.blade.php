@@ -244,22 +244,23 @@
 							<p><span style="font-weight:bold">Continuous Message Start Clipart:</span> {{ $details['ContinuousMessageStartClipart']}} </p>
 							<p><span style="font-weight:bold">Continuous Message End Clipart:</span> {{ $details['ContinuousEndClipart']}} </p>	
 				    </div>
-                    	<br />				
+                    	<br />	
+                    	<p><span style="font-weight:bold;font-size:18px;color:#00516f">Band Style and Color(s)</span></p>
+						   <div style="margin-left:20px;">
+										<?php 
+										/*if($details['BandStyle']=="dual-layer"){
+											$data = json_decode($post->arInfo, true);
+											echo "Name: "; print_r($data['Name']); echo "<br />";
+											$string = array('[',']','"');
+											echo "Band Color: ";print_r(str_replace($string,"",$data['CustomColors'])); echo "<br />";
+											echo "Font Color: "; print_r($data['FontColor']); echo "<br />";
+											echo "Qty: "; print_r($data['Qty']); echo "<br />";
+										}*/
+										?>
+										</p>
+							 </div>			
 			   @endforeach
-			   <p><span style="font-weight:bold;font-size:18px;color:#00516f">Band Style and Color(s)</span></p>
-			   <div style="margin-left:20px;">
-			   @foreach($posts as $post)
-							<?php 
-								$data = json_decode($post->arInfo, true);
-								echo "Name: "; print_r($data['Name']); echo "<br />";
-								$string = array('[',']','"');
-								echo "Custom Solid/Pantone Color: ";print_r(str_replace($string,"",$data['CustomColors'])); echo "<br />";
-								echo "Font Solid/Pantone Color: "; print_r($data['FontColor']); echo "<br />";
-								echo "Qty: "; print_r($data['Qty']); echo "<br />";
-							?>
-							</p>
-				 @endforeach
-				 </div>
+
 			   
 			    
 				@foreach($detail as $details)
@@ -339,7 +340,7 @@
 
     						if(isset($data['wristbands']['data']['CustomColors'])){
     							$string = array('[',']','"');
-    							echo "Custom Solid/Pantone Color: ";print_r(str_replace($string,"",$data['wristbands']['data']['CustomColors']));echo "<br />";
+    							echo "Band Color: ";print_r(str_replace($string,"",$data['wristbands']['data']['CustomColors']));echo "<br />";
     						}
 
     						if(isset($data['wristbands']['data']['FontColor'])){
@@ -366,7 +367,7 @@
 
     						if(isset($data['keychains']['data']['CustomColors'])){
     							$string = array('[',']','"');
-    							echo "Custom Solid/Pantone Color: ";print_r(str_replace($string,"",$data['keychains']['data']['CustomColors']));echo "<br />";
+    							echo "Band Color: ";print_r(str_replace($string,"",$data['keychains']['data']['CustomColors']));echo "<br />";
     						}
 
     						if(isset($data['keychains']['data']['FontColor'])){
